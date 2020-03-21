@@ -44,11 +44,10 @@ a {
     justify-content: space-between;
     align-items: center;
     background-color: var(--artong);
-    padding: 0px 12px;
     height: var(--head-height);
 }
 .navbar__side {
-  width: 50px;
+  padding: 0 12px;
 }
 .navbar__logo {
     display: flex;
@@ -65,7 +64,6 @@ a {
 }
 
 .navbar__icons {
-    display: flex;
     list-style: none;
     padding-left: 0;
 }
