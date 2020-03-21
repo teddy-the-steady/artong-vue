@@ -38,12 +38,14 @@ a {
 
 .navbar {
     display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--artong);
     padding: 0px 12px;
     height: var(--head-height);
-    /* z-index: 2020; */
 }
 .navbar__side {
   width: 50px;
