@@ -1,12 +1,10 @@
 <template>
   <div id="app">
-    <div>
-      <header-bar></header-bar>
-      <side-bar></side-bar>
-      <side-slide-bar></side-slide-bar>
-      <div class="contents__body">
-        <router-view/>
-      </div>
+    <header-bar></header-bar>
+    <side-bar></side-bar>
+    <side-slide-bar></side-slide-bar>
+    <div class="contents__body">
+      <router-view/>
     </div>
   </div>
 </template>
@@ -32,6 +30,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  position: relative;
 }
 
 html {
