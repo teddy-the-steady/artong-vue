@@ -1,0 +1,10 @@
+{
+	"auth": {
+		"artongvue495b6d2e": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}

@@ -1,13 +1,23 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <header-bar></header-bar>
+    <side-bar></side-bar>
+    <side-slide-bar></side-slide-bar>
     <router-view/>
   </div>
 </template>
 
 <script>
+import HeaderBar from './components/header/Header.vue'
+import SideBar from './components/sidebar/SideBar.vue'
+import SideSlideBar from './components/sidebar/SideSlideBar.vue'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    HeaderBar,
+    SideBar,
+    SideSlideBar,
+  }
 }
 </script>
 
@@ -18,6 +28,23 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+}
+
+:root {
+    --artong: #6610f2;
+    --white: #ffffff;
+    --lightslategray: gray;
+    --lightgray: lightgray;
+    --sidebar-backdrop: rgba(0,0,0,.5);
+
+    --head-height: 50px;
 }
 </style>
