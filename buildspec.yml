@@ -1,16 +1,22 @@
 version: 0.2
-phases:
-  install:
-    runtime-versions:
-      nodejs: 12
-    commands:
-      - npm i npm@latest -g
-  pre_build:
-    commands:
-      - npm install
-  build:
-    commands:
-      - npm run build
-  post_build:
-    commands:
-      - aws s3 sync ./dist s3://staging-artong.com
+backend:
+  phases:
+    build:
+      commands:
+        - amplifyPush --simple
+frontend:
+  phases:
+    install:
+      runtime-versions:
+        nodejs: 12
+      commands:
+        - npm i npm@latest -g
+    pre_build:
+      commands:
+        - npm install
+    build:
+      commands:
+        - npm run build
+    post_build:
+      commands:
+        - aws s3 sync ./dist s3://staging-artong.com
