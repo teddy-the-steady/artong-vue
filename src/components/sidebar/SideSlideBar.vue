@@ -17,17 +17,17 @@
 
 <script>
 export default {
-    name: 'SideSlideBar',
-    computed: {
-        isPanelOpen() {
-            return this.$store.state.isNavOpen
-        }
-    },
-    methods: {
-        closeSidebarPanel() {
-            this.$store.commit('toggleNav')
-        }
+  name: 'SideSlideBar',
+  computed: {
+    isPanelOpen () {
+      return this.$store.state.isNavOpen
     }
+  },
+  methods: {
+    closeSidebarPanel () {
+      this.$store.commit('toggleNav')
+    }
+  }
 }
 </script>
 

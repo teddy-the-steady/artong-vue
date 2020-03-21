@@ -25,7 +25,7 @@ import Burger from './Burger'
 export default {
   name: 'Header',
   components: {
-    Burger,
+    Burger
   }
 }
 </script>

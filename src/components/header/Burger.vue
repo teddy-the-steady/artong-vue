@@ -13,17 +13,17 @@
 </template>
 <script>
 export default {
-    name: 'Burger',
-    computed: {
-        isBurgerActive () {
-            return this.$store.state.isNavOpen
-        }
-    },
-    methods: {
-        toggle() {
-            this.$store.commit('toggleNav')
-        }
+  name: 'Burger',
+  computed: {
+    isBurgerActive () {
+      return this.$store.state.isNavOpen
     }
+  },
+  methods: {
+    toggle () {
+      this.$store.commit('toggleNav')
+    }
+  }
 }
 </script>
 <style>
