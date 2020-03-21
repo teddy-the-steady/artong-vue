@@ -18,7 +18,7 @@ export default {
   components: {
     HeaderBar,
     SideBar,
-    SideSlideBar,
+    SideSlideBar
   }
 }
 </script>
