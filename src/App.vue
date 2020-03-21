@@ -32,7 +32,6 @@ export default {
 
 html {
   font-size: 16px;
-  min-width: 460px;
 }
 
 body {
