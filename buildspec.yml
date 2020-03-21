@@ -13,4 +13,5 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 sync ./dist s3://staging-artong.com
+      - aws s3 sync ./dist/static s3://staging-artong.com/static
+      - aws s3 sync ./dist/index.html s3://staging-artong.com/index.html
