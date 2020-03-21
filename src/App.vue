@@ -3,7 +3,9 @@
     <header-bar></header-bar>
     <side-bar></side-bar>
     <side-slide-bar></side-slide-bar>
-    <router-view/>
+    <div class="contents__body">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -36,6 +38,13 @@ html {
 
 body {
   margin: 0;
+}
+
+.contents__body {
+  position: fixed;
+  top: var(--head-height);
+  width: 100vw;
+  height: 100vh;
 }
 
 :root {
