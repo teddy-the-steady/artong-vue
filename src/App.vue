@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <header-bar></header-bar>
-    <side-bar></side-bar>
-    <side-slide-bar></side-slide-bar>
-    <div class="contents__body">
-      <router-view/>
+    <div>
+      <header-bar></header-bar>
+      <side-bar></side-bar>
+      <side-slide-bar></side-slide-bar>
+      <div class="contents__body">
+        <router-view/>
+      </div>
     </div>
   </div>
 </template>
