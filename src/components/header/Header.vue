@@ -1,0 +1,86 @@
+<template>
+  <nav class="navbar">
+    <div class="navbar__side">
+      <div class="navbar__menu">
+        <!-- <img src="../assets/hambergermenu.png" alt=""> -->
+        <burger></burger>
+      </div>
+    </div>
+    <div class="navbar__logo">
+      <a href="."><b><i>A</i>rtong</b></a>
+    </div>
+    <div class="navbar__side">
+      <ul class="navbar__icons">
+        <li class="profile">
+          <img src="../../assets/profilethumb.png" alt="">
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<script>
+import Burger from './Burger'
+
+export default {
+  name: 'Header',
+  components: {
+    Burger,
+  }
+}
+</script>
+
+<style scoped>
+a {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--artong);
+    padding: 0px 12px;
+    height: var(--head-height);
+    /* z-index: 2020; */
+}
+.navbar__side {
+  width: 50px;
+}
+.navbar__logo {
+    display: flex;
+    font-size: 24px;
+    color: var(--white);
+}
+
+.navbar__menu img {
+    width: 30px;
+}
+.navbar__menu img:hover {
+    background-color: var(--white);
+    border-radius: 50%;
+}
+
+.navbar__icons {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+}
+
+.profile {
+    background-color: var(--white);
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--lightslategray);
+    border-radius: 50%
+}
+.profile img {
+    width: 30px;
+    vertical-align: center;
+}
+
+@media screen and (max-width: 768px){
+
+}
+</style>
