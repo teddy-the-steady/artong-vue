@@ -30,23 +30,22 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: var(--black);
   text-align: center;
-  display: block;
+  /* display: block;
   min-height: 100%;
   min-width: 320px;
   overflow-x: hidden;
   padding: 0 !important;
   margin: 0;
-  line-height: 1.5em;
+  line-height: 1.5em; */
 }
 
 html, body {
   font-size: 14px;
-  height: 100%;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
+  height: 100%;
   background: #2c3e50 !important;
 }
 

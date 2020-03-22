@@ -21,7 +21,7 @@ export default {
   position: fixed;
   left: 0;
   top: var(--head-height, 50px);
-  height: 100vh;
+  height: 100%;
   z-index: 999;
   width: 60px;
 }

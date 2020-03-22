@@ -40,8 +40,6 @@ a {
     display: flex;
     position: fixed;
     top: 0;
-    right: auto;
-    bottom: auto;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -54,15 +52,6 @@ a {
 }
 .navbar__logo {
     font-size: 24px;
-    color: var(--white);
-}
-
-.navbar__menu img {
-    width: 30px;
-}
-.navbar__menu img:hover {
-    background-color: var(--white);
-    border-radius: 50%;
 }
 
 .navbar__icons {
