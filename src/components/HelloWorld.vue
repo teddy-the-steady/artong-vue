@@ -3,6 +3,18 @@
     <div v-if="!signedIn">
       <amplify-authenticator></amplify-authenticator>
     </div>
+    <div v-if="!signedIn">
+      <amplify-authenticator></amplify-authenticator>
+    </div>
+    <div v-if="!signedIn">
+      <amplify-authenticator></amplify-authenticator>
+    </div>
+    <div v-if="!signedIn">
+      <amplify-authenticator></amplify-authenticator>
+    </div>
+    <div v-if="!signedIn">
+      <amplify-authenticator></amplify-authenticator>
+    </div>
     <div v-if="signedIn">
       <amplify-sign-out></amplify-sign-out>
     </div>

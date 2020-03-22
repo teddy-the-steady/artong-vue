@@ -12,7 +12,7 @@
     <div class="navbar__side">
       <ul class="navbar__icons">
         <li class="profile">
-          <img src="../../assets/profilethumb.png" alt="">
+          <img src="../../../assets/profilethumb.png" alt="">
         </li>
       </ul>
     </div>
@@ -40,17 +40,19 @@ a {
     display: flex;
     position: fixed;
     top: 0;
+    right: auto;
+    bottom: auto;
     width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--artong);
     height: var(--head-height);
+    z-index: 1000;
 }
 .navbar__side {
   padding: 0 12px;
 }
 .navbar__logo {
-    display: flex;
     font-size: 24px;
     color: var(--white);
 }
