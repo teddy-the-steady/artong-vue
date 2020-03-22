@@ -25,6 +25,10 @@ export default {
 
 <style>
 #app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--black);
   text-align: center;
   display: block;
   min-height: 100%;
@@ -57,12 +61,14 @@ body {
 
 .contents__body {
   position: relative;
-  background: var(--aliceblue)
+  background: var(--aliceblue);
+  padding-top: 1rem;
 }
 
 :root {
     --artong: #6610f2;
     --white: #ffffff;
+    --black: black;
     --lightslategray: gray;
     --lightgray: lightgray;
     --aliceblue: aliceblue;
