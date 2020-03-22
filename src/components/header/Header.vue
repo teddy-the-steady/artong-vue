@@ -12,7 +12,7 @@
     <div class="navbar__side">
       <ul class="navbar__icons">
         <li class="profile">
-          <img src="../../../assets/profilethumb.png" alt="">
+          <img src="../../assets/profilethumb.png" alt="">
         </li>
       </ul>
     </div>
