@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <nav class="sidebar">
         <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
         <transition name="slide">
             <div v-if="isPanelOpen"
@@ -12,7 +12,7 @@
                 </ul>
             </div>
         </transition>
-    </div>
+    </nav>
 </template>
 
 <script>
@@ -46,8 +46,8 @@ export default {
 
 .sidebar-backdrop {
     background-color: var(--sidebar-backdrop);
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     position: fixed;
     top: var(--head-height, 50px);
     left: 0;
@@ -61,7 +61,7 @@ export default {
     position: fixed;
     left: 0;
     top: var(--head-height, 50px);
-    height: 100vh;
+    height: 100%;
     z-index: 999;
     padding: 3rem 20px 2rem 20px;
     width: 200px;
