@@ -2,15 +2,15 @@
   <div id="app">
     <side-bar></side-bar>
     <side-slide-bar></side-slide-bar>
+    <header-bar></header-bar>
     <div class="contents">
-      <header-bar></header-bar>
       <router-view class="contents__body"/>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderBar from './components/contents/header/Header.vue'
+import HeaderBar from './components/header/Header.vue'
 import SideBar from './components/sidebar/SideBar.vue'
 import SideSlideBar from './components/sidebar/SideSlideBar.vue'
 export default {
@@ -25,18 +25,13 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   display: block;
   min-height: 100%;
   min-width: 320px;
   overflow-x: hidden;
   padding: 0 !important;
   margin: 0;
-  background: #2c3e50 !important;
   line-height: 1.5em;
 }
 
@@ -47,6 +42,8 @@ html, body {
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  background: #2c3e50 !important;
 }
 
 .contents {
