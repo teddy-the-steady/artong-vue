@@ -1,17 +1,5 @@
-<template>
+<template class="contents__body">
   <div>
-    <div v-if="!signedIn">
-      <amplify-authenticator></amplify-authenticator>
-    </div>
-    <div v-if="!signedIn">
-      <amplify-authenticator></amplify-authenticator>
-    </div>
-    <div v-if="!signedIn">
-      <amplify-authenticator></amplify-authenticator>
-    </div>
-    <div v-if="!signedIn">
-      <amplify-authenticator></amplify-authenticator>
-    </div>
     <div v-if="!signedIn">
       <amplify-authenticator></amplify-authenticator>
     </div>
@@ -25,7 +13,7 @@
 import { Auth } from 'aws-amplify'
 import { AmplifyEventBus } from 'aws-amplify-vue'
 export default {
-  name: 'HelloWorld',
+  name: 'Login',
   data () {
     return {}
   },
@@ -58,12 +46,20 @@ export default {
         this.$store.state.user = null
       }
     }
-  },
-  mounted () {
-    this.$store.commit('setBrowserNavTrue')
   }
 }
 </script>
 
 <style scoped>
+.contents__body {
+  height: 100vh;
+  background: var(--white);
+}
+
+.contents__body > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -230px;
+}
 </style>
