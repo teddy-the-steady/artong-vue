@@ -1,20 +1,44 @@
 <template>
-  <nav class="sidebar">
-    <div class="sidebar__items">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </nav>
+  <transition name="slide">
+    <nav class="sidebar" v-if="isBrowserPanelOpen">
+      <div class="sidebar__items">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </nav>
+  </transition>
 </template>
 
 <script>
 export default {
-  name: 'SideBar'
+  name: 'SideBar',
+  computed: {
+    isBrowserPanelOpen () {
+      return this.$store.state.isBrowserNavOpen
+    }
+  },
+  methods: {
+    closeSidebarBrowserPanel () {
+      this.$store.commit('toggleBrowserNav')
+    }
+  }
 }
 </script>
 
 <style scoped>
+.slide-enter-active,
+.slide-leave-active
+{
+    transition: transform 0.2s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(-100%);
+    transition: all 150ms ease-in 0s
+}
+
 .sidebar {
   overflow-y: auto;
   background-color: var(--lightgray);

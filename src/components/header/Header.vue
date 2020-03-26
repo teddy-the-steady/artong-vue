@@ -1,22 +1,25 @@
 <template>
-  <nav class="navbar">
-    <div class="navbar__side">
-      <div class="navbar__menu">
-        <!-- <img src="../assets/hambergermenu.png" alt=""> -->
-        <burger></burger>
+  <transition name="slide">
+    <nav class="navbar" v-if="isBrowserPanelOpen">
+      <div class="navbar__side">
+        <div class="navbar__menu">
+          <burger></burger>
+        </div>
       </div>
-    </div>
-    <div class="navbar__logo">
-      <a href="."><b><i>A</i>rtong</b></a>
-    </div>
-    <div class="navbar__side">
-      <ul class="navbar__icons">
-        <li class="profile">
-          <img src="../../assets/profilethumb.png" alt="">
-        </li>
-      </ul>
-    </div>
-  </nav>
+      <div class="navbar__logo">
+        <a href="."><b><i>A</i>rtong</b></a>
+      </div>
+      <div class="navbar__side">
+        <ul class="navbar__icons">
+          <li class="profile" @click.prevent="toggle">
+            <router-link to="/login">
+              <img src="../../assets/profilethumb.png" alt="">
+            </router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </transition>
 </template>
 
 <script>
@@ -26,11 +29,33 @@ export default {
   name: 'Header',
   components: {
     Burger
+  },
+  computed: {
+    isBrowserPanelOpen () {
+      return this.$store.state.isBrowserNavOpen
+    }
+  },
+  methods: {
+    toggle () {
+      this.$store.commit('toggleBrowserNav')
+    }
   }
 }
 </script>
 
 <style scoped>
+.slide-enter-active,
+.slide-leave-active
+{
+    transition: transform 0.2s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translateY(-100%);
+    transition: all 150ms ease-in 0s
+}
+
 a {
     text-decoration: none;
     color: var(--white);

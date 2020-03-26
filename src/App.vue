@@ -28,19 +28,16 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--aliceblue);
   color: var(--black);
   text-align: center;
-  /* display: block;
+  height: 100%;
   min-height: 100%;
-  min-width: 320px;
-  overflow-x: hidden;
-  padding: 0 !important;
-  margin: 0;
-  line-height: 1.5em; */
 }
 
 html, body {
   font-size: 14px;
+  height: 100%;
 }
 
 body {
@@ -53,15 +50,15 @@ body {
   background: var(--white);
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: 100%;
   z-index: 10;
-  padding-top: 50px;
 }
 
 .contents__body {
   position: relative;
   background: var(--aliceblue);
-  padding-top: 1rem;
+  padding-top: 60px;
+  height: 100%;
 }
 
 :root {
