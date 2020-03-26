@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Server from '@/components/Server'
+import Login from '@/components/member/Login'
 
 Vue.use(Router)
 
@@ -17,6 +18,11 @@ const router = new Router({
       name: 'Server',
       component: Server
       // meta: { requiresAuth: true }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })

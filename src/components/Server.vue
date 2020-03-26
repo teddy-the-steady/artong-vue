@@ -32,6 +32,9 @@ export default {
         .then(val => this.info = val)
         .catch(err => console.log(err))
     }
+  },
+  mounted () {
+    this.$store.commit('setBrowserNavTrue')
   }
 }
 </script>
