@@ -11,7 +11,7 @@
       </div>
       <div class="navbar__side">
         <ul class="navbar__icons">
-          <li class="profile" @click.prevent="toggle">
+          <li class="profile" @click.prevent="setBrowserNavFalse">
             <router-link to="/login">
               <img src="../../assets/profilethumb.png" alt="">
             </router-link>
@@ -36,8 +36,8 @@ export default {
     }
   },
   methods: {
-    toggle () {
-      this.$store.commit('toggleBrowserNav')
+    setBrowserNavFalse () {
+      this.$store.commit('setBrowserNavFalse')
     }
   }
 }

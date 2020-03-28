@@ -40,12 +40,14 @@ export default {
         const user = await Auth.currentAuthenticatedUser()
         this.$store.state.signedIn = true
         this.$store.state.user = user
-        console.log(user)
       } catch (err) {
         this.$store.state.signedIn = false
         this.$store.state.user = null
       }
     }
+  },
+  mounted () {
+    this.$store.commit('setBrowserNavFalse')
   }
 }
 </script>
@@ -60,6 +62,6 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -230px;
+  margin: -260px -230px;
 }
 </style>
