@@ -18,11 +18,6 @@ export default {
       return this.$store.state.isBrowserNavOpen
     }
   },
-  methods: {
-    closeSidebarBrowserPanel () {
-      this.$store.commit('toggleBrowserNav')
-    }
-  }
 }
 </script>
 
