@@ -11,6 +11,7 @@
         </slot>
     </div>
 </template>
+
 <script>
 export default {
   name: 'Burger',
@@ -26,7 +27,8 @@ export default {
   }
 }
 </script>
-<style>
+
+<style scoped>
 .hidden {
     visibility: hidden;
 }

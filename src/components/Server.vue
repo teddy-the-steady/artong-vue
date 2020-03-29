@@ -16,6 +16,8 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('setBrowserNavTrue')
+
     if (this.$store.state.user) {
       const jwt = this.$store.state.user
         .getSignInUserSession()
@@ -32,8 +34,7 @@ export default {
         .then(val => this.info = val)
         .catch(err => console.log(err))
     }
-    this.$store.commit('setBrowserNavTrue')
-  },
+  }
 }
 </script>
 

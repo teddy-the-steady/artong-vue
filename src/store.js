@@ -8,17 +8,20 @@ export default new Vuex.Store({
     user: null,
     signedIn: false,
     isNavOpen: false,
-    isBrowserNavOpen: true,
+    isBrowserNavOpen: true
   },
   mutations: {
     toggleNav (state) {
       state.isNavOpen = !state.isNavOpen
     },
+    setNavFalse (state) {
+      state.isNavOpen = false
+    },
     setBrowserNavTrue (state) {
-      state.isBrowserNavOpen = true;
+      state.isBrowserNavOpen = true
     },
     setBrowserNavFalse (state) {
-      state.isBrowserNavOpen = false;
+      state.isBrowserNavOpen = false
     }
   },
   actions: {

@@ -1,10 +1,24 @@
 <template class="contents__body">
   <div>
-    <div v-if="!signedIn">
-      <amplify-authenticator></amplify-authenticator>
+    <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
+    <div v-if="!signedIn" class="form__box">
+      <h1>Log In</h1>
+      <input v-model="username" type="text" placeholder="Enter email"><br>
+      <div class="form__password">
+        <input v-model="password" type="password" placeholder="Enter password">
+        Forgot password? <router-link to="">Reset password</router-link>
+      </div>
+      <div class="form__footer">
+        <span>
+          <button @click="signIn">Log In</button><br>
+        </span>
+        <span>
+          No account? <router-link to="/signUp">Sign Up</router-link>
+        </span>
+      </div>
     </div>
     <div v-if="signedIn">
-      <amplify-sign-out></amplify-sign-out>
+      <button @click="signOut">Sign Out</button>
     </div>
   </div>
 </template>
@@ -15,7 +29,10 @@ import { AmplifyEventBus } from 'aws-amplify-vue'
 export default {
   name: 'Login',
   data () {
-    return {}
+    return {
+      username: '',
+      password: ''
+    }
   },
   created () {
     this.findUser()
@@ -35,6 +52,22 @@ export default {
     }
   },
   methods: {
+    signIn () {
+      Auth.signIn(this.username, this.password)
+        .then(user => {
+          this.$store.state.signedIn = !!user
+          this.$store.state.user = user
+        })
+        .catch(err => console.log(err))
+    },
+    signOut () {
+      Auth.signOut()
+        .then(data => {
+          this.$store.state.signedIn = !!data
+          this.$store.state.user = null
+        })
+        .catch(err => console.log(err))
+    },
     async findUser () {
       try {
         const user = await Auth.currentAuthenticatedUser()
@@ -48,20 +81,19 @@ export default {
   },
   mounted () {
     this.$store.commit('setBrowserNavFalse')
+    this.$store.commit('setNavFalse')
   }
 }
 </script>
 
 <style scoped>
-.contents__body {
-  height: 100vh;
-  background: var(--white);
+@import '../../assets/css/member.css';
+
+.form__password {
+    margin-bottom: 25px;
 }
 
-.contents__body > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -260px -230px;
+.form__footer button {
+    width: 90px;
 }
 </style>
