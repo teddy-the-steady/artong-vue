@@ -1,0 +1,54 @@
+html, body {
+    font-size: 14px;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    background: var(--artong);
+}
+
+.contents {
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+    z-index: 10;
+}
+
+.contents__body {
+    position: relative;
+    background: var(--aliceblue);
+    padding-top: 60px;
+    height: 100%;
+}
+
+a {
+    color: var(--artong);
+    text-decoration: none;
+}
+
+button {
+    font-size: 12px;
+    touch-action: manipulation;
+    cursor: pointer;
+    color: var(--white);
+    background-color: var(--artong);
+    text-transform: uppercase;
+    padding: 14px 0;
+    letter-spacing: 1.1px;
+    border: none;
+}
+
+:root {
+    --artong: #6610f2;
+    --white: #ffffff;
+    --black: black;
+    --lightslategray: gray;
+    --lightgray: lightgray;
+    --aliceblue: aliceblue;
+    --sidebar-backdrop: rgba(0,0,0,.5);
+
+    --head-height: 50px;
+}

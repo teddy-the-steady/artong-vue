@@ -34,42 +34,4 @@ export default {
   height: 100%;
   min-height: 100%;
 }
-
-html, body {
-  font-size: 14px;
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  height: 100%;
-  background: #2c3e50 !important;
-}
-
-.contents {
-  background: var(--white);
-  position: relative;
-  overflow: hidden;
-  min-height: 100%;
-  z-index: 10;
-}
-
-.contents__body {
-  position: relative;
-  background: var(--aliceblue);
-  padding-top: 60px;
-  height: 100%;
-}
-
-:root {
-    --artong: #6610f2;
-    --white: #ffffff;
-    --black: black;
-    --lightslategray: gray;
-    --lightgray: lightgray;
-    --aliceblue: aliceblue;
-    --sidebar-backdrop: rgba(0,0,0,.5);
-
-    --head-height: 50px;
-}
 </style>

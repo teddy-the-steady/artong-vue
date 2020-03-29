@@ -11,9 +11,9 @@
       </div>
       <div class="navbar__side">
         <ul class="navbar__icons">
-          <li class="profile" @click.prevent="setBrowserNavFalse">
+          <li class="profile">
             <router-link to="/login">
-              <img src="../../assets/profilethumb.png" alt="">
+              <img src="../../assets/images/profilethumb.png" alt="">
             </router-link>
           </li>
         </ul>
@@ -36,9 +36,7 @@ export default {
     }
   },
   methods: {
-    setBrowserNavFalse () {
-      this.$store.commit('setBrowserNavFalse')
-    }
+
   }
 }
 </script>
@@ -57,7 +55,6 @@ export default {
 }
 
 a {
-    text-decoration: none;
     color: var(--white);
 }
 
@@ -94,9 +91,5 @@ a {
 .profile img {
     width: 30px;
     vertical-align: center;
-}
-
-@media screen and (max-width: 768px){
-
 }
 </style>

@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .slide-enter-active,
 .slide-leave-active
 {
@@ -73,8 +73,6 @@ ul.sidebar-panel-nav {
 }
 
 ul.sidebar-panel-nav > li > a {
-    color: var(--artong);
-    text-decoration: none;
     font-size: 1.5rem;
     display: block;
     padding-bottom: 0.5em;

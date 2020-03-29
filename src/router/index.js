@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Server from '@/components/Server'
 import Login from '@/components/member/Login'
+import SignUp from '@/components/member/SignUp'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/signUp',
+      name: 'SignUp',
+      component: SignUp
     }
   ]
 })
