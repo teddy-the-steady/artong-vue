@@ -17,7 +17,7 @@ export default {
     isBrowserPanelOpen () {
       return this.$store.state.isBrowserNavOpen
     }
-  },
+  }
 }
 </script>
 
