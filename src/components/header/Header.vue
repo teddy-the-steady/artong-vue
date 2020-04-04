@@ -85,7 +85,7 @@ a {
     background-color: var(--white);
     width: 30px;
     height: 30px;
-    border: 2px solid var(--lightslategray);
+    border: 2px solid var(--white);
     border-radius: 50%
 }
 .profile img {
