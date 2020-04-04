@@ -3,9 +3,12 @@
         <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
         <div v-if="!signedIn && !user" class="form__box">
             <h1>Sign Up</h1>
-            <input v-model="username" type="text" placeholder="Enter email"><br>
-            <input v-model="password" type="password" placeholder="Enter password"><br>
-            <input v-model="password2" type="password" placeholder="Enter password again"><br>
+            <div class="form__username">
+              <p v-text="warningSignUp"></p>
+              <input v-model="username" type="text" placeholder="Enter email">
+            </div>
+            <input v-model="password" type="password" placeholder="Enter password">
+            <input v-model="password2" type="password" placeholder="Enter password again">
             <div class="form__footer">
               <span>
                 <button @click="join">Join</button>
@@ -17,7 +20,10 @@
         </div>
         <div v-if="!signedIn && user" class="form__box">
             <h2>Confirm Sign Up</h2>
-            <input v-model="code" type="text" placeholder="Enter your code"><br>
+            <div class="form__username">
+              <p v-text="warningConfirm"></p>
+              <input v-model="code" type="text" placeholder="Enter your code">
+            </div>
             <button @click="confirm">Submit</button>
         </div>
     </div>
@@ -32,6 +38,8 @@ export default {
       username: '',
       password: '',
       password2: '',
+      warningSignUp: '',
+      warningConfirm: '',
       code: '',
       user: ''
     }
@@ -43,6 +51,10 @@ export default {
   },
   methods: {
     join () {
+      if (this.password != this.password2) {
+        this.warningSignUp = 'Passwords do not match'
+        return
+      }
       Auth.signUp({
         username: this.username,
         password: this.password,
@@ -54,7 +66,7 @@ export default {
         .then(data => {
           this.user = data.user
         })
-        .catch(err => console.log(err))
+        .catch(err => this.warningSignUp = err.message)
     },
     confirm () {
       Auth.confirmSignUp(this.username, this.code, {
@@ -63,7 +75,7 @@ export default {
         .then(data => {
           this.$router.push('/')
         })
-        .catch(err => console.log(err))
+        .catch(err => this.warningConfirm = err.message)
     }
   },
   mounted () {
@@ -78,9 +90,5 @@ export default {
 
 .form__box > button {
   width: 100%;
-}
-
-.form__footer button {
-  width: 70px;
 }
 </style>
