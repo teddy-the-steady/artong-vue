@@ -3,7 +3,10 @@
     <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
     <div v-if="!signedIn" class="form__box">
       <h1>Log In</h1>
-      <input v-model="username" type="text" placeholder="Enter email"><br>
+      <div class="form__username">
+        <p v-text="warning"></p>
+        <input v-model="username" type="text" placeholder="Enter email">
+      </div>
       <div class="form__password">
         <input v-model="password" type="password" placeholder="Enter password">
         Forgot password? <router-link to="">Reset password</router-link>
@@ -25,26 +28,17 @@
 
 <script>
 import { Auth } from 'aws-amplify'
-import { AmplifyEventBus } from 'aws-amplify-vue'
 export default {
   name: 'Login',
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      warning: ''
     }
   },
   created () {
     this.findUser()
-
-    AmplifyEventBus.$on('authState', info => {
-      if (info === 'signedIn') {
-        this.findUser()
-      } else {
-        this.$store.state.signedIn = false
-        this.$store.state.user = null
-      }
-    })
   },
   computed: {
     signedIn () {
@@ -58,7 +52,7 @@ export default {
           this.$store.state.signedIn = !!user
           this.$store.state.user = user
         })
-        .catch(err => console.log(err))
+        .catch(err => this.warning = err.message)
     },
     signOut () {
       Auth.signOut()
@@ -91,9 +85,5 @@ export default {
 
 .form__password {
     margin-bottom: 25px;
-}
-
-.form__footer button {
-    width: 90px;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <side-bar></side-bar>
     <side-slide-bar></side-slide-bar>
     <header-bar></header-bar>
     <div class="contents">
@@ -11,13 +10,11 @@
 
 <script>
 import HeaderBar from './components/header/Header.vue'
-import SideBar from './components/sidebar/SideBar.vue'
 import SideSlideBar from './components/sidebar/SideSlideBar.vue'
 export default {
   name: 'App',
   components: {
     HeaderBar,
-    SideBar,
     SideSlideBar
   }
 }
