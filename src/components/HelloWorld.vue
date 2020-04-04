@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="container">
       <div v-for="i in 50" :key="i" class="content"></div>
     </div>
   </div>
@@ -40,14 +40,22 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .content {
     background-color: var(--white);
     padding: 35px 40px;
     text-align: left;
     display: inline-block;
-    min-width: 100px;
-    min-height: 200px;
-    margin: 1rem;
+    border-radius: 10px;
+    width: 20%;
+    min-width: 50px;
+    min-height: 150px;
+    margin: 0.5rem;
     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 }
 </style>

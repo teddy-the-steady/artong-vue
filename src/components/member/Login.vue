@@ -51,6 +51,7 @@ export default {
         .then(user => {
           this.$store.state.signedIn = !!user
           this.$store.state.user = user
+          this.$router.push('/')
         })
         .catch(err => this.warning = err.message)
     },
@@ -59,6 +60,7 @@ export default {
         .then(data => {
           this.$store.state.signedIn = !!data
           this.$store.state.user = null
+          this.$router.push('/')
         })
         .catch(err => console.log(err))
     },

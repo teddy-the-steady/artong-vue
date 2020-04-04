@@ -1,11 +1,15 @@
 .contents__body {
     height: 100vh;
-    background: var(--white);
+    background: var(--artong);
 }
 
 .form__logo {
     font-size: 60px;
     margin-bottom: 15px;
+}
+
+.form__logo a {
+    color: var(--white);
 }
 
 .form__box {
@@ -14,7 +18,7 @@
     text-align: left;
     display: inline-block;
     border-radius: 6px;
-    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+    box-shadow: 8px 8px 15px 0 rgba(0,0,0,1);
     box-sizing: border-box;
     min-width: 320px;
 }
@@ -78,8 +82,8 @@ input {
     .form__box {
         width: 100%;
         box-sizing: border-box;
+        border-radius: 6px;
+        box-shadow: 8px 8px 15px 0 rgba(0,0,0,1);
         padding: 35px 25px;
-        box-shadow: none;
-        border-radius: 0;
     }
 }
