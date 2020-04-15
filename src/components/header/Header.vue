@@ -55,7 +55,7 @@ export default {
 }
 
 a {
-    color: var(--white);
+    color: var(--black);
 }
 
 .navbar {
@@ -65,9 +65,10 @@ a {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--artong);
+    background-color: var(--white);
     height: var(--head-height);
     z-index: 1000;
+    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 }
 .navbar__side {
   padding: 0 12px;
@@ -85,7 +86,7 @@ a {
     background-color: var(--white);
     width: 30px;
     height: 30px;
-    border: 2px solid var(--white);
+    border: 2px solid var(--artong);
     border-radius: 50%
 }
 .profile img {

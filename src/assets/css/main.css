@@ -19,7 +19,7 @@ body {
 
 .contents__body {
     position: relative;
-    background: var(--black);
+    background: var(--aliceblue);
     padding-top: 60px;
     height: 100%;
 }

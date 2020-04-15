@@ -18,7 +18,7 @@
     text-align: left;
     display: inline-block;
     border-radius: 6px;
-    box-shadow: 8px 8px 15px 0 rgba(0,0,0,1);
+    box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
     box-sizing: border-box;
     min-width: 320px;
 }
@@ -83,7 +83,7 @@ input {
         width: 100%;
         box-sizing: border-box;
         border-radius: 6px;
-        box-shadow: 8px 8px 15px 0 rgba(0,0,0,1);
+        box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
         padding: 35px 25px;
     }
 }

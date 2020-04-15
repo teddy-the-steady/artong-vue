@@ -8,7 +8,7 @@
         <input v-model="username" type="text" placeholder="Enter email">
       </div>
       <div class="form__password">
-        <input v-model="password" type="password" placeholder="Enter password">
+        <input v-model="password" v-on:keyup.enter="signIn" type="password" placeholder="Enter password">
         Forgot password? <router-link to="">Reset password</router-link>
       </div>
       <div class="form__footer">
