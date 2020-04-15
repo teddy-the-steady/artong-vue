@@ -41,7 +41,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .slide-enter-active,
 .slide-leave-active
 {
@@ -54,10 +56,6 @@ export default {
     transition: all 150ms ease-in 0s
 }
 
-a {
-    color: var(--black);
-}
-
 .navbar {
     display: flex;
     position: fixed;
@@ -65,32 +63,39 @@ a {
     width: 100%;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--white);
-    height: var(--head-height);
+    background-color: $artong-white;
+    height: $head-height;
     z-index: 1000;
     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
-}
-.navbar__side {
-  padding: 0 12px;
-}
-.navbar__logo {
-    font-size: 24px;
-}
 
-.navbar__icons {
-    list-style: none;
-    padding-left: 0;
-}
+    .navbar__logo {
+        font-size: 24px;
+        
+        a {
+            color: $artong-black;
+        }
+    }
 
-.profile {
-    background-color: var(--white);
-    width: 30px;
-    height: 30px;
-    border: 2px solid var(--artong);
-    border-radius: 50%
-}
-.profile img {
-    width: 30px;
-    vertical-align: center;
+    .navbar__side {
+        padding: 0 12px;
+
+        .navbar__icons {
+            list-style: none;
+            padding-left: 0;
+
+            .profile {
+                background-color: $artong-white;
+                width: 30px;
+                height: 30px;
+                border: 2px solid $artong-main;
+                border-radius: 50%;
+
+                img {
+                    width: 30px;
+                    vertical-align: center;
+                }
+            }
+        }
+    }
 }
 </style>

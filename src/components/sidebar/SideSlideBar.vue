@@ -31,7 +31,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .slide-enter-active,
 .slide-leave-active
 {
@@ -45,11 +47,11 @@ export default {
 }
 
 .sidebar-backdrop {
-    background-color: var(--sidebar-backdrop);
+    background-color: $sidebar-backdrop;
     width: 100%;
     height: 100%;
     position: fixed;
-    top: var(--head-height, 50px);
+    top: $head-height;
     left: 0;
     cursor: pointer;
     z-index: 998;
@@ -57,24 +59,28 @@ export default {
 
 .sidebar-panel {
     overflow-y: auto;
-    background-color: var(--white);
+    background-color: $artong-white;
     position: fixed;
     left: 0;
-    top: var(--head-height, 50px);
+    top: $head-height;
     height: 100%;
     z-index: 999;
     padding: 3rem 20px 2rem 20px;
     width: 200px;
+
+    ul.sidebar-panel-nav {
+        list-style-type: none;
+        text-align: left;
+
+        & > li > a {
+            font-size: 1.5rem;
+            display: block;
+            padding-bottom: 0.5em;
+        }
+    }
 }
 
-ul.sidebar-panel-nav {
-    list-style-type: none;
-    text-align: left;
-}
 
-ul.sidebar-panel-nav > li > a {
-    font-size: 1.5rem;
-    display: block;
-    padding-bottom: 0.5em;
-}
+
+
 </style>
