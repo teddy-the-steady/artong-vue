@@ -21,7 +21,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .slide-enter-active,
 .slide-leave-active
 {
@@ -43,11 +45,11 @@ export default {
   height: 100%;
   z-index: 999;
   width: 60px;
-}
 
-.sidebar__items {
-  display: flex;
-  flex-flow: column;
+  .sidebar__items {
+    display: flex;
+    flex-flow: column;
+  }
 }
 
 @media screen and (max-width: 768px){
