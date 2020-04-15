@@ -40,6 +40,6 @@ export default {
 
 <style scoped>
 h1, h2 {
-  color: white;
+  color: var(--black);
 }
 </style>

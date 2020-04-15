@@ -8,7 +8,7 @@
               <input v-model="username" type="text" placeholder="Enter email">
             </div>
             <input v-model="password" type="password" placeholder="Enter password">
-            <input v-model="password2" type="password" placeholder="Enter password again">
+            <input v-model="password2" v-on:keyup.enter="join" type="password" placeholder="Enter password again">
             <div class="form__footer">
               <span>
                 <button @click="join">Join</button>
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     join () {
-      if (this.password != this.password2) {
+      if (this.password !== this.password2) {
         this.warningSignUp = 'Passwords do not match'
         return
       }
