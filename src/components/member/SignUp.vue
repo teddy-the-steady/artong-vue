@@ -85,8 +85,8 @@ export default {
 }
 </script>
 
-<style scoped>
-@import '../../assets/css/member.css';
+<style lang="scss" scoped>
+@import '../../assets/scss/member';
 
 .form__box > button {
   width: 100%;
