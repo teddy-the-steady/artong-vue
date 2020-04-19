@@ -70,7 +70,7 @@ export default {
 
     .navbar__logo {
         font-size: 24px;
-        
+
         a {
             color: $artong-black;
         }

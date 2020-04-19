@@ -31,7 +31,7 @@ export default {
       }
 
       axios.get('https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/test/product/1', config)
-        .then(val => this.info = val)
+        .then(val => { this.info = val })
         .catch(err => console.log(err))
     }
   }
