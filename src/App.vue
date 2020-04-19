@@ -64,10 +64,10 @@ html {
                 position: relative;
                 overflow: hidden;
                 min-height: 100%;
-                z-index: 10;   
+                z-index: 10;
             }
-        }   
-        
+        }
+
         /* #app 안에 넣으면 다른 template들 덮어쓰는 문제 */
         .contents__body {
             position: relative;
