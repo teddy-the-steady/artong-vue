@@ -1,7 +1,7 @@
 <template class="contents__body">
   <div>
     <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
-    <div v-if="!signedIn" class="form__box">
+    <div v-if="!signedIn && !user" class="form__box">
       <h1>Log In</h1>
       <div class="form__username">
         <p v-text="warning"></p>
@@ -20,6 +20,7 @@
         </span>
       </div>
     </div>
+    <confirm v-if="!signedIn && user" :username="user" :password="password" @empty-user="emptyUser" class="form__box"/>
     <div v-if="signedIn">
       <button @click="signOut">Sign Out</button>
     </div>
@@ -28,13 +29,18 @@
 
 <script>
 import { Auth } from 'aws-amplify'
+import Confirm from './Confirm'
 export default {
   name: 'Login',
+  components: {
+    Confirm
+  },
   data () {
     return {
       username: '',
       password: '',
-      warning: ''
+      warning: '',
+      user: ''
     }
   },
   created () {
@@ -46,6 +52,10 @@ export default {
     }
   },
   methods: {
+    emptyUser (errMessage) {
+      this.user = ''
+      this.warning = errMessage
+    },
     signIn () {
       Auth.signIn(this.username, this.password)
         .then(user => {
@@ -53,7 +63,12 @@ export default {
           this.$store.state.user = user
           this.$router.push('/')
         })
-        .catch(err => this.warning = err.message)
+        .catch(err => {
+          this.warning = err.message
+          if (err.code === 'UserNotConfirmedException') {
+            this.user = this.username
+          }
+        })
     },
     signOut () {
       Auth.signOut()

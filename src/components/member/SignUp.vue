@@ -18,29 +18,24 @@
               </span>
             </div>
         </div>
-        <div v-if="!signedIn && user" class="form__box">
-            <h2>Confirm Sign Up</h2>
-            <div class="form__username">
-              <p v-text="warningConfirm"></p>
-              <input v-model="code" type="text" placeholder="Enter your code">
-            </div>
-            <button @click="confirm">Submit</button>
-        </div>
+        <confirm v-if="!signedIn && user" :username="user.username" :password="password" class="form__box"/>
     </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
+import Confirm from './Confirm'
 export default {
   name: 'SignUp',
+  components: {
+    Confirm
+  },
   data () {
     return {
       username: '',
       password: '',
       password2: '',
       warningSignUp: '',
-      warningConfirm: '',
-      code: '',
       user: ''
     }
   },
@@ -66,16 +61,7 @@ export default {
         .then(data => {
           this.user = data.user
         })
-        .catch(err => this.warningSignUp = err.message)
-    },
-    confirm () {
-      Auth.confirmSignUp(this.username, this.code, {
-        forceAliasCreation: true
-      })
-        .then(data => {
-          this.$router.push('/')
-        })
-        .catch(err => this.warningConfirm = err.message)
+        .catch(err => { this.warningSignUp = err.message })
     }
   },
   mounted () {

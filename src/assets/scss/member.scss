@@ -23,6 +23,10 @@
         box-sizing: border-box;
         min-width: 320px;
 
+        h3 > span {
+            text-decoration: underline;
+        }
+
         input {
             display: block;
             width: 100%;
