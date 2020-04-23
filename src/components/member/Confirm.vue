@@ -4,7 +4,7 @@
       <h3>For user: <span>{{username}}</span></h3>
       <div class="form__username">
         <p v-text="warningConfirm"></p>
-        <input v-model="code" type="text" placeholder="Enter your code">
+        <input v-model="code" v-on:keyup.enter="confirm" type="text" placeholder="Enter your code">
       </div>
       <button @click="confirm">Submit</button>
     </div>
