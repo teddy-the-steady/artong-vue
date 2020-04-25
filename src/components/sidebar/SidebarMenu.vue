@@ -23,6 +23,7 @@
       </div>
     </div>
     <slot name="footer" />
+    <div class="art--footer">sidebar footer</div>
   </div>
 </template>
 
