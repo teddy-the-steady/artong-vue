@@ -1,21 +1,46 @@
 <template>
-  <transition name="slide">
-    <nav class="sidebar" v-if="isBrowserPanelOpen">
-      <div class="sidebar__items">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
+    <nav class="sidebar">
+        <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
+        <transition name="slide">
+            <div v-if="isPanelOpen" class="sidebar-panel">
+                <sidebar-menu
+                    :menu="menu"
+                    :theme="selectedTheme"
+                    :show-one-child="true"
+                    @item-click="onItemClick"
+                />
+            </div>
+        </transition>
     </nav>
-  </transition>
 </template>
 
 <script>
+import menuItems from './menuItems'
+import SidebarMenu from './SidebarMenu'
 export default {
-  name: 'SideBar',
+  name: 'Sidebar',
+  components: {
+      SidebarMenu
+  },
+  data () {
+    return {
+      menu: menuItems,
+      selectedTheme: 'white-theme'
+    }
+  },
   computed: {
-    isBrowserPanelOpen () {
-      return this.$store.state.isBrowserNavOpen
+    isPanelOpen () {
+      return this.$store.state.isNavOpen
+    }
+  },
+  methods: {
+    closeSidebarPanel () {
+      this.$store.commit('toggleNav')
+    },
+    onItemClick (event, item) {
+      console.log('onItemClick')
+      console.log(event)
+      console.log(item)
     }
   }
 }
@@ -36,25 +61,25 @@ export default {
     transition: all 150ms ease-in 0s
 }
 
-.sidebar {
-  overflow-y: auto;
-  background-color: var(--lightgray);
-  position: fixed;
-  left: 0;
-  top: var(--head-height, 50px);
-  height: 100%;
-  z-index: 999;
-  width: 60px;
-
-  .sidebar__items {
-    display: flex;
-    flex-flow: column;
-  }
+.sidebar-backdrop {
+    background-color: $sidebar-backdrop;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: $head-height;
+    left: 0;
+    cursor: pointer;
+    z-index: 998;
 }
 
-@media screen and (max-width: 768px){
-  .sidebar {
-    display: none;
-  }
+.sidebar-panel {
+    overflow-y: auto;
+    background-color: $artong-white;
+    position: fixed;
+    left: 0;
+    top: $head-height;
+    height: 100%;
+    z-index: 999;
+    width: 300px;
 }
 </style>

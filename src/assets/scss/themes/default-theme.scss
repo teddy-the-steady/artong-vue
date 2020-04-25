@@ -1,0 +1,52 @@
+.v-sidebar-menu {
+  background-color: $base-bg;
+  .art--link {
+    color: $item-color;
+    &_exact-active,
+    &_active {
+      color: $item-active-color;
+    }
+    &_level-1 {
+      &.art--link_exact-active,
+      &.art--link_active {
+        box-shadow: 3px 0px 0px 0px $primary-color inset;
+        & .art--icon {
+          color: $icon-active-color;
+          background-color: $icon-active-bg;
+        }
+      }
+      & .art--icon {
+        background-color: $icon-bg;
+      }
+    }
+    &_hover,
+    &:hover {
+      color: $item-hover-color;
+      background-color: $item-hover-bg;
+    }
+  }
+
+  .art--icon {
+    color: $icon-color;
+  }
+
+  .art--dropdown {
+    & .art--list {
+      background-color: $dropdown-bg;
+    }
+    & .art--link {
+      color: $dropdown-color;
+    }
+    & .art--icon {
+      color: $dropdown-color;
+    }
+  }
+
+  .art--header {
+    color: rgba($item-color, 0.7);
+  }
+  .art--badge_default {
+    color: $item-color;
+    background-color: darken( $base-bg, 5% );
+  }
+}
