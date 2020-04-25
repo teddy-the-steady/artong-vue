@@ -103,6 +103,13 @@
     text-transform: uppercase;
   }
 
+  .art--footer {
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: 120px;
+  }
+
   .art--badge {
     position: absolute;
     right: 10px;
