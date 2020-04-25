@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Server from '@/components/Server'
+import Trending from '@/components/Trending'
+import Following from '@/components/Following'
+import Workplace from '@/components/Workplace'
 import Login from '@/components/member/Login'
 import SignUp from '@/components/member/SignUp'
 
@@ -20,6 +23,21 @@ const router = new Router({
       name: 'Server',
       component: Server
       // meta: { requiresAuth: true }
+    },
+    {
+      path: '/trending',
+      name: 'Trending',
+      component: Trending
+    },
+    {
+      path: '/following',
+      name: 'Following',
+      component: Following
+    },
+    {
+      path: '/workplace',
+      name: 'Workplace',
+      component: Workplace
     },
     {
       path: '/login',
