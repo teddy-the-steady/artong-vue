@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <sidebar></sidebar>
+    <side-bar></side-bar>
     <header-bar></header-bar>
     <div class="contents">
       <router-view class="contents__body"/>
@@ -10,12 +10,12 @@
 
 <script>
 import HeaderBar from './components/header/Header'
-import Sidebar from './components/sidebar/Sidebar'
+import SideBar from './components/sidebar/SideBar'
 export default {
   name: 'App',
   components: {
     HeaderBar,
-    Sidebar
+    SideBar
   }
 }
 </script>
