@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <side-bar></side-bar>
-    <header-bar></header-bar>
-    <div class="contents">
-      <router-view class="contents__body"/>
+    <div>
+      <header-bar></header-bar>
+      <div class="contents">
+        <router-view class="contents__body"/>
+      </div>
     </div>
   </div>
 </template>
