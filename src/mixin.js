@@ -96,7 +96,6 @@ export const itemMixin = {
       event.stopPropagation()
       if (this.item.disabled) return
       this.itemHover = true
-      if (this.hover) return
     },
     mouseLeaveEvent (event) {
       event.stopPropagation()

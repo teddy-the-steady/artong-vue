@@ -113,7 +113,7 @@ export default {
     showOneChild: {
       type: Boolean,
       default: false
-    },
+    }
   }
 }
 </script>

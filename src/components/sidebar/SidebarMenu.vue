@@ -65,7 +65,7 @@ export default {
     relative: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data () {
     return {
@@ -75,10 +75,7 @@ export default {
   computed: {
     sidebarWidth () {
       return this.width
-    },
-  },
-  mounted () {
-    this.initParentOffsets()
+    }
   },
   methods: {
     onActiveShow (item) {
@@ -86,11 +83,6 @@ export default {
     },
     onItemClick (event, item) {
       this.$emit('item-click', event, item)
-    },
-    initParentOffsets () {
-      let sidebarTop = this.$el.getBoundingClientRect().top
-      let sidebarLeft = this.$el.getBoundingClientRect().left
-      let sidebarRight = this.$el.getBoundingClientRect().right
     },
     onItemUpdate (newItem, item) {
       if (item === this.activeShow) {
