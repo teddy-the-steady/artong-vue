@@ -20,7 +20,7 @@ import SidebarMenu from './SidebarMenu'
 export default {
   name: 'Sidebar',
   components: {
-      SidebarMenu
+    SidebarMenu
   },
   data () {
     return {
