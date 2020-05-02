@@ -1,11 +1,9 @@
 <template>
-  <div id="app" :class="[isPanelOpen ? 'stop-scrolling' : '']">
-    <side-bar></side-bar>
-    <div>
-      <header-bar></header-bar>
-      <div class="contents">
-        <router-view class="contents__body"/>
-      </div>
+  <div id="app">
+    <header-bar id="header-bar"></header-bar>
+    <side-bar id="side-bar"></side-bar>
+    <div class="contents">
+      <router-view class="contents__body"/>
     </div>
   </div>
 </template>
@@ -20,8 +18,13 @@ export default {
     SideBar
   },
   computed: {
-    isPanelOpen () {
+    isBurgerActive () {
       return this.$store.state.isNavOpen
+    }
+  },
+  watch: {
+    isBurgerActive () {
+      document.body.classList.toggle('prevent-scroll')
     }
   }
 }
@@ -33,21 +36,20 @@ export default {
 html {
     font-size: 14px;
     height: 100%;
-    overflow-y: scroll;
+
+    .prevent-scroll {
+      overflow: hidden;
+    }
 
     body {
         margin: 0;
         height: 100%;
         background: $artong-main;
+        overflow-y: scroll;
 
         a {
             color: $artong-main;
             text-decoration: none;
-        }
-
-        .stop-scrolling {
-          height: 100%;
-          overflow: hidden;
         }
 
         button {
@@ -72,13 +74,14 @@ html {
             height: 100%;
             min-height: 100%;
 
-            .contents {
-                background: $artong-white;
-                position: relative;
-                overflow: hidden;
-                min-height: 100%;
-                z-index: 10;
+            #header-bar {
+              z-index: 2020;
             }
+
+            #side-bar {
+              z-index: 2030;
+            }
+
         }
 
         /* #app 안에 넣으면 다른 template들 덮어쓰는 문제 */

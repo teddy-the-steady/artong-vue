@@ -1,6 +1,8 @@
 <template>
     <nav class="sidebar">
-        <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
+        <transition name="backdrop">
+            <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
+        </transition>
         <transition name="slide">
             <div v-if="isPanelOpen" class="sidebar-panel">
                 <sidebar-menu
@@ -50,8 +52,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .slide-enter-active,
-.slide-leave-active
-{
+.slide-leave-active{
     transition: transform 0.2s ease;
 }
 
@@ -59,6 +60,16 @@ export default {
 .slide-leave-to {
     transform: translateX(-100%);
     transition: all 150ms ease-in 0s
+}
+
+.backdrop-enter-active,
+.backdrop-leave-active{
+    transition: opacity .3s;
+}
+
+.backdrop-enter,
+.backdrop-leave-to {
+    opacity: 0;
 }
 
 .sidebar-backdrop {

@@ -65,7 +65,6 @@ export default {
     align-items: center;
     background-color: $artong-white;
     height: $head-height;
-    z-index: 1000;
     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 
     .navbar__logo {

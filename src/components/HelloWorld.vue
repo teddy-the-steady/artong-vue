@@ -39,7 +39,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../assets/scss/variables';
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -47,7 +49,7 @@ export default {
 }
 
 .content {
-    background-color: var(--white);
+    background-color: $artong-white;
     padding: 35px 40px;
     text-align: left;
     display: inline-block;
