@@ -38,8 +38,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../assets/scss/variables';
+
 h1, h2 {
-  color: var(--black);
+  color: $artong-black;
 }
 </style>
