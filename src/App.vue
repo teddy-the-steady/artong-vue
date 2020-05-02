@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="[isPanelOpen ? 'stop-scrolling' : '']">
     <side-bar></side-bar>
     <div>
       <header-bar></header-bar>
@@ -18,6 +18,11 @@ export default {
   components: {
     HeaderBar,
     SideBar
+  },
+  computed: {
+    isPanelOpen () {
+      return this.$store.state.isNavOpen
+    }
   }
 }
 </script>
@@ -28,6 +33,7 @@ export default {
 html {
     font-size: 14px;
     height: 100%;
+    overflow-y: scroll;
 
     body {
         margin: 0;
@@ -37,6 +43,11 @@ html {
         a {
             color: $artong-main;
             text-decoration: none;
+        }
+
+        .stop-scrolling {
+          height: 100%;
+          overflow: hidden;
         }
 
         button {
