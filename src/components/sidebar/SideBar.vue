@@ -77,7 +77,7 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
-    top: $head-height;
+    top: 0;
     left: 0;
     cursor: pointer;
     z-index: 998;

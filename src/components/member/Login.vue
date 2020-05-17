@@ -29,12 +29,15 @@
 
 <script>
 import { Auth } from 'aws-amplify'
+import { memberMixin } from '../../mixin'
 import Confirm from './Confirm'
+
 export default {
   name: 'Login',
   components: {
     Confirm
   },
+  mixins: [memberMixin],
   data () {
     return {
       username: '',
@@ -45,11 +48,6 @@ export default {
   },
   created () {
     this.findUser()
-  },
-  computed: {
-    signedIn () {
-      return this.$store.state.signedIn
-    }
   },
   methods: {
     emptyUser (errMessage) {
@@ -89,10 +87,6 @@ export default {
         this.$store.state.user = null
       }
     }
-  },
-  mounted () {
-    this.$store.commit('setBrowserNavFalse')
-    this.$store.commit('setNavFalse')
   }
 }
 </script>
