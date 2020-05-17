@@ -163,3 +163,15 @@ export const animationMixin = {
     }
   }
 }
+
+export const memberMixin = {
+  computed: {
+    signedIn () {
+      return this.$store.state.signedIn
+    }
+  },
+  mounted () {
+    this.$store.commit('setBrowserNavFalse')
+    this.$store.commit('setNavFalse')
+  }
+}
