@@ -25,11 +25,13 @@
 <script>
 import { Auth } from 'aws-amplify'
 import Confirm from './Confirm'
+import { memberMixin } from '../../mixin'
 export default {
   name: 'SignUp',
   components: {
     Confirm
   },
+  mixins: [memberMixin],
   data () {
     return {
       username: '',
@@ -37,11 +39,6 @@ export default {
       password2: '',
       warningSignUp: '',
       user: ''
-    }
-  },
-  computed: {
-    signedIn () {
-      return this.$store.state.signedIn
     }
   },
   methods: {
@@ -63,10 +60,6 @@ export default {
         })
         .catch(err => { this.warningSignUp = err.message })
     }
-  },
-  mounted () {
-    this.$store.commit('setBrowserNavFalse')
-    this.$store.commit('setNavFalse')
   }
 }
 </script>

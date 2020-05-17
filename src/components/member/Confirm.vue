@@ -12,8 +12,10 @@
 
 <script>
 import { Auth } from 'aws-amplify'
+import { memberMixin } from '../../mixin'
 export default {
   name: 'Confirm',
+  mixins: [memberMixin],
   props: {
     username: {
       type: String,
@@ -28,11 +30,6 @@ export default {
     return {
       warningConfirm: '',
       code: ''
-    }
-  },
-  computed: {
-    signedIn () {
-      return this.$store.state.signedIn
     }
   },
   methods: {
@@ -56,10 +53,6 @@ export default {
           this.$emit('empty-user', err.message)
         })
     }
-  },
-  mounted () {
-    this.$store.commit('setBrowserNavFalse')
-    this.$store.commit('setNavFalse')
   }
 }
 </script>

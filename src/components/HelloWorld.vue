@@ -16,11 +16,6 @@ export default {
   created () {
     this.findUser()
   },
-  computed: {
-    signedIn () {
-      return this.$store.state.signedIn
-    }
-  },
   methods: {
     async findUser () {
       try {
