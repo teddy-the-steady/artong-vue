@@ -7,6 +7,7 @@ import Following from '@/components/Following'
 import Workplace from '@/components/Workplace'
 import Login from '@/components/member/Login'
 import SignUp from '@/components/member/SignUp'
+import User from '@/components/member/User'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User
     },
     {
       path: '/signUp',

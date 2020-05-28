@@ -12,7 +12,10 @@
       <div class="navbar__side">
         <ul class="navbar__icons">
           <li class="profile">
-            <router-link to="/login">
+            <router-link v-if="!signedIn" to="/login">
+              <img src="../../assets/images/profilethumb.png" alt="">
+            </router-link>
+            <router-link v-else to="/user">
               <img src="../../assets/images/profilethumb.png" alt="">
             </router-link>
           </li>
@@ -33,6 +36,9 @@ export default {
   computed: {
     isBrowserPanelOpen () {
       return this.$store.state.isBrowserNavOpen
+    },
+    signedIn () {
+      return this.$store.state.signedIn
     }
   },
   methods: {
