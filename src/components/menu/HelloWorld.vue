@@ -1,15 +1,17 @@
 <template>
   <div>
-    <div class="container">
-      <div v-for="i in 50" :key="i" class="content"></div>
-    </div>
+    <contents-list></contents-list>
   </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
+import ContentsList from '../content/ContentsList'
 export default {
   name: 'HelloWorld',
+  components: {
+    ContentsList
+  },
   data () {
     return {}
   },
@@ -35,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 
 .container {
   display: flex;
