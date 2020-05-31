@@ -3,21 +3,24 @@
     <h1>This is Server Information</h1>
     <h2 v-if="info.data">{{ info.data }}</h2>
     <h2 v-else>로그인 하세요</h2>
+    <contents-list></contents-list>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import ContentsList from '../content/ContentsList'
 export default {
   name: 'Server',
+  components: {
+    ContentsList
+  },
   data () {
     return {
       info: ''
     }
   },
   mounted () {
-    this.$store.commit('setBrowserNavTrue')
-
     if (this.$store.state.user) {
       const jwt = this.$store.state.user
         .getSignInUserSession()
@@ -39,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 
 h1, h2 {
   color: $artong-black;
