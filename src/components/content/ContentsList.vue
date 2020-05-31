@@ -51,10 +51,9 @@ export default {
 
 .content {
   overflow: hidden;
-  display: flex;
   border-radius: 10px;
   width: 23%;
-  height: 100%;
+  // height: 100%;
   min-width: 145px;
   margin: 0.5rem;
   box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
