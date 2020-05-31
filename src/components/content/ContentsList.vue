@@ -1,15 +1,21 @@
 <template>
   <div>
     <div class="container">
-      <div v-for="i in 50" :key="i" class="content"></div>
+      <div v-for="i in 50" :key="i" class="content">
+        <content-box></content-box>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
+import ContentBox from './ContentBox'
 export default {
   name: 'ContentsList',
+  components: {
+    ContentBox
+  },
   data () {
     return {}
   },
@@ -44,15 +50,13 @@ export default {
 }
 
 .content {
-    background-color: $artong-white;
-    padding: 35px 40px;
-    text-align: left;
-    display: inline-block;
-    border-radius: 10px;
-    width: 20%;
-    min-width: 50px;
-    min-height: 150px;
-    margin: 0.5rem;
-    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+  overflow: hidden;
+  display: flex;
+  border-radius: 10px;
+  width: 23%;
+  height: 100%;
+  min-width: 145px;
+  margin: 0.5rem;
+  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 }
 </style>

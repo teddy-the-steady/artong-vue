@@ -1,19 +1,36 @@
 <template>
-  <div>
-    <h1>Trending Contents</h1>
+  <div class="box">
+    <img :src="require(`../../assets/images/gogh${imageNum}.jpg`)" alt=""/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ContentBox'
+  name: 'ContentBox',
+  data () {
+    return {
+      imageNum: this.getRandomIntInclusive(1, 4)
+    }
+  },
+  methods: {
+    getRandomIntInclusive (min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      const result = Math.floor(Math.random() * (max - min + 1)) + min;
+      return result
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 
-h1 {
-  color: $artong-black;
+.box {
+ display: flex;
+}
+
+img {
+  width: 100%
 }
 </style>
