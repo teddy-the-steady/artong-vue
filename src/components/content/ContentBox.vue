@@ -14,9 +14,9 @@ export default {
   },
   methods: {
     getRandomIntInclusive (min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      const result = Math.floor(Math.random() * (max - min + 1)) + min;
+      min = Math.ceil(min)
+      max = Math.floor(max)
+      const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     }
   }
@@ -28,9 +28,11 @@ export default {
 
 .box {
  display: flex;
+ align-items: flex-start;
 }
 
 img {
   max-width: 100%;
+  height: auto;
 }
 </style>
