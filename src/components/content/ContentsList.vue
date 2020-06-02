@@ -44,18 +44,14 @@ export default {
 @import '../../assets/scss/variables';
 
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  column-width: 200px;
+  padding: 0 1rem;
 }
 
 .content {
+  display: inline-block;
   overflow: hidden;
   border-radius: 10px;
-  width: 23%;
-  height: 100%;
-  min-width: 145px;
   margin: 0.5rem;
-  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 }
 </style>
