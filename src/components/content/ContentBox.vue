@@ -1,23 +1,28 @@
 <template>
-  <div class="box">
-    <img :src="require(`../../assets/images/gogh${imageNum}.jpg`)" alt=""/>
+  <div class="box" @click="imageSelect()" ref="box">
+    <!-- <span>{{image.index}}</span> -->
+    <img :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt=""/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ContentBox',
+  props: {
+    image: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
-      imageNum: this.getRandomIntInclusive(1, 4)
+      box: ''
     }
   },
   methods: {
-    getRandomIntInclusive (min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      const result = Math.floor(Math.random() * (max - min + 1)) + min
-      return result
+    imageSelect () {
+      console.log(this.$refs.box.getBoundingClientRect().top + ',' + this.$refs.box.getBoundingClientRect().left)
+      this.$emit('image-selected', this.image.index)
     }
   }
 }
@@ -34,5 +39,6 @@ export default {
 img {
   width: 100%;
   height: auto;
+  cursor: pointer;
 }
 </style>
