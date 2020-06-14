@@ -1,7 +1,7 @@
 <template>
-  <div class="box" @click="imageSelect()" ref="box">
+  <div class="box" @click="imageSelect()">
     <!-- <span>{{image.index}}</span> -->
-    <img :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt=""/>
+    <img :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt="" ref="box"/>
   </div>
 </template>
 
@@ -21,8 +21,7 @@ export default {
   },
   methods: {
     imageSelect () {
-      console.log(this.$refs.box.getBoundingClientRect().top + ',' + this.$refs.box.getBoundingClientRect().left)
-      this.$emit('image-selected', this.image.index)
+      this.$emit('image-selected', this.image.index, this.$refs.box.getBoundingClientRect().top)
     }
   }
 }
