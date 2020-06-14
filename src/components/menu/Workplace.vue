@@ -5,8 +5,10 @@
 </template>
 
 <script>
+import { menuMixin } from '../../mixin'
 export default {
-  name: 'Workplace'
+  name: 'Workplace',
+  mixins: [menuMixin]
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div>
     <div v-for="(value, i) in containers" :key="i">
       <div class="container">
-        <div v-for="(val, j) in value" :key="j" class="content">
+        <div v-for="(val, j) in value" :key="j" class="content" :class="i===1?'big':''" ref="content">
           <content-box :image="val" @image-selected="imageSelected"></content-box>
         </div>
       </div>
@@ -57,26 +57,33 @@ export default {
       }
       this.containers.push(this.images)
     },
-    imageSelected (val) {
+    imageSelected (index, top) {
       // TODO] 포지션, 순서 계산해서 위치에 맞게 split해주기..
       this.containers = [this.images]
-      this.splitImages(val)
-      console.log(val)
+      this.upperImages = []
+      this.selectedImage = []
+      this.lowerImages = []
+      this.splitImages(index, top)
+      console.log(index + ':' + top)
       console.log(this.containers)
     },
-    splitImages (val) {
-      this.upperImages = this.images.slice(0, val)
+    splitImages (index, top) {
+      for (let i = 0; i < this.$refs.content.length; i++) {
+        console.log(i + ': ' + this.$refs.content[i].getBoundingClientRect().top + ',' + this.$refs.content[i].getBoundingClientRect().left)
+        if (i === index) {
+          this.selectedImage.push(this.images[i])
+        } else {
+          if (top <= this.$refs.content[i].getBoundingClientRect().top) {
+            this.lowerImages.push(this.images[i])
+          } else if (top > this.$refs.content[i].getBoundingClientRect().top) {
+            this.upperImages.push(this.images[i])
+          }
+        }
+      }
       this.containers[0] = this.upperImages
-
-      this.selectedImage = this.images.slice(val, val + 1)
-      this.containers.push(this.selectedImage)
-
-      this.lowerImages = this.images.slice(val + 1)
-      this.containers.push(this.lowerImages)
+      this.containers[1] = this.selectedImage
+      this.containers[2] = this.lowerImages
     }
-  },
-  mounted () {
-    this.$store.commit('setBrowserNavTrue')
   }
 }
 </script>
@@ -95,6 +102,11 @@ export default {
   border-radius: 10px;
   margin: 0.5rem;
   max-height: 300px
+}
+
+.big {
+  width: 200%;
+  max-height: 100%;
 }
 
 @media only screen and (max-width: 599px) {

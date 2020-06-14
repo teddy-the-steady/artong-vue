@@ -7,8 +7,10 @@
 
 <script>
 import ContentsList from '../content/ContentsList'
+import { menuMixin } from '../../mixin'
 export default {
   name: 'Following',
+  mixins: [menuMixin],
   components: {
     ContentsList
   }

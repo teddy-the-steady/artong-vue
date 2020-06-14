@@ -175,3 +175,9 @@ export const memberMixin = {
     this.$store.commit('setNavFalse')
   }
 }
+
+export const menuMixin = {
+  mounted () {
+    this.$store.commit('setBrowserNavTrue')
+  }
+}

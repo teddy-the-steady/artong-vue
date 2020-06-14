@@ -7,8 +7,10 @@
 <script>
 import { Auth } from 'aws-amplify'
 import ContentsList from '../content/ContentsList'
+import { menuMixin } from '../../mixin'
 export default {
   name: 'HelloWorld',
+  mixins: [menuMixin],
   components: {
     ContentsList
   },

@@ -10,8 +10,10 @@
 <script>
 import axios from 'axios'
 import ContentsList from '../content/ContentsList'
+import { menuMixin } from '../../mixin'
 export default {
   name: 'Server',
+  mixins: [menuMixin],
   components: {
     ContentsList
   },
