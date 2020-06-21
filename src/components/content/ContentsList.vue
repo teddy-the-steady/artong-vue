@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-for="(value, i) in containers" :key="i">
-      <div class="container">
+    <div v-for="(value, i) in containers" :key="i" ref="container">
+      <div id="hi" class="container">
         <div v-for="(val, j) in value" :key="j" class="content" :class="i===1?'big':''" ref="content">
           <content-box :image="val" @image-selected="imageSelected"></content-box>
         </div>
@@ -58,18 +58,14 @@ export default {
       this.containers.push(this.images)
     },
     imageSelected (index, top) {
-      // TODO] 포지션, 순서 계산해서 위치에 맞게 split해주기..
       this.containers = [this.images]
       this.upperImages = []
       this.selectedImage = []
       this.lowerImages = []
       this.splitImages(index, top)
-      console.log(index + ':' + top)
-      console.log(this.containers)
     },
     splitImages (index, top) {
       for (let i = 0; i < this.$refs.content.length; i++) {
-        console.log(i + ': ' + this.$refs.content[i].getBoundingClientRect().top + ',' + this.$refs.content[i].getBoundingClientRect().left)
         if (i === index) {
           this.selectedImage.push(this.images[i])
         } else {
@@ -84,6 +80,9 @@ export default {
       this.containers[1] = this.selectedImage
       this.containers[2] = this.lowerImages
     }
+  },
+  updated () {
+    this.$refs.container[1].scrollIntoView({behavior: 'smooth', block: 'center'})
   }
 }
 </script>
