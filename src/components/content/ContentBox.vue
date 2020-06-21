@@ -1,6 +1,5 @@
 <template>
   <div class="box" @click="imageSelect()">
-    <!-- <span>{{image.index}}</span> -->
     <img :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt="" ref="box"/>
   </div>
 </template>
