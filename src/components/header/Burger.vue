@@ -1,9 +1,10 @@
 <template>
-    <div id="burger"
-         :class="{ 'active' : isBurgerActive }"
+    <div
+        :class="{ 'active' : isBurgerActive }"
+        id="burger"
          @click.prevent="toggle">
         <slot>
-            <button type="button" class="burger-button" title="Menu">
+            <button class="burger-button" title="Menu">
                 <span class="burger-bar burger-bar__1"></span>
                 <span class="burger-bar burger-bar__2"></span>
                 <span class="burger-bar burger-bar__3"></span>

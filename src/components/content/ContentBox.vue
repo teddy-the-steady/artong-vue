@@ -13,14 +13,9 @@ export default {
       default: null
     }
   },
-  data () {
-    return {
-      box: ''
-    }
-  },
   methods: {
     imageSelect () {
-      this.$emit('image-selected', this.image.index, this.$refs.box.getBoundingClientRect().top)
+      this.$emit('image-selected', this.image.index)
     }
   }
 }
@@ -32,11 +27,11 @@ export default {
 .box {
  display: flex;
  align-items: flex-start;
-}
 
-img {
-  width: 100%;
-  height: auto;
-  cursor: pointer;
+ img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
 }
 </style>
