@@ -1,18 +1,18 @@
 <template>
   <div>
-    <contents-list></contents-list>
+    <content-list></content-list>
   </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
-import ContentsList from '../content/ContentsList'
+import ContentList from '../content/ContentList'
 import { menuMixin } from '../../mixin'
 export default {
   name: 'HelloWorld',
   mixins: [menuMixin],
   components: {
-    ContentsList
+    ContentList
   },
   data () {
     return {}

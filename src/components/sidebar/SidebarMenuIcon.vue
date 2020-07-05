@@ -1,8 +1,8 @@
 <template>
   <component
-    :is="icon.element ? icon.element : 'i'"
     class="art--icon"
     :class="typeof icon === 'string' || (icon instanceof String) ? icon : icon.class"
+    :is="icon.element ? icon.element : 'i'"
     v-bind="icon.attributes"
   >
     {{ icon.text }}

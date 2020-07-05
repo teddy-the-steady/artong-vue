@@ -1,18 +1,18 @@
 <template>
   <div>
     <h1>Following Contents</h1>
-    <contents-list></contents-list>
+    <content-list></content-list>
   </div>
 </template>
 
 <script>
-import ContentsList from '../content/ContentsList'
+import ContentList from '../content/ContentList'
 import { menuMixin } from '../../mixin'
 export default {
   name: 'Following',
   mixins: [menuMixin],
   components: {
-    ContentsList
+    ContentList
   }
 }
 </script>

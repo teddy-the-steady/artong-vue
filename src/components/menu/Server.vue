@@ -3,19 +3,19 @@
     <h1>This is Server Information</h1>
     <h2 v-if="info.data">{{ info.data }}</h2>
     <h2 v-else>로그인 하세요</h2>
-    <contents-list></contents-list>
+    <content-list></content-list>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import ContentsList from '../content/ContentsList'
+import ContentList from '../content/ContentList'
 import { menuMixin } from '../../mixin'
 export default {
   name: 'Server',
   mixins: [menuMixin],
   components: {
-    ContentsList
+    ContentList
   },
   data () {
     return {
