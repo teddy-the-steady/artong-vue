@@ -23,17 +23,15 @@ export default {
 @import '../../assets/scss/variables';
 
 .detail {
-  display: inline-flex;
-  overflow: hidden;
-  border-radius: 10px;
+  display: inline-block;
   margin: 0.5rem;
   width: 200%;
-  max-height: 100%;
 
   img {
     width: 100%;
     height: auto;
     cursor: pointer;
+    border-radius: 10px
   }
 }
 </style>
