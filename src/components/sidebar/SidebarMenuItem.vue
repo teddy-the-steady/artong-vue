@@ -5,24 +5,24 @@
     v-bind="item.props"
   />
   <div
-    v-else-if="item.header"
     class="art--header"
     :class="item.class"
+    v-else-if="item.header"
     v-bind="item.attributes"
   >
     {{ item.title }}
   </div>
   <div
-    v-else
     class="art--item"
     :class="[{'art--item_open' : show}]"
+    v-else
     @mouseout="mouseLeaveEvent"
   >
     <sidebar-menu-link
+      :class="itemLinkClass"
       :tag="item.disabled || !itemLinkHref ? 'span' : (isRouterLink ? 'router-link' : 'a')"
       :href="itemLinkHref"
       :disabled="item.disabled"
-      :class="itemLinkClass"
       v-bind="item.attributes"
       @click.native="clickEvent"
     >
@@ -38,9 +38,9 @@
         />
         <span class="art--title">{{ item.title }}</span>
         <div
-          v-if="item.child"
           class="art--arrow"
           :class="[{'art--arrow_open' : show}, {'art--arrow_slot' : $slots['dropdown-icon']}]"
+          v-if="item.child"
         >
           <slot name="dropdown-icon" />
         </div>
@@ -55,8 +55,8 @@
           @beforeLeave="expandBeforeLeave"
         >
           <div
-            v-if="show"
             class="art--dropdown"
+            v-if="show"
           >
             <div class="art--list">
               <sidebar-menu-item

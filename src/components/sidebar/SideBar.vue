@@ -4,7 +4,7 @@
             <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
         </transition>
         <transition name="slide">
-            <div v-if="isPanelOpen" class="sidebar-panel">
+            <div class="sidebar-panel" v-if="isPanelOpen">
                 <sidebar-menu
                     :menu="menu"
                     :theme="selectedTheme"
