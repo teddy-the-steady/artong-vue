@@ -69,8 +69,8 @@ export default {
     lowerImageSelected (index, upperThanIndex) { // TODO] 위에 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 배열 뒤에 push..
       let lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
       let upperContainer = JSON.parse(JSON.stringify(this.upperContents))
-      upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage) // TODO] 위에 붙일때 순서 고려하기
       this.setSelectedImage(this.lowerContents[index])
+      upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage) // TODO] 위에 붙일때 순서 고려하기
       this.splitUpperContentsToContainers(index, upperThanIndex, this.lowerContents, upperContainer, lowerContainer)
     },
     upperImageSelected (index, upperThanIndex) {
