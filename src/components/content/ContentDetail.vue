@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="detail">
-      <img v-if="image" :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt=""/>
+    <div v-if="image" class="detail">
+      <img :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt=""/>
     </div>
   </div>
 </template>
