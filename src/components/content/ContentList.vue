@@ -1,20 +1,23 @@
 <template>
   <div>
     <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected"></upper-container>
-    <content-detail class="container" v-if="selectedImage" :image="selectedImage" ref="detail"></content-detail>
+    <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
     <lower-container class="container" :lowerImages="lowerContents" @image-selected="lowerImageSelected"></lower-container>
+    <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
+import InfiniteLoading from 'vue-infinite-loading'
 import ContentDetail from './ContentDetail'
 import UpperContainer from './UpperContainer'
 import LowerContainer from './LowerContainer'
+
 export default {
   name: 'ContentList',
   components: {
-    ContentDetail, UpperContainer, LowerContainer
+    ContentDetail, UpperContainer, LowerContainer, InfiniteLoading
   },
   data () {
     return {
@@ -26,7 +29,7 @@ export default {
   },
   created () {
     this.findUser()
-    this.pushContentList()
+    this.pushContentList(20, true)
   },
   methods: {
     async findUser () {
@@ -45,14 +48,14 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    pushContentList () {
-      for (let i = 0; i < 50; i++) {
+    pushContentList (count, isUpper) {
+      for (let i = 0; i < count; i++) {
         this.contents.push({
           index: i,
           url: this.getRandomIntInclusive(1, 4)
         })
       }
-      this.upperContents = this.contents
+      isUpper ? this.upperContents = this.contents : this.lowerContents = this.contents
     },
     lowerImageSelected (index, upperThanIndex) { // TODO] 위에 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 배열 뒤에 push..
       let lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
@@ -76,7 +79,7 @@ export default {
         containerToPush = this.pushImageToContainer(containerToPush, contents[upperThanIndex[i]])
         if (selectedIndex >= upperThanIndex[upperThanIndex.length - (i + 1)]) {
           containerToSplice.splice(selectedIndex, 1)
-          selectedIndex = -1 // if문 한번만 타기위함
+          selectedIndex = -1
         }
         containerToSplice.splice(upperThanIndex[upperThanIndex.length - (i + 1)], 1)
       }
@@ -98,10 +101,17 @@ export default {
     pushImageToContainer (container, image) {
       container.push(image)
       return container
+    },
+    infiniteHandler ($state) {
+      this.pushContentList(10, false)
+      setTimeout(function () { $state.loaded() }, 2000)
     }
   },
-  updated () {
-    this.$refs.detail.$el.scrollIntoView({behavior: 'smooth', block: 'center'})
+  mounted () {
+    this.$watch(
+      () => { return this.$refs.detail.image },
+      (val) => { this.$refs.detail.$el.scrollIntoView({behavior: 'smooth', block: 'center'}) }
+    )
   }
 }
 </script>
