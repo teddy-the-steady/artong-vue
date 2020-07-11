@@ -2,7 +2,6 @@
   <div>
     <div class="detail">
       <img v-if="image" :src="require(`../../assets/images/gogh${image.url}.jpg`)" alt=""/>
-      <img v-else :src="require(`../../assets/images/empty.jpg`)" alt=""/>
     </div>
   </div>
 </template>
