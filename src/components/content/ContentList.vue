@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div> <!-- TODO] vue-infinite-loading이 맨위 for문 말고 가장 마지막 for문 찾아서 push 하도록 수정 -->
     <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected"></upper-container>
     <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
-    <lower-container class="container" :lowerImages="lowerContents" @image-selected="lowerImageSelected"></lower-container>
+    <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected"></lower-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -50,18 +50,28 @@ export default {
     },
     pushContentList (count, isUpper) {
       for (let i = 0; i < count; i++) {
+        let randomInt = this.getRandomIntInclusive(1, 4)
         this.contents.push({
           index: i,
-          url: this.getRandomIntInclusive(1, 4)
+          url: randomInt
         })
+        if (!isUpper) {
+          this.lowerContents.push({
+            index: i,
+            url: randomInt
+          })
+        }
       }
-      isUpper ? this.upperContents = this.contents : this.lowerContents = this.contents
+      if (isUpper) {
+        this.upperContents = JSON.parse(JSON.stringify(this.contents))
+      }
     },
     lowerImageSelected (index, upperThanIndex) { // TODO] 위에 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 배열 뒤에 push..
       let lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
-      this.upperContents = this.pushImageToContainer(this.upperContents, this.selectedImage) // TODO] 위에 붙일때 순서 고려하기
+      let upperContainer = JSON.parse(JSON.stringify(this.upperContents))
+      upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage) // TODO] 위에 붙일때 순서 고려하기
       this.setSelectedImage(this.lowerContents[index])
-      this.splitUpperContentsToContainers(index, upperThanIndex, this.lowerContents, this.upperContents, lowerContainer)
+      this.splitUpperContentsToContainers(index, upperThanIndex, this.lowerContents, upperContainer, lowerContainer)
     },
     upperImageSelected (index, upperThanIndex) {
       let upperContainer = []
@@ -86,12 +96,8 @@ export default {
       if (upperThanIndex.length === 0) {
         containerToSplice.splice(selectedIndex, 1)
       }
-      for (let i in containerToPush) {
-        containerToPush[i].index = i
-      }
-      for (let i in containerToSplice) {
-        containerToSplice[i].index = i
-      }
+      this.resetImageIndex(containerToPush)
+      this.resetImageIndex(containerToSplice)
       this.upperContents = containerToPush
       this.lowerContents = containerToSplice
     },
@@ -102,8 +108,15 @@ export default {
       container.push(image)
       return container
     },
+    resetImageIndex (container) {
+      for (let i in container) {
+        container[i].index = i
+      }
+      return container
+    },
     infiniteHandler ($state) {
       this.pushContentList(10, false)
+      this.resetImageIndex(this.lowerContents)
       setTimeout(function () { $state.loaded() }, 2000)
     }
   },
