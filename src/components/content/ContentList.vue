@@ -29,7 +29,7 @@ export default {
   },
   created () {
     this.findUser()
-    this.pushContentList(30, true)
+    this.pushContentList(20, true)
   },
   methods: {
     async findUser () {
@@ -69,8 +69,8 @@ export default {
     lowerImageSelected (index, upperThanIndex) {
       const lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
       let upperContainer = JSON.parse(JSON.stringify(this.upperContents))
-      this.setSelectedImage(this.lowerContents[index])
       upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage)
+      this.setSelectedImage(this.lowerContents[index])
       this.splitUpperContentsToContainers(index, upperThanIndex, this.lowerContents, upperContainer, lowerContainer)
     },
     upperImageSelected (index, upperThanIndex) {
@@ -96,8 +96,8 @@ export default {
       if (upperThanIndex.length === 0) {
         containerToSplice.splice(selectedIndex, 1)
       }
-      this.resetImageIndex(containerToPush)
-      this.resetImageIndex(containerToSplice)
+      containerToPush = this.resetImageIndex(containerToPush)
+      containerToSplice = this.resetImageIndex(containerToSplice)
       this.upperContents = containerToPush
       this.lowerContents = containerToSplice
     },
