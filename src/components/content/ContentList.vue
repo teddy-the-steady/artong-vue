@@ -1,5 +1,5 @@
 <template>
-  <div> <!-- TODO] vue-infinite-loading이 맨위 for문 말고 가장 마지막 for문 찾아서 push 하도록 수정 -->
+  <div> <!-- TODO] 컨테이너에 컨텐츠 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 간단히 배열 뒤에 push중 -->
     <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected"></upper-container>
     <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
     <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected"></lower-container>
@@ -29,7 +29,7 @@ export default {
   },
   created () {
     this.findUser()
-    this.pushContentList(20, true)
+    this.pushContentList(30, true)
   },
   methods: {
     async findUser () {
@@ -66,16 +66,16 @@ export default {
         this.upperContents = JSON.parse(JSON.stringify(this.contents))
       }
     },
-    lowerImageSelected (index, upperThanIndex) { // TODO] 위에 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 배열 뒤에 push..
-      let lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
+    lowerImageSelected (index, upperThanIndex) {
+      const lowerContainer = JSON.parse(JSON.stringify(this.lowerContents))
       let upperContainer = JSON.parse(JSON.stringify(this.upperContents))
       this.setSelectedImage(this.lowerContents[index])
-      upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage) // TODO] 위에 붙일때 순서 고려하기
+      upperContainer = this.pushImageToContainer(upperContainer, this.selectedImage)
       this.splitUpperContentsToContainers(index, upperThanIndex, this.lowerContents, upperContainer, lowerContainer)
     },
     upperImageSelected (index, upperThanIndex) {
-      let upperContainer = []
-      let lowerContainer = JSON.parse(JSON.stringify(this.contents))
+      const upperContainer = []
+      const lowerContainer = JSON.parse(JSON.stringify(this.contents))
       if (this.selectedImage !== null) {
         this.setSelectedImage(this.upperContents[index])
         this.splitUpperContentsToContainers(index, upperThanIndex, this.upperContents, upperContainer, lowerContainer)
@@ -115,8 +115,13 @@ export default {
       return container
     },
     infiniteHandler ($state) {
-      this.pushContentList(10, false)
-      this.resetImageIndex(this.lowerContents)
+      if (this.lowerContents.length > 0) {
+        this.pushContentList(10, false)
+        this.resetImageIndex(this.lowerContents)
+      } else {
+        this.pushContentList(10, true)
+        this.resetImageIndex(this.upperContents)
+      }
       setTimeout(function () { $state.loaded() }, 2000)
     }
   },
