@@ -1,8 +1,8 @@
 <template>
   <div>
-    <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected" @upper-bottom-images="getUpperBottomImages"></upper-container>
+    <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected" @bottom-images="getUpperBottomImages"></upper-container>
     <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
-    <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected" @lower-bottom-images="getLowerBottomImages"></lower-container>
+    <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected" @bottom-images="getLowerBottomImages"></lower-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -121,8 +121,7 @@ export default {
     },
     attachImageToContainerTail (container, images, bottoms) {
       for (let i = 0; i < images.length; i++) {
-        console.log(i % bottoms.length)
-        if (bottoms[i % bottoms.length] === -2) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
+        if (bottoms.length === 0 || bottoms[i % bottoms.length] === -2) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
           this.pushImageToContainer(container, images[i])
         } else {
           container.splice(bottoms[i % bottoms.length] + 1, 0, images[i])

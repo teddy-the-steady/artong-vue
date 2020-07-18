@@ -45,7 +45,7 @@ export default {
         this.bottoms.push(this.tops[i] - 1)
       }
       this.bottoms.push(-2)
-      this.$emit('upper-bottom-images', this.bottoms)
+      this.$emit('bottom-images', this.bottoms)
     },
     getTops () {
       this.tops = []
