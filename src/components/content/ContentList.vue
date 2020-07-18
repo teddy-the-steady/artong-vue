@@ -1,8 +1,8 @@
 <template>
-  <div> <!-- TODO] 컨테이너에 컨텐츠 붙여야할 순서 유지 되어야 함(높이랑 배열순서 계산 필요). 지금은 간단히 배열 뒤에 push중 -->
-    <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected"></upper-container>
+  <div>
+    <upper-container class="container" :upperImages="upperContents" @image-selected="upperImageSelected" @upper-bottom-images="getUpperBottomImages"></upper-container>
     <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
-    <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected"></lower-container>
+    <lower-container class="container" v-if="lowerContents" :lowerImages="lowerContents" @image-selected="lowerImageSelected" @lower-bottom-images="getLowerBottomImages"></lower-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -24,12 +24,16 @@ export default {
       contents: [],
       upperContents: [],
       lowerContents: [],
-      selectedImage: null
+      selectedImage: null,
+      upperBottoms: [],
+      lowerBottoms: [],
+      FIRST_LOAD_NUM: 20,
+      SCROLL_LOAD_NUM: 10
     }
   },
   created () {
     this.findUser()
-    this.pushContentList(20, true)
+    this.pushContentList(this.FIRST_LOAD_NUM, true)
   },
   methods: {
     async findUser () {
@@ -49,18 +53,17 @@ export default {
       return result
     },
     pushContentList (count, isUpper) {
+      const imageArrayToPush = []
       for (let i = 0; i < count; i++) {
-        let randomInt = this.getRandomIntInclusive(1, 4)
-        this.contents.push({
+        const randomInt = this.getRandomIntInclusive(1, 10)
+        imageArrayToPush.push({
           index: i,
           url: randomInt
         })
-        if (!isUpper) {
-          this.lowerContents.push({
-            index: i,
-            url: randomInt
-          })
-        }
+      }
+      this.pushImageToContainer(this.contents, imageArrayToPush)
+      if (!isUpper) {
+        this.pushImageToContainer(this.lowerContents, imageArrayToPush)
       }
       if (isUpper) {
         this.upperContents = JSON.parse(JSON.stringify(this.contents))
@@ -104,9 +107,27 @@ export default {
     setSelectedImage (image) {
       this.selectedImage = image
     },
-    pushImageToContainer (container, image) {
-      container.push(image)
+    pushImageToContainer (container, images) {
+      if (images instanceof Array) {
+        if (container !== this.lowerContents) {
+          this.attachImageToContainerTail(container, images, this.upperBottoms)
+        } else {
+          this.attachImageToContainerTail(container, images, this.lowerBottoms)
+        }
+      } else {
+        container.push(images)
+      }
       return container
+    },
+    attachImageToContainerTail (container, images, bottoms) {
+      for (let i = 0; i < images.length; i++) {
+        console.log(i % bottoms.length)
+        if (bottoms[i % bottoms.length] === -2) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
+          this.pushImageToContainer(container, images[i])
+        } else {
+          container.splice(bottoms[i % bottoms.length] + 1, 0, images[i])
+        }
+      }
     },
     resetImageIndex (container) {
       for (let i in container) {
@@ -114,12 +135,18 @@ export default {
       }
       return container
     },
+    getUpperBottomImages (bottoms) {
+      this.upperBottoms = bottoms // TODO] upperContainer mounted시 80ms timeout이상 주면 정상작동.. 왜지???
+    },
+    getLowerBottomImages (bottoms) {
+      this.lowerBottoms = bottoms
+    },
     infiniteHandler ($state) {
       if (this.lowerContents.length > 0) {
-        this.pushContentList(10, false)
+        this.pushContentList(this.SCROLL_LOAD_NUM, false)
         this.resetImageIndex(this.lowerContents)
       } else {
-        this.pushContentList(10, true)
+        this.pushContentList(this.SCROLL_LOAD_NUM, true)
         this.resetImageIndex(this.upperContents)
       }
       setTimeout(function () { $state.loaded() }, 2000)
