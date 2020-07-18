@@ -21,20 +21,47 @@ export default {
   },
   data () {
     return {
-      upperThanSelected: []
+      upperThanSelected: [],
+      bottoms: [],
+      tops: []
     }
   },
   methods: {
     imageSelected (index) {
       this.upperThanSelected = []
+      const selectedTop = this.$refs.content[index].getBoundingClientRect().top
       for (let i in this.lowerImages) {
-        this.lowerImages[i]['top'] = this.$refs.content[i].getBoundingClientRect().top
-        if (this.$refs.content[index].getBoundingClientRect().top > this.lowerImages[i]['top']) {
+        let contentTop = this.$refs.content[i].getBoundingClientRect().top
+        if (selectedTop > contentTop) {
           this.upperThanSelected.push(i)
         }
       }
       this.$emit('image-selected', index, this.upperThanSelected)
+    },
+    getBottoms () {
+      this.bottoms = []
+      this.getTops()
+      for (let i = 1; i < this.tops.length; i++) {
+        this.bottoms.push(this.tops[i] - 1)
+      }
+      this.bottoms.push(-2)
+      this.$emit('lower-bottom-images', this.bottoms)
+    },
+    getTops () {
+      this.tops = []
+      if (this.lowerImages.length > 0) {
+        const firstTop = this.$refs.content[0].getBoundingClientRect().top
+        for (let i in this.lowerImages) {
+          let contentTop = this.$refs.content[i].getBoundingClientRect().top
+          if (firstTop === contentTop) {
+            this.tops.push(i)
+          }
+        }
+      }
     }
+  },
+  updated () {
+    this.getBottoms()
   }
 }
 </script>
