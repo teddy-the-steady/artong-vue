@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content" v-for="(val, i) in upperImages" :key="i" ref="content">
+    <div class="content" v-for="(val, i) in lowerImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="imageSelected"></content-box>
     </div>
   </div>
@@ -9,12 +9,12 @@
 <script>
 import ContentBox from './ContentBox'
 export default {
-  name: 'UpperContainer',
+  name: 'BottomContainer',
   components: {
     ContentBox
   },
   props: {
-    upperImages: {
+    lowerImages: {
       type: Array,
       default: null
     }
@@ -30,7 +30,7 @@ export default {
     imageSelected (index) {
       this.upperThanSelected = []
       const selectedTop = this.$refs.content[index].getBoundingClientRect().top
-      for (let i in this.upperImages) {
+      for (let i in this.lowerImages) {
         let contentTop = this.$refs.content[i].getBoundingClientRect().top
         if (selectedTop > contentTop) {
           this.upperThanSelected.push(i)
@@ -49,9 +49,9 @@ export default {
     },
     getTops () {
       this.tops = []
-      if (this.upperImages.length > 0) {
+      if (this.lowerImages.length > 0) {
         const firstTop = this.$refs.content[0].getBoundingClientRect().top
-        for (let i in this.upperImages) {
+        for (let i in this.lowerImages) {
           let contentTop = this.$refs.content[i].getBoundingClientRect().top
           if (firstTop === contentTop) {
             this.tops.push(i)
@@ -59,9 +59,6 @@ export default {
         }
       }
     }
-  },
-  mounted () {
-    setTimeout(() => { this.getBottoms() }, 300)
   },
   updated () {
     this.getBottoms()
