@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content" v-for="(val, i) in lowerImages" :key="i" ref="content">
+    <div class="content" v-for="(val, i) in upperImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="imageSelected"></content-box>
     </div>
   </div>
@@ -9,12 +9,12 @@
 <script>
 import ContentBox from './ContentBox'
 export default {
-  name: 'LowerContainer',
+  name: 'TopContainer',
   components: {
     ContentBox
   },
   props: {
-    lowerImages: {
+    upperImages: {
       type: Array,
       default: null
     }
@@ -22,21 +22,25 @@ export default {
   data () {
     return {
       upperThanSelected: [],
+      lowerThanSelected: [],
       bottoms: [],
       tops: []
     }
   },
   methods: {
     imageSelected (index) {
+      this.lowerThanSelected = []
       this.upperThanSelected = []
       const selectedTop = this.$refs.content[index].getBoundingClientRect().top
-      for (let i in this.lowerImages) {
+      for (let i in this.upperImages) {
         let contentTop = this.$refs.content[i].getBoundingClientRect().top
-        if (selectedTop > contentTop) {
+        if (selectedTop < contentTop) {
+          this.lowerThanSelected.push(i)
+        } else if (selectedTop > contentTop) {
           this.upperThanSelected.push(i)
         }
       }
-      this.$emit('image-selected', index, this.upperThanSelected)
+      this.$emit('image-selected', index, this.lowerThanSelected, this.upperThanSelected)
     },
     getBottoms () {
       this.bottoms = []
@@ -49,9 +53,9 @@ export default {
     },
     getTops () {
       this.tops = []
-      if (this.lowerImages.length > 0) {
+      if (this.upperImages.length > 0) {
         const firstTop = this.$refs.content[0].getBoundingClientRect().top
-        for (let i in this.lowerImages) {
+        for (let i in this.upperImages) {
           let contentTop = this.$refs.content[i].getBoundingClientRect().top
           if (firstTop === contentTop) {
             this.tops.push(i)
@@ -59,6 +63,9 @@ export default {
         }
       }
     }
+  },
+  mounted () {
+    setTimeout(() => { this.getBottoms() }, 300)
   },
   updated () {
     this.getBottoms()
