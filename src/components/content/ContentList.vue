@@ -61,9 +61,9 @@ export default {
           url: randomInt
         })
       }
-      this.pushImageToContainer(imageArrayToPush, this.contents)
+      this.pushImageToContainer(imageArrayToPush, this.contents, 'top')
       if (!isUpper) {
-        this.pushImageToContainer(imageArrayToPush, this.bottomContents)
+        this.pushImageToContainer(imageArrayToPush, this.bottomContents, 'bottom')
       }
       if (isUpper) {
         this.topContents = JSON.parse(JSON.stringify(this.contents))
@@ -72,30 +72,27 @@ export default {
     lowerImageSelected (selectedIndex, upperThanSelected) {
       const bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       let topContainer = JSON.parse(JSON.stringify(this.topContents))
-      topContainer = this.pushImageToContainer(this.selectedImage, topContainer)
+      topContainer = this.pushImageToContainer(this.selectedImage, topContainer, 'top')
       this.setSelectedImage(this.bottomContents[selectedIndex])
-      this.splitUpperContentsToContainers(this.bottomContents, selectedIndex, upperThanSelected, topContainer, bottomContainer)
+      this.splitUpperContentsToContainers(this.bottomContents, selectedIndex, null, upperThanSelected, topContainer, bottomContainer)
     },
     upperImageSelected (selectedIndex, lowerThanSelected, upperThanSelected) { // TODO] 이미지 하나씩 컨테이너 끝에 푸시 말고 배열로 컨테이너 위에 붙여야함
       let topContainer = JSON.parse(JSON.stringify(this.topContents))
       let bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       if (this.selectedImage) {
+        bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer, 'bottom')
+        this.setSelectedImage(this.topContents[selectedIndex])
         if (upperThanSelected.length === 0) {
-          topContainer = JSON.parse(JSON.stringify(this.contents))
-          bottomContainer = []
-          this.setSelectedImage(this.topContents[selectedIndex])
-          this.splitUpperContentsToContainers(this.topContents, selectedIndex, upperThanSelected, bottomContainer, topContainer)
+          this.splitUpperContentsToContainers(this.topContents, selectedIndex, lowerThanSelected, upperThanSelected, bottomContainer, topContainer)
         } else {
-          bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer)
-          this.setSelectedImage(this.topContents[selectedIndex])
           this.splitLowerContentsToContainers(this.topContents, selectedIndex, lowerThanSelected, bottomContainer, topContainer)
         }
       } else {
         this.setSelectedImage(this.topContents[selectedIndex])
-        this.splitUpperContentsToContainers(this.topContents, selectedIndex, upperThanSelected, bottomContainer, topContainer)
+        this.splitUpperContentsToContainers(this.topContents, selectedIndex, null, upperThanSelected, bottomContainer, topContainer)
       }
     },
-    splitUpperContentsToContainers (contents, selectedIndex, upperThanSelected, containerToPush, containerToSplice) {
+    splitUpperContentsToContainers (contents, selectedIndex, lowerThanSelected, upperThanSelected, containerToPush, containerToSplice) {
       for (let i = 0; i < upperThanSelected.length; i++) {
         containerToPush = this.pushImageToContainer(contents[upperThanSelected[i]], containerToPush)
         if (parseInt(selectedIndex) > parseInt(upperThanSelected[upperThanSelected.length - (i + 1)])) {
@@ -105,7 +102,19 @@ export default {
         containerToSplice.splice(upperThanSelected[upperThanSelected.length - (i + 1)], 1)
       }
       if (upperThanSelected.length === 0) {
-        containerToSplice.splice(selectedIndex, 1)
+        if (lowerThanSelected === null) {
+          containerToSplice.splice(selectedIndex, 1)
+        } else {
+          containerToSplice.splice(selectedIndex, 1)
+          contents.splice(selectedIndex, 1)
+          containerToPush = this.pushImageToContainer(contents, containerToPush, 'bottom')
+
+          containerToPush = this.resetImageIndex(containerToPush)
+          containerToSplice = this.resetImageIndex(containerToSplice)
+          this.topContents = []
+          this.bottomContents = containerToPush
+          return
+        }
       }
       containerToPush = this.resetImageIndex(containerToPush)
       containerToSplice = this.resetImageIndex(containerToSplice)
@@ -133,12 +142,15 @@ export default {
     setSelectedImage (image) {
       this.selectedImage = image
     },
-    pushImageToContainer (images, container) {
-      if (images instanceof Array) {
-        if (container !== this.bottomContents) {
-          this.attachImageToContainerTail(container, images, this.upperBottoms)
-        } else {
-          this.attachImageToContainerTail(container, images, this.lowerBottoms)
+    pushImageToContainer (images, container, topOrBottom) {
+      if (images.length > 0) {
+        switch (topOrBottom) {
+          case 'top':
+            this.attachImageToContainerTail(container, images, this.upperBottoms)
+            break
+          default:
+            this.attachImageToContainerTail(container, images, this.lowerBottoms)
+            break
         }
       } else {
         container.push(images)
