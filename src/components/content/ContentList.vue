@@ -1,8 +1,8 @@
 <template>
   <div>
-    <top-container class="container" :upperImages="topContents" @image-selected="upperImageSelected" @bottom-images="getUpperBottomImages"></top-container>
+    <top-container class="container" :topImages="topContents" @image-selected="topImageSelected" @low-end-images="getTopEndImages"></top-container>
     <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
-    <bottom-container class="container" v-if="bottomContents" :lowerImages="bottomContents" @image-selected="lowerImageSelected" @bottom-images="getLowerBottomImages"></bottom-container>
+    <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents" @image-selected="bottomImageSelected" @both-end-images="getBottomEndImages"></bottom-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -25,8 +25,9 @@ export default {
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      upperBottoms: [],
-      lowerBottoms: [],
+      topLowest: [],
+      bottomLowest: [],
+      bottomHighest: [],
       FIRST_LOAD_NUM: 20,
       SCROLL_LOAD_NUM: 10
     }
@@ -61,59 +62,77 @@ export default {
           url: randomInt
         })
       }
-      this.pushImageToContainer(imageArrayToPush, this.contents, 'top')
+      this.pushImageToContainer(imageArrayToPush, this.contents, 'topLowest')
       if (!isUpper) {
-        this.pushImageToContainer(imageArrayToPush, this.bottomContents, 'bottom')
+        this.pushImageToContainer(imageArrayToPush, this.bottomContents, 'bottomLowest')
       }
       if (isUpper) {
         this.topContents = JSON.parse(JSON.stringify(this.contents))
       }
     },
-    lowerImageSelected (selectedIndex, upperThanSelected) {
+    bottomImageSelected (selectedIndex, upperThanSelected) {
       const bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       let topContainer = JSON.parse(JSON.stringify(this.topContents))
-      topContainer = this.pushImageToContainer(this.selectedImage, topContainer, 'top')
+      topContainer = this.pushImageToContainer(this.selectedImage, topContainer)
       this.setSelectedImage(this.bottomContents[selectedIndex])
-      this.splitUpperContentsToContainers(this.bottomContents, selectedIndex, null, upperThanSelected, topContainer, bottomContainer)
+      this.splitUpperContentsToContainers(this.bottomContents, selectedIndex, topContainer, bottomContainer, upperThanSelected)
     },
-    upperImageSelected (selectedIndex, lowerThanSelected, upperThanSelected) { // TODO] 이미지 하나씩 컨테이너 끝에 푸시 말고 배열로 컨테이너 위에 붙여야함
-      let topContainer = JSON.parse(JSON.stringify(this.topContents))
+    topImageSelected (selectedIndex, lowerThanSelected, upperThanSelected) {
+      const isTopImage = upperThanSelected.length === 0
+      const topContainer = JSON.parse(JSON.stringify(this.topContents))
       let bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       if (this.selectedImage) {
-        bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer, 'bottom')
+        bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer)
         this.setSelectedImage(this.topContents[selectedIndex])
-        if (upperThanSelected.length === 0) {
-          this.splitUpperContentsToContainers(this.topContents, selectedIndex, lowerThanSelected, upperThanSelected, bottomContainer, topContainer)
+        if (isTopImage) {
+          this.splitUpperContentsToContainers(this.topContents, selectedIndex, bottomContainer, topContainer, upperThanSelected, lowerThanSelected)
         } else {
-          this.splitLowerContentsToContainers(this.topContents, selectedIndex, lowerThanSelected, bottomContainer, topContainer)
+          this.splitLowerContentsToContainers(this.topContents, selectedIndex, bottomContainer, topContainer, lowerThanSelected)
         }
       } else {
         this.setSelectedImage(this.topContents[selectedIndex])
-        this.splitUpperContentsToContainers(this.topContents, selectedIndex, null, upperThanSelected, bottomContainer, topContainer)
+        this.splitUpperContentsToContainers(this.topContents, selectedIndex, bottomContainer, topContainer, upperThanSelected, lowerThanSelected)
       }
     },
-    splitUpperContentsToContainers (contents, selectedIndex, lowerThanSelected, upperThanSelected, containerToPush, containerToSplice) {
-      for (let i = 0; i < upperThanSelected.length; i++) {
-        containerToPush = this.pushImageToContainer(contents[upperThanSelected[i]], containerToPush)
-        if (parseInt(selectedIndex) > parseInt(upperThanSelected[upperThanSelected.length - (i + 1)])) {
-          containerToSplice.splice(selectedIndex, 1)
-          selectedIndex = -1
+    splitUpperContentsToContainers (contents, selectedIndex, containerToPush, containerToSplice, upperThanSelected, lowerThanSelected) {
+      const isTopImage = upperThanSelected.length === 0
+      const isContainerToPushEmpty = containerToPush.length === 0
+      if (!isContainerToPushEmpty && !isTopImage) {
+        const images = []
+        upperThanSelected.forEach((image) => {
+          images.push(contents[image])
+        })
+        containerToPush = this.pushImageToContainer(images, containerToPush, 'topLowest')
+        for (let i = 0; i < upperThanSelected.length; i++) {
+          if (parseInt(selectedIndex) > parseInt(upperThanSelected[upperThanSelected.length - (i + 1)])) {
+            containerToSplice.splice(selectedIndex, 1)
+            selectedIndex = -1
+          }
+          containerToSplice.splice(upperThanSelected[upperThanSelected.length - (i + 1)], 1)
         }
-        containerToSplice.splice(upperThanSelected[upperThanSelected.length - (i + 1)], 1)
-      }
-      if (upperThanSelected.length === 0) {
-        if (lowerThanSelected === null) {
-          containerToSplice.splice(selectedIndex, 1)
-        } else {
-          containerToSplice.splice(selectedIndex, 1)
-          contents.splice(selectedIndex, 1)
-          containerToPush = this.pushImageToContainer(contents, containerToPush, 'bottom')
+      } else {
+        for (let i = 0; i < upperThanSelected.length; i++) {
+          containerToPush = this.pushImageToContainer(contents[upperThanSelected[i]], containerToPush)
+          if (parseInt(selectedIndex) > parseInt(upperThanSelected[upperThanSelected.length - (i + 1)])) {
+            containerToSplice.splice(selectedIndex, 1)
+            selectedIndex = -1
+          }
+          containerToSplice.splice(upperThanSelected[upperThanSelected.length - (i + 1)], 1)
+        }
+        if (isTopImage) {
+          if (lowerThanSelected === undefined) {
+            containerToSplice.splice(selectedIndex, 1)
+          } else {
+            containerToSplice.splice(selectedIndex, 1)
+            contents.splice(selectedIndex, 1)
+            containerToPush = this.pushImageToContainer(contents, containerToPush, 'bottomLowest') // TODO] attachImageToContainerHead 태워야할곳
 
-          containerToPush = this.resetImageIndex(containerToPush)
-          containerToSplice = this.resetImageIndex(containerToSplice)
-          this.topContents = []
-          this.bottomContents = containerToPush
-          return
+            containerToPush = this.resetImageIndex(containerToPush)
+            containerToSplice = this.resetImageIndex(containerToSplice)
+            this.topContents = []
+            this.bottomContents = containerToPush
+            return
+          }
         }
       }
       containerToPush = this.resetImageIndex(containerToPush)
@@ -121,9 +140,11 @@ export default {
       this.topContents = containerToPush
       this.bottomContents = containerToSplice
     },
-    splitLowerContentsToContainers (contents, selectedIndex, lowerThanSelected, containerToPush, containerToSplice) {
+    splitLowerContentsToContainers (contents, selectedIndex, containerToPush, containerToSplice, lowerThanSelected) {
+      const isBottomImage = lowerThanSelected.length === 0
       for (let i = 0; i < lowerThanSelected.length; i++) {
-        containerToPush = this.pushImageToContainer(contents[lowerThanSelected[i]], containerToPush)
+        containerToPush = this.pushImageToContainer(contents[lowerThanSelected[i]], containerToPush) // TODO] attachImageToContainerHead 태워야할곳
+        console.log('pushImageToContainer: lower')
         containerToSplice.splice(lowerThanSelected[lowerThanSelected.length - (i + 1)], 1)
         if (parseInt(selectedIndex) > parseInt(lowerThanSelected[lowerThanSelected.length - (i + 1)]) ||
             parseInt(selectedIndex) === parseInt(lowerThanSelected[lowerThanSelected.length - (i + 1)]) - 1) {
@@ -131,7 +152,7 @@ export default {
           selectedIndex = -1
         }
       }
-      if (lowerThanSelected.length === 0) {
+      if (isBottomImage) {
         containerToSplice.splice(selectedIndex, 1)
       }
       containerToPush = this.resetImageIndex(containerToPush)
@@ -145,11 +166,14 @@ export default {
     pushImageToContainer (images, container, topOrBottom) {
       if (images.length > 0) {
         switch (topOrBottom) {
-          case 'top':
-            this.attachImageToContainerTail(container, images, this.upperBottoms)
+          case 'topLowest':
+            this.attachImageToContainerTail(images, container, this.topLowest)
+            break
+          case 'bottomLowest':
+            this.attachImageToContainerTail(images, container, this.bottomLowest)
             break
           default:
-            this.attachImageToContainerTail(container, images, this.lowerBottoms)
+            this.attachImageToContainerHead(images, container, this.bottomHighest)
             break
         }
       } else {
@@ -157,14 +181,17 @@ export default {
       }
       return container
     },
-    attachImageToContainerTail (container, images, bottoms) {
+    attachImageToContainerTail (images, container, lowest) {
       for (let i = 0; i < images.length; i++) {
-        if (bottoms.length === 0 || bottoms[i % bottoms.length] === -2) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
+        if (lowest.length === 0 || lowest[i % lowest.length] === -2) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
           this.pushImageToContainer(images[i], container)
         } else {
-          container.splice(bottoms[i % bottoms.length] + 1, 0, images[i])
+          container.splice(lowest[i % lowest.length] + 1, 0, images[i])
         }
       }
+    },
+    attachImageToContainerHead (images, container, highest) {
+      console.log(highest)
     },
     resetImageIndex (container) {
       for (let i in container) {
@@ -172,11 +199,12 @@ export default {
       }
       return container
     },
-    getUpperBottomImages (bottoms) {
-      this.upperBottoms = bottoms // TODO] topContainer mounted시 80ms timeout이상 주면 정상작동.. 왜지???
+    getTopEndImages (lowest) {
+      this.topLowest = lowest // TODO] topContainer mounted시 100ms timeout이상 주면 정상작동.. 왜지???
     },
-    getLowerBottomImages (bottoms) {
-      this.lowerBottoms = bottoms
+    getBottomEndImages (lowest, highest) {
+      this.bottomLowest = lowest
+      this.bottomHighest = highest
     },
     infiniteHandler ($state) {
       if (this.bottomContents.length > 0) {
