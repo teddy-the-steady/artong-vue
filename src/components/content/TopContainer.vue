@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content" v-for="(val, i) in upperImages" :key="i" ref="content">
+    <div class="content" v-for="(val, i) in topImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="imageSelected"></content-box>
     </div>
   </div>
@@ -14,7 +14,7 @@ export default {
     ContentBox
   },
   props: {
-    upperImages: {
+    topImages: {
       type: Array,
       default: null
     }
@@ -23,8 +23,8 @@ export default {
     return {
       upperThanSelected: [],
       lowerThanSelected: [],
-      bottoms: [],
-      tops: []
+      lowest: [],
+      highest: []
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
       this.lowerThanSelected = []
       this.upperThanSelected = []
       const selectedTop = this.$refs.content[index].getBoundingClientRect().top
-      for (let i in this.upperImages) {
+      for (let i in this.topImages) {
         let contentTop = this.$refs.content[i].getBoundingClientRect().top
         if (selectedTop < contentTop) {
           this.lowerThanSelected.push(i)
@@ -42,33 +42,33 @@ export default {
       }
       this.$emit('image-selected', index, this.lowerThanSelected, this.upperThanSelected)
     },
-    getBottoms () {
-      this.bottoms = []
-      this.getTops()
-      for (let i = 1; i < this.tops.length; i++) {
-        this.bottoms.push(this.tops[i] - 1)
+    getLowest () {
+      this.lowest = []
+      this.getHighest()
+      for (let i = 1; i < this.highest.length; i++) {
+        this.lowest.push(this.highest[i] - 1)
       }
-      this.bottoms.push(-2)
-      this.$emit('bottom-images', this.bottoms)
+      this.lowest.push(-2)
+      this.$emit('low-end-images', this.lowest)
     },
-    getTops () {
-      this.tops = []
-      if (this.upperImages.length > 0) {
+    getHighest () {
+      this.highest = []
+      if (this.topImages.length > 0) {
         const firstTop = this.$refs.content[0].getBoundingClientRect().top
-        for (let i in this.upperImages) {
+        for (let i in this.topImages) {
           let contentTop = this.$refs.content[i].getBoundingClientRect().top
           if (firstTop === contentTop) {
-            this.tops.push(i)
+            this.highest.push(i)
           }
         }
       }
     }
   },
   mounted () {
-    setTimeout(() => { this.getBottoms() }, 300)
+    setTimeout(() => { this.getLowest() }, 100)
   },
   updated () {
-    this.getBottoms()
+    this.getLowest()
   }
 }
 </script>
