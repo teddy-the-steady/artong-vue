@@ -54,7 +54,7 @@ export default {
         for (let i in this.bottomImages) {
           let contentTop = this.$refs.content[i].getBoundingClientRect().top
           if (firstTop === contentTop) {
-            this.highest.push(i)
+            this.highest.push(parseInt(i))
           }
         }
       }

@@ -10,6 +10,7 @@
 <script>
 import { Auth } from 'aws-amplify'
 import InfiniteLoading from 'vue-infinite-loading'
+// import axios from 'axios'
 import ContentDetail from './ContentDetail'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
@@ -29,7 +30,8 @@ export default {
       bottomLowest: [],
       bottomHighest: [],
       FIRST_LOAD_NUM: 20,
-      SCROLL_LOAD_NUM: 10
+      SCROLL_LOAD_NUM: 10,
+      page: 0
     }
   },
   created () {
@@ -70,6 +72,22 @@ export default {
         this.topContents = JSON.parse(JSON.stringify(this.contents))
       }
     },
+    // pushContentList (list, isUpper) {
+    //   const imageArrayToPush = []
+    //   for (let i = 0; i < list.length; i++) {
+    //     imageArrayToPush.push({
+    //       index: i,
+    //       url: list[i].download_url
+    //     })
+    //   }
+    //   this.pushImageToContainer(imageArrayToPush, this.contents, 'topLowest')
+    //   if (!isUpper) {
+    //     this.pushImageToContainer(imageArrayToPush, this.bottomContents, 'bottomLowest')
+    //   }
+    //   if (isUpper) {
+    //     this.topContents = JSON.parse(JSON.stringify(this.contents))
+    //   }
+    // },
     bottomImageSelected (selectedIndex, upperThanSelected) {
       const bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       let topContainer = JSON.parse(JSON.stringify(this.topContents))
@@ -82,12 +100,12 @@ export default {
       const topContainer = JSON.parse(JSON.stringify(this.topContents))
       let bottomContainer = JSON.parse(JSON.stringify(this.bottomContents))
       if (this.selectedImage) {
-        bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer)
-        this.setSelectedImage(this.topContents[selectedIndex])
         if (isTopImage) {
+          bottomContainer = this.pushImageToContainer(this.selectedImage, bottomContainer)
+          this.setSelectedImage(this.topContents[selectedIndex])
           this.splitUpperContentsToContainers(this.topContents, selectedIndex, bottomContainer, topContainer, upperThanSelected, lowerThanSelected)
         } else {
-          this.splitLowerContentsToContainers(this.topContents, selectedIndex, bottomContainer, topContainer, lowerThanSelected)
+          this.splitLowerContentsToContainers(this.topContents, selectedIndex, topContainer, lowerThanSelected)
         }
       } else {
         this.setSelectedImage(this.topContents[selectedIndex])
@@ -125,8 +143,7 @@ export default {
           } else {
             containerToSplice.splice(selectedIndex, 1)
             contents.splice(selectedIndex, 1)
-            containerToPush = this.pushImageToContainer(contents, containerToPush, 'bottomLowest') // TODO] attachImageToContainerHead 태워야할곳
-
+            containerToPush = this.pushImageToContainer(contents, containerToPush, 'bottomLowest') // TODO] attachImageToContainerHead를 태울것인가.. lowerThanSelected 아래에 pushImageToContainer 할것인가
             containerToPush = this.resetImageIndex(containerToPush)
             containerToSplice = this.resetImageIndex(containerToSplice)
             this.topContents = []
@@ -140,11 +157,13 @@ export default {
       this.topContents = containerToPush
       this.bottomContents = containerToSplice
     },
-    splitLowerContentsToContainers (contents, selectedIndex, containerToPush, containerToSplice, lowerThanSelected) {
+    splitLowerContentsToContainers (contents, selectedIndex, containerToSplice, lowerThanSelected) {
       const isBottomImage = lowerThanSelected.length === 0
+      let containerToPush = []
+      containerToPush = this.pushImageToContainer(this.selectedImage, containerToPush)
+      this.setSelectedImage(this.topContents[selectedIndex])
       for (let i = 0; i < lowerThanSelected.length; i++) {
-        containerToPush = this.pushImageToContainer(contents[lowerThanSelected[i]], containerToPush) // TODO] attachImageToContainerHead 태워야할곳
-        console.log('pushImageToContainer: lower')
+        containerToPush = this.pushImageToContainer(contents[lowerThanSelected[i]], containerToPush)
         containerToSplice.splice(lowerThanSelected[lowerThanSelected.length - (i + 1)], 1)
         if (parseInt(selectedIndex) > parseInt(lowerThanSelected[lowerThanSelected.length - (i + 1)]) ||
             parseInt(selectedIndex) === parseInt(lowerThanSelected[lowerThanSelected.length - (i + 1)]) - 1) {
@@ -155,6 +174,8 @@ export default {
       if (isBottomImage) {
         containerToSplice.splice(selectedIndex, 1)
       }
+      containerToPush = this.pushImageToContainer(this.bottomContents, containerToPush, 'bottomLowest')
+
       containerToPush = this.resetImageIndex(containerToPush)
       containerToSplice = this.resetImageIndex(containerToSplice)
       this.bottomContents = containerToPush
@@ -219,6 +240,31 @@ export default {
       }
       setTimeout(function () { $state.loaded() }, 2000)
     }
+    // infiniteHandler ($state) {
+    //   axios.get('https://picsum.photos/v2/list', {
+    //     params: {
+    //       page: this.page,
+    //       limit: 20
+    //     }
+    //   }).then(({data}) => {
+    //     if (data.length) {
+    //       this.page += 1
+    //       if (this.bottomContents.length > 0) {
+    //         this.pushContentList(data, false)
+    //         this.resetImageIndex(this.bottomContents)
+    //       } else if (this.selectedImage) {
+    //         this.pushContentList(data, false)
+    //         this.resetImageIndex(this.bottomContents)
+    //       } else {
+    //         this.pushContentList(data, true)
+    //         this.resetImageIndex(this.topContents)
+    //       }
+    //       $state.loaded()
+    //     } else {
+    //       $state.complete()
+    //     }
+    //   })
+    // }
   },
   mounted () {
     this.$watch(

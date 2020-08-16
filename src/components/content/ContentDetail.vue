@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="image" class="detail">
+      <!-- <img :src="image.url" alt=""/> -->
       <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
     </div>
   </div>
