@@ -278,14 +278,15 @@ export default {
           top: offsetPosition
         }
         if (navigator.userAgent.indexOf('Mobile') !== -1) {
-          detail.scrollIntoView({block: 'center', behavior: 'auto'})
-        } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
           option.behavior = 'smooth'
           window.scrollTo(option)
+          return
+        } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
+          option.behavior = 'smooth'
         } else {
           option.behavior = 'auto'
-          window.scrollTo(option)
         }
+        window.scrollTo(option)
         setTimeout(function () {
           const detailTop = detail.getBoundingClientRect().top
           if (detailTop < 54 || detailTop > 56) {
