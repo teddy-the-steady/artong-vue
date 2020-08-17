@@ -81,6 +81,6 @@ export default {
   overflow: hidden;
   border-radius: 10px;
   margin: 0.5rem;
-  max-height: 300px
+  max-height: 300px;
 }
 </style>
