@@ -281,7 +281,8 @@ export default {
           if (navigator.userAgent.indexOf('iPhone') !== -1) {
             option.behavior = 'auto'
           } else if (navigator.userAgent.indexOf('Android') !== -1) {
-            detail.scrollIntoView({block: 'center', behavior: 'smooth'})
+            option.behavior = 'smooth' // TODO] 안드로이드 스크롤 이상함
+            window.scrollTo(option)
             return
           }
         } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
