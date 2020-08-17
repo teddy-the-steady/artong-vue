@@ -277,6 +277,7 @@ export default {
         let option = {
           top: offsetPosition
         }
+        alert(navigator.userAgent)
         if (navigator.userAgent.indexOf('Chrome') !== -1) {
           option.behavior = 'smooth'
           window.scrollTo(option)
