@@ -277,9 +277,13 @@ export default {
         let option = {
           top: offsetPosition
         }
-        alert(navigator.userAgent)
         if (navigator.userAgent.indexOf('Mobile') !== -1) {
-          option.behavior = 'auto'
+          if (navigator.userAgent.indexOf('iPhone') !== -1) {
+            option.behavior = 'auto'
+          } else if (navigator.userAgent.indexOf('Android') !== -1) {
+            detail.scrollIntoView({block: 'center', behavior: 'smooth'})
+            return
+          }
         } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
           option.behavior = 'smooth'
         } else {
