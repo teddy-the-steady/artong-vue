@@ -274,20 +274,25 @@ export default {
         const detailPosition = detail.offsetTop
         const headerOffset = 55
         const offsetPosition = detailPosition - headerOffset
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        })
+        let option = {
+          top: offsetPosition
+        }
+        if (navigator.userAgent.indexOf('Chrome') !== -1) {
+          option.behavior = 'smooth'
+          window.scrollTo(option)
+        } else {
+          option.behavior = 'auto'
+          window.scrollTo(option)
+        }
         setTimeout(function () {
           const detailTop = detail.getBoundingClientRect().top
           if (detailTop < 54 || detailTop > 56) {
             window.scrollTo({
-              // top: detailPosition + detailTop - 110,
-              top: detailPosition + detailTop - 150,
+              top: detailPosition + detailTop - 110,
               behavior: 'smooth'
             })
           }
-        }, 300)
+        }, 400)
       }
     )
   }
