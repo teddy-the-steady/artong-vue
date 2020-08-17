@@ -282,7 +282,8 @@ export default {
           const detailTop = detail.getBoundingClientRect().top
           if (detailTop < 54 || detailTop > 56) {
             window.scrollTo({
-              top: detailPosition + detailTop - 110,
+              // top: detailPosition + detailTop - 110,
+              top: detailPosition + detailTop - 150,
               behavior: 'smooth'
             })
           }
