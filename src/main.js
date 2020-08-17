@@ -8,7 +8,9 @@ import store from './store'
 import Amplify, * as AmplifyModules from 'aws-amplify'
 import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
+import smoothscroll from 'smoothscroll-polyfill'
 Amplify.configure(awsconfig)
+smoothscroll.polyfill()
 
 Vue.use(AmplifyPlugin, AmplifyModules)
 
