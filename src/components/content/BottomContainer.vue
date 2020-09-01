@@ -72,7 +72,7 @@ export default {
 .content {
   display: inline-block;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 20px;
   margin: 0.5rem;
   max-height: 300px;
 }
