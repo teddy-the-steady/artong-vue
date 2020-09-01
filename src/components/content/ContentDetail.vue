@@ -31,7 +31,6 @@ export default {
     width: 100%;
     height: auto;
     cursor: pointer;
-    border-radius: 10px;
     box-shadow: 5px 5px 13px 0 gray;
   }
 }
