@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content" v-for="(val, i) in bottomImages" :key="i" ref="content">
-      <content-box :image="val" @image-selected="imageSelected"></content-box>
+      <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
   </div>
 </template>
@@ -22,30 +22,34 @@ export default {
   data () {
     return {
       upperThanSelected: [],
+      lowerThanSelected: [],
       lowest: [],
-      highest: []
+      highest: [],
+      LAST_OF_LOWEST: -2
     }
   },
   methods: {
-    imageSelected (index) {
+    onImageSelected (index) {
+      this.lowerThanSelected = []
       this.upperThanSelected = []
       const selectedTop = this.$refs.content[index].getBoundingClientRect().top
       for (let i in this.bottomImages) {
         let contentTop = this.$refs.content[i].getBoundingClientRect().top
         if (selectedTop > contentTop) {
-          this.upperThanSelected.push(i)
+          this.upperThanSelected.push(parseInt(i))
         }
       }
-      this.$emit('image-selected', index, this.upperThanSelected)
+      this.$emit('set-upper-than-selected', this.upperThanSelected)
+      this.$emit('set-lower-than-selected', null)
+      this.$emit('image-selected', parseInt(index))
     },
     getLowest () {
       this.lowest = []
-      this.getHighest()
       for (let i = 1; i < this.highest.length; i++) {
         this.lowest.push(this.highest[i] - 1)
       }
-      this.lowest.push(-2)
-      this.$emit('both-end-images', this.lowest, this.highest)
+      this.lowest.push(this.LAST_OF_LOWEST)
+      this.$emit('set-bottom-end-images', this.lowest, this.highest)
     },
     getHighest () {
       this.highest = []
@@ -61,6 +65,7 @@ export default {
     }
   },
   updated () {
+    this.getHighest()
     this.getLowest()
   }
 }
@@ -75,5 +80,8 @@ export default {
   border-radius: 20px;
   margin: 0.5rem;
   max-height: 300px;
+  &:hover {
+    box-shadow: 1px 1px 1em $darkgrey, -1px -1px 1em $darkgrey;
+  }
 }
 </style>

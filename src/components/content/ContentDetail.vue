@@ -31,7 +31,7 @@ export default {
     width: 100%;
     height: auto;
     cursor: pointer;
-    box-shadow: 5px 5px 13px 0 gray;
+    border-radius: 20px;
   }
 }
 </style>
