@@ -7,7 +7,7 @@
     <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
       @image-selected="onBottomImageSelected" @set-bottom-end-images="setBottomEndImages"
       @set-upper-than-selected="setUpperThanSelected" @set-lower-than-selected="setLowerThanSelected"></bottom-container>
-    <!-- <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading> -->
+    <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
 
