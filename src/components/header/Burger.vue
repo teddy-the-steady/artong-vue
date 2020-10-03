@@ -17,12 +17,12 @@
 export default {
   name: 'Burger',
   computed: {
-    isBurgerActive () {
+    isBurgerActive() {
       return this.$store.state.isNavOpen
     }
   },
   methods: {
-    toggle () {
+    toggle() {
       this.$store.commit('toggleNav')
     }
   }

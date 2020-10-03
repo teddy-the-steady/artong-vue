@@ -29,7 +29,7 @@ export default {
     Profile
   },
   computed: {
-    isBrowserPanelOpen () {
+    isBrowserPanelOpen() {
       return this.$store.state.isBrowserNavOpen
     }
   },

@@ -18,12 +18,12 @@ export default {
     SideBar
   },
   computed: {
-    isBurgerActive () {
+    isBurgerActive() {
       return this.$store.state.isNavOpen
     }
   },
   watch: {
-    isBurgerActive () {
+    isBurgerActive() {
       document.body.classList.toggle('prevent-scroll')
     }
   }

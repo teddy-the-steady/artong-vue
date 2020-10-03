@@ -24,22 +24,22 @@ export default {
   components: {
     SidebarMenu
   },
-  data () {
+  data() {
     return {
       menu: menuItems,
       selectedTheme: 'white-theme'
     }
   },
   computed: {
-    isPanelOpen () {
+    isPanelOpen() {
       return this.$store.state.isNavOpen
     }
   },
   methods: {
-    closeSidebarPanel () {
+    closeSidebarPanel() {
       this.$store.commit('toggleNav')
     },
-    onItemClick (event, item) {
+    onItemClick(event, item) {
       console.log('onItemClick')
       console.log(event)
       console.log(item)

@@ -17,12 +17,12 @@ export default {
   components: {
     ContentList
   },
-  data () {
+  data() {
     return {
       info: ''
     }
   },
-  mounted () {
+  mounted() {
     if (this.$store.state.user) {
       const jwt = this.$store.state.user
         .getSignInUserSession()

@@ -13,12 +13,12 @@ import { Auth } from 'aws-amplify'
 export default {
   name: 'User',
   computed: {
-    signedIn () {
+    signedIn() {
       return this.$store.state.signedIn
     }
   },
   methods: {
-    signOut () {
+    signOut() {
       Auth.signOut()
         .then(data => {
           this.$store.state.signedIn = !!data

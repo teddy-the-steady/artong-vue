@@ -19,7 +19,7 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       upperThanSelected: [],
       lowerThanSelected: [],
@@ -29,7 +29,7 @@ export default {
     }
   },
   methods: {
-    onImageSelected (index) {
+    onImageSelected(index) {
       this.lowerThanSelected = []
       this.upperThanSelected = []
       const selectedTop = this.$refs.content[index].getBoundingClientRect().top
@@ -43,7 +43,7 @@ export default {
       this.$emit('set-lower-than-selected', null)
       this.$emit('image-selected', parseInt(index))
     },
-    getLowest () {
+    getLowest() {
       this.lowest = []
       for (let i = 1; i < this.highest.length; i++) {
         this.lowest.push(this.highest[i] - 1)
@@ -51,7 +51,7 @@ export default {
       this.lowest.push(this.LAST_OF_LOWEST)
       this.$emit('set-bottom-end-images', this.lowest, this.highest)
     },
-    getHighest () {
+    getHighest() {
       this.highest = []
       if (this.bottomImages.length > 0) {
         const firstTop = this.$refs.content[0].getBoundingClientRect().top
@@ -64,7 +64,7 @@ export default {
       }
     }
   },
-  updated () {
+  updated() {
     this.getHighest()
     this.getLowest()
   }
