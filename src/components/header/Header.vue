@@ -10,16 +10,9 @@
         <a href="."><b><i>A</i>rtong</b></a>
       </div>
       <div class="navbar__side">
-        <ul class="navbar__icons">
-          <li class="profile">
-            <router-link v-if="!signedIn" to="/login">
-              <img src="../../assets/images/profilethumb.png" alt="">
-            </router-link>
-            <router-link v-else to="/user">
-              <img src="../../assets/images/profilethumb.png" alt="">
-            </router-link>
-          </li>
-        </ul>
+        <div class="navbar__icons">
+          <profile></profile>
+        </div>
       </div>
     </nav>
   </transition>
@@ -27,18 +20,17 @@
 
 <script>
 import Burger from './Burger'
+import Profile from '../member/Profile'
 
 export default {
   name: 'Header',
   components: {
-    Burger
+    Burger,
+    Profile
   },
   computed: {
     isBrowserPanelOpen () {
       return this.$store.state.isBrowserNavOpen
-    },
-    signedIn () {
-      return this.$store.state.signedIn
     }
   },
   methods: {
@@ -87,19 +79,6 @@ export default {
         .navbar__icons {
             list-style: none;
             padding-left: 0;
-
-            .profile {
-                background-color: $artong-white;
-                width: 30px;
-                height: 30px;
-                border: 2px solid $artong-main;
-                border-radius: 50%;
-
-                img {
-                    width: 30px;
-                    vertical-align: center;
-                }
-            }
         }
     }
 }
