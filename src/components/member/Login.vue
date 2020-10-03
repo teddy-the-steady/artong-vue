@@ -38,7 +38,7 @@ export default {
     Confirm
   },
   mixins: [memberMixin],
-  data () {
+  data() {
     return {
       username: '',
       password: '',
@@ -46,15 +46,15 @@ export default {
       user: ''
     }
   },
-  created () {
+  created() {
     this.findUser()
   },
   methods: {
-    emptyUser (errMessage) {
+    emptyUser(errMessage) {
       this.user = ''
       this.warning = errMessage
     },
-    signIn () {
+    signIn() {
       Auth.signIn(this.username, this.password)
         .then(user => {
           this.$store.state.signedIn = !!user
@@ -68,7 +68,7 @@ export default {
           }
         })
     },
-    signOut () {
+    signOut() {
       Auth.signOut()
         .then(data => {
           this.$store.state.signedIn = !!data
@@ -77,7 +77,7 @@ export default {
         })
         .catch(err => console.log(err))
     },
-    async findUser () {
+    async findUser() {
       try {
         const user = await Auth.currentAuthenticatedUser()
         this.$store.state.signedIn = true
@@ -88,7 +88,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     window.scrollTo({ top: 0 })
   }
 }

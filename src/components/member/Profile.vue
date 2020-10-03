@@ -13,7 +13,7 @@
 export default {
   name: 'Profile',
   computed: {
-    signedIn () {
+    signedIn() {
       return this.$store.state.signedIn
     }
   }

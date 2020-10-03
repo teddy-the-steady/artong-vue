@@ -24,7 +24,7 @@ export default {
   components: {
     CenterContainer, TopContainer, BottomContainer, InfiniteLoading
   },
-  data () {
+  data() {
     return {
       contents: [],
       topContents: [],
@@ -41,12 +41,12 @@ export default {
       page: 0
     }
   },
-  created () {
+  created() {
     this.findUser()
     this.pushContentToTop(this.FIRST_LOAD_NUM)
   },
   methods: {
-    async findUser () {
+    async findUser() {
       try {
         const user = await Auth.currentAuthenticatedUser()
         this.$store.state.signedIn = true
@@ -56,7 +56,7 @@ export default {
         this.$store.state.user = null
       }
     },
-    infiniteHandler ($state) {
+    infiniteHandler($state) {
       if (this.bottomContents.length > 0) {
         this.pushContentToBottom(this.SCROLL_LOAD_NUM)
         this.resetImageIndex(this.bottomContents)
@@ -67,9 +67,9 @@ export default {
         this.pushContentToTop(this.SCROLL_LOAD_NUM)
         this.resetImageIndex(this.topContents)
       }
-      setTimeout(function () { $state.loaded() }, 2000)
+      setTimeout(function() { $state.loaded() }, 2000)
     },
-    // infiniteHandler ($state) {
+    // infiniteHandler($state) {
     //   axios.get('https://picsum.photos/v2/list', {
     //     params: {
     //       page: this.page,
@@ -94,23 +94,23 @@ export default {
     //     }
     //   })
     // },
-    getRandomIntInclusive (min, max) {
+    getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
       max = Math.floor(max)
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    pushContentToTop (numOfImages) {
+    pushContentToTop(numOfImages) {
       const imageArrayToPush = this.makeImageArray(numOfImages)
       this.pushImagesToTopBottom(imageArrayToPush, this.contents, 'topLowest')
       this.topContents = this.deepCopy(this.contents)
     },
-    pushContentToBottom (numOfImages) {
+    pushContentToBottom(numOfImages) {
       const imageArrayToPush = this.makeImageArray(numOfImages)
       this.pushImagesToTopBottom(imageArrayToPush, this.contents, 'topLowest')
       this.pushImagesToTopBottom(imageArrayToPush, this.bottomContents, 'bottomLowest')
     },
-    makeImageArray (numOfImages) {
+    makeImageArray(numOfImages) {
       const imageArrayToPush = []
       for (let i = 0; i < numOfImages; i++) {
         const randomInt = this.getRandomIntInclusive(1, 10)
@@ -121,7 +121,7 @@ export default {
       }
       return imageArrayToPush
     },
-    // makeImageArray () {
+    // makeImageArray() {
     //   const imageArrayToPush = []
     //   for (let i = 0; i < list.length; i++) {
     //     imageArrayToPush.push({
@@ -131,15 +131,15 @@ export default {
     //   }
     //   return imageArrayToPush
     // },
-    pushImagesFromSourceToDest (images, sourceContainer, destContainer) {
+    pushImagesFromSourceToDest(images, sourceContainer, destContainer) {
       sourceContainer.forEach((image) => {
         destContainer.push(images[image])
       })
     },
-    pushImage (images, destContainer) {
+    pushImage(images, destContainer) {
       destContainer.push(images)
     },
-    pushImagesToTopBottom (images, destContainer, topOrBottom) {
+    pushImagesToTopBottom(images, destContainer, topOrBottom) {
       switch (topOrBottom) {
         case 'topLowest':
           this.attachImageToContainerTail(images, destContainer, this.topLowest)
@@ -154,7 +154,7 @@ export default {
           break
       }
     },
-    attachImageToContainerTail (images, container, lowest) {
+    attachImageToContainerTail(images, container, lowest) {
       for (let i = 0; i < images.length; i++) {
         if (lowest.length === 0 || lowest[i % lowest.length] === this.LAST_OF_LOWEST) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
           this.pushImage(images[i], container)
@@ -163,16 +163,16 @@ export default {
         }
       }
     },
-    attachImageToContainerHead (images, container, highest) {
+    attachImageToContainerHead(images, container, highest) {
       console.log(highest)
     },
-    deepCopy (obj) {
+    deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
     },
-    setUpperThanSelected (upperThanSelected) {
+    setUpperThanSelected(upperThanSelected) {
       this.upperThanSelected = upperThanSelected
     },
-    setLowerThanSelected (lowerThanSelected) {
+    setLowerThanSelected(lowerThanSelected) {
       this.lowerThanSelected = lowerThanSelected
     },
     // TODO] 소스공사 많이 해야할듯..
@@ -183,7 +183,7 @@ export default {
     // c45
     // d2
     // d23
-    onBottomImageSelected (selectedIndex) {
+    onBottomImageSelected(selectedIndex) {
       console.log('a')
       const bottomContainer = this.deepCopy(this.bottomContents)
       let topContainer = this.deepCopy(this.topContents)
@@ -191,7 +191,7 @@ export default {
       this.setSelectedImage(this.bottomContents[selectedIndex])
       this.splitUpperContents(this.bottomContents, selectedIndex, topContainer, bottomContainer)
     },
-    onTopImageSelected (selectedIndex) {
+    onTopImageSelected(selectedIndex) {
       const topContainer = this.deepCopy(this.topContents)
       let bottomContainer = this.deepCopy(this.bottomContents)
       if (this.selectedImage) {
@@ -213,7 +213,7 @@ export default {
         this.splitUpperContents(this.topContents, selectedIndex, bottomContainer, topContainer)
       }
     },
-    splitUpperContents (contents, selectedIndex, containerToPush, containerToSplice) {
+    splitUpperContents(contents, selectedIndex, containerToPush, containerToSplice) {
       const isContainerToPushEmpty = containerToPush.length === 0
       if (!isContainerToPushEmpty && !this.isHighestImage()) {
         console.log('1')
@@ -256,7 +256,7 @@ export default {
       this.setTopContents(containerToPush)
       this.setBottomContents(containerToSplice)
     },
-    splitLowerContents (contents, selectedIndex, containerToPush, containerToSplice) {
+    splitLowerContents(contents, selectedIndex, containerToPush, containerToSplice) {
       console.log('4')
       for (let i = 0; i < this.lowerThanSelected.length; i++) {
         this.pushImage(contents[this.lowerThanSelected[i]], containerToPush)
@@ -278,35 +278,35 @@ export default {
       this.setBottomContents(containerToPush)
       this.setTopContents(containerToSplice)
     },
-    setTopContents (container) {
+    setTopContents(container) {
       this.topContents = container
     },
-    setBottomContents (container) {
+    setBottomContents(container) {
       this.bottomContents = container
     },
-    isHighestImage () {
+    isHighestImage() {
       return this.upperThanSelected.length === 0
     },
-    isLowestImage () {
+    isLowestImage() {
       return this.lowerThanSelected.length === 0
     },
-    setSelectedImage (image) {
+    setSelectedImage(image) {
       this.selectedImage = image
     },
-    resetImageIndex (container) {
+    resetImageIndex(container) {
       for (let i in container) {
         container[i].index = i
       }
     },
-    setTopLowestImages (lowest) {
+    setTopLowestImages(lowest) {
       this.topLowest = lowest // TODO] topContainer mounted시 100ms timeout이상 주면 정상작동.. 왜지???
     },
-    setBottomEndImages (lowest, highest) {
+    setBottomEndImages(lowest, highest) {
       this.bottomLowest = lowest
       this.bottomHighest = highest
     }
   },
-  mounted () {
+  mounted() {
     this.$watch(
       () => { return this.$refs.center.image },
       (val) => {
@@ -331,7 +331,7 @@ export default {
           option.behavior = 'auto'
         }
         window.scrollTo(option)
-        setTimeout(function () {
+        setTimeout(function() {
           const centerTop = center.getBoundingClientRect().top
           if (centerTop < 54 || centerTop > 56) {
             window.scrollTo({

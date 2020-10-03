@@ -67,30 +67,30 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       activeShow: null
     }
   },
   computed: {
-    sidebarWidth () {
+    sidebarWidth() {
       return this.width
     }
   },
   methods: {
-    onActiveShow (item) {
+    onActiveShow(item) {
       this.activeShow = item
     },
-    onItemClick (event, item) {
+    onItemClick(event, item) {
       this.$emit('item-click', event, item)
     },
-    onItemUpdate (newItem, item) {
+    onItemUpdate(newItem, item) {
       if (item === this.activeShow) {
         this.activeShow = newItem
       }
     }
   },
-  provide () {
+  provide() {
     return {
       emitActiveShow: this.onActiveShow,
       emitItemClick: this.onItemClick,

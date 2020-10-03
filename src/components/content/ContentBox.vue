@@ -15,7 +15,7 @@ export default {
     }
   },
   methods: {
-    imageSelect () {
+    imageSelect() {
       this.$emit('image-selected', this.image.index)
     }
   }
