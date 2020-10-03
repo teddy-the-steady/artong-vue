@@ -86,7 +86,7 @@ export default {
   margin: 0.5rem;
   max-height: 300px;
   &:hover {
-    box-shadow: 1px 1px 1em $darkgrey, -1px -1px 1em $darkgrey;
+    box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
   }
 }
 </style>

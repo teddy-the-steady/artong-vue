@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="image" class="detail">
+    <div v-if="image" class="center">
       <!-- <img :src="image.url" alt=""/> -->
       <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
     </div>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'ContentDetail',
+  name: 'CenterContainer',
   props: {
     image: {
       type: Object,
@@ -22,7 +22,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.detail {
+.center {
   display: inline-block;
   margin: 0.5rem;
   width: 200%;
