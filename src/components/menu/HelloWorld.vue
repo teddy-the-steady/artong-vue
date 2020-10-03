@@ -14,14 +14,14 @@ export default {
   components: {
     ContentList
   },
-  data () {
+  data() {
     return {}
   },
-  created () {
+  created() {
     this.findUser()
   },
   methods: {
-    async findUser () {
+    async findUser() {
       try {
         const user = await Auth.currentAuthenticatedUser()
         this.$store.state.signedIn = true
@@ -32,7 +32,7 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.$store.commit('setBrowserNavTrue')
   }
 }

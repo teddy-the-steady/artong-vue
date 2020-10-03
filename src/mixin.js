@@ -1,5 +1,5 @@
 export const itemMixin = {
-  data () {
+  data() {
     return {
       active: false,
       exactActive: false,
@@ -7,7 +7,7 @@ export const itemMixin = {
       itemHover: false
     }
   },
-  created () {
+  created() {
     if (this.item.header || this.item.component) return
     this.initState()
 
@@ -15,25 +15,25 @@ export const itemMixin = {
       window.addEventListener('hashchange', this.initState)
     }
   },
-  destroyed () {
+  destroyed() {
     if (!this.$router) {
       window.removeEventListener('hashchange', this.initState)
     }
   },
   methods: {
-    isLinkActive (item) {
+    isLinkActive(item) {
       return this.matchRoute(item) || this.isChildActive(item.child)
     },
-    isLinkExactActive (item) {
+    isLinkExactActive(item) {
       return this.matchExactRoute(item.href)
     },
-    isChildActive (child) {
+    isChildActive(child) {
       if (!child) return false
       return child.some(item => {
         return this.isLinkActive(item)
       })
     },
-    matchRoute ({ href, exactPath }) {
+    matchRoute({ href, exactPath }) {
       if (!href) return false
       if (this.$router) {
         const { route } = this.$router.resolve(href)
@@ -42,7 +42,7 @@ export const itemMixin = {
         return exactPath ? href === window.location.pathname : this.matchExactRoute(href)
       }
     },
-    matchExactRoute (href) {
+    matchExactRoute(href) {
       if (!href) return false
       if (this.$router) {
         const { route } = this.$router.resolve(href)
@@ -51,7 +51,7 @@ export const itemMixin = {
         return href === window.location.pathname + window.location.search + window.location.hash
       }
     },
-    clickEvent (event) {
+    clickEvent(event) {
       if (this.item.disabled) return
 
       this.emitItemClick(event, this.item)
@@ -65,15 +65,15 @@ export const itemMixin = {
         }
       }
     },
-    initState () {
+    initState() {
       this.initActiveState()
       this.initShowState()
     },
-    initActiveState () {
+    initActiveState() {
       this.active = this.isLinkActive(this.item)
       this.exactActive = this.isLinkExactActive(this.item)
     },
-    initShowState () {
+    initShowState() {
       if (this.item.child && !this.showChild) {
         if (this.showOneChild) {
           if (this.active) {
@@ -92,29 +92,29 @@ export const itemMixin = {
         }
       }
     },
-    mouseEnterEvent (event) {
+    mouseEnterEvent(event) {
       event.stopPropagation()
       if (this.item.disabled) return
       this.itemHover = true
     },
-    mouseLeaveEvent (event) {
+    mouseLeaveEvent(event) {
       event.stopPropagation()
       this.itemHover = false
     }
   },
   computed: {
-    isRouterLink () {
+    isRouterLink() {
       return (this.$router && this.item && this.item.href !== undefined && !this.item.external) === true
     },
-    isFirstLevel () {
+    isFirstLevel() {
       return this.level === 1
     },
-    show () {
+    show() {
       if (!this.item.child) return false
       if (this.showChild) return true
       return this.itemShow
     },
-    itemLinkClass () {
+    itemLinkClass() {
       return [
         'art--link',
         `art--link_level-${this.level}`,
@@ -125,25 +125,25 @@ export const itemMixin = {
         this.item.class
       ]
     },
-    itemLinkHref () {
+    itemLinkHref() {
       if (!this.$router && (!this.item.href || typeof this.item.href !== 'string')) return ''
       return this.item.href ? this.item.href : ''
     },
-    hover () {
+    hover() {
       return this.itemHover
     }
   },
   watch: {
-    $route () {
+    $route() {
       setTimeout(() => {
         if (this.item.header || this.item.component) return
         this.initState()
       }, 1)
     },
-    item (newItem, item) {
+    item(newItem, item) {
       this.emitItemUpdate(newItem, item)
     },
-    activeShow () {
+    activeShow() {
       this.itemShow = this.item === this.activeShow
     }
   },
@@ -152,13 +152,13 @@ export const itemMixin = {
 
 export const animationMixin = {
   methods: {
-    expandEnter (el) {
+    expandEnter(el) {
       el.style.height = el.scrollHeight + 'px'
     },
-    expandAfterEnter (el) {
+    expandAfterEnter(el) {
       el.style.height = 'auto'
     },
-    expandBeforeLeave (el) {
+    expandBeforeLeave(el) {
       el.style.height = el.scrollHeight + 'px'
     }
   }
@@ -166,18 +166,18 @@ export const animationMixin = {
 
 export const memberMixin = {
   computed: {
-    signedIn () {
+    signedIn() {
       return this.$store.state.signedIn
     }
   },
-  mounted () {
+  mounted() {
     this.$store.commit('setBrowserNavFalse')
     this.$store.commit('setNavFalse')
   }
 }
 
 export const menuMixin = {
-  mounted () {
+  mounted() {
     this.$store.commit('setBrowserNavTrue')
   }
 }

@@ -32,7 +32,7 @@ export default {
     Confirm
   },
   mixins: [memberMixin],
-  data () {
+  data() {
     return {
       username: '',
       password: '',
@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    join () {
+    join() {
       if (this.password !== this.password2) {
         this.warningSignUp = 'Passwords do not match'
         return

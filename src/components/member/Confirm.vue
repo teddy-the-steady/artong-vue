@@ -26,14 +26,14 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       warningConfirm: '',
       code: ''
     }
   },
   methods: {
-    confirm () {
+    confirm() {
       Auth.confirmSignUp(this.username, this.code, {
         forceAliasCreation: true
       })
@@ -42,7 +42,7 @@ export default {
         })
         .catch(err => { this.warningConfirm = err.message })
     },
-    signIn () {
+    signIn() {
       Auth.signIn(this.username, this.password)
         .then(user => {
           this.$store.state.signedIn = !!user
