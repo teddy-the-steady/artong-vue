@@ -3,7 +3,7 @@
     <top-container class="container" :topImages="topContents"
       @image-selected="onTopImageSelected" @set-top-lowest-images="setTopLowestImages"
       @set-upper-than-selected="setUpperThanSelected" @set-lower-than-selected="setLowerThanSelected"></top-container>
-    <content-detail class="container" :image="selectedImage" ref="detail"></content-detail>
+    <center-container class="container" :image="selectedImage" ref="center"></center-container>
     <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
       @image-selected="onBottomImageSelected" @set-bottom-end-images="setBottomEndImages"
       @set-upper-than-selected="setUpperThanSelected" @set-lower-than-selected="setLowerThanSelected"></bottom-container>
@@ -15,14 +15,14 @@
 import { Auth } from 'aws-amplify'
 import InfiniteLoading from 'vue-infinite-loading'
 // import axios from 'axios'
-import ContentDetail from './ContentDetail'
+import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
 
 export default {
   name: 'ContentList',
   components: {
-    ContentDetail, TopContainer, BottomContainer, InfiniteLoading
+    CenterContainer, TopContainer, BottomContainer, InfiniteLoading
   },
   data () {
     return {
@@ -308,12 +308,12 @@ export default {
   },
   mounted () {
     this.$watch(
-      () => { return this.$refs.detail.image },
+      () => { return this.$refs.center.image },
       (val) => {
-        const detail = this.$refs.detail.$el
-        const detailPosition = detail.offsetTop
+        const center = this.$refs.center.$el
+        const centerPosition = center.offsetTop
         const headerOffset = 55
-        const offsetPosition = detailPosition - headerOffset
+        const offsetPosition = centerPosition - headerOffset
         let option = {
           top: offsetPosition
         }
@@ -332,10 +332,10 @@ export default {
         }
         window.scrollTo(option)
         setTimeout(function () {
-          const detailTop = detail.getBoundingClientRect().top
-          if (detailTop < 54 || detailTop > 56) {
+          const centerTop = center.getBoundingClientRect().top
+          if (centerTop < 54 || centerTop > 56) {
             window.scrollTo({
-              top: detailPosition + detailTop - 110,
+              top: centerPosition + centerTop - 110,
               behavior: 'smooth'
             })
           }
