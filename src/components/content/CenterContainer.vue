@@ -34,7 +34,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .center {
-  display: inline-flex;
+  display: inline-grid;
   margin: 0.5rem;
   width: 200%;
   position: relative;
