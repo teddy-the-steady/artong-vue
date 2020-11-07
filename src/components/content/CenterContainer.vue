@@ -3,7 +3,7 @@
     <div v-if="image" class="center">
       <!-- <img :src="image.url" alt=""/> -->
       <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
-      <content-layer></content-layer>
+      <content-layer :image="image"></content-layer>
     </div>
   </div>
 </template>
