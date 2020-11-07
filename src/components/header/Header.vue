@@ -20,7 +20,7 @@
 
 <script>
 import Burger from './Burger'
-import Profile from '../member/Profile'
+import Profile from './Profile'
 
 export default {
   name: 'Header',
