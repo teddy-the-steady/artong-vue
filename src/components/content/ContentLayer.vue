@@ -71,13 +71,13 @@ export default {
 .slide-right-enter,
 .slide-right-leave-to {
     transform: translateX(-10px);
-    transition: all 100ms ease-in 0s
+    transition: all 100ms ease-in 0s;
 }
 
 .slide-left-enter,
 .slide-left-leave-to {
     transform: translateX(10px);
-    transition: all 100ms ease-in 0s
+    transition: all 100ms ease-in 0s;
 }
 
 .artistProfile {
