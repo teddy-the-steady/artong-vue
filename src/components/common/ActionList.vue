@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul>
-      <li class="like" :class="{active: isActive}" @click="onLikeClick()">
-        <img src="../../assets/images/heart.png" alt="">
-      </li>
+        <li class="like" @click="onLikeClick()">
+          <img :class="{active: isActive}" src="../../assets/images/heart.png" alt="">
+        </li>
       <li>
         <img src="../../assets/images/comment.png" alt="">
       </li>
@@ -43,13 +43,27 @@ ul {
     }
 
     &.like {
-      filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(80%);
-    }
+      img {
+        filter: brightness(1000%) contrast(100%) drop-shadow(1px 2px 3px grey);
 
-    &.active {
-      filter: none;
+        &.active {
+          filter: none;
+          animation: bounce-in .5s;
+        }
+
+        @keyframes bounce-in {
+          0% {
+            transform: scale(0);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+      }
     }
   }
 }
-
 </style>
