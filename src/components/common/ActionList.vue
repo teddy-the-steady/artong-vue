@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <li>
+      <li class="like" :class="{active: isActive}" @click="onLikeClick()">
         <img src="../../assets/images/heart.png" alt="">
       </li>
       <li>
@@ -13,7 +13,17 @@
 
 <script>
 export default {
-  name: 'ActionList'
+  name: 'ActionList',
+  data() {
+    return {
+      isActive: false
+    }
+  },
+  methods: {
+    onLikeClick() {
+      this.isActive = !this.isActive
+    }
+  }
 }
 </script>
 
@@ -27,8 +37,17 @@ ul {
   padding: 0;
   li {
     list-style-type: none;
+    cursor: pointer;
     img {
       width: 30px;
+    }
+
+    &.like {
+      filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(80%);
+    }
+
+    &.active {
+      filter: none;
     }
   }
 }
