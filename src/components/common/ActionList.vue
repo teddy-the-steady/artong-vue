@@ -48,18 +48,30 @@ ul {
 
         &.active {
           filter: none;
-          animation: bounce-in .5s;
+          animation: bounce-in .7s;
         }
 
         @keyframes bounce-in {
           0% {
             transform: scale(0);
           }
-          50% {
-            transform: scale(1.5);
+          70% {
+            transform: scale(2);
+          }
+          80% {
+            transform: rotate(5deg);
+          }
+          85% {
+            transform: rotate(-15deg);
+          }
+          90% {
+            transform: rotate(13deg);
+          }
+          95% {
+            transform: rotate(-8deg);
           }
           100% {
-            transform: scale(1);
+            transform: scale(1) rotate(5deg);
           }
         }
       }
