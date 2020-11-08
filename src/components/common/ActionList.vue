@@ -44,10 +44,10 @@ ul {
 
     &.like {
       img {
-        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(1px 1px 2px grey);
+        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px grey);
 
         &.active {
-          filter: drop-shadow(1px 1px 2px white);
+          filter: none;
           animation: bounce-in .5s;
         }
 
