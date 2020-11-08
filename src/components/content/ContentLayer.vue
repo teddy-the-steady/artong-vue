@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="contentLayer" v-bind:class="{active: isActive}" @click="onLayerClick()">
+    <div class="contentLayer" :class="{active: isActive}" @click="onLayerClick()">
     </div>
     <transition name="slide-right">
-      <div class="artistProfile" v-if="isActive" v-bind:class="{active: isActive}">
+      <div class="artistProfile" v-if="isActive" :class="{active: isActive}">
         <artist-profile :profileImage="image.profileImageUrl"></artist-profile>
       </div>
     </transition>
     <transition name="slide-left">
-      <div class="actionList" v-if="isActive" v-bind:class="{active: isActive}">
+      <div class="actionList" v-if="isActive" :class="{active: isActive}">
         <action-list></action-list>
       </div>
     </transition>
