@@ -44,7 +44,7 @@ ul {
 
     &.like {
       img {
-        filter: brightness(1000%) contrast(100%) drop-shadow(1px 2px 3px grey);
+        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(1px 2px 3px grey);
 
         &.active {
           filter: none;
