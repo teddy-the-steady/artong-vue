@@ -82,7 +82,8 @@ export default {
 
 .comment {
   display: none;
-  position: relative;
+  position: absolute;
+  width: 100%;
   min-height: 57px;
   margin: 15px auto;
   background: $artong-white;
