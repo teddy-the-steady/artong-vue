@@ -1,10 +1,10 @@
 <template>
   <div>
     <ul>
-        <li class="like" @click="onLikeClick()">
-          <img :class="{active: isActive}" src="../../assets/images/heart.png" alt="">
-        </li>
-      <li>
+      <li class="like" @click="onLikeClick()">
+        <img :class="{active: isActive}" src="../../assets/images/heart.png" alt="">
+      </li>
+      <li class="comment">
         <img src="../../assets/images/comment.png" alt="">
       </li>
     </ul>
@@ -42,13 +42,21 @@ ul {
       width: 30px;
     }
 
+    &.comment {
+      z-index: 99;
+      img {
+        filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px grey);
+      }
+    }
+
     &.like {
+      z-index: 100;
       img {
         filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px grey);
 
         &.active {
           filter: none;
-          animation: bounce-in .7s;
+          animation: bounce-in .8s;
         }
 
         @keyframes bounce-in {
@@ -56,7 +64,7 @@ ul {
             transform: scale(0);
           }
           70% {
-            transform: scale(2);
+            transform: scale(2.5);
           }
           80% {
             transform: rotate(5deg);
