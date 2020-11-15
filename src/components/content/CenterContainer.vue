@@ -29,7 +29,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .center {
-  display: inline-grid;
+  display: inline-flex;
   margin: 0.5rem;
   width: 200%;
   position: relative;
