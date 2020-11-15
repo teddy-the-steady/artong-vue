@@ -2,6 +2,14 @@
   <div>
     <div class="contentLayer" :class="{active: isLayerActive}" @click="onLayerClick()">
     </div>
+    <div class="comment" :class="{active: isCommentActive}">
+      <div class="spinner" :class="{active: isSpinnerActive}"></div>
+      <ul class="comment-list" :class="{active: isCommentListActive}">
+        <li>user1: 훌륭한 작품이네요!</li>
+        <li>user2: 잘봤습니다.</li>
+        <li>user3: Good work</li>
+      </ul>
+    </div>
     <transition name="slide-right">
       <div class="artistProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
         <artist-profile :profileImage="image.profileImageUrl"></artist-profile>
@@ -12,14 +20,6 @@
         <action-list @handle-comment-click="handleCommentClick"></action-list>
       </div>
     </transition>
-    <div class="comment" :class="{active: isCommentActive}">
-      <div class="spinner" :class="{active: isSpinnerActive}"></div>
-      <ul class="comment-list" :class="{active: isCommentListActive}">
-        <li>user1: 훌륭한 작품이네요!</li>
-        <li>user2: 잘봤습니다.</li>
-        <li>user3: Good work</li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -84,7 +84,7 @@ export default {
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 0px;
   width: 100%;
   min-height: 57px;
   margin: 15px auto;
