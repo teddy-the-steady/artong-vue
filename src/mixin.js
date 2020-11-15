@@ -170,14 +170,14 @@ export const memberMixin = {
       return this.$store.state.signedIn
     }
   },
-  mounted() {
+  activated() {
     this.$store.commit('setBrowserNavFalse')
     this.$store.commit('setNavFalse')
   }
 }
 
 export const menuMixin = {
-  mounted() {
+  activated() {
     this.$store.commit('setBrowserNavTrue')
   }
 }

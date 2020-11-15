@@ -3,7 +3,9 @@
     <header-bar id="header-bar"></header-bar>
     <side-bar id="side-bar"></side-bar>
     <div class="contents">
-      <router-view class="contents__body"/>
+      <keep-alive>
+        <router-view class="contents__body"/>
+      </keep-alive>
     </div>
   </div>
 </template>

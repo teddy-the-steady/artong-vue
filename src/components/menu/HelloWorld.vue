@@ -31,9 +31,6 @@ export default {
         this.$store.state.user = null
       }
     }
-  },
-  mounted() {
-    this.$store.commit('setBrowserNavTrue')
   }
 }
 </script>

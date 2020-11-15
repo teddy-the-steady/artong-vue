@@ -32,9 +32,6 @@ export default {
     isBrowserPanelOpen() {
       return this.$store.state.isBrowserNavOpen
     }
-  },
-  methods: {
-
   }
 }
 </script>
