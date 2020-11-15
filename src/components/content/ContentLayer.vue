@@ -68,6 +68,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .contentLayer {
+  position: relative;
   height: 100%;
   width: 100%;
   border-radius: 20px;
@@ -81,6 +82,7 @@ export default {
 
 .comment {
   display: none;
+  position: relative;
   min-height: 57px;
   margin: 15px auto;
   background: $artong-white;
@@ -103,7 +105,7 @@ export default {
   .spinner {
     display: none;
     position: absolute;
-    top: 8px;
+    top: 9px;
     left: 45%;
     height: 30px;
     width: 30px;
