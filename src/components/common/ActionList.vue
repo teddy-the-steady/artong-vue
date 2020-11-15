@@ -4,7 +4,7 @@
       <li class="like" @click="onLikeClick()">
         <img :class="{active: isActive}" src="../../assets/images/heart.png" alt="">
       </li>
-      <li class="comment">
+      <li class="comment" @click="onCommentClick()">
         <img src="../../assets/images/comment.png" alt="">
       </li>
     </ul>
@@ -22,6 +22,9 @@ export default {
   methods: {
     onLikeClick() {
       this.isActive = !this.isActive
+    },
+    onCommentClick() {
+      this.$emit('handle-comment-click', true)
     }
   }
 }
