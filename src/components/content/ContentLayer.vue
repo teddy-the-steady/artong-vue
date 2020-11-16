@@ -83,8 +83,7 @@ export default {
 .comment {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0px;
+  left: 0;
   width: 100%;
   min-height: 57px;
   margin: 15px auto;
@@ -96,7 +95,7 @@ export default {
     display: block;
   }
 
-  ul {
+  .comment-list {
     text-align: left;
     display: none;
 
