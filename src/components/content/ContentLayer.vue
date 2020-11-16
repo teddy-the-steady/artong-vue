@@ -68,7 +68,6 @@ export default {
 @import '../../assets/scss/variables';
 
 .contentLayer {
-  position: absolute;
   height: 100%;
   width: 100%;
   border-radius: 20px;
@@ -82,9 +81,9 @@ export default {
 
 .comment {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
+  // position: absolute;
+  // top: 100%;
+  // left: 0;
   // width: 100%;
   // min-height: 57px;
   // margin: 15px auto;
