@@ -41,13 +41,13 @@ export default {
     cursor: pointer;
     border-radius: 20px;
   }
-}
 
-.content-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  .content-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
