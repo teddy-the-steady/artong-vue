@@ -82,12 +82,12 @@ export default {
 
 .comment {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  min-height: 57px;
-  margin: 15px auto;
+  // position: absolute;
+  // top: 100%;
+  // left: 0;
+  // width: 100%;
+  // min-height: 57px;
+  // margin: 15px auto;
   background: $artong-white;
   box-shadow: 1px 1px .5em $lightgray;
   border-radius: 20px;
