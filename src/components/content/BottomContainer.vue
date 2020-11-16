@@ -80,6 +80,7 @@ export default {
   border-radius: 20px;
   margin: 0.5rem;
   max-height: 300px;
+  user-select: none;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
   }
