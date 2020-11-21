@@ -24,7 +24,7 @@ export default {
       this.isActive = !this.isActive
     },
     onCommentClick() {
-      this.$emit('handle-comment-click', true)
+      this.$emit('handle-comment-click')
     }
   }
 }

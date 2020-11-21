@@ -2,14 +2,6 @@
   <div>
     <div class="layer" :class="{active: isLayerActive}" @click="onLayerClick()">
     </div>
-    <div class="comment" :class="{active: isCommentActive}">
-      <div class="spinner" :class="{active: isSpinnerActive}"></div>
-      <ul class="comment-list" :class="{active: isCommentListActive}">
-        <li>user1: 훌륭한 작품이네요!</li>
-        <li>user2: 잘봤습니다.</li>
-        <li>user3: Good work</li>
-      </ul>
-    </div>
     <transition name="slide-right">
       <div class="artistProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
         <artist-profile :profileImage="image.profileImageUrl"></artist-profile>
@@ -40,25 +32,15 @@ export default {
   },
   data() {
     return {
-      isLayerActive: false,
-      isCommentActive: false,
-      isSpinnerActive: true,
-      isCommentListActive: false
+      isLayerActive: false
     }
   },
   methods: {
     onLayerClick() {
       this.isLayerActive = !this.isLayerActive
-      if (!this.isLayerActive) {
-        this.handleCommentClick(false)
-      }
     },
-    handleCommentClick(isCommentActive) {
-      this.isCommentActive = isCommentActive
-      setTimeout(() => {
-        this.isSpinnerActive = !isCommentActive
-        this.isCommentListActive = isCommentActive
-      }, 1000)
+    handleCommentClick() {
+      this.$emit('handle-comment-click')
     }
   }
 }
@@ -75,58 +57,9 @@ export default {
   background-color: $artong-black;
   opacity: 0;
   cursor: pointer;
+  user-select: none;
   &.active {
     opacity: .3;
-  }
-}
-
-.comment {
-  display: none;
-
-  &.active {
-    display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    min-height: 57px;
-    margin: 15px auto;
-    background: $artong-white;
-    box-shadow: 1px 1px .5em $lightgray;
-    border-radius: 20px;
-  }
-
-  .comment-list {
-    display: none;
-
-    &.active {
-      display: block;
-      text-align: left;
-    }
-  }
-
-  .spinner {
-    display: none;
-
-    &.active {
-      display: block;
-      position: relative;
-      top: 9px;
-      height: 30px;
-      width: 30px;
-      margin: 0px auto;
-      animation: rotation .6s infinite linear;
-      border-left: 6px solid rgba(0,174,239,.15);
-      border-right: 6px solid rgba(0,174,239,.15);
-      border-bottom: 6px solid rgba(0,174,239,.15);
-      border-top: 6px solid rgba(0,174,239,.8);
-      border-radius: 100%;
-    }
-  }
-
-  @keyframes rotation {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(359deg);}
   }
 }
 
