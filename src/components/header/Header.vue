@@ -11,7 +11,7 @@
       </div>
       <div class="navbar__side">
         <div class="navbar__icons">
-          <profile></profile>
+          <header-profile></header-profile>
         </div>
       </div>
     </nav>
@@ -20,17 +20,17 @@
 
 <script>
 import Burger from './Burger'
-import Profile from './Profile'
+import HeaderProfile from '../profile/HeaderProfile'
 
 export default {
   name: 'Header',
   components: {
     Burger,
-    Profile
+    HeaderProfile
   },
   computed: {
     isBrowserPanelOpen() {
-      return this.$store.state.isBrowserNavOpen
+      return this.$store.state.isHeadNavOpen
     }
   }
 }

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// import debounce from 'lodash/debounce'
 import { Auth } from 'aws-amplify'
 import InfiniteLoading from 'vue-infinite-loading'
 // import axios from 'axios'
@@ -38,12 +39,9 @@ export default {
       FIRST_LOAD_NUM: 20,
       SCROLL_LOAD_NUM: 10,
       LAST_OF_LOWEST: -2,
-      page: 0
+      page: 0,
+      scrollPosition: 0
     }
-  },
-  created() {
-    this.findUser()
-    this.pushContentToTop(this.FIRST_LOAD_NUM)
   },
   methods: {
     async findUser() {
@@ -68,6 +66,16 @@ export default {
         this.resetImageIndex(this.topContents)
       }
       setTimeout(function() { $state.loaded() }, 2000)
+    },
+    pushContentToTop(numOfImages) {
+      const imageArrayToPush = this.makeImageArray(numOfImages)
+      this.pushImagesToTopLowest(imageArrayToPush, this.contents)
+      this.topContents = this.deepCopy(this.contents)
+    },
+    pushContentToBottom(numOfImages) {
+      const imageArrayToPush = this.makeImageArray(numOfImages)
+      this.pushImagesToTopLowest(imageArrayToPush, this.contents)
+      this.pushImagesToBottomLowest(imageArrayToPush, this.bottomContents)
     },
     // infiniteHandler($state) {
     //   axios.get('https://picsum.photos/v2/list', {
@@ -100,20 +108,10 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    pushContentToTop(numOfImages) {
-      const imageArrayToPush = this.makeImageArray(numOfImages)
-      this.pushImagesToTopBottom(imageArrayToPush, this.contents, 'topLowest')
-      this.topContents = this.deepCopy(this.contents)
-    },
-    pushContentToBottom(numOfImages) {
-      const imageArrayToPush = this.makeImageArray(numOfImages)
-      this.pushImagesToTopBottom(imageArrayToPush, this.contents, 'topLowest')
-      this.pushImagesToTopBottom(imageArrayToPush, this.bottomContents, 'bottomLowest')
-    },
     makeImageArray(numOfImages) {
       const imageArrayToPush = []
       for (let i = 0; i < numOfImages; i++) {
-        const randomInt = this.getRandomIntInclusive(1, 10)
+        const randomInt = this.getRandomIntInclusive(11, 20)
         imageArrayToPush.push({
           index: i,
           url: randomInt
@@ -139,20 +137,14 @@ export default {
     pushImage(images, destContainer) {
       destContainer.push(images)
     },
-    pushImagesToTopBottom(images, destContainer, topOrBottom) {
-      switch (topOrBottom) {
-        case 'topLowest':
-          this.attachImageToContainerTail(images, destContainer, this.topLowest)
-          break
-        case 'bottomLowest':
-          this.attachImageToContainerTail(images, destContainer, this.bottomLowest)
-          break
-        case 'bottomHighest':
-          this.attachImageToContainerHead(images, destContainer, this.bottomHighest)
-          break
-        default:
-          break
-      }
+    pushImagesToTopLowest(images, destContainer) {
+      this.attachImageToContainerTail(images, destContainer, this.topLowest)
+    },
+    pushImagesToBottomLowest(images, destContainer) {
+      this.attachImageToContainerTail(images, destContainer, this.bottomLowest)
+    },
+    pushImagesToBottomHighest(images, destContainer) {
+      this.attachImageToContainerHead(images, destContainer, this.bottomHighest)
     },
     attachImageToContainerTail(images, container, lowest) {
       for (let i = 0; i < images.length; i++) {
@@ -178,7 +170,7 @@ export default {
     // TODO] 소스공사 많이 해야할듯..
     // a1
     // a23
-    // b23
+    // b23 bottomHighest에 붙여야
     // c4
     // c45
     // d2
@@ -186,14 +178,14 @@ export default {
     onBottomImageSelected(selectedIndex) {
       console.log('a')
       const bottomContainer = this.deepCopy(this.bottomContents)
-      let topContainer = this.deepCopy(this.topContents)
+      const topContainer = this.deepCopy(this.topContents)
       this.pushImage(this.selectedImage, topContainer)
       this.setSelectedImage(this.bottomContents[selectedIndex])
       this.splitUpperContents(this.bottomContents, selectedIndex, topContainer, bottomContainer)
     },
     onTopImageSelected(selectedIndex) {
       const topContainer = this.deepCopy(this.topContents)
-      let bottomContainer = this.deepCopy(this.bottomContents)
+      const bottomContainer = this.deepCopy(this.bottomContents)
       if (this.selectedImage) {
         if (this.isHighestImage()) {
           console.log('b')
@@ -219,7 +211,7 @@ export default {
         console.log('1')
         let images = []
         this.pushImagesFromSourceToDest(contents, this.upperThanSelected, images)
-        this.pushImagesToTopBottom(images, containerToPush, 'topLowest')
+        this.pushImagesToTopLowest(images, containerToPush)
         for (let i = 0; i < this.upperThanSelected.length; i++) {
           if (selectedIndex > this.upperThanSelected[this.upperThanSelected.length - (i + 1)]) {
             containerToSplice.splice(selectedIndex, 1)
@@ -242,7 +234,7 @@ export default {
           containerToSplice.splice(selectedIndex, 1)
           if (this.lowerThanSelected !== null && this.lowerThanSelected.length >= 0) {
             contents.splice(selectedIndex, 1)
-            this.pushImagesToTopBottom(contents, containerToPush, 'bottomLowest') // TODO] attachImageToContainerHead를 태울것인가.. lowerThanSelected 아래에 pushImageToContainer 할것인가
+            this.pushImagesToBottomLowest(contents, containerToPush) // TODO] b23으로 타는 경우 attachImageToContainerHead를 태울것인가.. lowerThanSelected 아래에 pushImageToContainer 할것인가
             this.resetImageIndex(containerToPush)
             this.resetImageIndex(containerToSplice)
             this.setTopContents([])
@@ -271,7 +263,7 @@ export default {
         console.log('5')
         containerToSplice.splice(selectedIndex, 1)
       }
-      this.pushImagesToTopBottom(this.bottomContents, containerToPush, 'bottomLowest')
+      this.pushImagesToBottomLowest(this.bottomContents, containerToPush)
 
       this.resetImageIndex(containerToPush)
       this.resetImageIndex(containerToSplice)
@@ -305,7 +297,27 @@ export default {
       this.bottomLowest = lowest
       this.bottomHighest = highest
     }
+    // handleScroll(event) {
+    //   let currentScrollPosition = window.scrollY
+    //   if (currentScrollPosition > this.scrollPosition) {
+    //     this.$store.commit('setHeadNavFalse')
+    //   } else {
+    //     this.$store.commit('setHeadNavTrue')
+    //   }
+    //   this.scrollPosition = currentScrollPosition
+    // }
   },
+  created() {
+    // this.handleDebouncedScroll = debounce(this.handleScroll, 100)
+    // if (navigator.userAgent.indexOf('Mobile') !== -1) {
+    //   window.addEventListener('scroll', this.handleDebouncedScroll)
+    // }
+    this.findUser()
+    this.pushContentToTop(this.FIRST_LOAD_NUM)
+  },
+  // beforeDestroy() {
+  //   window.removeEventListener('scroll', this.handleDebouncedScroll)
+  // },
   mounted() {
     this.$watch(
       () => { return this.$refs.center.image },
