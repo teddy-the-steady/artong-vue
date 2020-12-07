@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     isBurgerActive() {
-      return this.$store.state.isNavOpen
+      return this.$store.state.isSideMenuOpen
     }
   },
   watch: {
@@ -70,7 +70,7 @@ html {
             font-family: 'Avenir', Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background: $aliceblue;
+            background: $artong-white;
             color: $artong-black;
             text-align: center;
             height: 100%;
@@ -89,7 +89,7 @@ html {
         /* #app 안에 넣으면 다른 template들 덮어쓰는 문제 */
         .contents__body {
             position: relative;
-            background: $aliceblue;
+            background: $artong-white;
             padding-top: 60px;
             height: 100%;
         }

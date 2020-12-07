@@ -9,15 +9,15 @@
     </transition>
     <transition name="slide-left">
       <div class="actionList" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <action-list @handle-comment-click="handleCommentClick"></action-list>
+        <action-list :isPropCommentActive="isPropCommentActive" @handle-comment-click="handleCommentClick"></action-list>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-import ArtistProfile from '../common/ArtistProfile'
-import ActionList from '../common/ActionList'
+import ArtistProfile from '../profile/ArtistProfile'
+import ActionList from '../content/ActionList'
 
 export default {
   name: 'ContentLayer',
@@ -28,6 +28,10 @@ export default {
     image: {
       type: Object,
       default: null
+    },
+    isPropCommentActive: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -39,8 +43,8 @@ export default {
     onLayerClick() {
       this.isLayerActive = !this.isLayerActive
     },
-    handleCommentClick() {
-      this.$emit('handle-comment-click')
+    handleCommentClick(isActive) {
+      this.$emit('handle-comment-click', isActive)
     }
   }
 }

@@ -4,7 +4,7 @@
       <!-- <img :src="image.url" alt=""/> -->
       <div class="image">
         <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
-        <content-layer :image="image" class="content-layer" @handle-comment-click="handleCommentClick"></content-layer>
+        <content-layer :image="image" class="content-layer" :isPropCommentActive="isCommentActive" @handle-comment-click="handleCommentClick"></content-layer>
       </div>
       <div class="comment" v-if="isCommentActive">
         <div class="spinner" :class="{active: isSpinnerActive}"></div>
@@ -40,8 +40,8 @@ export default {
     }
   },
   methods: {
-    handleCommentClick() {
-      this.isCommentActive = !this.isCommentActive
+    handleCommentClick(isActive) {
+      this.isCommentActive = isActive
       setTimeout(() => {
         this.isSpinnerActive = !this.isCommentActive
         this.isCommentListActive = this.isCommentActive

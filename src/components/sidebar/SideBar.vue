@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     isPanelOpen() {
-      return this.$store.state.isNavOpen
+      return this.$store.state.isSideMenuOpen
     }
   },
   methods: {

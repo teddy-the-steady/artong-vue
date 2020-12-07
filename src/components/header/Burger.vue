@@ -18,7 +18,7 @@ export default {
   name: 'Burger',
   computed: {
     isBurgerActive() {
-      return this.$store.state.isNavOpen
+      return this.$store.state.isSideMenuOpen
     }
   },
   methods: {
@@ -41,15 +41,15 @@ export default {
                 background-color: $artong-black;
             }
             .burger-bar__1 {
-                transform: rotate(45deg)
+                transform: translateX(-3px) rotate(75deg) scaleY(1.5);
             }
 
             .burger-bar__2 {
-                opacity: 0;
+                transform: translateX(-2px) translateY(-3px) scaleX(.6);
             }
 
             .burger-bar__3 {
-                transform: rotate(-45deg)
+                transform: scaleY(1.3) translateX(6px) rotate(-46deg);
             }
         }
     }
@@ -74,6 +74,7 @@ export default {
         .burger-bar {
             background-color: $artong-black;
             position: absolute;
+            border-radius: 1px;
             top: 50%;
             right: 6px;
             left: 6px;
@@ -91,10 +92,6 @@ export default {
         .burger-bar__2 {
             transform-origin: 100% 50%;
             transform: scaleX(.8);
-        }
-
-        &:hover .burger-bar__2 {
-            transform: scaleX(1);
         }
 
         .burger-bar__3 {

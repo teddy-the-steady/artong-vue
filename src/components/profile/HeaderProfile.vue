@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'Profile',
+  name: 'HeaderProfile',
   computed: {
     signedIn() {
       return this.$store.state.signedIn

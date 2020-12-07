@@ -171,13 +171,13 @@ export const memberMixin = {
     }
   },
   activated() {
-    this.$store.commit('setBrowserNavFalse')
-    this.$store.commit('setNavFalse')
+    this.$store.commit('setHeadNavFalse')
+    this.$store.commit('setSideMenuFalse')
   }
 }
 
 export const menuMixin = {
   activated() {
-    this.$store.commit('setBrowserNavTrue')
+    this.$store.commit('setHeadNavTrue')
   }
 }

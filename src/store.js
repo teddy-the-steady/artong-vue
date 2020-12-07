@@ -7,21 +7,21 @@ export default new Vuex.Store({
   state: {
     user: null,
     signedIn: false,
-    isNavOpen: false,
-    isBrowserNavOpen: true
+    isSideMenuOpen: false,
+    isHeadNavOpen: true
   },
   mutations: {
     toggleNav(state) {
-      state.isNavOpen = !state.isNavOpen
+      state.isSideMenuOpen = !state.isSideMenuOpen
     },
-    setNavFalse(state) {
-      state.isNavOpen = false
+    setSideMenuFalse(state) {
+      state.isSideMenuOpen = false
     },
-    setBrowserNavTrue(state) {
-      state.isBrowserNavOpen = true
+    setHeadNavTrue(state) {
+      state.isHeadNavOpen = true
     },
-    setBrowserNavFalse(state) {
-      state.isBrowserNavOpen = false
+    setHeadNavFalse(state) {
+      state.isHeadNavOpen = false
     }
   },
   actions: {

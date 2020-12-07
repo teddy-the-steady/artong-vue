@@ -2,10 +2,10 @@
   <div>
     <ul>
       <li class="like" @click="onLikeClick()">
-        <img :class="{active: isActive}" src="../../assets/images/heart.png" alt="">
+        <img :class="{active: isLikeActive}" src="../../assets/images/heart.png" alt="">
       </li>
       <li class="comment" @click="onCommentClick()">
-        <img src="../../assets/images/comment.png" alt="">
+        <img :class="{active: isCommentActive}" src="../../assets/images/comment.png" alt="">
       </li>
     </ul>
   </div>
@@ -14,17 +14,25 @@
 <script>
 export default {
   name: 'ActionList',
+  props: {
+    isPropCommentActive: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      isActive: false
+      isLikeActive: false,
+      isCommentActive: this.isPropCommentActive
     }
   },
   methods: {
     onLikeClick() {
-      this.isActive = !this.isActive
+      this.isLikeActive = !this.isLikeActive
     },
     onCommentClick() {
-      this.$emit('handle-comment-click')
+      this.isCommentActive = !this.isCommentActive
+      this.$emit('handle-comment-click', this.isCommentActive)
     }
   }
 }
@@ -48,14 +56,18 @@ ul {
     &.comment {
       z-index: 99;
       img {
-        filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px grey);
+        filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
+
+        &.active {
+          filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 0px 1px black);
+        }
       }
     }
 
     &.like {
       z-index: 100;
       img {
-        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px grey);
+        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
 
         &.active {
           filter: none;
