@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="content" v-for="(val, i) in topImages" :key="i" ref="content">
+  <div v-masonry transition-duration="0.3s" item-selector=".content">
+    <div v-masonry-tile class="content" v-for="(val, i) in topImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
   </div>
@@ -8,6 +8,7 @@
 
 <script>
 import ContentBox from './ContentBox'
+
 export default {
   name: 'TopContainer',
   components: {
@@ -83,10 +84,18 @@ export default {
   display: inline-block;
   overflow: hidden;
   border-radius: 20px;
-  margin: 0.5rem;
+  margin: .8rem;
+  width: 200px;
   max-height: 300px;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .content {
+    margin: .5rem;
+    width: 45%;
   }
 }
 </style>
