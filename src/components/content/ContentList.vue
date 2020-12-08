@@ -12,10 +12,8 @@
 </template>
 
 <script>
-// import debounce from 'lodash/debounce'
 import { Auth } from 'aws-amplify'
 import InfiniteLoading from 'vue-infinite-loading'
-// import axios from 'axios'
 import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
@@ -77,31 +75,6 @@ export default {
       this.pushImagesToTopLowest(imageArrayToPush, this.contents)
       this.pushImagesToBottomLowest(imageArrayToPush, this.bottomContents)
     },
-    // infiniteHandler($state) {
-    //   axios.get('https://picsum.photos/v2/list', {
-    //     params: {
-    //       page: this.page,
-    //       limit: 20
-    //     }
-    //   }).then(({data}) => {
-    //     if (data.length) {
-    //       this.page += 1
-    //       if (this.bottomContents.length > 0) {
-    //         this.pushContentToBottom(data)
-    //         this.resetImageIndex(this.bottomContents)
-    //       } else if (this.selectedImage) {
-    //         this.pushContentToBottom(data)
-    //         this.resetImageIndex(this.bottomContents)
-    //       } else {
-    //         this.pushContentToTop(data)
-    //         this.resetImageIndex(this.topContents)
-    //       }
-    //       $state.loaded()
-    //     } else {
-    //       $state.complete()
-    //     }
-    //   })
-    // },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
       max = Math.floor(max)
@@ -119,16 +92,6 @@ export default {
       }
       return imageArrayToPush
     },
-    // makeImageArray() {
-    //   const imageArrayToPush = []
-    //   for (let i = 0; i < list.length; i++) {
-    //     imageArrayToPush.push({
-    //       index: i,
-    //       url: list[i].download_url
-    //     })
-    //   }
-    //   return imageArrayToPush
-    // },
     pushImagesFromSourceToDest(images, sourceContainer, destContainer) {
       sourceContainer.forEach((image) => {
         destContainer.push(images[image])
@@ -148,11 +111,7 @@ export default {
     },
     attachImageToContainerTail(images, container, lowest) {
       for (let i = 0; i < images.length; i++) {
-        if (lowest.length === 0 || lowest[i % lowest.length] === this.LAST_OF_LOWEST) { // TODO] 붙일때 미세 조정 필요. 바닥쪽 들쭉날쭉한 순서대로 테트리스??
-          this.pushImage(images[i], container)
-        } else {
-          container.splice(lowest[i % lowest.length] + 1, 0, images[i])
-        }
+        this.pushImage(images[i], container)
       }
     },
     attachImageToContainerHead(images, container, highest) {
@@ -297,27 +256,11 @@ export default {
       this.bottomLowest = lowest
       this.bottomHighest = highest
     }
-    // handleScroll(event) {
-    //   let currentScrollPosition = window.scrollY
-    //   if (currentScrollPosition > this.scrollPosition) {
-    //     this.$store.commit('setHeadNavFalse')
-    //   } else {
-    //     this.$store.commit('setHeadNavTrue')
-    //   }
-    //   this.scrollPosition = currentScrollPosition
-    // }
   },
   created() {
-    // this.handleDebouncedScroll = debounce(this.handleScroll, 100)
-    // if (navigator.userAgent.indexOf('Mobile') !== -1) {
-    //   window.addEventListener('scroll', this.handleDebouncedScroll)
-    // }
     this.findUser()
     this.pushContentToTop(this.FIRST_LOAD_NUM)
   },
-  // beforeDestroy() {
-  //   window.removeEventListener('scroll', this.handleDebouncedScroll)
-  // },
   mounted() {
     this.$watch(
       () => { return this.$refs.center.image },
@@ -360,15 +303,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-
-.container {
-  column-width: 200px;
-  padding: 0 1rem;
-}
-
-@media only screen and (max-width: 599px) {
-  .container {
-    column-width: 130px;
-  }
-}
 </style>

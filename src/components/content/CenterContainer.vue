@@ -55,9 +55,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .center {
-  display: inline-grid;
+  display: inline-block;
   margin: 0.5rem;
-  width: 200%;
+  width: 50%;
   position: relative;
 
   .image {
@@ -94,6 +94,7 @@ export default {
       &.active {
         display: block;
         text-align: left;
+        margin: 0;
       }
     }
 
@@ -120,6 +121,12 @@ export default {
       from {transform: rotate(0deg);}
       to {transform: rotate(359deg);}
     }
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .center {
+    width: 95%;
   }
 }
 </style>
