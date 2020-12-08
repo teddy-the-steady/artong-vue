@@ -1,5 +1,5 @@
 <template>
-  <div v-masonry transition-duration="0.3s" item-selector=".content">
+  <div v-masonry transition-duration="0.3s" fit-width="true" item-selector=".content">
     <div v-masonry-tile class="content" v-for="(val, i) in topImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
@@ -84,8 +84,8 @@ export default {
   display: inline-block;
   overflow: hidden;
   border-radius: 20px;
-  margin: .8rem;
-  width: 200px;
+  margin: 1rem;
+  width: 13rem;
   max-height: 300px;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
@@ -95,7 +95,21 @@ export default {
 @media only screen and (max-width: 599px) {
   .content {
     margin: .5rem;
-    width: 45%;
+    width: 12rem;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .content {
+    margin: .5rem;
+    width: 11rem;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .content {
+    margin: .5rem;
+    width: 10rem;
   }
 }
 </style>
