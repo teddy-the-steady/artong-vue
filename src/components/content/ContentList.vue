@@ -1,12 +1,10 @@
 <template>
   <div>
     <top-container class="container" :topImages="topContents"
-      @image-selected="onTopImageSelected" @set-top-lowest-images="setTopLowestImages"
-      @set-upper-than-selected="setUpperThanSelected" @set-lower-than-selected="setLowerThanSelected"></top-container>
+      @image-selected="onTopImageSelected"></top-container>
     <center-container class="container" :image="selectedImage" ref="center"></center-container>
     <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
-      @image-selected="onBottomImageSelected" @set-bottom-end-images="setBottomEndImages"
-      @set-upper-than-selected="setUpperThanSelected" @set-lower-than-selected="setLowerThanSelected"></bottom-container>
+      @image-selected="onBottomImageSelected"></bottom-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -25,20 +23,11 @@ export default {
   },
   data() {
     return {
-      contents: [],
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      topLowest: [],
-      bottomLowest: [],
-      bottomHighest: [],
-      upperThanSelected: [],
-      lowerThanSelected: [],
       FIRST_LOAD_NUM: 20,
-      SCROLL_LOAD_NUM: 10,
-      LAST_OF_LOWEST: -2,
-      page: 0,
-      scrollPosition: 0
+      SCROLL_LOAD_NUM: 10
     }
   },
   methods: {
@@ -55,25 +44,20 @@ export default {
     infiniteHandler($state) {
       if (this.bottomContents.length > 0) {
         this.pushContentToBottom(this.SCROLL_LOAD_NUM)
-        this.resetImageIndex(this.bottomContents)
       } else if (this.selectedImage) {
         this.pushContentToBottom(this.SCROLL_LOAD_NUM)
-        this.resetImageIndex(this.bottomContents)
       } else {
         this.pushContentToTop(this.SCROLL_LOAD_NUM)
-        this.resetImageIndex(this.topContents)
       }
       setTimeout(function() { $state.loaded() }, 2000)
     },
     pushContentToTop(numOfImages) {
       const imageArrayToPush = this.makeImageArray(numOfImages)
-      this.pushImagesToTopLowest(imageArrayToPush, this.contents)
-      this.topContents = this.deepCopy(this.contents)
+      this.pushImages(imageArrayToPush, this.topContents)
     },
     pushContentToBottom(numOfImages) {
       const imageArrayToPush = this.makeImageArray(numOfImages)
-      this.pushImagesToTopLowest(imageArrayToPush, this.contents)
-      this.pushImagesToBottomLowest(imageArrayToPush, this.bottomContents)
+      this.pushImages(imageArrayToPush, this.bottomContents)
     },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
@@ -92,169 +76,60 @@ export default {
       }
       return imageArrayToPush
     },
-    pushImagesFromSourceToDest(images, sourceContainer, destContainer) {
-      sourceContainer.forEach((image) => {
-        destContainer.push(images[image])
-      })
-    },
-    pushImage(images, destContainer) {
-      destContainer.push(images)
-    },
-    pushImagesToTopLowest(images, destContainer) {
-      this.attachImageToContainerTail(images, destContainer, this.topLowest)
-    },
-    pushImagesToBottomLowest(images, destContainer) {
-      this.attachImageToContainerTail(images, destContainer, this.bottomLowest)
-    },
-    pushImagesToBottomHighest(images, destContainer) {
-      this.attachImageToContainerHead(images, destContainer, this.bottomHighest)
-    },
-    attachImageToContainerTail(images, container, lowest) {
-      for (let i = 0; i < images.length; i++) {
-        this.pushImage(images[i], container)
+    pushImages(images, destContainer) {
+      let lastImageOfContainer = destContainer[destContainer.length - 1]
+      if (lastImageOfContainer) this.resetImageIndexBeforePush(images, lastImageOfContainer)
+      for (let i in images) {
+        this.pushImage(images[i], destContainer)
       }
     },
-    attachImageToContainerHead(images, container, highest) {
-      console.log(highest)
-    },
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj))
-    },
-    setUpperThanSelected(upperThanSelected) {
-      this.upperThanSelected = upperThanSelected
-    },
-    setLowerThanSelected(lowerThanSelected) {
-      this.lowerThanSelected = lowerThanSelected
-    },
-    // TODO] 소스공사 많이 해야할듯..
-    // a1
-    // a23
-    // b23 bottomHighest에 붙여야
-    // c4
-    // c45
-    // d2
-    // d23
-    onBottomImageSelected(selectedIndex) {
-      console.log('a')
-      const bottomContainer = this.deepCopy(this.bottomContents)
-      const topContainer = this.deepCopy(this.topContents)
-      this.pushImage(this.selectedImage, topContainer)
-      this.setSelectedImage(this.bottomContents[selectedIndex])
-      this.splitUpperContents(this.bottomContents, selectedIndex, topContainer, bottomContainer)
-    },
-    onTopImageSelected(selectedIndex) {
-      const topContainer = this.deepCopy(this.topContents)
-      const bottomContainer = this.deepCopy(this.bottomContents)
-      if (this.selectedImage) {
-        if (this.isHighestImage()) {
-          console.log('b')
-          this.pushImage(this.selectedImage, bottomContainer)
-          this.setSelectedImage(this.topContents[selectedIndex])
-          this.splitUpperContents(this.topContents, selectedIndex, bottomContainer, topContainer)
-        } else {
-          console.log('c')
-          let containerToPush = []
-          this.pushImage(this.selectedImage, containerToPush)
-          this.setSelectedImage(this.topContents[selectedIndex])
-          this.splitLowerContents(this.topContents, selectedIndex, containerToPush, topContainer)
-        }
-      } else {
-        console.log('d')
-        this.setSelectedImage(this.topContents[selectedIndex])
-        this.splitUpperContents(this.topContents, selectedIndex, bottomContainer, topContainer)
+    resetImageIndexBeforePush(images, lastImageOfContainer) {
+      let lastImageOfContainerCopy = this.deepCopy(lastImageOfContainer)
+      for (let i in images) {
+        images[i].index = ++lastImageOfContainerCopy.index
       }
     },
-    splitUpperContents(contents, selectedIndex, containerToPush, containerToSplice) {
-      const isContainerToPushEmpty = containerToPush.length === 0
-      if (!isContainerToPushEmpty && !this.isHighestImage()) {
-        console.log('1')
-        let images = []
-        this.pushImagesFromSourceToDest(contents, this.upperThanSelected, images)
-        this.pushImagesToTopLowest(images, containerToPush)
-        for (let i = 0; i < this.upperThanSelected.length; i++) {
-          if (selectedIndex > this.upperThanSelected[this.upperThanSelected.length - (i + 1)]) {
-            containerToSplice.splice(selectedIndex, 1)
-            selectedIndex = -1
-          }
-          containerToSplice.splice(this.upperThanSelected[this.upperThanSelected.length - (i + 1)], 1)
-        }
-      } else {
-        console.log('2')
-        for (let i = 0; i < this.upperThanSelected.length; i++) {
-          this.pushImage(contents[this.upperThanSelected[i]], containerToPush)
-          if (selectedIndex > this.upperThanSelected[this.upperThanSelected.length - (i + 1)]) {
-            containerToSplice.splice(selectedIndex, 1)
-            selectedIndex = -1
-          }
-          containerToSplice.splice(this.upperThanSelected[this.upperThanSelected.length - (i + 1)], 1)
-        }
-        if (this.isHighestImage()) {
-          console.log('3')
-          containerToSplice.splice(selectedIndex, 1)
-          if (this.lowerThanSelected !== null && this.lowerThanSelected.length >= 0) {
-            contents.splice(selectedIndex, 1)
-            this.pushImagesToBottomLowest(contents, containerToPush) // TODO] b23으로 타는 경우 attachImageToContainerHead를 태울것인가.. lowerThanSelected 아래에 pushImageToContainer 할것인가
-            this.resetImageIndex(containerToPush)
-            this.resetImageIndex(containerToSplice)
-            this.setTopContents([])
-            this.setBottomContents(containerToPush)
-            return
-          }
-        }
+    pushImage(image, destContainer) {
+      destContainer.push(image)
+    },
+    prependImages(images, destContainer) {
+      for (let i = images.length - 1; i >= 0; i--) {
+        this.prependImage(images[i], destContainer)
       }
-      this.resetImageIndex(containerToPush)
-      this.resetImageIndex(containerToSplice)
-      this.setTopContents(containerToPush)
-      this.setBottomContents(containerToSplice)
-    },
-    splitLowerContents(contents, selectedIndex, containerToPush, containerToSplice) {
-      console.log('4')
-      for (let i = 0; i < this.lowerThanSelected.length; i++) {
-        this.pushImage(contents[this.lowerThanSelected[i]], containerToPush)
-        containerToSplice.splice(this.lowerThanSelected[this.lowerThanSelected.length - (i + 1)], 1)
-        if (selectedIndex > this.lowerThanSelected[this.lowerThanSelected.length - (i + 1)] ||
-            selectedIndex === this.lowerThanSelected[this.lowerThanSelected.length - (i + 1)] - 1) {
-          containerToSplice.splice(selectedIndex, 1)
-          selectedIndex = -1
-        }
-      }
-      if (this.isLowestImage()) {
-        console.log('5')
-        containerToSplice.splice(selectedIndex, 1)
-      }
-      this.pushImagesToBottomLowest(this.bottomContents, containerToPush)
-
-      this.resetImageIndex(containerToPush)
-      this.resetImageIndex(containerToSplice)
-      this.setBottomContents(containerToPush)
-      this.setTopContents(containerToSplice)
-    },
-    setTopContents(container) {
-      this.topContents = container
-    },
-    setBottomContents(container) {
-      this.bottomContents = container
-    },
-    isHighestImage() {
-      return this.upperThanSelected.length === 0
-    },
-    isLowestImage() {
-      return this.lowerThanSelected.length === 0
-    },
-    setSelectedImage(image) {
-      this.selectedImage = image
+      this.resetImageIndex(destContainer)
     },
     resetImageIndex(container) {
       for (let i in container) {
         container[i].index = i
       }
     },
-    setTopLowestImages(lowest) {
-      this.topLowest = lowest // TODO] topContainer mounted시 100ms timeout이상 주면 정상작동.. 왜지???
+    prependImage(image, destContainer) {
+      destContainer.unshift(image)
     },
-    setBottomEndImages(lowest, highest) {
-      this.bottomLowest = lowest
-      this.bottomHighest = highest
+    deepCopy(obj) {
+      return JSON.parse(JSON.stringify(obj))
+    },
+    onBottomImageSelected(selectedIndex) {
+      const topContentsTail = this.bottomContents.slice(0, selectedIndex)
+      const selectedImage = this.bottomContents[selectedIndex]
+      this.bottomContents.splice(0, selectedIndex + 1)
+      this.resetImageIndex(this.bottomContents)
+      this.pushImage(this.selectedImage, this.topContents)
+      this.pushImages(topContentsTail, this.topContents)
+      this.setSelectedImage(selectedImage)
+    },
+    onTopImageSelected(selectedIndex) {
+      const bottomContentsHead = this.topContents.slice(selectedIndex + 1)
+      const selectedImage = this.topContents[selectedIndex]
+      this.topContents.splice(selectedIndex)
+      if (this.selectedImage) {
+        this.prependImage(this.selectedImage, this.bottomContents)
+      }
+      this.prependImages(bottomContentsHead, this.bottomContents)
+      this.setSelectedImage(selectedImage)
+    },
+    setSelectedImage(image) {
+      this.selectedImage = image
     }
   },
   created() {
