@@ -1,5 +1,5 @@
 <template>
-  <div v-masonry transition-duration="0.3s" fit-width="true" item-selector=".content">
+  <div v-masonry transition-duration="0.3s" fit-width="true" destroy-delay="0" item-selector=".content">
     <div v-masonry-tile class="content" v-for="(val, i) in topImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
@@ -8,7 +8,6 @@
 
 <script>
 import ContentBox from './ContentBox'
-
 export default {
   name: 'TopContainer',
   components: {
@@ -20,59 +19,10 @@ export default {
       default: null
     }
   },
-  data() {
-    return {
-      upperThanSelected: [],
-      lowerThanSelected: [],
-      lowest: [],
-      highest: [],
-      LAST_OF_LOWEST: -2
-    }
-  },
   methods: {
     onImageSelected(index) {
-      this.lowerThanSelected = []
-      this.upperThanSelected = []
-      const selectedTop = this.$refs.content[index].getBoundingClientRect().top
-      for (let i in this.topImages) {
-        let contentTop = this.$refs.content[i].getBoundingClientRect().top
-        if (selectedTop < contentTop) {
-          this.lowerThanSelected.push(parseInt(i))
-        } else if (selectedTop > contentTop) {
-          this.upperThanSelected.push(parseInt(i))
-        }
-      }
-      this.$emit('set-upper-than-selected', this.upperThanSelected)
-      this.$emit('set-lower-than-selected', this.lowerThanSelected)
       this.$emit('image-selected', parseInt(index))
-    },
-    getLowest() {
-      this.lowest = []
-      for (let i = 1; i < this.highest.length; i++) {
-        this.lowest.push(this.highest[i] - 1)
-      }
-      this.lowest.push(this.LAST_OF_LOWEST)
-      this.$emit('set-top-lowest-images', this.lowest)
-    },
-    getHighest() {
-      this.highest = []
-      if (this.topImages.length > 0) {
-        const firstTop = this.$refs.content[0].getBoundingClientRect().top
-        for (let i in this.topImages) {
-          let contentTop = this.$refs.content[i].getBoundingClientRect().top
-          if (firstTop === contentTop) {
-            this.highest.push(parseInt(i))
-          }
-        }
-      }
     }
-  },
-  mounted() {
-    setTimeout(() => { this.getLowest() }, 100)
-  },
-  updated() {
-    this.getHighest()
-    this.getLowest()
   }
 }
 </script>
@@ -85,7 +35,7 @@ export default {
   overflow: hidden;
   border-radius: 20px;
   margin: 1rem;
-  width: 13rem;
+  width: 15rem;
   max-height: 300px;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
