@@ -34,8 +34,8 @@ export default {
   display: inline-block;
   overflow: hidden;
   border-radius: 20px;
-  margin: 1rem;
-  width: 15rem;
+  margin: 14px;
+  width: 210px;
   max-height: 300px;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
@@ -44,22 +44,22 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .content {
-    margin: .5rem;
-    width: 12rem;
+    margin: 7px;
+    width: 168px;
   }
 }
 
 @media only screen and (max-width: 360px) {
   .content {
-    margin: .5rem;
-    width: 11rem;
+    margin: 7px;
+    width: 154px;
   }
 }
 
 @media only screen and (max-width: 320px) {
   .content {
-    margin: .5rem;
-    width: 10rem;
+    margin: 7px;
+    width: 140px;
   }
 }
 </style>
