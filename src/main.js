@@ -9,7 +9,7 @@ import Amplify, * as AmplifyModules from 'aws-amplify'
 import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
-import VueMasonry from 'vue-masonry-css'
+import VueMasonry from './plugin/masonry'
 Amplify.configure(awsconfig)
 smoothscroll.polyfill()
 

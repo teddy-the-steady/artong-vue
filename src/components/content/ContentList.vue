@@ -114,7 +114,7 @@ export default {
       const selectedImage = this.bottomContents[selectedIndex]
       this.bottomContents.splice(0, selectedIndex + 1)
       this.resetImageIndex(this.bottomContents)
-      this.pushImage(this.selectedImage, this.topContents)
+      this.pushImages([this.selectedImage], this.topContents)
       this.pushImages(topContentsTail, this.topContents)
       this.setSelectedImage(selectedImage)
     },
