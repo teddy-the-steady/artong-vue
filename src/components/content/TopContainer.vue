@@ -1,5 +1,5 @@
 <template>
-  <div v-masonry transition-duration="0.3s" fit-width="true" destroy-delay="0" item-selector=".content">
+  <div v-masonry transition-duration="0.3s" fit-width="true" item-selector=".content">
     <div v-masonry-tile class="content" v-for="(val, i) in topImages" :key="i" ref="content">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
