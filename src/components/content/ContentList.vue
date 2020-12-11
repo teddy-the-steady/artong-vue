@@ -152,8 +152,6 @@ export default {
             option.behavior = 'auto'
           } else if (navigator.userAgent.indexOf('Android') !== -1) {
             option.behavior = 'smooth' // TODO] 안드로이드 스크롤 이상함
-            window.scrollTo(option)
-            return
           }
         } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
           option.behavior = 'smooth'
@@ -161,15 +159,6 @@ export default {
           option.behavior = 'auto'
         }
         window.scrollTo(option)
-        // setTimeout(function() {
-        //   const centerTop = center.getBoundingClientRect().top
-        //   if (centerTop < 54 || centerTop > 56) {
-        //     window.scrollTo({
-        //       top: centerPosition + centerTop - 110,
-        //       behavior: 'smooth'
-        //     })
-        //   }
-        // }, 400)
       }
     )
   }

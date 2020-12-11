@@ -87,9 +87,6 @@ export default {
         this.$store.state.user = null
       }
     }
-  },
-  mounted() {
-    window.scrollTo({ top: 0 })
   }
 }
 </script>
