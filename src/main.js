@@ -9,12 +9,12 @@ import Amplify, * as AmplifyModules from 'aws-amplify'
 import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
-import {VueMasonryPlugin} from 'vue-masonry'
+import VueMasonry from 'vue-masonry-css'
 Amplify.configure(awsconfig)
 smoothscroll.polyfill()
 
 Vue.use(AmplifyPlugin, AmplifyModules)
-Vue.use(VueMasonryPlugin)
+Vue.use(VueMasonry)
 
 Vue.config.productionTip = false
 

@@ -27,7 +27,7 @@ export default {
       bottomContents: [],
       selectedImage: null,
       FIRST_LOAD_NUM: 20,
-      SCROLL_LOAD_NUM: 10
+      SCROLL_LOAD_NUM: 20
     }
   },
   methods: {
@@ -159,6 +159,15 @@ export default {
           option.behavior = 'auto'
         }
         window.scrollTo(option)
+        setTimeout(function() {
+          const centerTop = center.getBoundingClientRect().top
+          if (centerTop < 54 || centerTop > 56) {
+            window.scrollTo({
+              top: centerPosition + centerTop - 110,
+              behavior: 'smooth'
+            })
+          }
+        }, 400)
       }
     )
   }
