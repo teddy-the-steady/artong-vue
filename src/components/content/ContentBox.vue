@@ -27,7 +27,6 @@ export default {
 
 .box {
  display: flex;
- align-items: flex-start;
 
  img {
     width: 100%;
