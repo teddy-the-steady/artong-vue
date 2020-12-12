@@ -46,7 +46,7 @@ export default {
 @keyframes fadeInOpacity {
     0% {
         opacity: 0;
-        width: 0%;
+        width: 60%;
     }
     100% {
         opacity: 1;
