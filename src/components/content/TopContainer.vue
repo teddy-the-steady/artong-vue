@@ -1,6 +1,6 @@
 <template>
   <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
-    <div class="content" v-for="(val, i) in topImages" :key="i">
+    <div class="content" :class="{selected: selectedImage}" v-for="(val, i) in topImages" :key="i">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
   </masonry>
@@ -16,6 +16,10 @@ export default {
   props: {
     topImages: {
       type: Array,
+      default: null
+    },
+    selectedImage: {
+      type: Object,
       default: null
     }
   },
@@ -40,6 +44,10 @@ export default {
   animation: fadeInOpacity .3s;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
+  }
+
+  &.selected {
+    animation: none;
   }
 }
 

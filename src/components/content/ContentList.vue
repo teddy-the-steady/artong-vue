@@ -1,6 +1,6 @@
 <template>
   <div>
-    <top-container class="container" :topImages="topContents"
+    <top-container class="container" :topImages="topContents" :selectedImage="selectedImage"
       @image-selected="onTopImageSelect"></top-container>
     <center-container class="container" :image="selectedImage" ref="center"></center-container>
     <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
