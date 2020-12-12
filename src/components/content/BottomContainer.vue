@@ -1,6 +1,6 @@
 <template>
   <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
-    <div class="content" v-for="(val, i) in bottomImages" :key="i" ref="content">
+    <div class="content" v-for="(val, i) in bottomImages" :key="i">
       <content-box :image="val" @image-selected="onImageSelected"></content-box>
     </div>
   </masonry>
@@ -37,8 +37,20 @@ export default {
   margin: 7px;
   width: 90%;
   max-height: 300px;
+  animation: fadeInOpacity .3s;
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
   }
+}
+
+@keyframes fadeInOpacity {
+    0% {
+        opacity: 0;
+        width: 0%;
+    }
+    100% {
+        opacity: 1;
+        width: 90%;
+    }
 }
 </style>

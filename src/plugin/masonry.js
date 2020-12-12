@@ -84,10 +84,8 @@ var component = {
   },
 
   mounted: function mounted() {
-    var this$1 = this
-
-    this.$nextTick(function() {
-      this$1.reCalculate()
+    this.$nextTick(() => {
+      this.reCalculate()
     })
 
     // Bind resize handler to page
@@ -97,10 +95,8 @@ var component = {
   },
 
   updated: function updated() {
-    var this$1 = this
-
-    this.$nextTick(function() {
-      this$1.reCalculate()
+    this.$nextTick(() => {
+      this.reCalculate()
     })
   },
 
@@ -115,7 +111,6 @@ var component = {
     // and the value of the passed `:cols=` prop
     reCalculate: function reCalculate() {
       var previousWindowWidth = this.windowWidth
-
       this.windowWidth = (window ? window.innerWidth : null) || Infinity
 
       // Window resize events get triggered on page height
@@ -144,8 +139,6 @@ var component = {
     },
 
     _getChildItemsInColumnsArray: function _getChildItemsInColumnsArray() {
-      var this$1 = this
-
       var columns = []
       var childItems = this.$slots.default || []
 
@@ -166,7 +159,7 @@ var component = {
         }
 
         // Get the column index the child item will end up in
-        var columnIndex = visibleItemI % this$1.displayColumns
+        var columnIndex = visibleItemI % this.displayColumns
 
         if (!columns[columnIndex]) {
           columns[columnIndex] = []
@@ -180,8 +173,6 @@ var component = {
   },
 
   render: function render(createElement) {
-    var this$1 = this
-
     var columnsContainingChildren = this._getChildItemsInColumnsArray()
     var isGutterSizeUnitless = parseInt(this.displayGutter) === this.displayGutter * 1
     var gutterSizeWithUnit = isGutterSizeUnitless ? ((this.displayGutter) + 'px') : this.displayGutter
@@ -194,13 +185,13 @@ var component = {
       borderLeftWidth: gutterSizeWithUnit
     }
 
-    var columns = columnsContainingChildren.map(function(children, index) {
+    var columns = columnsContainingChildren.map((children, index) => {
       /// Create column element and inject the children
-      return createElement(this$1.columnTag, {
+      return createElement(this.columnTag, {
         key: index + '-' + columnsContainingChildren.length,
-        style: this$1.css ? columnStyle : null,
-        class: this$1.columnClass,
-        attrs: this$1.columnAttr
+        style: this.css ? columnStyle : null,
+        class: this.columnClass,
+        attrs: this.columnAttr
       }, children) // specify child items here
     })
 

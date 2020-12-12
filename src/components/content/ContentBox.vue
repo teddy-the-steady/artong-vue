@@ -1,7 +1,7 @@
 <template>
   <div class="box" @click="imageSelect()">
     <!-- <img :src="image.url" alt="" ref="box"/> -->
-    <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt="" ref="box"/>
+    <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
   </div>
 </template>
 
