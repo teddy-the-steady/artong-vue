@@ -1,10 +1,10 @@
 <template>
   <div>
     <top-container class="container" :topImages="topContents"
-      @image-selected="onTopImageSelected"></top-container>
+      @image-selected="onTopImageSelect"></top-container>
     <center-container class="container" :image="selectedImage" ref="center"></center-container>
     <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
-      @image-selected="onBottomImageSelected"></bottom-container>
+      @image-selected="onBottomImageSelect"></bottom-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
@@ -109,7 +109,7 @@ export default {
     deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
     },
-    onBottomImageSelected(selectedIndex) {
+    onBottomImageSelect(selectedIndex) {
       const topContentsTail = this.bottomContents.slice(0, selectedIndex)
       const selectedImage = this.bottomContents[selectedIndex]
       this.bottomContents.splice(0, selectedIndex + 1)
@@ -118,7 +118,7 @@ export default {
       this.pushImages(topContentsTail, this.topContents)
       this.setSelectedImage(selectedImage)
     },
-    onTopImageSelected(selectedIndex) {
+    onTopImageSelect(selectedIndex) {
       const bottomContentsHead = this.topContents.slice(selectedIndex + 1)
       const selectedImage = this.topContents[selectedIndex]
       this.topContents.splice(selectedIndex)
