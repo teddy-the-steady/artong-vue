@@ -29,14 +29,12 @@
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem'
-import { animationMixin } from '../../mixin'
 
 export default {
   name: 'SidebarMenu',
   components: {
     SidebarMenuItem
   },
-  mixins: [animationMixin],
   props: {
     menu: {
       type: Array,
