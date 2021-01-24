@@ -150,20 +150,6 @@ export const itemMixin = {
   inject: ['emitActiveShow', 'emitItemClick', 'emitItemUpdate']
 }
 
-export const animationMixin = {
-  methods: {
-    expandEnter(el) {
-      el.style.height = el.scrollHeight + 'px'
-    },
-    expandAfterEnter(el) {
-      el.style.height = 'auto'
-    },
-    expandBeforeLeave(el) {
-      el.style.height = el.scrollHeight + 'px'
-    }
-  }
-}
-
 export const memberMixin = {
   computed: {
     signedIn() {

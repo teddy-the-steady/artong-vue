@@ -48,12 +48,6 @@
     </sidebar-menu-link>
     <template v-if="item.child">
       <template>
-        <transition
-          name="expand"
-          @enter="expandEnter"
-          @afterEnter="expandAfterEnter"
-          @beforeLeave="expandBeforeLeave"
-        >
           <div
             class="art--dropdown"
             v-if="show"
@@ -73,14 +67,13 @@
               </sidebar-menu-item>
             </div>
           </div>
-        </transition>
       </template>
     </template>
   </div>
 </template>
 
 <script>
-import { itemMixin, animationMixin } from '../../mixin'
+import { itemMixin } from '../../mixin'
 import SidebarMenuLink from './SidebarMenuLink'
 import SidebarMenuIcon from './SidebarMenuIcon'
 import SidebarMenuBadge from './SidebarMenuBadge'
@@ -92,7 +85,7 @@ export default {
     SidebarMenuIcon,
     SidebarMenuBadge
   },
-  mixins: [itemMixin, animationMixin],
+  mixins: [itemMixin],
   props: {
     item: {
       type: Object,

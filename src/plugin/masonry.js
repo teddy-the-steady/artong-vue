@@ -76,14 +76,14 @@ var breakpointValue = function(mixed, windowWidth) {
 var component = {
   props: props,
 
-  data: function data() {
+  data() {
     return {
       displayColumns: 2,
       displayGutter: 0
     }
   },
 
-  mounted: function mounted() {
+  mounted() {
     this.$nextTick(() => {
       this.reCalculate()
     })
@@ -94,13 +94,16 @@ var component = {
     }
   },
 
-  updated: function updated() {
+  updated() {
+    var htmlCollection = this.$refs['masonryEl-0'].getElementsByClassName('content')
+    console.log(Array.prototype.map.call(htmlCollection, (val) => { return val.offsetTop }))
+
     this.$nextTick(() => {
       this.reCalculate()
     })
   },
 
-  beforeDestroy: function beforeDestroy() {
+  beforeDestroy() {
     if (window) {
       window.removeEventListener('resize', this.reCalculate)
     }
@@ -172,7 +175,8 @@ var component = {
     }
   },
 
-  render: function render(createElement) {
+  render(createElement) {
+    console.log('render')
     var columnsContainingChildren = this._getChildItemsInColumnsArray()
     var isGutterSizeUnitless = parseInt(this.displayGutter) === this.displayGutter * 1
     var gutterSizeWithUnit = isGutterSizeUnitless ? ((this.displayGutter) + 'px') : this.displayGutter
@@ -191,7 +195,8 @@ var component = {
         key: index + '-' + columnsContainingChildren.length,
         style: this.css ? columnStyle : null,
         class: this.columnClass,
-        attrs: this.columnAttr
+        attrs: this.columnAttr,
+        ref: 'masonryEl-' + index
       }, children) // specify child items here
     })
 
