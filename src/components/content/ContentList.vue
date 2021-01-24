@@ -51,19 +51,13 @@ export default {
       }
       setTimeout(function() { $state.loaded() }, 2000)
     },
-    pushContentToTop(numOfImages) {
-      const imageArrayToPush = this.makeImageArray(numOfImages)
-      this.pushImages(imageArrayToPush, this.topContents)
-    },
     pushContentToBottom(numOfImages) {
       const imageArrayToPush = this.makeImageArray(numOfImages)
       this.pushImages(imageArrayToPush, this.bottomContents)
     },
-    getRandomIntInclusive(min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      const result = Math.floor(Math.random() * (max - min + 1)) + min
-      return result
+    pushContentToTop(numOfImages) {
+      const imageArrayToPush = this.makeImageArray(numOfImages)
+      this.pushImages(imageArrayToPush, this.topContents)
     },
     makeImageArray(numOfImages) {
       const imageArrayToPush = []
@@ -75,6 +69,12 @@ export default {
         })
       }
       return imageArrayToPush
+    },
+    getRandomIntInclusive(min, max) {
+      min = Math.ceil(min)
+      max = Math.floor(max)
+      const result = Math.floor(Math.random() * (max - min + 1)) + min
+      return result
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]
@@ -92,23 +92,6 @@ export default {
     pushImage(image, destContainer) {
       destContainer.push(image)
     },
-    prependImages(images, destContainer) {
-      for (let i = images.length - 1; i >= 0; i--) {
-        this.prependImage(images[i], destContainer)
-      }
-      this.resetImageIndex(destContainer)
-    },
-    resetImageIndex(container) {
-      for (let i in container) {
-        container[i].index = i
-      }
-    },
-    prependImage(image, destContainer) {
-      destContainer.unshift(image)
-    },
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj))
-    },
     onBottomImageSelect(selectedIndex) {
       const topContentsTail = this.bottomContents.slice(0, selectedIndex)
       const selectedImage = this.bottomContents[selectedIndex]
@@ -117,6 +100,14 @@ export default {
       this.pushImages([this.selectedImage], this.topContents)
       this.pushImages(topContentsTail, this.topContents)
       this.setSelectedImage(selectedImage)
+    },
+    resetImageIndex(container) {
+      for (let i in container) {
+        container[i].index = i
+      }
+    },
+    setSelectedImage(image) {
+      this.selectedImage = image
     },
     onTopImageSelect(selectedIndex) {
       const bottomContentsHead = this.topContents.slice(selectedIndex + 1)
@@ -128,8 +119,17 @@ export default {
       this.prependImages(bottomContentsHead, this.bottomContents)
       this.setSelectedImage(selectedImage)
     },
-    setSelectedImage(image) {
-      this.selectedImage = image
+    prependImages(images, destContainer) {
+      for (let i = images.length - 1; i >= 0; i--) {
+        this.prependImage(images[i], destContainer)
+      }
+      this.resetImageIndex(destContainer)
+    },
+    prependImage(image, destContainer) {
+      destContainer.unshift(image)
+    },
+    deepCopy(obj) {
+      return JSON.parse(JSON.stringify(obj))
     }
   },
   created() {
