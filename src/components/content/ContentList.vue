@@ -1,9 +1,9 @@
 <template>
   <div>
-    <top-container class="container" :topImages="topContents" :selectedImage="selectedImage"
+    <top-container class="top-container" :topImages="topContents" :selectedImage="selectedImage"
       @image-selected="onTopImageSelect"></top-container>
-    <center-container class="container" :image="selectedImage" ref="center"></center-container>
-    <bottom-container class="container" v-if="bottomContents" :bottomImages="bottomContents"
+    <center-container :image="selectedImage" ref="center"></center-container>
+    <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
       @image-selected="onBottomImageSelect"></bottom-container>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
@@ -176,7 +176,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-.container {
-  display: inline-block;
+
+.top-container {
+  margin-top: 10px;
 }
 </style>

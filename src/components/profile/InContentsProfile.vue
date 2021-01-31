@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'ArtistProfile',
+  name: 'InContentsProfile',
   props: {
     profileImage: {
       type: String,

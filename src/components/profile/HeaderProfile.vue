@@ -27,12 +27,12 @@ export default {
     background-color: $artong-white;
     width: 30px;
     height: 30px;
-    border: 2px solid $artong-main;
-    border-radius: 50%;
 
     img {
         width: 30px;
         vertical-align: center;
+        border: 2px solid $artong-black;
+        border-radius: 50%;
     }
 }
 </style>
