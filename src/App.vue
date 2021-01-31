@@ -59,7 +59,7 @@ html {
             touch-action: manipulation;
             cursor: pointer;
             color: $artong-white;
-            background-color: $artong-main;
+            background-color: $artong-black;
             text-transform: uppercase;
             padding: 14px 0;
             letter-spacing: 1.1px;
@@ -90,7 +90,7 @@ html {
         .contents__body {
             position: relative;
             background: $artong-white;
-            padding-top: 60px;
+            padding-top: 50px;
             height: 100%;
         }
     }

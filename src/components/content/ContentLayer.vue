@@ -3,8 +3,8 @@
     <div class="layer" :class="{active: isLayerActive}" @click="onLayerClick()">
     </div>
     <transition name="slide-right">
-      <div class="artistProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <artist-profile :profileImage="image.profileImageUrl"></artist-profile>
+      <div class="inContentsProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
+        <in-contents-profile :profileImage="image.profileImageUrl"></in-contents-profile>
       </div>
     </transition>
     <transition name="slide-left">
@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import ArtistProfile from '../profile/ArtistProfile'
+import InContentsProfile from '../profile/InContentsProfile'
 import ActionList from '../content/ActionList'
 
 export default {
   name: 'ContentLayer',
   components: {
-    ArtistProfile, ActionList
+    InContentsProfile, ActionList
   },
   props: {
     image: {
@@ -87,7 +87,7 @@ export default {
     transition: all 100ms ease-in 0s;
 }
 
-.artistProfile {
+.inContentsProfile {
   display: none;
   &.active {
     display: block;
