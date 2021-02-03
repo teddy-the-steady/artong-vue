@@ -43,7 +43,7 @@ export default {
         img {
             width: 90%;
             vertical-align: center;
-            border: 5px solid $artong-black;
+            border: 5px solid $artong-main;
             border-radius: 50%;
         }
     }
