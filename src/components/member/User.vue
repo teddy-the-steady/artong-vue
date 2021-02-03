@@ -56,7 +56,7 @@ export default {
   .user-info {
     height: 30%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: flex-end;
     padding: 15px;
 

@@ -67,6 +67,7 @@ export default {
 
         a {
             color: $artong-black;
+            text-decoration: none;
         }
     }
 

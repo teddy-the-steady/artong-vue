@@ -51,7 +51,7 @@ html {
 
         a {
             color: $artong-main;
-            text-decoration: none;
+            text-decoration: underline;
         }
 
         button {
@@ -59,7 +59,7 @@ html {
             touch-action: manipulation;
             cursor: pointer;
             color: $artong-white;
-            background-color: $artong-black;
+            background-color: $artong-main;
             text-transform: uppercase;
             padding: 14px 0;
             letter-spacing: 1.1px;
@@ -71,7 +71,7 @@ html {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             background: $artong-white;
-            color: $artong-black;
+            color: $artong-main;
             text-align: center;
             height: 100%;
             min-height: 100%;

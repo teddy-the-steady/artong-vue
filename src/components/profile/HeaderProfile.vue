@@ -31,7 +31,7 @@ export default {
     img {
         width: 30px;
         vertical-align: center;
-        border: 2px solid $artong-black;
+        border: 2px solid $artong-main;
         border-radius: 50%;
     }
 }
