@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <img v-if="profileImage" :src="profileImage" alt="">
-    <img v-else src="../../assets/images/profilethumb.png" alt="">
+    <img v-else src="../../assets/images/profile.svg" alt="">
   </div>
 </template>
 

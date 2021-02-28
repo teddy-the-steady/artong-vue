@@ -2,7 +2,7 @@
   <div class="profile">
     <div class="image">
       <img v-if="profileImage" :src="profileImage" alt="">
-      <img v-else src="../../assets/images/profilethumb.png" alt="">
+      <img v-else src="../../assets/images/profile.svg" alt="">
     </div>
     <div class="info">
       <div class="nick-name">
@@ -43,8 +43,6 @@ export default {
         img {
             width: 90%;
             vertical-align: center;
-            border: 5px solid $artong-main;
-            border-radius: 50%;
         }
     }
 

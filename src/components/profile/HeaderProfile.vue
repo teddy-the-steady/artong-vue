@@ -1,10 +1,10 @@
 <template>
   <div class="profile">
     <router-link v-if="!signedIn" to="/login">
-      <img src="../../assets/images/profilethumb.png" alt="">
+      <img src="../../assets/images/profile.svg" alt="">
     </router-link>
     <router-link v-else to="/user">
-      <img src="../../assets/images/profilethumb.png" alt="">
+      <img src="../../assets/images/profile.svg" alt="">
     </router-link>
   </div>
 </template>
@@ -31,8 +31,7 @@ export default {
     img {
         width: 30px;
         vertical-align: center;
-        border: 2px solid $artong-main;
-        border-radius: 50%;
+        filter: brightness(1%) contrast(100%);
     }
 }
 </style>
