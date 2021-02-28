@@ -9,7 +9,7 @@
       <div class="navbar__logo">
         <a href="."><b><i>A</i>rtong</b></a>
       </div>
-      <div class="navbar__side">
+      <div class="navbar__side" @click="scrollToTop">
         <div class="navbar__icons">
           <header-profile></header-profile>
         </div>
@@ -31,6 +31,11 @@ export default {
   computed: {
     isBrowserPanelOpen() {
       return this.$store.state.isHeadNavOpen
+    }
+  },
+  methods: {
+    scrollToTop() {
+      window.scrollTo({top: 0})
     }
   }
 }
