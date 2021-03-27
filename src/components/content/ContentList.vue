@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
 import InfiniteLoading from 'vue-infinite-loading'
 import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
@@ -31,16 +30,6 @@ export default {
     }
   },
   methods: {
-    async findUser() {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        this.$store.state.signedIn = true
-        this.$store.state.user = user
-      } catch (err) {
-        this.$store.state.signedIn = false
-        this.$store.state.user = null
-      }
-    },
     infiniteHandler($state) {
       if (this.bottomContents.length > 0) {
         this.pushContentToBottom(this.SCROLL_LOAD_NUM)
@@ -133,7 +122,6 @@ export default {
     }
   },
   created() {
-    this.findUser()
     this.pushContentToTop(this.FIRST_LOAD_NUM)
   },
   mounted() {

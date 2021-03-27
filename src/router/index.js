@@ -23,7 +23,6 @@ const router = new Router({
       path: '/server',
       name: 'Server',
       component: Server
-      // meta: { requiresAuth: true }
     },
     {
       path: '/trending',
@@ -33,12 +32,14 @@ const router = new Router({
     {
       path: '/following',
       name: 'Following',
-      component: Following
+      component: Following,
+      meta: { requiresAuth: true }
     },
     {
       path: '/workplace',
       name: 'Workplace',
-      component: Workplace
+      component: Workplace,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -46,7 +47,7 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/user',
+      path: '/@:id',
       name: 'User',
       component: User
     },
@@ -58,27 +59,29 @@ const router = new Router({
   ]
 })
 
-// router.beforeResolve((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     let user
-//     Vue.prototype.$Amplify.Auth.currentAuthenticatedUser().then((data) => {
-//       if (data && data.signInUserSession) {
-//         user = data
-//       }
-//     }).catch((e) => {
-//       console.log(e)
-//     })
-//     if (!user) {
-//       next({
-//         path: '/',
-//         query: {
-//           redirect: to.fullPath
-//         }
-//       })
-//     }
-//     next()
-//   }
-//   next()
-// })
+router.beforeResolve(async function(to, from, next) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    let user
+    try {
+      const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
+      if (data && data.signInUserSession) {
+        user = data
+      }
+      next()
+    } catch (error) {
+      console.log(error)
+      if (!user) {
+        next({
+          path: '/login',
+          query: {
+            redirect: to.fullPath
+          }
+        })
+      }
+    }
+  } else {
+    next()
+  }
+})
 
 export default router

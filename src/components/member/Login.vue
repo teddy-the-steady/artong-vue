@@ -29,15 +29,16 @@
 
 <script>
 import { Auth } from 'aws-amplify'
-import { memberMixin } from '../../mixin'
+import { menuDeactivate, memberMixin } from '../../mixin'
 import Confirm from './Confirm'
+import axios from 'axios'
 
 export default {
   name: 'Login',
   components: {
     Confirm
   },
-  mixins: [memberMixin],
+  mixins: [menuDeactivate, memberMixin],
   data() {
     return {
       username: '',
@@ -46,8 +47,9 @@ export default {
       user: ''
     }
   },
-  created() {
-    this.findUser()
+  beforeRouteEnter(to, from, next) {
+    window.scrollTo({top: 0})
+    next()
   },
   methods: {
     emptyUser(errMessage) {
@@ -58,8 +60,8 @@ export default {
       Auth.signIn(this.username, this.password)
         .then(user => {
           this.$store.state.signedIn = !!user
-          this.$store.state.user = user
-          this.$router.push('/')
+          this.$store.state.cognitoUser = user
+          this.getMember(this.$store.state.cognitoUser.username)
         })
         .catch(err => {
           this.warning = err.message
@@ -68,24 +70,24 @@ export default {
           }
         })
     },
-    signOut() {
-      Auth.signOut()
-        .then(data => {
-          this.$store.state.signedIn = !!data
-          this.$store.state.user = null
+    getMember(id) {
+      axios.get(`https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1/member/${id}`)
+        .then(val => {
+          console.log('Login getMember')
+          this.$store.state.user = val.data.data
           this.$router.push('/')
         })
         .catch(err => console.log(err))
     },
-    async findUser() {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        this.$store.state.signedIn = true
-        this.$store.state.user = user
-      } catch (err) {
-        this.$store.state.signedIn = false
-        this.$store.state.user = null
-      }
+    signOut() {
+      Auth.signOut()
+        .then(data => {
+          this.$store.state.signedIn = !!data
+          this.$store.state.cognitoUser = null
+          this.$store.state.user = null
+          this.$router.push('/')
+        })
+        .catch(err => console.log(err))
     }
   }
 }

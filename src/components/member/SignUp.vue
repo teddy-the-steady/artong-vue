@@ -25,13 +25,13 @@
 <script>
 import { Auth } from 'aws-amplify'
 import Confirm from './Confirm'
-import { memberMixin } from '../../mixin'
+import { menuDeactivate } from '../../mixin'
 export default {
   name: 'SignUp',
   components: {
     Confirm
   },
-  mixins: [memberMixin],
+  mixins: [menuDeactivate],
   data() {
     return {
       username: '',

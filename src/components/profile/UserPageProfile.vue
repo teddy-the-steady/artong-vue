@@ -1,15 +1,15 @@
 <template>
   <div class="profile">
     <div class="image">
-      <img v-if="profileImage" :src="profileImage" alt="">
-      <img v-else src="../../assets/images/profile.svg" alt="">
+      <div v-if="profileImage" :src="profileImage" ></div>
+      <div v-else></div>
     </div>
     <div class="info">
       <div class="nick-name">
-        nickname
+        {{ $route.params.id }}
       </div>
       <div class="intro">
-        I draw hope
+        {{ $store.state.user.introduction }}
       </div>
     </div>
   </div>
@@ -36,23 +36,43 @@ export default {
 
     .image {
         background-color: $artong-white;
-        width: 100%;
-        max-width: 150px;
+        width: 150px;
+        height: 150px;
         min-width: 100px;
+        min-height: 100px;
+        margin-right: 30px;
+        border-radius: 50%;
+        box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);;
 
-        img {
-            width: 90%;
-            vertical-align: center;
+        div {
+          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+          height: 150px;
+          border-radius: 50%;
+          cursor: pointer;
         }
     }
 
     .info {
       display: flex;
       flex-direction: column;
+      text-align: left;
 
       .nick-name {
-        font-size: 30px;
+        font-size: 1.5em;
       }
     }
+}
+
+@media only screen and (max-width: 599px) {
+  .profile {
+    .image {
+      width: 100px;
+      height: 100px;
+      margin-right: 10px;
+      div {
+        height: 100px;
+      }
+    }
+  }
 }
 </style>
