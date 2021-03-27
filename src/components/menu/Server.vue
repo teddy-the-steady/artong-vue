@@ -9,11 +9,11 @@
 
 <script>
 import axios from 'axios'
+import { headerActivate } from '../../mixin'
 import ContentList from '../content/ContentList'
-import { menuMixin } from '../../mixin'
 export default {
   name: 'Server',
-  mixins: [menuMixin],
+  mixins: [headerActivate],
   components: {
     ContentList
   },
@@ -23,8 +23,8 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.user) {
-      const jwt = this.$store.state.user
+    if (this.$store.state.cognitoUser) {
+      const jwt = this.$store.state.cognitoUser
         .getSignInUserSession()
         .getAccessToken()
         .getJwtToken()

@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import { menuMixin } from '../../mixin'
+import { headerActivate } from '../../mixin'
 export default {
   name: 'Workplace',
-  mixins: [menuMixin]
+  mixins: [headerActivate]
 }
 </script>
 

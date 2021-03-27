@@ -1,7 +1,7 @@
 <template>
     <div>
       <h2>Confirm Sign Up</h2>
-      <h3>For user: <span>{{username}}</span></h3>
+      <h3>For user: <span>{{ username }}</span></h3>
       <div class="form__username">
         <p v-text="warningConfirm"></p>
         <input v-model="code" v-on:keyup.enter="confirm" type="text" placeholder="Enter your code">
@@ -12,10 +12,10 @@
 
 <script>
 import { Auth } from 'aws-amplify'
-import { memberMixin } from '../../mixin'
+import { menuDeactivate } from '../../mixin'
 export default {
   name: 'Confirm',
-  mixins: [memberMixin],
+  mixins: [menuDeactivate],
   props: {
     username: {
       type: String,
@@ -46,7 +46,7 @@ export default {
       Auth.signIn(this.username, this.password)
         .then(user => {
           this.$store.state.signedIn = !!user
-          this.$store.state.user = user
+          this.$store.state.cognitoUser = user
           this.$router.push('/')
         })
         .catch(err => {

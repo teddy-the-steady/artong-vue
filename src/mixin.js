@@ -155,14 +155,17 @@ export const memberMixin = {
     signedIn() {
       return this.$store.state.signedIn
     }
-  },
+  }
+}
+
+export const menuDeactivate = {
   activated() {
     this.$store.commit('setHeadNavFalse')
     this.$store.commit('setSideMenuFalse')
   }
 }
 
-export const menuMixin = {
+export const headerActivate = {
   activated() {
     this.$store.commit('setHeadNavTrue')
   }

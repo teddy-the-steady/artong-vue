@@ -7,10 +7,10 @@
 
 <script>
 import ContentList from '../content/ContentList'
-import { menuMixin } from '../../mixin'
+import { headerActivate } from '../../mixin'
 export default {
   name: 'Trending',
-  mixins: [menuMixin],
+  mixins: [headerActivate],
   components: {
     ContentList
   }
