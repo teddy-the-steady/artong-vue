@@ -1,17 +1,26 @@
 <template>
   <transition name="slide">
     <nav class="navbar" v-if="isBrowserPanelOpen">
-      <div class="navbar__side">
+      <div class="navbar__side left">
         <div class="navbar__menu">
           <burger></burger>
         </div>
       </div>
       <div class="navbar__logo">
-        <a href="."><b><i>A</i>rtong</b></a>
+        <router-link to="/"><b><i>A</i>rtong</b></router-link>
       </div>
-      <div class="navbar__side" @click="scrollToTop">
+      <div class="navbar__side right">
         <div class="navbar__icons">
-          <header-profile></header-profile>
+          <div class="login" v-if="!signedIn">
+            <router-link to="/login">
+              SIGN IN
+            </router-link>
+          </div>
+          <div class="profile" v-else>
+            <router-link :to="{ name: 'User', params: { id: this.$store.state.user.username }}">
+              <header-profile v-if="this.$store.state.user"></header-profile>
+            </router-link>
+          </div>
         </div>
       </div>
     </nav>
@@ -19,11 +28,15 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify'
+import axios from 'axios'
 import Burger from './Burger'
 import HeaderProfile from '../profile/HeaderProfile'
+import { memberMixin } from '../../mixin'
 
 export default {
   name: 'Header',
+  mixins: [memberMixin],
   components: {
     Burger,
     HeaderProfile
@@ -33,9 +46,25 @@ export default {
       return this.$store.state.isHeadNavOpen
     }
   },
+  mounted() {
+    this.findUser()
+  },
   methods: {
-    scrollToTop() {
-      window.scrollTo({top: 0})
+    async findUser() {
+      try {
+        const user = await Auth.currentAuthenticatedUser()
+        this.$store.state.signedIn = true
+        this.$store.state.cognitoUser = user
+        await this.getMember(this.$store.state.cognitoUser.username)
+        console.log('Header findUser')
+      } catch (err) {
+        this.$store.state.signedIn = false
+        this.$store.state.cognitoUser = null
+      }
+    },
+    async getMember(id) {
+      const user = await axios.get(`https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1/member/${id}`)
+      this.$store.state.user = user.data.data
     }
   }
 }
@@ -47,42 +76,68 @@ export default {
 .slide-enter-active,
 .slide-leave-active
 {
-    transition: transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .slide-enter,
 .slide-leave-to {
-    transform: translateY(-100%);
-    transition: all 150ms ease-in 0s
+  transform: translateY(-100%);
+  transition: all 150ms ease-in 0s
 }
 
 .navbar {
-    display: flex;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $artong-white;
-    height: $head-height;
-    box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $artong-white;
+  height: $head-height;
+  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 
-    .navbar__logo {
-        font-size: 24px;
+  .navbar__logo {
+    font-size: 24px;
+
+    a {
+      color: $artong-black;
+      text-decoration: none;
+    }
+  }
+
+  .navbar__side {
+    padding: 0 12px;
+    width: 20%;
+
+    .navbar__icons {
+      .login {
+        height: 2rem;
+        border-radius: 2rem;
+        padding: 0 20px;
+        background-color: $artong-black;
 
         a {
-            color: $artong-black;
-            text-decoration: none;
+          font-weight: 800;
+          font-size: 1.1rem;
+          color: $artong-white;
+          text-decoration: none;
+          vertical-align: -webkit-baseline-middle;
         }
-    }
+      }
 
-    .navbar__side {
-        padding: 0 12px;
-
-        .navbar__icons {
-            list-style: none;
-            padding-left: 0;
-        }
+      .profile {
+        width: 30px;
+        height: 30px;
+        border-radius: 2rem;
+        box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+      }
     }
+  }
+
+  .right {
+    .navbar__icons {
+      float: right;
+    }
+  }
 }
 </style>

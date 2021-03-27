@@ -5,32 +5,16 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
 import ContentList from '../content/ContentList'
-import { menuMixin } from '../../mixin'
+import { headerActivate } from '../../mixin'
 export default {
   name: 'HelloWorld',
-  mixins: [menuMixin],
+  mixins: [headerActivate],
   components: {
     ContentList
   },
   data() {
     return {}
-  },
-  created() {
-    this.findUser()
-  },
-  methods: {
-    async findUser() {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        this.$store.state.signedIn = true
-        this.$store.state.user = user
-      } catch (err) {
-        this.$store.state.signedIn = false
-        this.$store.state.user = null
-      }
-    }
   }
 }
 </script>

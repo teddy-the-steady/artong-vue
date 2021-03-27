@@ -22,13 +22,13 @@ export default {
 
 .profile {
     background-color: $artong-white;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    cursor: pointer;
 
     img {
-        width: 30px;
-        vertical-align: center;
+        width: 40px;
     }
 }
 </style>

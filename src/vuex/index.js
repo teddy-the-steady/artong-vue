@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
+    cognitoUser: null,
     signedIn: false,
     isSideMenuOpen: false,
     isHeadNavOpen: true
