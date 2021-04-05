@@ -1,6 +1,6 @@
 <template>
     <div
-        :class="{ 'active' : isBurgerActive }"
+        :class="{ 'active' : isSideMenuOpen }"
         id="burger"
          @click.prevent="toggle">
         <slot>
@@ -17,13 +17,13 @@
 export default {
   name: 'Burger',
   computed: {
-    isBurgerActive() {
-      return this.$store.state.isSideMenuOpen
+    isSideMenuOpen() {
+      return this.$store.state.menu.isSideMenuOpen
     }
   },
   methods: {
     toggle() {
-      this.$store.commit('toggleNav')
+      this.$store.commit('TOGGLE_NAV')
     }
   }
 }

@@ -45,8 +45,8 @@ export default {
     signIn() {
       Auth.signIn(this.username, this.password)
         .then(user => {
-          this.$store.state.signedIn = !!user
-          this.$store.state.cognitoUser = user
+          // this.$store.state.signedIn = !!user
+          // this.$store.state.cognitoUser = user
           this.$router.push('/')
         })
         .catch(err => {

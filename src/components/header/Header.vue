@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <nav class="navbar" v-if="isBrowserPanelOpen">
+    <nav class="navbar" v-if="isHeadNavOpen">
       <div class="navbar__side left">
         <div class="navbar__menu">
           <burger></burger>
@@ -11,14 +11,14 @@
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
-          <div class="login" v-if="!signedIn">
+          <div class="login" v-if="!currentUser">
             <router-link to="/login">
               SIGN IN
             </router-link>
           </div>
           <div class="profile" v-else>
-            <router-link :to="{ name: 'User', params: { id: this.$store.state.user.username }}">
-              <header-profile v-if="this.$store.state.user"></header-profile>
+            <router-link :to="{ name: 'User', params: { id: currentUser.username }}">
+              <header-profile v-if="currentUser"></header-profile>
             </router-link>
           </div>
         </div>
@@ -29,21 +29,21 @@
 
 <script>
 import { Auth } from 'aws-amplify'
-import axios from 'axios'
 import Burger from './Burger'
 import HeaderProfile from '../profile/HeaderProfile'
-import { memberMixin } from '../../mixin'
 
 export default {
   name: 'Header',
-  mixins: [memberMixin],
   components: {
     Burger,
     HeaderProfile
   },
   computed: {
-    isBrowserPanelOpen() {
-      return this.$store.state.isHeadNavOpen
+    isHeadNavOpen() {
+      return this.$store.state.menu.isHeadNavOpen
+    },
+    currentUser() {
+      return this.$store.state.auth.currentUser
     }
   },
   mounted() {
@@ -52,20 +52,20 @@ export default {
   methods: {
     async findUser() {
       try {
-        const user = await Auth.currentAuthenticatedUser()
-        this.$store.state.signedIn = true
-        this.$store.state.cognitoUser = user
-        await this.getMember(this.$store.state.cognitoUser.username)
+        await Auth.currentAuthenticatedUser()
+        // this.$store.state.signedIn = true
+        // this.$store.state.cognitoUser = user
+        // await this.getMember(this.$store.state.cognitoUser.username)
         console.log('Header findUser')
       } catch (err) {
-        this.$store.state.signedIn = false
-        this.$store.state.cognitoUser = null
+        // this.$store.state.signedIn = false
+        // this.$store.state.cognitoUser = null
       }
-    },
-    async getMember(id) {
-      const user = await axios.get(`https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1/member/${id}`)
-      this.$store.state.user = user.data.data
     }
+    // async getMember(id) {
+    // const user = await axios.get(`/member/${id}`)
+    // this.$store.state.user = user.data.data
+    // }
   }
 }
 </script>
@@ -113,7 +113,7 @@ export default {
       .login {
         height: 2rem;
         border-radius: 2rem;
-        padding: 0 20px;
+        width: 80px;
         background-color: $artong-black;
 
         a {
@@ -137,6 +137,21 @@ export default {
   .right {
     .navbar__icons {
       float: right;
+    }
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .navbar {
+    .navbar__side {
+      .navbar__icons {
+        .login {
+          width: 60px;
+          a {
+            font-size: .8rem;
+          }
+        }
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template class="contents__body">
   <div>
     <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
-    <div class="form__box" v-if="!signedIn && !user">
+    <div class="form__box" v-if="!currentUser && !user">
       <h1>Log In</h1>
       <div class="form__username">
         <p v-text="warning"></p>
@@ -20,25 +20,23 @@
         </span>
       </div>
     </div>
-    <confirm class="form__box" v-if="!signedIn && user" :username="user" :password="password" @empty-user="emptyUser"/>
-    <div v-if="signedIn">
-      <button @click="signOut">Sign Out</button>
+    <confirm class="form__box" v-if="!currentUser && user" :username="user" :password="password" @empty-user="emptyUser"/>
+    <div v-if="currentUser">
+      <div class="spinner"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
-import { menuDeactivate, memberMixin } from '../../mixin'
+import { menuDeactivate } from '../../mixin'
 import Confirm from './Confirm'
-import axios from 'axios'
 
 export default {
   name: 'Login',
   components: {
     Confirm
   },
-  mixins: [menuDeactivate, memberMixin],
+  mixins: [menuDeactivate],
   data() {
     return {
       username: '',
@@ -51,43 +49,27 @@ export default {
     window.scrollTo({top: 0})
     next()
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.currentUser
+    }
+  },
   methods: {
     emptyUser(errMessage) {
       this.user = ''
       this.warning = errMessage
     },
-    signIn() {
-      Auth.signIn(this.username, this.password)
-        .then(user => {
-          this.$store.state.signedIn = !!user
-          this.$store.state.cognitoUser = user
-          this.getMember(this.$store.state.cognitoUser.username)
-        })
-        .catch(err => {
-          this.warning = err.message
-          if (err.code === 'UserNotConfirmedException') {
-            this.user = this.username
-          }
-        })
-    },
-    getMember(id) {
-      axios.get(`https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1/member/${id}`)
-        .then(val => {
-          console.log('Login getMember')
-          this.$store.state.user = val.data.data
-          this.$router.push('/')
-        })
-        .catch(err => console.log(err))
-    },
-    signOut() {
-      Auth.signOut()
-        .then(data => {
-          this.$store.state.signedIn = !!data
-          this.$store.state.cognitoUser = null
-          this.$store.state.user = null
-          this.$router.push('/')
-        })
-        .catch(err => console.log(err))
+    async signIn() {
+      try {
+        const { username, password } = this
+        await this.$store.dispatch('AUTH_REQUEST', { username, password })
+        this.$router.push('/')
+      } catch (error) {
+        this.warning = error.message
+        if (error.code === 'UserNotConfirmedException') {
+          this.user = this.username
+        }
+      }
     }
   }
 }
@@ -98,5 +80,25 @@ export default {
 
 .form__password {
     margin-bottom: 25px;
+}
+
+.spinner {
+  display: block;
+  position: relative;
+  top: 9px;
+  height: 30px;
+  width: 30px;
+  margin: 0px auto;
+  animation: rotation .6s infinite linear;
+  border-left: 6px solid rgba(0,174,239,.15);
+  border-right: 6px solid rgba(0,174,239,.15);
+  border-bottom: 6px solid rgba(0,174,239,.15);
+  border-top: 6px solid rgba(0,174,239,.8);
+  border-radius: 100%;
+}
+
+@keyframes rotation {
+  from {transform: rotate(0deg);}
+  to {transform: rotate(359deg);}
 }
 </style>
