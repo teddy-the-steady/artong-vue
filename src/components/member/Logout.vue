@@ -19,14 +19,13 @@ export default {
       this.user = ''
       this.warning = errMessage
     },
-    signOut() {
-      Auth.signOut()
-        .then(data => {
-          this.$store.state.signedIn = !!data
-          this.$store.state.user = null
-          this.$router.push('/')
-        })
-        .catch(err => console.log(err))
+    async signOut() {
+      try {
+        await this.$store.dispatch('AUTH_LOGOUT')
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

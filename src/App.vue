@@ -20,12 +20,12 @@ export default {
     SideBar
   },
   computed: {
-    isBurgerActive() {
-      return this.$store.state.isSideMenuOpen
+    isSideMenuOpen() {
+      return this.$store.state.menu.isSideMenuOpen
     }
   },
   watch: {
-    isBurgerActive() {
+    isSideMenuOpen() {
       document.body.classList.toggle('prevent-scroll')
     }
   }
