@@ -12,14 +12,13 @@
     <div>
       <content-list></content-list>
     </div>
-    <div v-if="signedIn">
+    <div v-if="true">
       <button @click="signOut">Sign Out</button>
     </div>
   </div>
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
 import UserPageProfile from '../profile/UserPageProfile'
 import ContentList from '../content/ContentList'
 
@@ -38,14 +37,13 @@ export default {
     }
   },
   methods: {
-    signOut() {
-      Auth.signOut()
-        .then(data => {
-          this.$store.state.signedIn = !!data
-          this.$store.state.user = null
-          this.$router.push('/')
-        })
-        .catch(err => console.log(err))
+    async signOut() {
+      try {
+        await this.$store.dispatch('AUTH_LOGOUT')
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

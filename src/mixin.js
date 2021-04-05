@@ -150,23 +150,15 @@ export const itemMixin = {
   inject: ['emitActiveShow', 'emitItemClick', 'emitItemUpdate']
 }
 
-export const memberMixin = {
-  computed: {
-    signedIn() {
-      return this.$store.state.signedIn
-    }
-  }
-}
-
 export const menuDeactivate = {
   activated() {
-    this.$store.commit('setHeadNavFalse')
-    this.$store.commit('setSideMenuFalse')
+    this.$store.commit('SET_HEAD_NAV_FALSE')
+    this.$store.commit('SET_SIDE_MENU_FALSE')
   }
 }
 
 export const headerActivate = {
   activated() {
-    this.$store.commit('setHeadNavTrue')
+    this.$store.commit('SET_HEAD_NAV_TRUE')
   }
 }

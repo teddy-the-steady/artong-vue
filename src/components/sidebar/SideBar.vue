@@ -1,10 +1,10 @@
 <template>
     <nav class="sidebar">
         <transition name="backdrop">
-            <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isPanelOpen"></div>
+            <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isSideMenuOpen"></div>
         </transition>
         <transition name="slide">
-            <div class="sidebar-panel" v-if="isPanelOpen">
+            <div class="sidebar-panel" v-if="isSideMenuOpen">
                 <sidebar-menu
                     :menu="menu"
                     :theme="selectedTheme"
@@ -31,13 +31,13 @@ export default {
     }
   },
   computed: {
-    isPanelOpen() {
-      return this.$store.state.isSideMenuOpen
+    isSideMenuOpen() {
+      return this.$store.state.menu.isSideMenuOpen
     }
   },
   methods: {
     closeSidebarPanel() {
-      this.$store.commit('toggleNav')
+      this.$store.commit('TOGGLE_NAV')
     },
     onItemClick(event, item) {
       console.log('onItemClick')

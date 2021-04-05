@@ -5,11 +5,14 @@
       <div v-else></div>
     </div>
     <div class="info">
-      <div class="nick-name">
+      <div class="username">
         {{ $route.params.id }}
       </div>
+      <div class="display-name">
+        {{ currentUser.profile.display_name }}
+      </div>
       <div class="intro">
-        {{ $store.state.user.introduction }}
+        {{ currentUser.profile.profile_pic }}
       </div>
     </div>
   </div>
@@ -22,6 +25,11 @@ export default {
     profileImage: {
       type: String,
       default: null
+    }
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.currentUser
     }
   }
 }
@@ -57,7 +65,7 @@ export default {
       flex-direction: column;
       text-align: left;
 
-      .nick-name {
+      .username {
         font-size: 1.5em;
       }
     }
