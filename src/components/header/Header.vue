@@ -11,14 +11,14 @@
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
-          <div class="login" v-if="!currentUser">
+          <div class="login" v-if="!currentUser.username">
             <router-link to="/login">
               SIGN IN
             </router-link>
           </div>
           <div class="profile" v-else>
             <router-link :to="{ name: 'User', params: { id: currentUser.username }}">
-              <header-profile v-if="currentUser"></header-profile>
+              <header-profile v-if="currentUser.username"></header-profile>
             </router-link>
           </div>
         </div>

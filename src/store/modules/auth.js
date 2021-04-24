@@ -4,7 +4,17 @@ import { Auth } from 'aws-amplify'
 import axios from 'axios'
 
 const state = {
-  currentUser: JSON.parse(localStorage.getItem('current-user')) || '',
+  currentUser: JSON.parse(localStorage.getItem('current-user')) || {
+    id: '',
+    email: '',
+    accessToken: '',
+    username: '',
+    language: '',
+    profile: {
+      profile_pic: '',
+      display_name: ''
+    }
+  }, // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가
   status: '',
   hasLoadedOnce: false
 }
@@ -27,8 +37,7 @@ const actions = {
           display_name: member.data.data.display_name
         }
       }
-      // TODO] currentUser안에 object가 string으로 나오는 이슈. auth.js에서 JSON.parse 해줄때 nested는 안되는건가
-      //       axios.get 한 결과에 data만 꺼내오기
+      // TODO] axios.get 한 결과에 data만 꺼내오기
       localStorage.setItem('current-user', JSON.stringify(currentUser))
       axios.defaults.headers.common['Authorization'] = currentUser.accessToken
 
@@ -71,7 +80,17 @@ const mutations = {
     state.hasLoadedOnce = true
   },
   [AUTH_LOGOUT]: state => {
-    state.currentUser = ''
+    state.currentUser = {
+      id: '',
+      email: '',
+      accessToken: '',
+      username: '',
+      language: '',
+      profile: {
+        profile_pic: '',
+        display_name: ''
+      }
+    }
   }
 }
 
