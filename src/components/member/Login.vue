@@ -1,7 +1,7 @@
 <template class="contents__body">
   <div>
     <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
-    <div class="form__box" v-if="!currentUser && !user">
+    <div class="form__box" v-if="!currentUser.id && !user">
       <h1>Log In</h1>
       <div class="form__username">
         <p v-text="warning"></p>
@@ -20,8 +20,8 @@
         </span>
       </div>
     </div>
-    <confirm class="form__box" v-if="!currentUser && user" :username="user" :password="password" @empty-user="emptyUser"/>
-    <div v-if="currentUser">
+    <confirm class="form__box" v-if="!currentUser.id && user" :username="user" :password="password" @empty-user="emptyUser"/>
+    <div v-if="currentUser.id">
       <div class="spinner"></div>
     </div>
   </div>
