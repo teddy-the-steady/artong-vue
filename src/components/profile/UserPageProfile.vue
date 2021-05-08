@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'UserPageProfile',
   props: {
@@ -28,9 +29,9 @@ export default {
     }
   },
   computed: {
-    currentUser() {
-      return this.$store.state.auth.currentUser
-    }
+    ...mapState({
+      currentUser: state => state.auth.currentUser
+    })
   }
 }
 </script>
