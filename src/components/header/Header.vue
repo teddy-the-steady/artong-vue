@@ -31,7 +31,7 @@
 import { Auth } from 'aws-amplify'
 import Burger from './Burger'
 import HeaderProfile from '../profile/HeaderProfile'
-
+import { mapState } from 'vuex'
 export default {
   name: 'Header',
   components: {
@@ -39,12 +39,10 @@ export default {
     HeaderProfile
   },
   computed: {
-    isHeadNavOpen() {
-      return this.$store.state.menu.isHeadNavOpen
-    },
-    currentUser() {
-      return this.$store.state.auth.currentUser
-    }
+    ...mapState({
+      isHeadNavOpen: state => state.menu.isHeadNavOpen,
+      currentUser: state => state.auth.currentUser
+    })
   },
   mounted() {
     this.findUser()

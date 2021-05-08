@@ -19,6 +19,7 @@
 <script>
 import menuItems from './menuItems'
 import SidebarMenu from './SidebarMenu'
+import { mapState } from 'vuex'
 export default {
   name: 'Sidebar',
   components: {
@@ -31,9 +32,9 @@ export default {
     }
   },
   computed: {
-    isSideMenuOpen() {
-      return this.$store.state.menu.isSideMenuOpen
-    }
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen
+    })
   },
   methods: {
     closeSidebarPanel() {

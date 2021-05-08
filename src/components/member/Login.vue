@@ -30,7 +30,7 @@
 <script>
 import { menuDeactivate } from '../../mixin'
 import Confirm from './Confirm'
-
+import { mapState } from 'vuex'
 export default {
   name: 'Login',
   components: {
@@ -50,9 +50,9 @@ export default {
     next()
   },
   computed: {
-    currentUser() {
-      return this.$store.state.auth.currentUser
-    }
+    ...mapState({
+      currentUser: state => state.auth.currentUser
+    })
   },
   methods: {
     emptyUser(errMessage) {
