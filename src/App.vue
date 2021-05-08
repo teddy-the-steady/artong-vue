@@ -13,6 +13,7 @@
 <script>
 import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
+import { mapState } from 'vuex'
 export default {
   name: 'App',
   components: {
@@ -20,9 +21,9 @@ export default {
     SideBar
   },
   computed: {
-    isSideMenuOpen() {
-      return this.$store.state.menu.isSideMenuOpen
-    }
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen
+    })
   },
   watch: {
     isSideMenuOpen() {

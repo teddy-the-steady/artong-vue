@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <div class="user-info">
-        <user-page-profile v-if="this.$store.state.user"></user-page-profile>
+        <user-page-profile></user-page-profile>
         <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
@@ -30,11 +30,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     window.scrollTo({top: 0})
     next()
-  },
-  computed: {
-    signedIn() {
-      return this.$store.state.signedIn
-    }
   },
   methods: {
     async signOut() {

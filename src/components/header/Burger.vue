@@ -14,12 +14,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Burger',
   computed: {
-    isSideMenuOpen() {
-      return this.$store.state.menu.isSideMenuOpen
-    }
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen
+    })
   },
   methods: {
     toggle() {
