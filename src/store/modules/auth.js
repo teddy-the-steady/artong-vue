@@ -1,4 +1,9 @@
-import { AUTH_REQUEST, AUTH_ERROR, AUTH_SUCCESS, AUTH_LOGOUT } from '../actions/auth'
+import {
+  AUTH_REQUEST,
+  AUTH_ERROR,
+  AUTH_SUCCESS,
+  AUTH_LOGOUT
+} from '../actions/auth'
 import { USER_REQUEST } from '../actions/user'
 import { Auth } from 'aws-amplify'
 import axios from 'axios'
@@ -16,6 +21,7 @@ const state = {
     }
   }, // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가
   status: '',
+  confirming: false,
   hasLoadedOnce: false
 }
 
@@ -91,6 +97,9 @@ const mutations = {
         display_name: ''
       }
     }
+  },
+  TOGGLE_CONFIRM: state => {
+    state.confirming = !state.confirming
   }
 }
 

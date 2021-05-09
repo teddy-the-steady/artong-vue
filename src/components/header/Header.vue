@@ -11,14 +11,14 @@
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
-          <div class="login" v-if="!currentUser.username">
+          <div class="login" v-if="!currentUser.id">
             <router-link to="/login">
               SIGN IN
             </router-link>
           </div>
           <div class="profile" v-else>
             <router-link :to="{ name: 'User', params: { id: currentUser.username }}">
-              <header-profile v-if="currentUser.username"></header-profile>
+              <header-profile v-if="currentUser.id"></header-profile>
             </router-link>
           </div>
         </div>
@@ -50,11 +50,12 @@ export default {
   methods: {
     async findUser() {
       try {
-        await Auth.currentAuthenticatedUser()
+        const result = await Auth.currentAuthenticatedUser()
         // this.$store.state.signedIn = true
         // this.$store.state.cognitoUser = user
         // await this.getMember(this.$store.state.cognitoUser.username)
         console.log('Header findUser')
+        console.log(result)
       } catch (err) {
         // this.$store.state.signedIn = false
         // this.$store.state.cognitoUser = null

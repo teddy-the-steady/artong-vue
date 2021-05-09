@@ -1,7 +1,7 @@
 <template class="contents__body">
     <div>
         <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
-        <div class="form__box" v-if="!signedIn && !user">
+        <div class="form__box" v-if="!confirming">
             <h1>Sign Up</h1>
             <div class="form__username">
               <p v-text="warningSignUp"></p>
@@ -18,13 +18,14 @@
               </span>
             </div>
         </div>
-        <confirm class="form__box" v-if="!signedIn && user" :username="user.username" :password="password"/>
+        <confirm class="form__box" v-if="confirming" :username="username" :password="password"/>
     </div>
 </template>
 
 <script>
 import { Auth } from 'aws-amplify'
 import Confirm from './Confirm'
+import { mapState } from 'vuex'
 import { menuDeactivate } from '../../mixin'
 export default {
   name: 'SignUp',
@@ -37,28 +38,43 @@ export default {
       username: '',
       password: '',
       password2: '',
-      warningSignUp: '',
-      user: ''
+      warningSignUp: ''
     }
   },
+  computed: {
+    ...mapState({
+      confirming: state => state.auth.confirming
+    })
+  },
   methods: {
-    join() {
+    async join() {
+      if (!this.validateEmail(this.username)) {
+        this.warningSignUp = 'Please use proper email'
+        return
+      }
+
       if (this.password !== this.password2) {
         this.warningSignUp = 'Passwords do not match'
         return
       }
-      Auth.signUp({
-        username: this.username,
-        password: this.password,
-        attributes: {
-          email: this.username
-        },
-        validationData: [] // optional
-      })
-        .then(data => {
-          this.user = data.user
+
+      try {
+        await Auth.signUp({
+          username: this.username,
+          password: this.password,
+          attributes: {
+            email: this.username
+          },
+          validationData: [] // optional
         })
-        .catch(err => { this.warningSignUp = err.message })
+        this.$store.commit('TOGGLE_CONFIRM')
+      } catch (error) {
+        this.warningSignUp = error.message
+      }
+    },
+    validateEmail(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
     }
   }
 }

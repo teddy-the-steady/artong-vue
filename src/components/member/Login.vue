@@ -1,7 +1,7 @@
 <template class="contents__body">
   <div>
     <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
-    <div class="form__box" v-if="!currentUser.id && !user">
+    <div class="form__box" v-if="!confirming">
       <h1>Log In</h1>
       <div class="form__username">
         <p v-text="warning"></p>
@@ -20,10 +20,7 @@
         </span>
       </div>
     </div>
-    <confirm class="form__box" v-if="!currentUser.id && user" :username="user" :password="password" @empty-user="emptyUser"/>
-    <div v-if="currentUser.id">
-      <div class="spinner"></div>
-    </div>
+    <confirm class="form__box" v-if="confirming" :username="username" :password="password"/>
   </div>
 </template>
 
@@ -41,8 +38,7 @@ export default {
     return {
       username: '',
       password: '',
-      warning: '',
-      user: ''
+      warning: ''
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -51,14 +47,10 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: state => state.auth.currentUser
+      confirming: state => state.auth.confirming
     })
   },
   methods: {
-    emptyUser(errMessage) {
-      this.user = ''
-      this.warning = errMessage
-    },
     async signIn() {
       try {
         const { username, password } = this
@@ -67,7 +59,7 @@ export default {
       } catch (error) {
         this.warning = error.message
         if (error.code === 'UserNotConfirmedException') {
-          this.user = this.username
+          this.$store.commit('TOGGLE_CONFIRM')
         }
       }
     }
