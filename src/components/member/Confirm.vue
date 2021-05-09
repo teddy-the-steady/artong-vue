@@ -1,12 +1,19 @@
 <template>
     <div>
       <h2>Confirm Sign Up</h2>
-      <h3>For user: <span>{{ username }}</span></h3>
       <div class="form__username">
         <p v-text="warningConfirm"></p>
-        <input v-model="code" v-on:keyup.enter="confirm" type="text" placeholder="Enter your code">
+        <input v-model="verificationCode" v-on:keyup.enter="confirm" type="text" placeholder="Enter your code">
+        <a @click="resendConfirmationCode">Resend verification code</a>
       </div>
-      <button @click="confirm">Submit</button>
+      <div class="form__footer">
+        <span>
+          <button @click="confirm">Submit</button>
+        </span>
+        <span>
+          Back to <a @click="backToLogin">Log In</a>
+        </span>
+      </div>
     </div>
 </template>
 
@@ -29,29 +36,33 @@ export default {
   data() {
     return {
       warningConfirm: '',
-      code: ''
+      verificationCode: ''
     }
   },
   methods: {
-    confirm() {
-      Auth.confirmSignUp(this.username, this.code, {
-        forceAliasCreation: true
-      })
-        .then(data => {
-          this.signIn(this.username, this.password)
+    async confirm() {
+      try {
+        const { username, password, verificationCode } = this
+        await Auth.confirmSignUp(username, verificationCode, {
+          forceAliasCreation: true
         })
-        .catch(err => { this.warningConfirm = err.message })
+
+        await this.$store.dispatch('AUTH_REQUEST', { username, password })
+      } catch (error) {
+        this.warningConfirm = error.message
+      }
     },
-    signIn() {
-      Auth.signIn(this.username, this.password)
-        .then(user => {
-          // this.$store.state.signedIn = !!user
-          // this.$store.state.cognitoUser = user
-          this.$router.push('/')
-        })
-        .catch(err => {
-          this.$emit('empty-user', err.message)
-        })
+    async resendConfirmationCode() {
+      try {
+        await Auth.resendSignUp(this.username)
+        this.warningConfirm = 'code resent successfully'
+      } catch (error) {
+        this.warningConfirm = 'error resending code:' + error
+      }
+    },
+    async backToLogin() {
+      this.$store.commit('TOGGLE_CONFIRM')
+      this.$router.push('/login')
     }
   }
 }
