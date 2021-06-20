@@ -41,7 +41,7 @@ export default {
   computed: {
     ...mapState({
       isHeadNavOpen: state => state.menu.isHeadNavOpen,
-      currentUser: state => state.auth.currentUser
+      currentUser: state => state.user.currentUser
     })
   },
   mounted() {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     async findUser() {
-      try {
+      try { // TODO] currentAuthenticatedUser를 언제 어디서 해줘야 할지 결정하자
         const result = await Auth.currentAuthenticatedUser()
         // this.$store.state.signedIn = true
         // this.$store.state.cognitoUser = user
@@ -61,10 +61,6 @@ export default {
         // this.$store.state.cognitoUser = null
       }
     }
-    // async getMember(id) {
-    // const user = await axios.get(`/member/${id}`)
-    // this.$store.state.user = user.data.data
-    // }
   }
 }
 </script>

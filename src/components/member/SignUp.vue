@@ -24,6 +24,7 @@
 
 <script>
 import { Auth } from 'aws-amplify'
+import axios from 'axios'
 import Confirm from './Confirm'
 import { mapState } from 'vuex'
 import { menuDeactivate } from '../../mixin'
@@ -59,7 +60,7 @@ export default {
       }
 
       try {
-        await Auth.signUp({
+        const authResult = await Auth.signUp({
           username: this.username,
           password: this.password,
           attributes: {
@@ -67,6 +68,13 @@ export default {
           },
           validationData: [] // optional
         })
+
+        // TODO] 아래 실패하면 에러처리부에서 코그니토 유저 없애야?? 싱크 맞춤 목적
+        await axios.post('/member', {
+          email: this.username,
+          auth_id: authResult.userSub
+        })
+
         this.$store.commit('TOGGLE_CONFIRM')
       } catch (error) {
         this.warningSignUp = error.message
