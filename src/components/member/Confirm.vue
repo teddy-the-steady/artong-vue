@@ -48,8 +48,13 @@ export default {
         })
 
         await this.$store.dispatch('AUTH_REQUEST', { username, password })
+        this.$store.commit('TOGGLE_CONFIRM')
+        this.$router.push('/')
       } catch (error) {
         this.warningConfirm = error.message
+        if (error.code === 'NotAuthorizedException') {
+          this.backToLogin()
+        }
       }
     },
     async resendConfirmationCode() {

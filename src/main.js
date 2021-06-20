@@ -20,6 +20,7 @@ Vue.use(Masonry)
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = 'https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1'
+// axios.defaults.baseURL = 'http://localhost:3000/stage/artong/v1'
 const currentUser = JSON.parse(localStorage.getItem('current-user'))
 if (currentUser && currentUser.accessToken) {
   axios.defaults.headers.common['Authorization'] = currentUser.accessToken
