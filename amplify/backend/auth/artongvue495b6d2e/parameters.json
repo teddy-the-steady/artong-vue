@@ -1,6 +1,6 @@
 {
     "identityPoolName": "artongvue495b6d2e_identitypool_495b6d2e",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "artong495b6d2e",
     "userPoolName": "artongvue495b6d2e_userpool_495b6d2e",
     "autoVerifiedAttributes": [
