@@ -52,6 +52,7 @@ export default {
         this.$router.push('/')
       } catch (error) {
         this.warningConfirm = error.message
+        // TODO] login에서 틀린 비번으로 넘어온 경우 confirm후 login화면 돌아가서 에러메세지가 이상하게 노출됨
         if (error.code === 'NotAuthorizedException') {
           this.backToLogin()
         }
