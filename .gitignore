@@ -22,7 +22,9 @@ amplify/backend/awscloudformation
 #build/
 dist/
 node_modules/
-# aws-exports.js
+# TODO] codebuild에서 amplify init headless 로 생성하고 gitignore해주자.(공개돼도 괜찮은 내용인데 환경별 관리목적?)
+# amplify cli 글로벌 설치하고 init 할때 키/권한이 문제..? 빌드 실패 기록 살펴보자 
+aws-exports.js 
 awsconfiguration.json
 amplifyconfiguration.json
 amplify-gradle-config.json
