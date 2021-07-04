@@ -1,8 +1,7 @@
 <template>
   <div class="profile">
     <div class="image">
-      <div v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()">
-      </div>
+      <img v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()"/>
       <div class="basicProfilePicture" v-else @click="$refs.fileInput.click()"></div>
       <input ref="fileInput" type="file" @change="onFileChange">
     </div>
@@ -27,7 +26,8 @@ export default {
   name: 'UserPageProfile',
   data() {
     return {
-      profileImage: ''
+      // TODO] amlify storage auth,unauth 설정 둘다 했는데 forbidden 발생. why? cognito 권한?? bucket 설정가서 뭘 해야하나?? 검색해보자
+      profileImage: 'https://4rtong-staging-imagesartongvue-artongvue.s3.ap-northeast-2.amazonaws.com/public/profile.png'
     }
   },
   computed: {
