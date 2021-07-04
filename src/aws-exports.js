@@ -6,7 +6,9 @@ const awsmobile = {
   'aws_cognito_region': 'ap-northeast-2',
   'aws_user_pools_id': 'ap-northeast-2_K2f6QM7iF',
   'aws_user_pools_web_client_id': '6m54119506mkh6dvhiiampagv',
-  'oauth': {}
+  'oauth': {},
+  'aws_user_files_s3_bucket': '4rtong-staging-imagesartongvue-artongvue',
+  'aws_user_files_s3_bucket_region': 'ap-northeast-2'
 }
 
 export default awsmobile
