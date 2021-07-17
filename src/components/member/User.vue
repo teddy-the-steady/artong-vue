@@ -2,7 +2,8 @@
   <div>
     <div class="header">
       <div class="user-info">
-        <user-page-profile></user-page-profile>
+        <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
+        <user-page-profile v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></user-page-profile>
         <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
@@ -19,17 +20,20 @@
 </template>
 
 <script>
+import MyPageProfile from '../profile/MyPageProfile'
 import UserPageProfile from '../profile/UserPageProfile'
 import ContentList from '../content/ContentList'
+import { mapState } from 'vuex'
 
 export default {
   name: 'User',
   components: {
-    UserPageProfile, ContentList
+    MyPageProfile, UserPageProfile, ContentList
   },
-  beforeRouteEnter(to, from, next) {
-    window.scrollTo({top: 0})
-    next()
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
   },
   methods: {
     async signOut() {
@@ -39,6 +43,11 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    }
+  },
+  watch: {
+    $route(to, from) {
+      window.scrollTo({top: 0})
     }
   }
 }
