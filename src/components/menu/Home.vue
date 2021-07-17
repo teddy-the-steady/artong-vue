@@ -8,7 +8,7 @@
 import ContentList from '../content/ContentList'
 import { headerActivate } from '../../mixin'
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
   mixins: [headerActivate],
   components: {
     ContentList

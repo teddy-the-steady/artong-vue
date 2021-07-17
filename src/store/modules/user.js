@@ -26,12 +26,17 @@ const actions = {
   [USER_REQUEST]: async function({ commit, dispatch }, user) {
     try {
       commit(USER_REQUEST)
-      const member = await axios.get(`/member/${user.attributes.sub}`)
+      const accessToken = user.getSignInUserSession().getAccessToken().getJwtToken()
+      const member = await axios.get(`/member/${user.attributes.sub}`, {
+        headers: {
+          Authorization: accessToken
+        }
+      })
       // TODO] axios.get 한 결과에서 data만 꺼내오기
       const currentUser = {
         id: user.attributes.sub,
         email: user.attributes.email,
-        accessToken: user.getSignInUserSession().getAccessToken().getJwtToken(),
+        accessToken: accessToken,
         username: member.data.data.username,
         language: member.data.data.language,
         profile: {

@@ -1,6 +1,6 @@
 <template class="contents__body">
   <div>
-    <div class="form__logo"><router-link to="/"><b><i>A</i>rtong</b></router-link></div>
+    <div class="form__logo"><router-link to="/"><b><i>4</i>rtong</b></router-link></div>
     <div class="form__box" v-if="!confirming">
       <h1>Log In</h1>
       <div class="form__username">

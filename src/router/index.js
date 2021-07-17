@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/menu/HelloWorld'
+import Home from '@/components/menu/Home'
 import Server from '@/components/menu/Server'
 import Trending from '@/components/menu/Trending'
 import Following from '@/components/menu/Following'
@@ -16,8 +16,12 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/home'
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home
     },
     {
       path: '/server',
@@ -79,9 +83,8 @@ router.beforeResolve(async function(to, from, next) {
         })
       }
     }
-  } else {
-    next()
   }
+  next()
 })
 
 export default router
