@@ -1,18 +1,19 @@
 <template>
   <div class="profile">
     <div class="image">
-      <img v-if="profileImage" :src="profileImage"/>
-      <div v-else class="basicProfilePicture"></div>
+      <img v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()"/>
+      <div v-else class="basicProfilePicture" @click="$refs.fileInput.click()"></div>
+      <input ref="fileInput" type="file" @change="onFileChange">
     </div>
     <div class="info">
       <div class="username">
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member.display_name }}
+        {{ currentUser.profile.display_name }}
       </div>
       <div class="intro">
-        {{ member.introduction }}
+        {{ currentUser.email }}
       </div>
     </div>
   </div>
@@ -21,14 +22,12 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
-import axios from 'axios'
 
 export default {
-  name: 'UserPageProfile',
+  name: 'MyPageProfile',
   data() {
     return {
-      profileImage: '',
-      member: ''
+      profileImage: ''
     }
   },
   computed: {
@@ -37,22 +36,23 @@ export default {
     })
   },
   methods: {
-    async getMember() {
-      const member = await axios.get(`/member?username=${this.$route.params.id}`)
-      this.member = member.data.data
-      return member.data.data
+    async onFileChange(e) {
+      const file = e.target.files[0]
+      await this.uploadProfileImage(file)
     },
-    async getProfileImage(member) {
-      if (!member || !member.profile_pic) {
-        return null
-      }
-      const profileUrl = await Storage.get(`${member.username}/profile/${member.profile_pic}`)
-      return profileUrl
+    async uploadProfileImage(file) {
+      // TODO] 프론트에서 올리고 lambda 트리거
+      // full path를 db에 넣을건지 파일명만 넣을건지. 현재 path로는 파일명만 넣어도 가능, 중간에 파일 위치가 바뀌면?
+      // 프론트가 path를 짜맞춰야 하니까 key는 통째로 넣어주는게 나을지도??
+      await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
+        level: 'public',
+        contentType: file.type
+      })
     }
   },
   async mounted() {
-    const member = await this.getMember()
-    this.profileImage = await this.getProfileImage(member)
+    console.log('MyPageProfile mounted')
+    this.profileImage = await Storage.get(`${this.currentUser.username}/profile/${this.currentUser.profile.profile_pic}`)
   }
 }
 </script>
@@ -76,6 +76,7 @@ export default {
 
         img {
           width: 100%;
+          cursor: pointer;
         }
 
         div {
