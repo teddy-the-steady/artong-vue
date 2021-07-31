@@ -33,6 +33,12 @@ export default {
       member: ''
     }
   },
+  props: {
+    routeId: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -55,6 +61,12 @@ export default {
   async mounted() {
     const member = await this.getMember()
     this.profileImage = await this.getProfileImage(member)
+  },
+  watch: {
+    async routeId() {
+      const member = await this.getMember()
+      this.profileImage = await this.getProfileImage(member)
+    }
   }
 }
 </script>
