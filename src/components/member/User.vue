@@ -3,7 +3,10 @@
     <div class="header">
       <div class="user-info">
         <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
-        <user-page-profile v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></user-page-profile>
+        <user-page-profile
+          v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
+          :routeId="routeId"
+        ></user-page-profile>
         <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
@@ -34,6 +37,15 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser
     })
+  },
+  data() {
+    return {
+      routeId: ''
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.routeId = to.params.id
+    next()
   },
   methods: {
     async signOut() {
