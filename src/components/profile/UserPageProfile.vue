@@ -22,9 +22,11 @@
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
 import axios from 'axios'
+import { headerActivate } from '../../mixin'
 
 export default {
   name: 'UserPageProfile',
+  mixins: [headerActivate],
   data() {
     return {
       profileImage: '',
