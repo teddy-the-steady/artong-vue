@@ -48,11 +48,23 @@ export default {
         level: 'public',
         contentType: file.type
       })
+    },
+    async getProfileImage() {
+      if (!this.currentUser || !this.currentUser.profile.profile_pic) {
+        return null
+      }
+      const profileUrl = await Storage.get(`${this.currentUser.username}/profile/${this.currentUser.profile.profile_pic}`)
+      return profileUrl
     }
   },
   async mounted() {
     console.log('MyPageProfile mounted')
-    this.profileImage = await Storage.get(`${this.currentUser.username}/profile/${this.currentUser.profile.profile_pic}`)
+    this.profileImage = await this.getProfileImage()
+  },
+  watch: {
+    async currentUser() {
+      this.profileImage = await this.getProfileImage()
+    }
   }
 }
 </script>
