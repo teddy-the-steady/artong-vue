@@ -8,6 +8,8 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
+import { parseS3Path } from '../../util/commonFunc'
+
 export default {
   name: 'HeaderProfile',
   data() {
@@ -22,7 +24,8 @@ export default {
   },
   methods: {
     async getProfileImage() {
-      const profileUrl = await Storage.get(`${this.currentUser.username}/profile/${this.currentUser.profile.profile_pic}`)
+      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
+      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
       return profileUrl
     }
   },
@@ -40,12 +43,15 @@ export default {
 
 .profile {
     background-color: $artong-white;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
 
     img {
-        width: 30px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
     }
 
     div {
