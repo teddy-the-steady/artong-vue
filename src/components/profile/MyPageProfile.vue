@@ -22,6 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
+import { parseS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'MyPageProfile',
@@ -42,18 +43,21 @@ export default {
     },
     async uploadProfileImage(file) {
       // TODO] 프론트에서 올리고 lambda 트리거
-      // full path를 db에 넣을건지 파일명만 넣을건지. 현재 path로는 파일명만 넣어도 가능, 중간에 파일 위치가 바뀌면?
-      // 프론트가 path를 짜맞춰야 하니까 key는 통째로 넣어주는게 나을지도??
+      // full path를 db에 insert. 전후처리는? 사진 가공 등등
+      // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
       await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
         level: 'public',
         contentType: file.type
       })
+      // TODO] 업로드 이후에 람다 trigger가 실패했으면?
+      // 프사 바꾸고 나면 currentUser에서도 업데이트 해줘야함 store commit? currentAuthenticatedUser 활용?
     },
     async getProfileImage() {
       if (!this.currentUser || !this.currentUser.profile.profile_pic) {
         return null
       }
-      const profileUrl = await Storage.get(`${this.currentUser.username}/profile/${this.currentUser.profile.profile_pic}`)
+      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
+      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
       return profileUrl
     }
   },
@@ -88,6 +92,9 @@ export default {
 
         img {
           width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
           cursor: pointer;
         }
 
