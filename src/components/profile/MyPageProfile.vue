@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
-import { parseS3Path } from '../../util/commonFunc'
+import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
 
 export default {
   name: 'MyPageProfile',
@@ -45,12 +45,13 @@ export default {
       // TODO] 프론트에서 올리고 lambda 트리거
       // full path를 db에 insert. 전후처리는? 사진 가공 등등
       // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
-      await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
+      const result = await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
         level: 'public',
         contentType: file.type
       })
+      const currentUser = setLocalStorageCurrentUserProfilePic(result.key)
+      this.$store.commit('USER_SUCCESS', currentUser)
       // TODO] 업로드 이후에 람다 trigger가 실패했으면?
-      // 프사 바꾸고 나면 currentUser에서도 업데이트 해줘야함 store commit? currentAuthenticatedUser 활용?
     },
     async getProfileImage() {
       if (!this.currentUser || !this.currentUser.profile.profile_pic) {

@@ -9,6 +9,15 @@ const parseS3Path = function(path) {
   }
 }
 
+const setLocalStorageCurrentUserProfilePic = function(key) {
+  const currentUser = JSON.parse(localStorage.getItem('current-user'))
+  const path = parseS3Path(currentUser.profile.profile_pic)
+  currentUser.profile.profile_pic = `${path[0]}/${path[1]}/${key}`
+  localStorage.setItem('current-user', JSON.stringify(currentUser))
+  return currentUser
+}
+
 export {
-  parseS3Path
+  parseS3Path,
+  setLocalStorageCurrentUserProfilePic
 }

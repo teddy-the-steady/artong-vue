@@ -34,6 +34,11 @@ export default {
   },
   async mounted() {
     this.profileImage = await this.getProfileImage()
+  },
+  watch: {
+    async currentUser() {
+      this.profileImage = await this.getProfileImage()
+    }
   }
 }
 </script>
