@@ -22,7 +22,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
-import { setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
+import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
 
 export default {
   name: 'MyPageProfile',
@@ -49,16 +49,16 @@ export default {
         level: 'public',
         contentType: file.type
       })
-      // TODO] 업로드 이후에 람다 trigger가 실패했으면? 아래도 타면 안됨
-      // TODO] 예전에 로그인되어 있던 기계에선 변함이 없음. currentAuthenticatedUser 호출 해야할듯
       const currentUser = setLocalStorageCurrentUserProfilePic(result.key)
       this.$store.commit('USER_SUCCESS', currentUser)
+      // TODO] 업로드 이후에 람다 trigger가 실패했으면?
     },
     async getProfileImage() {
       if (!this.currentUser || !this.currentUser.profile.profile_pic) {
         return null
       }
-      const profileUrl = await Storage.get(this.currentUser.profile.profile_pic)
+      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
+      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
       return profileUrl
     }
   },
