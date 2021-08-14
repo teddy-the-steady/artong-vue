@@ -8,7 +8,6 @@
 <script>
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
-import { parseS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'HeaderProfile',
@@ -24,8 +23,7 @@ export default {
   },
   methods: {
     async getProfileImage() {
-      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
+      const profileUrl = await Storage.get(this.currentUser.profile.profile_pic)
       return profileUrl
     }
   },
