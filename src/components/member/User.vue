@@ -7,18 +7,28 @@
           v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
           :routeId="routeId"
         ></user-page-profile>
-        <button>SUBSCRIBE</button>
+        <button
+          v-show="$route.params.id === currentUser.username"
+          @click="showModal = true"
+        >UPLOAD</button>
+        <button v-if="$route.name === 'User' && $route.params.id !== currentUser.username">SUBSCRIBE</button>
       </div>
       <div class="tab">
-
       </div>
     </div>
-    <div>
-      <content-list></content-list>
+    <div class="contents">
+      <content-list
+        v-show="$route.params.id === currentUser.username"
+        :username="currentUser.username"></content-list>
+      <content-list
+        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
+        :username="$route.params.id"
+      ></content-list>
     </div>
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
     </div>
+    <upload-modal v-if="showModal" @close="showModal = false"></upload-modal>
   </div>
 </template>
 
@@ -26,12 +36,13 @@
 import MyPageProfile from '../profile/MyPageProfile'
 import UserPageProfile from '../profile/UserPageProfile'
 import ContentList from '../content/ContentList'
+import UploadModal from '../modal/UploadModal'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
   components: {
-    MyPageProfile, UserPageProfile, ContentList
+    MyPageProfile, UserPageProfile, ContentList, UploadModal
   },
   computed: {
     ...mapState({
@@ -40,7 +51,8 @@ export default {
   },
   data() {
     return {
-      routeId: ''
+      routeId: '',
+      showModal: false
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -78,6 +90,7 @@ export default {
 
     button {
       padding: 10px;
+      border-radius: 10px;
     }
   }
 
@@ -86,11 +99,23 @@ export default {
   }
 }
 
+.contents {
+  padding: 0 10%;
+}
+
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
       padding: 30px 15px 15px 15px;
+
+      button {
+        border-radius: 10px;
+      }
     }
+  }
+
+  .contents {
+    padding: 0;
   }
 }
 </style>

@@ -24,9 +24,11 @@ export default {
   },
   methods: {
     async getProfileImage() {
-      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
-      return profileUrl
+      if (this.currentUser.profile.profile_pic) {
+        const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
+        const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
+        return profileUrl
+      }
     }
   },
   created() {

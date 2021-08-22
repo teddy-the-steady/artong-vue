@@ -26,15 +26,15 @@ import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/co
 
 export default {
   name: 'MyPageProfile',
-  data() {
-    return {
-      profileImage: ''
-    }
-  },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
     })
+  },
+  data() {
+    return {
+      profileImage: ''
+    }
   },
   methods: {
     async onFileChange(e) {
@@ -49,7 +49,7 @@ export default {
         level: 'public',
         contentType: file.type
       })
-      const currentUser = setLocalStorageCurrentUserProfilePic(result.key)
+      const currentUser = setLocalStorageCurrentUserProfilePic(`public/${result.key}`)
       this.$store.commit('USER_SUCCESS', currentUser)
       // TODO] 업로드 이후에 람다 trigger가 실패했으면?
     },

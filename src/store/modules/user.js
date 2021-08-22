@@ -34,7 +34,8 @@ const actions = {
       })
       // TODO] axios.get 한 결과에서 data만 꺼내오기
       const currentUser = {
-        id: user.attributes.sub,
+        id: member.data.data.member_id,
+        sub: user.attributes.sub,
         email: user.attributes.email,
         accessToken: accessToken,
         username: member.data.data.username,
