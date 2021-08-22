@@ -20,6 +20,12 @@ export default {
   components: {
     CenterContainer, TopContainer, BottomContainer, InfiniteLoading
   },
+  props: {
+    username: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       topContents: [],
@@ -50,6 +56,9 @@ export default {
     },
     makeImageArray(numOfImages) {
       const imageArrayToPush = []
+      if (this.username) {
+        console.log(this.username) // TODO] 유저별 컨텐츠 뿌려주기
+      }
       for (let i = 0; i < numOfImages; i++) {
         const randomInt = this.getRandomIntInclusive(11, 20)
         imageArrayToPush.push({
