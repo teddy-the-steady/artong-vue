@@ -3,7 +3,8 @@
     <div v-if="image" class="center">
       <!-- <img :src="image.url" alt=""/> -->
       <div class="image">
-        <img :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
+        <img v-if="isNaN(image.url)" :src="image.url" alt=""/>
+        <img v-else :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
         <content-layer :image="image" class="content-layer" :isPropCommentActive="isCommentActive" @handle-comment-click="handleCommentClick"></content-layer>
       </div>
       <div class="comment" v-if="isCommentActive">

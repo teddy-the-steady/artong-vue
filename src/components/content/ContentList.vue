@@ -14,6 +14,9 @@ import InfiniteLoading from 'vue-infinite-loading'
 import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
+import axios from 'axios'
+import { Storage } from 'aws-amplify'
+import { parseS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ContentList',
@@ -36,35 +39,45 @@ export default {
     }
   },
   methods: {
-    infiniteHandler($state) {
+    async infiniteHandler($state) {
       if (this.bottomContents.length > 0) {
-        this.pushContentToBottom(this.SCROLL_LOAD_NUM)
+        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
       } else if (this.selectedImage) {
-        this.pushContentToBottom(this.SCROLL_LOAD_NUM)
+        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
       } else {
-        this.pushContentToTop(this.SCROLL_LOAD_NUM)
+        await this.pushContentToTop(this.SCROLL_LOAD_NUM)
       }
       setTimeout(function() { $state.loaded() }, 2000)
     },
-    pushContentToBottom(numOfImages) {
-      const imageArrayToPush = this.makeImageArray(numOfImages)
+    async pushContentToBottom(numOfImages) {
+      const imageArrayToPush = await this.makeImageArray(numOfImages)
       this.pushImages(imageArrayToPush, this.bottomContents)
     },
-    pushContentToTop(numOfImages) {
-      const imageArrayToPush = this.makeImageArray(numOfImages)
+    async pushContentToTop(numOfImages) {
+      const imageArrayToPush = await this.makeImageArray(numOfImages)
       this.pushImages(imageArrayToPush, this.topContents)
     },
-    makeImageArray(numOfImages) {
+    async makeImageArray(numOfImages) {
       const imageArrayToPush = []
       if (this.username) {
-        console.log(this.username) // TODO] 유저별 컨텐츠 뿌려주기
-      }
-      for (let i = 0; i < numOfImages; i++) {
-        const randomInt = this.getRandomIntInclusive(11, 20)
-        imageArrayToPush.push({
-          index: i,
-          url: randomInt
-        })
+        let results = await this.getContents()
+        results = results.data.data
+        if (results) {
+          for (let i = 0; i < results.length; i++) {
+            imageArrayToPush.push({
+              index: i,
+              url: await this.getContentFromS3(results[i].contents[0].content_url)
+            })
+          }
+        }
+      } else {
+        for (let i = 0; i < numOfImages; i++) {
+          const randomInt = this.getRandomIntInclusive(11, 20)
+          imageArrayToPush.push({
+            index: i,
+            url: randomInt
+          })
+        }
       }
       return imageArrayToPush
     },
@@ -73,6 +86,19 @@ export default {
       max = Math.floor(max)
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
+    },
+    async getContents() {
+      const result = await axios.get('/contents', {
+        params: {
+          username: this.username
+        }
+      })
+      return result
+    },
+    async getContentFromS3(url) {
+      const s3Path = parseS3Path(url)
+      const content = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
+      return content
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]
@@ -129,9 +155,6 @@ export default {
     deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
     }
-  },
-  created() {
-    this.pushContentToTop(this.FIRST_LOAD_NUM)
   },
   mounted() {
     this.$watch(
