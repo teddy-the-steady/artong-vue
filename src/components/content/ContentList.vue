@@ -66,7 +66,7 @@ export default {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
               index: i,
-              url: await this.getContentFromS3(results[i].contents[0].content_url)
+              url: await this.getContentFromS3(results[i].thumbnail_url)
             })
           }
         }
