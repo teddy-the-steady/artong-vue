@@ -56,6 +56,7 @@ export default {
         const { username, password } = this
         await this.$store.dispatch('AUTH_REQUEST', { username, password })
         this.$router.push('/')
+        this.$router.go()
       } catch (error) {
         this.warning = error.message
         if (error.code === 'UserNotConfirmedException') {
