@@ -4,7 +4,7 @@
     </div>
     <transition name="slide-right">
       <div class="inContentsProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <router-link :to="{ name: 'User', params: { id: 'superduper8989' }}">
+        <router-link :to="{ name: 'User', params: { id: 'qhqoxogh' }}">
           <in-contents-profile :profileImage="image.profileImageUrl"></in-contents-profile>
         </router-link>
       </div>
