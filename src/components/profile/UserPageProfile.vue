@@ -35,7 +35,7 @@ export default {
     }
   },
   props: {
-    routeId: {
+    username: {
       type: String,
       default: ''
     }
@@ -65,7 +65,7 @@ export default {
     this.profileImage = await this.getProfileImage(member)
   },
   watch: {
-    async routeId() {
+    async username() {
       const member = await this.getMember()
       this.profileImage = await this.getProfileImage(member)
     }
