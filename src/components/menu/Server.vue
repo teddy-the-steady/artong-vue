@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1>This is Server Information</h1>
-    <h2 v-if="info.data">{{ info.data }}</h2>
-    <h2 v-else>로그인 하세요</h2>
     <content-list></content-list>
   </div>
 </template>

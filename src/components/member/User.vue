@@ -5,7 +5,7 @@
         <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
         <user-page-profile
           v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
-          :routeId="routeId"
+          :username="username"
         ></user-page-profile>
         <button
           v-show="$route.params.id === currentUser.username"
@@ -19,10 +19,10 @@
     <div class="contents">
       <content-list
         v-show="$route.params.id === currentUser.username"
-        :username="currentUser.username"></content-list>
+        :username="username"></content-list>
       <content-list
         v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
-        :username="$route.params.id"
+        :username="username"
       ></content-list>
     </div>
     <div v-if="true">
@@ -51,12 +51,12 @@ export default {
   },
   data() {
     return {
-      routeId: '',
+      username: '',
       showModal: false
     }
   },
   beforeRouteUpdate(to, from, next) {
-    this.routeId = to.params.id
+    this.username = to.params.id
     next()
   },
   methods: {

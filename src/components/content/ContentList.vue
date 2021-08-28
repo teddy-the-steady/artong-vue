@@ -59,7 +59,7 @@ export default {
     },
     async makeImageArray(numOfImages) {
       const imageArrayToPush = []
-      if (this.username) {
+      if (Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1) {
         let results = await this.getContents()
         results = results.data.data
         if (results) {
@@ -90,7 +90,7 @@ export default {
     async getContents() {
       const result = await axios.get('/contents', {
         params: {
-          username: this.username
+          username: this.$route.params.id
         }
       })
       return result
@@ -154,6 +154,17 @@ export default {
     },
     deepCopy(obj) {
       return JSON.parse(JSON.stringify(obj))
+    },
+    emptyContentsLists() {
+      this.topContents = []
+      this.bottomContents = []
+      this.selectedImage = null
+    }
+  },
+  watch: {
+    async username() { // TODO] 마이페이지 -> 남의 프로필 클릭 -> 홈 -> 마이페이지: 컨텐츠 잘못 보여짐
+      this.emptyContentsLists()
+      await this.pushContentToTop(this.SCROLL_LOAD_NUM)
     }
   },
   mounted() {
