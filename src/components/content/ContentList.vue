@@ -34,8 +34,8 @@ export default {
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      FIRST_LOAD_NUM: 20,
-      SCROLL_LOAD_NUM: 20
+      SCROLL_LOAD_NUM: 3,
+      lastLoadedId: null
     }
   },
   methods: {
@@ -46,7 +46,7 @@ export default {
         await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
       } else {
         await this.pushContentToTop(this.SCROLL_LOAD_NUM)
-      }
+      } // TODO] check if its last data loading and call $state.complete()
       setTimeout(function() { $state.loaded() }, 2000)
     },
     async pushContentToBottom(numOfImages) {
@@ -60,12 +60,12 @@ export default {
     async makeImageArray(numOfImages) {
       const imageArrayToPush = []
       if (Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1) {
-        let results = await this.getContents()
-        results = results.data.data
+        const results = await this.getContents(numOfImages)
         if (results) {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
               index: i,
+              id: results[i].id,
               url: await this.getContentFromS3(results[i].thumbnail_url)
             })
           }
@@ -87,13 +87,17 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    async getContents() {
-      const result = await axios.get('/contents', {
+    async getContents(numOfImages) {
+      let results = await axios.get('/contents', {
         params: {
-          username: this.$route.params.id
+          username: this.$route.params.id,
+          pageSize: numOfImages,
+          lastId: this.lastLoadedId
         }
       })
-      return result
+      results = results.data.data
+      this.lastLoadedId = results[results.length - 1].id
+      return results
     },
     async getContentFromS3(url) {
       const s3Path = parseS3Path(url)
