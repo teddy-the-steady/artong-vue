@@ -9,7 +9,7 @@
         ></user-page-profile>
         <button
           v-show="$route.params.id === currentUser.username"
-          @click="showModal = true"
+          @click="toggleModal"
         >UPLOAD</button>
         <button v-if="$route.name === 'User' && $route.params.id !== currentUser.username">SUBSCRIBE</button>
       </div>
@@ -28,7 +28,7 @@
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
     </div>
-    <upload-modal v-if="showModal" @close="showModal = false"></upload-modal>
+    <upload-modal v-if="isModalOpen" @close="toggleModal"></upload-modal>
   </div>
 </template>
 
@@ -46,13 +46,13 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      currentUser: state => state.user.currentUser,
+      isModalOpen: state => state.menu.isModalOpen
     })
   },
   data() {
     return {
-      username: '',
-      showModal: false
+      username: ''
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -67,6 +67,9 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    toggleModal() {
+      this.$store.commit('TOGGLE_MODAL')
     }
   },
   watch: {
