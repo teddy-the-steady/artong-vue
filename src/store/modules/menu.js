@@ -1,6 +1,12 @@
-import { TOGGLE_NAV, SET_HEAD_NAV_FALSE, SET_HEAD_NAV_TRUE, SET_SIDE_MENU_FALSE } from '../actions/menu'
+import {
+  TOGGLE_NAV,
+  SET_HEAD_NAV_FALSE,
+  SET_HEAD_NAV_TRUE,
+  SET_SIDE_MENU_FALSE,
+  TOGGLE_MODAL
+} from '../actions/menu'
 
-const state = { isSideMenuOpen: false, isHeadNavOpen: true }
+const state = { isSideMenuOpen: false, isHeadNavOpen: true, isModalOpen: false }
 
 const mutations = {
   [TOGGLE_NAV]: state => {
@@ -14,6 +20,9 @@ const mutations = {
   },
   [SET_HEAD_NAV_FALSE]: state => {
     state.isHeadNavOpen = false
+  },
+  [TOGGLE_MODAL]: state => {
+    state.isModalOpen = !state.isModalOpen
   }
 }
 

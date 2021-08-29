@@ -22,11 +22,15 @@ export default {
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: state => state.menu.isSideMenuOpen
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      isModalOpen: state => state.menu.isModalOpen
     })
   },
   watch: {
     isSideMenuOpen() {
+      document.body.classList.toggle('prevent-scroll')
+    },
+    isModalOpen() {
       document.body.classList.toggle('prevent-scroll')
     }
   }
