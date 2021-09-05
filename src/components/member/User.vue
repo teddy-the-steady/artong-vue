@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="user">
     <div class="header">
       <div class="user-info">
         <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
@@ -17,13 +17,10 @@
       </div>
     </div>
     <div class="contents">
-      <content-list
-        v-show="$route.params.id === currentUser.username"
-        :username="username"></content-list>
-      <content-list
-        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
-        :username="username"
-      ></content-list>
+      <content-list-v2
+        v-show="$route.params.id === currentUser.username"></content-list-v2>
+      <content-list-v2
+        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list-v2>
     </div>
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
@@ -35,14 +32,14 @@
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
 import UserPageProfile from '../profile/UserPageProfile'
-import ContentList from '../content/ContentList'
+import ContentListV2 from '../content/ContentListV2'
 import UploadModal from '../modal/UploadModal'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
   components: {
-    MyPageProfile, UserPageProfile, ContentList, UploadModal
+    MyPageProfile, UserPageProfile, ContentListV2, UploadModal
   },
   computed: {
     ...mapState({
@@ -54,10 +51,6 @@ export default {
     return {
       username: ''
     }
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.username = to.params.id
-    next()
   },
   methods: {
     async signOut() {
@@ -83,27 +76,31 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.header {
-  .user-info {
-    height: 30%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: flex-end;
-    padding: 50px 15px 15px 15px;
+.user {
+  overflow-y: auto; // TODO] user 분리하기 + scroll이 생기면서 .contents__body padding-top: 50px이 사라지는 문제
 
-    button {
-      padding: 10px;
-      border-radius: 10px;
+  .header {
+    .user-info {
+      height: 30%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: flex-end;
+      padding: 50px 15px 15px 15px;
+
+      button {
+        padding: 10px;
+        border-radius: 10px;
+      }
+    }
+
+    .tab {
+      height: 50px;
     }
   }
 
-  .tab {
-    height: 50px;
+  .contents {
+    padding: 0 10%;
   }
-}
-
-.contents {
-  padding: 0 10%;
 }
 
 @media only screen and (max-width: 599px) {

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <content-list></content-list>
+    <content-list-v3></content-list-v3>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { headerActivate } from '../../mixin'
-import ContentList from '../content/ContentList'
+import ContentListV3 from '../content/ContentListV3'
 export default {
   name: 'Server',
   mixins: [headerActivate],
   components: {
-    ContentList
+    ContentListV3
   },
   data() {
     return {

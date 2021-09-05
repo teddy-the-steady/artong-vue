@@ -52,7 +52,7 @@ html {
         margin: 0;
         height: 100%;
         background: $artong-main;
-        overflow-y: scroll;
+        overflow-y: hidden;
 
         a {
             color: $artong-main;
@@ -95,8 +95,8 @@ html {
         .contents__body {
             position: relative;
             background: $artong-white;
+            height: 100vh;
             padding-top: 50px;
-            height: 100%;
         }
     }
 }
