@@ -8,6 +8,7 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
 import Masonry from './plugin/masonry'
+import InfiniteScroll from './directive/vue-infinite-scroll'
 import axios from 'axios'
 import router from './router'
 import store from './store'
@@ -16,6 +17,7 @@ smoothscroll.polyfill()
 
 Vue.use(AmplifyPlugin, AmplifyModules)
 Vue.use(Masonry)
+Vue.use(InfiniteScroll)
 
 Vue.config.productionTip = false
 

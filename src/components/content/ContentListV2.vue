@@ -1,53 +1,53 @@
 <template>
   <div>
     <top-container class="top-container" :topImages="topContents" :selectedImage="selectedImage"
-      @image-selected="onTopImageSelect"></top-container>
+      @image-selected="onTopImageSelect" v-infinite-scroll="loadTopMore" infinite-scroll-distance="10"></top-container>
     <center-container :image="selectedImage" ref="center"></center-container>
-    <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
-      @image-selected="onBottomImageSelect"></bottom-container>
-    <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <bottom-container class="bottom-container" v-if="bottomContents" :bottomImages="bottomContents"
+      @image-selected="onBottomImageSelect" v-infinite-scroll="loadBottomMore" infinite-scroll-distance="10"></bottom-container>
   </div>
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
+import { Storage } from 'aws-amplify'
+import axios from 'axios'
 import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
-import axios from 'axios'
-import { Storage } from 'aws-amplify'
 import { parseS3Path } from '../../util/commonFunc'
 
 export default {
-  name: 'ContentList',
+  name: 'ContentListV2',
   components: {
-    CenterContainer, TopContainer, BottomContainer, InfiniteLoading
-  },
-  props: {
-    username: {
-      type: String,
-      default: ''
-    }
+    CenterContainer, TopContainer, BottomContainer
   },
   data() {
     return {
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      SCROLL_LOAD_NUM: 3,
+      SCROLL_LOAD_NUM: 20,
       lastLoadedId: null
     }
   },
   methods: {
-    async infiniteHandler($state) {
-      if (this.bottomContents.length > 0) {
-        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
-      } else if (this.selectedImage) {
-        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
-      } else {
+    async loadTopMore() {
+      if (this.selectedImage) {
+        return
+      }
+
+      setTimeout(async() => {
         await this.pushContentToTop(this.SCROLL_LOAD_NUM)
-      } // TODO] check if its last data loading and call $state.complete()
-      setTimeout(function() { $state.loaded() }, 2000)
+      }, 1000)
+    },
+    async loadBottomMore() {
+      if (!this.selectedImage) {
+        return
+      }
+
+      setTimeout(async() => {
+        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
+      }, 1000)
     },
     async pushContentToBottom(numOfImages) {
       const imageArrayToPush = await this.makeImageArray(numOfImages)
@@ -165,16 +165,13 @@ export default {
       this.selectedImage = null
     }
   },
-  watch: {
-    async username() { // TODO] 마이페이지 -> 남의 프로필 클릭 -> 홈 -> 마이페이지: 컨텐츠 잘못 보여짐
-      this.emptyContentsLists()
-      await this.pushContentToTop(this.SCROLL_LOAD_NUM)
-    }
+  async created() {
+    await this.pushContentToTop(this.SCROLL_LOAD_NUM)
   },
   mounted() {
     this.$watch(
       () => { return this.$refs.center.image },
-      (val) => {
+      (val) => { // TODO] 부모 컴포넌트에 overflow-y: auto 주니까 고장남
         const center = this.$refs.center.$el
         const centerPosition = center.offsetTop
         const headerOffset = 55
