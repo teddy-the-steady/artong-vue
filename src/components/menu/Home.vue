@@ -24,5 +24,6 @@ export default {
 .list {
   height: 100%;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 </style>

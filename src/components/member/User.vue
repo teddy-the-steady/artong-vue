@@ -78,6 +78,7 @@ export default {
 
 .user {
   overflow-y: auto; // TODO] user 분리하기 + scroll이 생기면서 .contents__body padding-top: 50px이 사라지는 문제
+  -webkit-overflow-scrolling: touch;
 
   .header {
     .user-info {
