@@ -17,7 +17,7 @@ import BottomContainer from './BottomContainer'
 import { parseS3Path } from '../../util/commonFunc'
 
 export default {
-  name: 'ContentListV3',
+  name: 'ContentListV3', // TODO] virtual-scroll 적용 https://github.com/Akryum/vue-virtual-scroller 혹은 https://github.com/tangbc/vue-virtual-scroll-list
   components: {
     CenterContainer, TopContainer, BottomContainer
   },

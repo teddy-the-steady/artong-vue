@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div>
     <div class="header">
       <div class="user-info">
         <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
@@ -17,10 +17,10 @@
       </div>
     </div>
     <div class="contents">
-      <content-list-v2
-        v-show="$route.params.id === currentUser.username"></content-list-v2>
-      <content-list-v2
-        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list-v2>
+      <content-list :key="+new Date()"
+        v-show="$route.params.id === currentUser.username"></content-list>
+      <content-list :key="+new Date()+10"
+        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list>
     </div>
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
@@ -32,14 +32,14 @@
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
 import UserPageProfile from '../profile/UserPageProfile'
-import ContentListV2 from '../content/ContentListV2'
+import ContentList from '../content/ContentList'
 import UploadModal from '../modal/UploadModal'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
   components: {
-    MyPageProfile, UserPageProfile, ContentListV2, UploadModal
+    MyPageProfile, UserPageProfile, ContentList, UploadModal
   },
   computed: {
     ...mapState({
@@ -76,32 +76,27 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.user {
-  overflow-y: auto; // TODO] user 분리하기 + scroll이 생기면서 .contents__body padding-top: 50px이 사라지는 문제
-  -webkit-overflow-scrolling: touch;
+.header {
+  .user-info {
+    height: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    padding: 50px 15px 15px 15px;
 
-  .header {
-    .user-info {
-      height: 30%;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: flex-end;
-      padding: 50px 15px 15px 15px;
-
-      button {
-        padding: 10px;
-        border-radius: 10px;
-      }
-    }
-
-    .tab {
-      height: 50px;
+    button {
+      padding: 10px;
+      border-radius: 10px;
     }
   }
 
-  .contents {
-    padding: 0 10%;
+  .tab {
+    height: 50px;
   }
+}
+
+.contents {
+  padding: 0 10%;
 }
 
 @media only screen and (max-width: 599px) {
