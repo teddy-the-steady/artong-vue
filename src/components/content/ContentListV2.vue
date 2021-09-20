@@ -17,7 +17,8 @@ import BottomContainer from './BottomContainer'
 import { parseS3Path } from '../../util/commonFunc'
 
 export default {
-  name: 'ContentListV3', // TODO] virtual-scroll 적용 https://github.com/Akryum/vue-virtual-scroller 혹은 https://github.com/tangbc/vue-virtual-scroll-list
+  name: 'ContentListV2', // TODO] virtual-scroll 적용 https://github.com/Akryum/vue-virtual-scroller 혹은 https://github.com/tangbc/vue-virtual-scroll-list
+  // 2021-09-20 masonry랑 virtual-scroll를 통합하는 문제로 중단
   components: {
     CenterContainer, TopContainer, BottomContainer
   },

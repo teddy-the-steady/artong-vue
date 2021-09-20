@@ -34,7 +34,7 @@ export default {
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      SCROLL_LOAD_NUM: 3,
+      SCROLL_LOAD_NUM: 10,
       lastLoadedId: null
     }
   },
