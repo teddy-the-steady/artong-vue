@@ -17,9 +17,9 @@
       </div>
     </div>
     <div class="contents">
-      <content-list :key="+new Date()"
+      <content-list
         v-show="$route.params.id === currentUser.username"></content-list>
-      <content-list :key="+new Date()+10"
+      <content-list
         v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list>
     </div>
     <div v-if="true">
