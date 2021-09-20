@@ -35,7 +35,8 @@ export default {
       bottomContents: [],
       selectedImage: null,
       SCROLL_LOAD_NUM: 10,
-      lastLoadedId: null
+      lastLoadedId: null,
+      noMoreDataToLoad: false
     }
   },
   methods: {
@@ -46,7 +47,10 @@ export default {
         await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
       } else {
         await this.pushContentToTop(this.SCROLL_LOAD_NUM)
-      } // TODO] check if its last data loading and call $state.complete()
+      }
+      if (this.noMoreDataToLoad) {
+        $state.complete()
+      }
       setTimeout(function() { $state.loaded() }, 2000)
     },
     async pushContentToBottom(numOfImages) {
@@ -97,6 +101,7 @@ export default {
       })
       results = results.data.data
       this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
+      this.noMoreDataToLoad = results.length < this.SCROLL_LOAD_NUM
       return results
     },
     async getContentFromS3(url) {
@@ -166,7 +171,7 @@ export default {
     }
   },
   watch: {
-    async username() { // TODO] 마이페이지 -> 남의 프로필 클릭 -> 홈 -> 마이페이지: 컨텐츠 잘못 보여짐
+    async username() {
       this.emptyContentsLists()
       await this.pushContentToTop(this.SCROLL_LOAD_NUM)
     }
