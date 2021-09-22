@@ -5,7 +5,7 @@
     <center-container :image="selectedImage" ref="center"></center-container>
     <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
       @image-selected="onBottomImageSelect"></bottom-container>
-    <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
 
@@ -23,12 +23,6 @@ export default {
   components: {
     CenterContainer, TopContainer, BottomContainer, InfiniteLoading
   },
-  props: {
-    username: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       topContents: [],
@@ -41,15 +35,16 @@ export default {
   },
   methods: {
     async infiniteHandler($state) {
+      if (this.noMoreDataToLoad) {
+        $state.complete()
+        return
+      }
       if (this.bottomContents.length > 0 || this.selectedImage) {
         await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
       } else {
         await this.pushContentToTop(this.SCROLL_LOAD_NUM)
       }
-      if (this.noMoreDataToLoad) {
-        $state.complete()
-      }
-      setTimeout(function() { $state.loaded() }, 2000)
+      setTimeout(function() { $state.loaded() }, 1000)
     },
     async pushContentToBottom(numOfImages) {
       const imageArrayToPush = await this.makeImageArray(numOfImages)
@@ -166,12 +161,6 @@ export default {
       this.topContents = []
       this.bottomContents = []
       this.selectedImage = null
-    }
-  },
-  watch: {
-    async username() {
-      this.emptyContentsLists()
-      await this.pushContentToTop(this.SCROLL_LOAD_NUM)
     }
   },
   mounted() {
