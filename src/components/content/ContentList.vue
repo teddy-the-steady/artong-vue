@@ -15,7 +15,6 @@ import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
 import axios from 'axios'
-import { Storage } from 'aws-amplify'
 import { parseS3Path } from '../../util/commonFunc'
 
 export default {
@@ -99,8 +98,7 @@ export default {
     },
     async getContentFromS3(url) {
       const s3Path = parseS3Path(url)
-      const content = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
-      return content
+      return `https://images.4rtong.com/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]

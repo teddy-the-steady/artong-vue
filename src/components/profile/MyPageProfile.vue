@@ -58,8 +58,7 @@ export default {
         return null
       }
       const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
-      return profileUrl
+      return `https://images.4rtong.com/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     }
   },
   async mounted() {

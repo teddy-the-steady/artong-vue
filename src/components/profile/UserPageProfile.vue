@@ -20,7 +20,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Storage } from 'aws-amplify'
 import axios from 'axios'
 import { headerActivate } from '../../mixin'
 import { parseS3Path } from '../../util/commonFunc'
@@ -56,8 +55,7 @@ export default {
         return null
       }
       const s3Path = parseS3Path(member.profile_pic)
-      const profileUrl = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
-      return profileUrl
+      return `https://images.4rtong.com/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     }
   },
   async mounted() {
