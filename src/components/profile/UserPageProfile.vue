@@ -23,6 +23,7 @@ import { mapState } from 'vuex'
 import axios from 'axios'
 import { headerActivate } from '../../mixin'
 import { parseS3Path } from '../../util/commonFunc'
+import { CLOUDFRONT_URL } from '../../constants/url'
 
 export default {
   name: 'UserPageProfile',
@@ -55,7 +56,7 @@ export default {
         return null
       }
       const s3Path = parseS3Path(member.profile_pic)
-      return `https://images.4rtong.com/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return `${CLOUDFRONT_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     }
   },
   async mounted() {
