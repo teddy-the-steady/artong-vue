@@ -8,6 +8,7 @@
 <script>
 import { mapState } from 'vuex'
 import { parseS3Path } from '../../util/commonFunc'
+import { CLOUDFRONT_URL } from '../../constants/url'
 
 export default {
   name: 'HeaderProfile',
@@ -25,7 +26,7 @@ export default {
     async getProfileImage() {
       if (this.currentUser.profile.profile_pic) {
         const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-        return `https://images.4rtong.com/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+        return `${CLOUDFRONT_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
       }
     }
   },

@@ -11,6 +11,7 @@ import Masonry from './plugin/masonry'
 import axios from 'axios'
 import router from './router'
 import store from './store'
+import { API_STAGE } from './constants/url'
 Amplify.configure(awsconfig)
 smoothscroll.polyfill()
 
@@ -19,8 +20,8 @@ Vue.use(Masonry)
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'https://6tz1h3qch8.execute-api.ap-northeast-2.amazonaws.com/stage/artong/v1'
-// axios.defaults.baseURL = 'http://localhost:3000/stage/artong/v1'
+axios.defaults.baseURL = API_STAGE
+// axios.defaults.baseURL = API_LOCAL
 const currentUser = JSON.parse(localStorage.getItem('current-user'))
 if (currentUser && currentUser.accessToken) {
   axios.defaults.headers.common['Authorization'] = currentUser.accessToken
