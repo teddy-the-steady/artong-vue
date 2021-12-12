@@ -56,14 +56,17 @@ export default {
     },
     async makeImageArray(numOfImages) {
       const imageArrayToPush = []
-      if (Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1) {
+      const isUserPage = Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1
+      if (isUserPage) {
         const results = await this.getContents(numOfImages)
         if (results) {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
               index: i,
               id: results[i].id,
-              url: await this.getContentFromS3(results[i].thumbnail_url)
+              url: this.getImageUrl(results[i].thumbnail_url),
+              profileUrl: results[i].profile_pic ? this.getImageUrl(results[i].profile_pic) : '',
+              username: results[i].username
             })
           }
         }
@@ -72,7 +75,8 @@ export default {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
             index: i,
-            url: randomInt
+            url: randomInt,
+            username: 'qhqoxogh'
           })
         }
       }
@@ -87,7 +91,7 @@ export default {
     async getContents(numOfImages) {
       let results = await axios.get('/contents', {
         params: {
-          username: this.$route.params.id,
+          username: this.$route.params.id ? this.$route.params.id : null,
           pageSize: numOfImages,
           lastId: this.lastLoadedId
         }
@@ -97,8 +101,8 @@ export default {
       this.noMoreDataToLoad = results.length < this.SCROLL_LOAD_NUM
       return results
     },
-    async getContentFromS3(url) {
-      const s3Path = parseS3Path(url)
+    getImageUrl(path) {
+      const s3Path = parseS3Path(path)
       return `${CLOUDFRONT_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     },
     pushImages(images, destContainer) {
