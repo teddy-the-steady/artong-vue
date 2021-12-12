@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <img v-if="profileImage" :src="profileImage" alt="">
+    <img v-if="profileUrl" :src="profileUrl" alt="">
     <img v-else src="../../assets/images/profile.svg" alt="">
   </div>
 </template>
@@ -9,7 +9,7 @@
 export default {
   name: 'InContentsProfile',
   props: {
-    profileImage: {
+    profileUrl: {
       type: String,
       default: null
     }
@@ -28,7 +28,9 @@ export default {
     cursor: pointer;
 
     img {
-        width: 40px;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
     }
 }
 </style>
