@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="contents">
-      <content-list
+      <content-list :key="myContentListComponentKey"
         v-show="$route.params.id === currentUser.username"></content-list>
       <content-list
         v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list>
@@ -25,7 +25,7 @@
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
     </div>
-    <upload-modal v-if="isModalOpen" @close="toggleModal"></upload-modal>
+    <upload-modal v-if="isModalOpen" @close="close"></upload-modal>
   </div>
 </template>
 
@@ -49,7 +49,8 @@ export default {
   },
   data() {
     return {
-      username: ''
+      username: '',
+      myContentListComponentKey: 0
     }
   },
   methods: {
@@ -59,6 +60,14 @@ export default {
         this.$router.push('/')
       } catch (error) {
         console.log(error)
+      }
+    },
+    close(isSuccess) {
+      this.toggleModal()
+      if (isSuccess) {
+        setTimeout(() => {
+          this.myContentListComponentKey = Math.round(Math.random() * 1000)
+        }, 2000)
       }
     },
     toggleModal() {
