@@ -70,7 +70,7 @@ export default {
             })
           }
         }
-      } else {
+      } else { // TODO] 페이지별로 어떤 컨텐츠를 뿌려줄지 여기서 결정하기보단.. 음
         for (let i = 0; i < numOfImages; i++) {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
