@@ -43,8 +43,7 @@ export default {
       await this.uploadProfileImage(file)
     },
     async uploadProfileImage(file) {
-      // TODO] 프론트에서 올리고 lambda 트리거
-      // full path를 db에 insert. 전후처리는? 사진 가공 등등
+      // TODO] 전후처리는? 사진 가공 등등
       // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
       const result = await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
         level: 'public',
@@ -52,7 +51,6 @@ export default {
       })
       const currentUser = setLocalStorageCurrentUserProfilePic(`public/${result.key}`)
       this.$store.commit('USER_SUCCESS', currentUser)
-      // TODO] 업로드 이후에 람다 trigger가 실패했으면?
     },
     async getProfileImage() {
       if (!this.currentUser || !this.currentUser.profile.profile_pic) {
