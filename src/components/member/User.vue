@@ -65,7 +65,7 @@ export default {
     close(isSuccess) {
       this.toggleModal()
       if (isSuccess) { // TODO] 업로드 성공 이후 업로드한 컨텐츠가 안보이는 이슈,, s3업로드랑 db insert하는 람다트리거가 따로라서 발생.
-        setTimeout(() => { //  reload말고 어떻게? 람다트리거 완료인지 클라에서 근본적으로 어떻게 알지? 어차피 성공하고 넘어오니까 클라이언트 배열에 그냥 이미지 삽입?
+        setTimeout(() => { // 3초후 reload말고 어떻게? 람다트리거 완료인지 클라에서 근본적으로 어떻게 알지? 어차피 성공하고 넘어오니까 클라이언트 배열에 그냥 이미지 삽입?
           this.myContentListComponentKey = Math.round(Math.random() * 1000)
         }, 3000)
       }

@@ -69,7 +69,7 @@ export default {
           validationData: [] // optional
         })
 
-        // TODO] 아래 실패하면 에러처리부에서 코그니토 유저 없애야?? 싱크 맞춤 목적
+        // TODO] 아래 실패하면 에러처리부에서 코그니토 유저 없애야?? 코그니토-db 싱크 맞춤 목적
         // 코그니토 signUp으로 람다 트리거 할순 없을까
         await axios.post('/member', {
           email: this.username,
