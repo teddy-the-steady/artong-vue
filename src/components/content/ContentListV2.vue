@@ -71,7 +71,7 @@ export default {
       return result
     },
     async getContents(numOfImages) {
-      let results = await axios.get('/contents', {
+      let results = await axios.get('/uploads', {
         params: {
           username: this.$route.params.id,
           pageSize: numOfImages,

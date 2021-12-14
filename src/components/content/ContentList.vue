@@ -25,10 +25,10 @@ export default {
   },
   data() {
     return {
+      SCROLL_LOAD_NUM: 10,
       topContents: [],
       bottomContents: [],
       selectedImage: null,
-      SCROLL_LOAD_NUM: 10,
       lastLoadedId: null,
       noMoreDataToLoad: false
     }
@@ -70,7 +70,8 @@ export default {
             })
           }
         }
-      } else { // TODO] 페이지별로 어떤 컨텐츠를 뿌려줄지 여기서 결정하기보단.. 음
+      } else { // TODO] 페이지별로 어떤 컨텐츠를 뿌려줄지 여기서 결정하기보단.. following이나 like부터 구현하고
+        // api부터 어떻게 할지 정해야할듯. endpoint분리 / 쿼리 최대한 공유하고 queryparam으로 구분
         for (let i = 0; i < numOfImages; i++) {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
@@ -89,7 +90,7 @@ export default {
       return result
     },
     async getContents(numOfImages) {
-      let results = await axios.get('/contents', {
+      let results = await axios.get('/uploads', {
         params: {
           username: this.$route.params.id ? this.$route.params.id : null,
           pageSize: numOfImages,
