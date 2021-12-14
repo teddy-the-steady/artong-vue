@@ -95,7 +95,7 @@ var component = {
   },
 
   updated() {
-    // TODO] 그러지기 전에 그림 위치값 가져오기는 불가능??
+    // TODO] 그려지기 전에 그림 위치값 가져오기는 불가능??
     // var htmlCollection = this.$refs['masonryEl-0'].getElementsByClassName('content')
     // console.log(Array.prototype.map.call(htmlCollection, (val) => { return val.offsetTop }))
 
