@@ -166,7 +166,7 @@ export default {
           if (navigator.userAgent.indexOf('iPhone') !== -1) {
             option.behavior = 'auto'
           } else if (navigator.userAgent.indexOf('Android') !== -1) {
-            option.behavior = 'smooth' // TODO] 안드로이드 스크롤 이상함
+            option.behavior = 'smooth'
           }
         } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
           option.behavior = 'smooth'
