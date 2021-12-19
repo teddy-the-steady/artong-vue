@@ -11,7 +11,11 @@
     </transition>
     <transition name="slide-left">
       <div class="actionList" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <action-list :isPropCommentActive="isPropCommentActive" @handle-comment-click="handleCommentClick"></action-list>
+        <action-list
+          :isPropCommentActive="isPropCommentActive"
+          :image="image"
+          @handle-comment-click="handleCommentClick">
+        </action-list>
       </div>
     </transition>
   </div>
