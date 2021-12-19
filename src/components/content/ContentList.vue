@@ -78,7 +78,8 @@ export default {
           imageArrayToPush.push({
             index: i,
             url: randomInt,
-            username: 'qhqoxogh'
+            username: 'qhqoxogh',
+            like: false
           })
         }
       }
