@@ -66,7 +66,8 @@ export default {
               id: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
               profileUrl: results[i].profile_pic ? this.getImageUrl(results[i].profile_pic) : '',
-              username: results[i].username
+              username: results[i].username,
+              like: results[i].like
             })
           }
         }

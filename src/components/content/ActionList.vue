@@ -2,7 +2,7 @@
   <div>
     <ul>
       <li class="like" @click="onLikeClick()">
-        <img :class="{active: isLikeActive}" src="../../assets/images/heart.png" alt="">
+        <img :class="{active: image.like}" src="../../assets/images/heart.png" alt="">
       </li>
       <li class="comment" @click="onCommentClick()">
         <img :class="{active: isCommentActive}" src="../../assets/images/comment.png" alt="">
@@ -15,6 +15,10 @@
 export default {
   name: 'ActionList',
   props: {
+    image: {
+      type: Object,
+      default: null
+    },
     isPropCommentActive: {
       type: Boolean,
       default: false
@@ -22,13 +26,17 @@ export default {
   },
   data() {
     return {
-      isLikeActive: false,
       isCommentActive: this.isPropCommentActive
     }
   },
   methods: {
     onLikeClick() {
-      this.isLikeActive = !this.isLikeActive
+      if (this.image.like) {
+        console.log('좋아요 취소')
+      } else {
+        console.log('좋아요!!')
+      }
+      this.image.like = !this.image.like
     },
     onCommentClick() {
       this.isCommentActive = !this.isCommentActive
