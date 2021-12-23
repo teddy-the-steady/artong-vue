@@ -65,7 +65,7 @@ export default {
       const isUserPage = Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1
       if (isUserPage) {
         let results = null
-        if (this.currentUser.id) {
+        if (this.currentUser.id) { // TODO] 오래된 accessKey로 api call 하는 문제..Unauthorized 에러남ㅠ, currentAuthenticatedUser로 토큰 리프레시 필요?
           results = await this.getContents('/auth/uploads', numOfImages)
         } else {
           results = await this.getContents('/uploads', numOfImages)
@@ -75,7 +75,7 @@ export default {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
               index: i,
-              id: results[i].id,
+              id_pk: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
               profileUrl: results[i].profile_pic ? this.getImageUrl(results[i].profile_pic) : '',
               username: results[i].username,
