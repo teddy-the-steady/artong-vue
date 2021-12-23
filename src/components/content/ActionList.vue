@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'ActionList',
   props: {
@@ -30,11 +32,15 @@ export default {
     }
   },
   methods: {
-    onLikeClick() {
+    async onLikeClick() {
       if (this.image.like) {
-        console.log('좋아요 취소')
+        await axios.post(`/uploads/${this.image.id_pk}/actions`, {
+          action_code: 'unlike'
+        })
       } else {
-        console.log('좋아요!!')
+        await axios.post(`/uploads/${this.image.id_pk}/actions`, {
+          action_code: 'like'
+        })
       }
       this.image.like = !this.image.like
     },
