@@ -15,6 +15,7 @@ import CenterContainer from './CenterContainer'
 import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
 import axios from 'axios'
+import { mapState } from 'vuex'
 import { parseS3Path } from '../../util/commonFunc'
 import { CLOUDFRONT_URL } from '../../constants/url'
 
@@ -22,6 +23,11 @@ export default {
   name: 'ContentList',
   components: {
     CenterContainer, TopContainer, BottomContainer, InfiniteLoading
+  },
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
   },
   data() {
     return {
@@ -58,7 +64,13 @@ export default {
       const imageArrayToPush = []
       const isUserPage = Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1
       if (isUserPage) {
-        const results = await this.getContents(numOfImages)
+        let results = null
+        if (this.currentUser.id) {
+          results = await this.getContents('/auth/uploads', numOfImages)
+        } else {
+          results = await this.getContents('/uploads', numOfImages)
+        }
+
         if (results) {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
@@ -91,8 +103,8 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    async getContents(numOfImages) {
-      let results = await axios.get('/uploads', {
+    async getContents(url, numOfImages) {
+      let results = await axios.get(url, {
         params: {
           username: this.$route.params.id ? this.$route.params.id : null,
           pageSize: numOfImages,
