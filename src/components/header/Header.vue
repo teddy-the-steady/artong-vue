@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
 import Burger from './Burger'
 import HeaderProfile from '../profile/HeaderProfile'
 import { mapState } from 'vuex'
@@ -43,24 +42,6 @@ export default {
       isHeadNavOpen: state => state.menu.isHeadNavOpen,
       currentUser: state => state.user.currentUser
     })
-  },
-  mounted() {
-    this.findUser()
-  },
-  methods: {
-    async findUser() {
-      try { // TODO] currentAuthenticatedUser를 언제 어디서 해줘야 할지 결정하자
-        const result = await Auth.currentAuthenticatedUser()
-        // this.$store.state.signedIn = true
-        // this.$store.state.cognitoUser = user
-        // await this.getMember(this.$store.state.cognitoUser.username)
-        console.log('Header findUser')
-        console.log(result)
-      } catch (err) {
-        // this.$store.state.signedIn = false
-        // this.$store.state.cognitoUser = null
-      }
-    }
   }
 }
 </script>
