@@ -8,10 +8,9 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
 import Masonry from './plugin/masonry'
-import axios from 'axios'
+import * as axios from '../config/axiosConfig'
 import router from './router'
 import store from './store'
-import { API_STAGE } from './constants/url'
 Amplify.configure(awsconfig)
 smoothscroll.polyfill()
 
@@ -20,12 +19,7 @@ Vue.use(Masonry)
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = API_STAGE
-// axios.defaults.baseURL = API_LOCAL
-const currentUser = JSON.parse(localStorage.getItem('current-user'))
-if (currentUser && currentUser.accessToken) {
-  axios.defaults.headers.common['Authorization'] = currentUser.accessToken
-}
+axios.checkAuth()
 
 /* eslint-disable no-new */
 new Vue({

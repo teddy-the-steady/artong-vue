@@ -12,7 +12,6 @@ const state = {
   currentUser: JSON.parse(localStorage.getItem('current-user')) || {
     id: '',
     email: '',
-    accessToken: '',
     username: '',
     language: '',
     profile: {
@@ -37,7 +36,6 @@ const actions = {
         id: member.data.data.member_id,
         sub: user.attributes.sub,
         email: user.attributes.email,
-        accessToken: accessToken,
         username: member.data.data.username,
         language: member.data.data.language,
         profile: {
@@ -47,7 +45,6 @@ const actions = {
       }
 
       localStorage.setItem('current-user', JSON.stringify(currentUser))
-      axios.defaults.headers.common['Authorization'] = currentUser.accessToken
 
       commit(USER_SUCCESS, currentUser)
     } catch (error) {
