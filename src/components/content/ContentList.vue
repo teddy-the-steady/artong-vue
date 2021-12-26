@@ -65,7 +65,7 @@ export default {
       const isUserPage = Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1
       if (isUserPage) {
         let results = null
-        if (this.currentUser.id) { // TODO] 오래된 accessKey로 api call 하는 문제..Unauthorized 에러남ㅠ, currentAuthenticatedUser로 토큰 리프레시 필요?
+        if (this.currentUser.id) {
           results = await this.getContents('/auth/uploads', numOfImages)
         } else {
           results = await this.getContents('/uploads', numOfImages)
