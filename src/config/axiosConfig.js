@@ -1,4 +1,5 @@
 import { API_STAGE } from '../../src/constants/url'
+import store from '../store'
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 
@@ -14,7 +15,9 @@ const checkAuth = function() {
           config.headers.Authorization = session.getAccessToken().getJwtToken()
           resolve(config)
         })
-        .catch(() => {
+        .catch(() => { // refreshToken 만료시
+          store.dispatch('AUTH_LOGOUT')
+          alert('세션이 만료 되었습니다. 다시 로그인 해주세요.')
           resolve(config)
         })
     })
