@@ -75,7 +75,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
+    $route() {
       window.scrollTo({top: 0})
     }
   }
