@@ -15,7 +15,7 @@ const checkAuth = function() {
           resolve(config)
         })
         .catch(() => {
-          reject(config)
+          resolve(config)
         })
     })
   })
