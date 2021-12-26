@@ -8,7 +8,7 @@ import { AmplifyPlugin } from 'aws-amplify-vue'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
 import Masonry from './plugin/masonry'
-import * as axios from '../config/axiosConfig'
+import * as axios from './config/axiosConfig'
 import router from './router'
 import store from './store'
 Amplify.configure(awsconfig)

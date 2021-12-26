@@ -38,6 +38,7 @@ const actions = {
       commit(AUTH_LOGOUT)
       dispatch(USER_LOGOUT)
     } catch (error) {
+      console.log(error)
       throw error
     }
   }

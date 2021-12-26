@@ -184,7 +184,7 @@ export default {
   mounted() {
     this.$watch(
       () => { return this.$refs.center.image },
-      (val) => {
+      () => {
         const center = this.$refs.center.$el
         const centerPosition = center.offsetTop
         const headerOffset = 55
