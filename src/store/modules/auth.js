@@ -7,7 +7,14 @@ import {
 import { USER_REQUEST, USER_LOGOUT } from '../actions/user'
 import { Auth } from 'aws-amplify'
 
-const state = {
+const state = JSON.parse(localStorage.getItem('current-user'))?
+{
+  status: 'success',
+  confirming: false,
+  hasLoadedOnce: true
+}
+  :
+{
   status: '',
   confirming: false,
   hasLoadedOnce: false

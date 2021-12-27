@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify'
 axios.defaults.baseURL = API_STAGE
 // axios.defaults.baseURL = API_LOCAL
 
-const checkAuth = function() {
+const checkSession = function() {
   axios.interceptors.request.use(function(config) {
     return new Promise((resolve) => {
       Auth.currentSession()
@@ -22,5 +22,5 @@ const checkAuth = function() {
 }
 
 export {
-  checkAuth
+  checkSession
 }

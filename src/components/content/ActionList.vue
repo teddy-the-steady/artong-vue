@@ -13,6 +13,7 @@
 
 <script>
 import axios from 'axios'
+import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
   name: 'ActionList',
@@ -33,6 +34,11 @@ export default {
   },
   methods: {
     async onLikeClick() {
+      if (!isAuthenticated()) {
+        alert('로그인이 필요합니다:)')
+        return
+      }
+
       if (this.image.like) {
         await axios.post(`/uploads/${this.image.id_pk}/actions`, {
           action_code: 'unlike'

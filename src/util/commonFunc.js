@@ -1,3 +1,5 @@
+import store from '../store'
+
 const parseS3Path = function(path) {
   path = path.split('/')
   return {
@@ -15,7 +17,15 @@ const setLocalStorageCurrentUserProfilePic = function(key) {
   return currentUser
 }
 
+const isAuthenticated = function() {
+  if (store.state.auth.status === 'success') {
+    return true
+  } 
+  return false
+}
+
 export {
   parseS3Path,
-  setLocalStorageCurrentUserProfilePic
+  setLocalStorageCurrentUserProfilePic,
+  isAuthenticated
 }
