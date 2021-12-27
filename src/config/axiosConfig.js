@@ -1,5 +1,4 @@
 import { API_STAGE } from '../../src/constants/url'
-import store from '../store'
 import axios from 'axios'
 import { Auth } from 'aws-amplify'
 
