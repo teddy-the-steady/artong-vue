@@ -19,7 +19,7 @@ Vue.use(Masonry)
 
 Vue.config.productionTip = false
 
-axios.checkAuth()
+axios.checkSession()
 
 /* eslint-disable no-new */
 new Vue({
