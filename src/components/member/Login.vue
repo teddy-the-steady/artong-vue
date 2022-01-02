@@ -55,7 +55,12 @@ export default {
       try {
         const { username, password } = this
         await this.$store.dispatch('AUTH_REQUEST', { username, password })
-        this.$router.push('/')
+        const urlToRedirect = this.$router.history.current.query['redirect']
+        if (urlToRedirect) {
+          this.$router.push(urlToRedirect)
+        } else {
+          this.$router.push('/')
+        }
       } catch (error) {
         this.warning = error.message
         if (error.code === 'UserNotConfirmedException') {
