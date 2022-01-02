@@ -17,9 +17,9 @@
       </div>
     </div>
     <div class="contents">
-      <content-list :key="componentKeyForRerender"
+      <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"
         v-show="$route.params.id === currentUser.username"></content-list>
-      <content-list
+      <content-list :contentsApi="contentsApi"
         v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list>
     </div>
     <div v-if="true">
@@ -34,6 +34,7 @@ import MyPageProfile from '../profile/MyPageProfile'
 import UserPageProfile from '../profile/UserPageProfile'
 import ContentList from '../content/ContentList'
 import UploadModal from '../modal/UploadModal'
+import baseLazyLoading from '../../util/baseLazyLoading'
 import { mapState } from 'vuex'
 
 export default {
@@ -41,6 +42,14 @@ export default {
   components: {
     MyPageProfile, UserPageProfile, ContentList, UploadModal
   },
+  extends: baseLazyLoading((to, callback) => {
+    callback(function() {
+      this.contentsApi = {
+        url: this.currentUser.id? '/auth/uploads' : '/uploads',
+        params: {id: to.params.id}
+      }
+    })
+  }),
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
@@ -50,7 +59,12 @@ export default {
   data() {
     return {
       username: '',
-      componentKeyForRerender: 0
+      componentKeyForRerender: 0,
+      contentsApi: {
+        url: '',
+        params: {},
+        query: {}
+      }
     }
   },
   methods: {
