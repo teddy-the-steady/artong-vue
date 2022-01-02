@@ -29,9 +29,18 @@ export default {
       currentUser: state => state.user.currentUser
     })
   },
+  props: {
+    contentsApi: {
+      type: Object,
+      default: null
+    },
+    numberOfContentsToLoad: {
+      type: Number,
+      default: 10
+    }
+  },
   data() {
     return {
-      SCROLL_LOAD_NUM: 10,
       topContents: [],
       bottomContents: [],
       selectedImage: null,
@@ -46,30 +55,25 @@ export default {
         return
       }
       if (this.bottomContents.length > 0 || this.selectedImage) {
-        await this.pushContentToBottom(this.SCROLL_LOAD_NUM)
+        await this.pushContentToBottom()
       } else {
-        await this.pushContentToTop(this.SCROLL_LOAD_NUM)
+        await this.pushContentToTop()
       }
       setTimeout(function() { $state.loaded() }, 1000)
     },
-    async pushContentToBottom(numOfImages) {
-      const imageArrayToPush = await this.makeImageArray(numOfImages)
+    async pushContentToBottom() {
+      const imageArrayToPush = await this.makeImageArray()
       this.pushImages(imageArrayToPush, this.bottomContents)
     },
-    async pushContentToTop(numOfImages) {
-      const imageArrayToPush = await this.makeImageArray(numOfImages)
+    async pushContentToTop() {
+      const imageArrayToPush = await this.makeImageArray()
       this.pushImages(imageArrayToPush, this.topContents)
     },
-    async makeImageArray(numOfImages) {
+    async makeImageArray() {
       const imageArrayToPush = []
-      const isUserPage = Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1
-      if (isUserPage) {
+      if (this.contentsApi) {
         let results = null
-        if (this.currentUser.id) {
-          results = await this.getContents('/auth/uploads', numOfImages)
-        } else {
-          results = await this.getContents('/uploads', numOfImages)
-        }
+        results = await this.getContents(this.contentsApi, this.numberOfContentsToLoad)
 
         if (results) {
           for (let i = 0; i < results.length; i++) {
@@ -83,9 +87,8 @@ export default {
             })
           }
         }
-      } else { // TODO] 페이지별로 어떤 컨텐츠를 뿌려줄지 여기서 결정하기보단.. following이나 like부터 구현하고
-        // api부터 어떻게 할지 정해야할듯. endpoint분리 / 쿼리 최대한 공유하고 queryparam으로 구분
-        for (let i = 0; i < numOfImages; i++) {
+      } else { // TODO] 일단은 임시 컨텐츠들. content-list props으로 contentsApi가 안넘어오면 결국은 No contents 보여줘야 할듯
+        for (let i = 0; i < this.numberOfContentsToLoad; i++) {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
             index: i,
@@ -103,17 +106,17 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    async getContents(url, numOfImages) {
-      let results = await axios.get(url, {
+    async getContents(contentsApi, numOfImages) {
+      let results = await axios.get(contentsApi.url, {
         params: {
-          username: this.$route.params.id ? this.$route.params.id : null,
+          username: contentsApi.params.id ? contentsApi.params.id : null,
           pageSize: numOfImages,
           lastId: this.lastLoadedId
         }
       })
       results = results.data.data
       this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
-      this.noMoreDataToLoad = results.length < this.SCROLL_LOAD_NUM
+      this.noMoreDataToLoad = results.length < numOfImages
       return results
     },
     getImageUrl(path) {
