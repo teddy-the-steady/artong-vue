@@ -3,15 +3,10 @@
     <div class="header">
       <div class="user-info">
         <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
-        <user-page-profile
-          v-if="$route.name === 'User' && $route.params.id !== currentUser.username"
-          :username="username"
-        ></user-page-profile>
         <button
           v-show="$route.params.id === currentUser.username"
           @click="toggleModal"
         >UPLOAD</button>
-        <button v-if="$route.name === 'User' && $route.params.id !== currentUser.username">SUBSCRIBE</button>
       </div>
       <div class="tab">
       </div>
@@ -19,8 +14,6 @@
     <div class="contents">
       <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"
         v-show="$route.params.id === currentUser.username"></content-list>
-      <content-list :contentsApi="contentsApi"
-        v-if="$route.name === 'User' && $route.params.id !== currentUser.username"></content-list>
     </div>
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
@@ -31,7 +24,6 @@
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import UserPageProfile from '../profile/UserPageProfile'
 import ContentList from '../content/ContentList'
 import UploadModal from '../modal/UploadModal'
 import baseLazyLoading from '../../util/baseLazyLoading'
@@ -40,12 +32,12 @@ import { mapState } from 'vuex'
 export default {
   name: 'User',
   components: {
-    MyPageProfile, UserPageProfile, ContentList, UploadModal
+    MyPageProfile, ContentList, UploadModal
   },
   extends: baseLazyLoading((to, callback) => {
     callback(function() {
       this.contentsApi = {
-        url: this.currentUser.id? '/auth/uploads' : '/uploads',
+        url: '/auth/uploads',
         params: {id: to.params.id}
       }
     })
@@ -71,6 +63,7 @@ export default {
     async signOut() {
       try {
         await this.$store.dispatch('AUTH_LOGOUT')
+        this.$root.$emit('destroyUserComponent')
         this.$router.push('/')
       } catch (error) {
         console.log(error)
@@ -79,14 +72,25 @@ export default {
     close(isSuccess) {
       this.toggleModal()
       if (isSuccess) { // TODO] 업로드 성공 이후 업로드한 컨텐츠가 안보이는 이슈,, s3업로드랑 db insert하는 람다트리거가 따로라서 발생.
-        setTimeout(() => { // 3초후 reload말고 어떻게? 람다트리거 완료인지 클라에서 근본적으로 어떻게 알지? 어차피 성공하고 넘어오니까 클라이언트 배열에 그냥 이미지 삽입?
-          this.componentKeyForRerender = Math.round(Math.random() * 1000)
-        }, 3000)
+        this.resetUserContentListKey(3000) // 3초후 reload말고 어떻게? 람다트리거 완료인지 클라에서 근본적으로 어떻게 알지? 어차피 성공하고 넘어오니까 클라이언트 배열에 그냥 이미지 삽입?
       }
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
-    }
+    },
+    resetUserContentListKey(timeout) {
+      setTimeout(() => {
+        this.componentKeyForRerender = Math.round(Math.random() * 1000)
+      }, timeout)
+    },
+    destroyUserComponent() {
+      this.$destroy()
+    },
+  },
+  mounted() {
+    this.$root.$on('destroyUserComponent', () => {
+      this.destroyUserComponent()
+    })
   },
   watch: {
     $route() {

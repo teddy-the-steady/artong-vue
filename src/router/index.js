@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store'
 import Home from '@/components/menu/Home'
 import Server from '@/components/menu/Server'
 import Trending from '@/components/menu/Trending'
@@ -8,6 +9,7 @@ import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
 import SignUp from '@/components/member/SignUp'
 import User from '@/components/member/User'
+import Artist from '@/components/member/Artist'
 
 Vue.use(Router)
 
@@ -16,10 +18,6 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
-    },
-    {
-      path: '/home',
       name: 'Home',
       component: Home
     },
@@ -46,14 +44,21 @@ const router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/@:id',
+      name: 'User',
+      component: User,
+      meta: { conditionalComponent: true }
     },
     {
       path: '/@:id',
-      name: 'User',
-      component: User
+      name: 'Artist',
+      component: Artist,
+      meta: { conditionalComponent: true }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/signUp',
@@ -65,9 +70,9 @@ const router = new Router({
 
 router.beforeResolve(async function(to, from, next) {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
     let user
     try {
-      const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
       if (data && data.signInUserSession) {
         user = data
       }
@@ -83,8 +88,22 @@ router.beforeResolve(async function(to, from, next) {
         })
       }
     }
+  } else if (to.matched.some(record => record.meta.conditionalComponent)) {
+    next()
+    if (store.state.user.currentUser.username === to.params.id) {
+      next({
+        name: 'User',
+        params: to.params.id
+      })
+    } else {
+      next({
+        name: 'Artist',
+        params: to.params.id
+      })
+    }
+  } else {
+    next()
   }
-  next()
 })
 
 export default router

@@ -26,7 +26,7 @@ import { parseS3Path } from '../../util/commonFunc'
 import { CLOUDFRONT_URL } from '../../constants/url'
 
 export default {
-  name: 'UserPageProfile',
+  name: 'ArtistPageProfile',
   mixins: [headerActivate],
   data() {
     return {
