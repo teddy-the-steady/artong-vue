@@ -38,6 +38,7 @@ export default {
   width: 90%;
   max-height: 300px;
   animation: fadeInOpacity .3s;
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
   &:hover {
     box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
   }
