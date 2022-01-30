@@ -2,18 +2,14 @@
   <div>
     <div class="header">
       <div class="user-info">
-        <my-page-profile v-show="$route.params.id === currentUser.username"></my-page-profile>
-        <button
-          v-show="$route.params.id === currentUser.username"
-          @click="toggleModal"
-        >UPLOAD</button>
+        <my-page-profile></my-page-profile>
+        <button @click="toggleModal">UPLOAD</button>
       </div>
       <div class="tab">
       </div>
     </div>
     <div class="contents">
-      <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"
-        v-show="$route.params.id === currentUser.username"></content-list>
+      <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"></content-list>
     </div>
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
@@ -63,8 +59,7 @@ export default {
     async signOut() {
       try {
         await this.$store.dispatch('AUTH_LOGOUT')
-        this.$root.$emit('destroyUserComponent')
-        this.$router.push('/')
+        this.$router.go(this.$router.currentRoute)
       } catch (error) {
         console.log(error)
       }
@@ -82,15 +77,7 @@ export default {
       setTimeout(() => {
         this.componentKeyForRerender = Math.round(Math.random() * 1000)
       }, timeout)
-    },
-    destroyUserComponent() {
-      this.$destroy()
-    },
-  },
-  mounted() {
-    this.$root.$on('destroyUserComponent', () => {
-      this.destroyUserComponent()
-    })
+    }
   },
   watch: {
     $route() {

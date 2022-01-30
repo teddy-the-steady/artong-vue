@@ -20,7 +20,7 @@ import ContentList from '../content/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
 
 export default {
-  name: 'User',
+  name: 'Artist',
   components: {
     ArtistPageProfile, ContentList
   },

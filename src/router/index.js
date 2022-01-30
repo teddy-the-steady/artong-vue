@@ -91,15 +91,9 @@ router.beforeResolve(async function(to, from, next) {
   } else if (to.matched.some(record => record.meta.conditionalComponent)) {
     next()
     if (store.state.user.currentUser.username === to.params.id) {
-      next({
-        name: 'User',
-        params: to.params.id
-      })
+      next({ name: 'User' })
     } else {
-      next({
-        name: 'Artist',
-        params: to.params.id
-      })
+      next({ name: 'Artist' })
     }
   } else {
     next()
