@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../content/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
@@ -24,10 +25,15 @@ export default {
   components: {
     ArtistPageProfile, ContentList
   },
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
+  },
   extends: baseLazyLoading((to, callback) => {
     callback(function() {
       this.contentsApi = {
-        url: '/uploads',
+        url: this.currentUser.id? '/auth/uploads' : '/uploads',
         params: {id: to.params.id}
       }
     })
