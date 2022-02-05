@@ -23,10 +23,12 @@ import MyPageProfile from '../profile/MyPageProfile'
 import ContentList from '../content/ContentList'
 import UploadModal from '../modal/UploadModal'
 import baseLazyLoading from '../../util/baseLazyLoading'
+import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
+  mixins: [headerActivate],
   components: {
     MyPageProfile, ContentList, UploadModal
   },
