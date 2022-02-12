@@ -1,59 +1,103 @@
 <template>
   <div id="app">
-    <header-bar></header-bar>
-    <side-bar></side-bar>
-    <side-slide-bar></side-slide-bar>
-    <div class="contents__body">
-      <router-view/>
+    <header-bar id="header-bar"></header-bar>
+    <side-bar id="side-bar"></side-bar>
+    <div class="contents">
+      <keep-alive>
+        <router-view class="contents__body"/>
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderBar from './components/header/Header.vue'
-import SideBar from './components/sidebar/SideBar.vue'
-import SideSlideBar from './components/sidebar/SideSlideBar.vue'
+import HeaderBar from './components/header/Header'
+import SideBar from './components/sidebar/SideBar'
+import { mapState } from 'vuex'
 export default {
   name: 'App',
   components: {
     HeaderBar,
-    SideBar,
-    SideSlideBar,
+    SideBar
+  },
+  computed: {
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      isModalOpen: state => state.menu.isModalOpen
+    })
+  },
+  watch: {
+    isSideMenuOpen() {
+      document.body.classList.toggle('prevent-scroll')
+    },
+    isModalOpen() {
+      document.body.classList.toggle('prevent-scroll')
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style lang="scss">
+@import './assets/scss/variables';
 
 html {
-  font-size: 16px;
-}
+    font-size: 14px;
+    height: 100%;
 
-body {
-  margin: 0;
-}
+    .prevent-scroll {
+      overflow: hidden;
+    }
 
-.contents__body {
-  position: fixed;
-  top: var(--head-height);
-  width: 100vw;
-  height: 100vh;
-}
+    body {
+        margin: 0;
+        height: 100%;
+        background: $artong-main;
+        overflow-y: scroll;
 
-:root {
-    --artong: #6610f2;
-    --white: #ffffff;
-    --lightslategray: gray;
-    --lightgray: lightgray;
-    --sidebar-backdrop: rgba(0,0,0,.5);
+        a {
+            color: $artong-main;
+            text-decoration: underline;
+        }
 
-    --head-height: 50px;
+        button {
+            font-size: 12px;
+            touch-action: manipulation;
+            cursor: pointer;
+            color: $artong-white;
+            background-color: $artong-main;
+            text-transform: uppercase;
+            padding: 14px 0;
+            letter-spacing: 1.1px;
+            border: none;
+        }
+
+        #app {
+            font-family: 'Avenir', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: $artong-white;
+            color: $artong-main;
+            text-align: center;
+            height: 100%;
+            min-height: 100%;
+
+            #header-bar {
+              z-index: 2020;
+            }
+
+            #side-bar {
+              z-index: 2030;
+            }
+
+        }
+
+        /* #app 안에 넣으면 다른 template들 덮어쓰는 문제 */
+        .contents__body {
+            position: relative;
+            background: $artong-white;
+            height: 100%;
+            padding-top: 50px;
+        }
+    }
 }
 </style>
