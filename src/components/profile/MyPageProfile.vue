@@ -23,7 +23,6 @@
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
 import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
-import { CLOUDFRONT_URL } from '../../constants/url'
 
 export default {
   name: 'MyPageProfile',
@@ -57,7 +56,7 @@ export default {
         return null
       }
       const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-      return `${CLOUDFRONT_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     }
   },
   async mounted() {
