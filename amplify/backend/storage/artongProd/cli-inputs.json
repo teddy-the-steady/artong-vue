@@ -1,0 +1,16 @@
+{
+  "resourceName": "artongProd",
+  "policyUUID": "3bb44737",
+  "bucketName": "artong-prod-image",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

@@ -1,109 +1,103 @@
 <template>
-    <div id="burger"
-         :class="{ 'active' : isBurgerActive }"
+    <div
+        :class="{ 'active' : isSideMenuOpen }"
+        id="burger"
          @click.prevent="toggle">
         <slot>
-            <button type="button" class="burger-button" title="Menu">
-                <span class="burger-bar burger-bar--1"></span>
-                <span class="burger-bar burger-bar--2"></span>
-                <span class="burger-bar burger-bar--3"></span>
+            <button class="burger-button" title="Menu">
+                <span class="burger-bar burger-bar__1"></span>
+                <span class="burger-bar burger-bar__2"></span>
+                <span class="burger-bar burger-bar__3"></span>
             </button>
         </slot>
     </div>
 </template>
+
 <script>
+import { mapState } from 'vuex'
 export default {
-    name: 'Burger',
-    computed: {
-        isBurgerActive () {
-            return this.$store.state.isNavOpen
-        }
-    },
-    methods: {
-        toggle() {
-            this.$store.commit('toggleNav')
-        }
+  name: 'Burger',
+  computed: {
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen
+    })
+  },
+  methods: {
+    toggle() {
+      this.$store.commit('TOGGLE_NAV')
     }
+  }
 }
 </script>
-<style>
-.hidden {
-    visibility: hidden;
-}
 
-button {
-    cursor: pointer;
-}
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
 
-/* remove blue outline */
-button:focus {
-    outline: 0;
-}
+#burger {
+    &.active {
+        .burger-button {
+            transform: rotate(-180deg);
 
-.burger-button {
-    position: relative;
-    height: 30px;
-    width: 32px;
-    display: block;
-    z-index: 999;
-    border: 0;
-    border-radius: 0;
-    background-color: transparent;
-    pointer-events: all;
-    transition: transform .6s cubic-bezier(.165,.84,.44,1);
-}
+            .burger-bar {
+                background-color: $artong-black;
+            }
+            .burger-bar__1 {
+                transform: translateX(-3px) rotate(75deg) scaleY(1.5);
+            }
 
-.burger-bar {
-    background-color: #130f40;
-    position: absolute;
-    top: 50%;
-    right: 6px;
-    left: 6px;
-    height: 2px;
-    width: auto;
-    margin-top: -1px;
-    transition: transform .6s cubic-bezier(.165,.84,.44,1),opacity .3s cubic-bezier(.165,.84,.44,1),background-color .6s cubic-bezier(.165,.84,.44,1);
-}
+            .burger-bar__2 {
+                transform: translateX(-2px) translateY(-3px) scaleX(.6);
+            }
 
-.burger-bar--1 {
-    -webkit-transform: translateY(-6px);
-    transform: translateY(-6px);
-}
+            .burger-bar__3 {
+                transform: scaleY(1.3) translateX(6px) rotate(-46deg);
+            }
+        }
+    }
 
-.burger-bar--2 {
-    transform-origin: 100% 50%;
-    transform: scaleX(.8);
-}
+    .burger-button {
+        cursor: pointer;
+        position: relative;
+        height: 30px;
+        width: 32px;
+        display: block;
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+        pointer-events: all;
+        transition: transform .6s cubic-bezier(.165,.84,.44,1);
 
-.burger-button:hover .burger-bar--2 {
-    transform: scaleX(1);
-}
+        /* remove blue outline */
+        &:focus {
+            outline: 0;
+        }
 
-.no-touchevents .burger-bar--2:hover {
-    transform: scaleX(1);
-}
+        .burger-bar {
+            background-color: $artong-black;
+            position: absolute;
+            border-radius: 1px;
+            top: 50%;
+            right: 6px;
+            left: 6px;
+            height: 2px;
+            width: auto;
+            margin-top: -1px;
+            transition: transform .6s cubic-bezier(.165,.84,.44,1),opacity .3s cubic-bezier(.165,.84,.44,1),background-color .6s cubic-bezier(.165,.84,.44,1);
+        }
 
-.burger-bar--3 {
-    transform: translateY(6px);
-}
+        .burger-bar__1 {
+            -webkit-transform: translateY(-6px);
+            transform: translateY(-6px);
+        }
 
-#burger.active .burger-button {
-    transform: rotate(-180deg);
-}
+        .burger-bar__2 {
+            transform-origin: 100% 50%;
+            transform: scaleX(.8);
+        }
 
-#burger.active .burger-bar {
-    background-color: #fff;
-}
-
-#burger.active .burger-bar--1 {
-    transform: rotate(45deg)
-}
-
-#burger.active .burger-bar--2 {
-    opacity: 0;
-}
-
-#burger.active .burger-bar--3 {
-    transform: rotate(-45deg)
+        .burger-bar__3 {
+            transform: translateY(6px);
+        }
+    }
 }
 </style>

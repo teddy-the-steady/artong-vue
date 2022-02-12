@@ -1,38 +1,97 @@
 <template>
-  <nav class="sidebar">
-    <div class="sidebar__items">
-      <div>H</div>
-      <div>T</div>
-      <div>F</div>
-    </div>
-  </nav>
+    <nav class="sidebar">
+        <transition name="backdrop">
+            <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isSideMenuOpen"></div>
+        </transition>
+        <transition name="slide">
+            <div class="sidebar-panel" v-if="isSideMenuOpen">
+                <sidebar-menu
+                    :menu="menu"
+                    :theme="selectedTheme"
+                    :show-one-child="true"
+                    @item-click="onItemClick"
+                />
+            </div>
+        </transition>
+    </nav>
 </template>
 
 <script>
+import menuItems from './menuItems'
+import SidebarMenu from './SidebarMenu'
+import { mapState } from 'vuex'
 export default {
-  name: 'SideBar'
+  name: 'Sidebar',
+  components: {
+    SidebarMenu
+  },
+  data() {
+    return {
+      menu: menuItems,
+      selectedTheme: 'white-theme'
+    }
+  },
+  computed: {
+    ...mapState({
+      isSideMenuOpen: state => state.menu.isSideMenuOpen
+    })
+  },
+  methods: {
+    closeSidebarPanel() {
+      this.$store.commit('TOGGLE_NAV')
+    },
+    onItemClick(event, item) {
+      console.log('onItemClick')
+      console.log(event)
+      console.log(item)
+    }
+  }
 }
 </script>
 
-<style scoped>
-.sidebar {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  top: var(--head-height, 50px);
-  background-color: var(--lightgray);
-  width: 60px;
-  /* z-index: 2030; */
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
+.slide-enter-active,
+.slide-leave-active{
+    transition: transform 0.2s ease;
 }
 
-.sidebar__items {
-  display: flex;
-  flex-flow: column;
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(-100%);
+    transition: all 150ms ease-in 0s
 }
 
-@media screen and (max-width: 768px){
-  .sidebar {
-    display: none;
-  }
+.backdrop-enter-active,
+.backdrop-leave-active{
+    transition: opacity .3s;
+}
+
+.backdrop-enter,
+.backdrop-leave-to {
+    opacity: 0;
+}
+
+.sidebar-backdrop {
+    background-color: $sidebar-backdrop;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 998;
+}
+
+.sidebar-panel {
+    overflow-y: auto;
+    background-color: $artong-white;
+    position: fixed;
+    left: 0;
+    top: $head-height;
+    height: 100%;
+    z-index: 999;
+    width: 300px;
 }
 </style>
