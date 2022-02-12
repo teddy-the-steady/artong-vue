@@ -1,0 +1,16 @@
+{
+  "resourceName": "artongStage",
+  "policyUUID": "a2f05181",
+  "bucketName": "artong-stage-image",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
