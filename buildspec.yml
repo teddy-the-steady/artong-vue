@@ -13,4 +13,4 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 cp --recursive --acl public-read ./dist s3://staging-artong.com/ 
+      - aws s3 cp --recursive --acl public-read ./dist s3://4rtong.com/ 
