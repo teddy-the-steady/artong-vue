@@ -187,7 +187,8 @@ var component = {
       backgroundClip: 'padding-box',
       width: ((100 / this.displayColumns) + '%'),
       border: '0 solid transparent',
-      borderLeftWidth: gutterSizeWithUnit
+      borderLeftWidth: gutterSizeWithUnit,
+      margin: '0 10px'
     }
 
     var columns = columnsContainingChildren.map((children, index) => {
