@@ -56,7 +56,7 @@ html {
 
         a {
             color: $artong-main;
-            text-decoration: underline;
+            text-decoration: none;
         }
 
         button {
@@ -96,7 +96,7 @@ html {
             position: relative;
             background: $artong-white;
             height: 100%;
-            padding-top: 50px;
+            padding-top: 55px;
         }
     }
 }

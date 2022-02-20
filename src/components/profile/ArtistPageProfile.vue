@@ -9,17 +9,16 @@
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member.display_name }}
+        {{ member? member.display_name : '' }}
       </div>
       <div class="intro">
-        {{ member.introduction }}
+        {{ member? member.introduction : '' }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import axios from 'axios'
 import { headerActivate } from '../../mixin'
 import { parseS3Path } from '../../util/commonFunc'
@@ -39,16 +38,14 @@ export default {
       default: ''
     }
   },
-  computed: {
-    ...mapState({
-      currentUser: state => state.user.currentUser
-    })
-  },
   methods: {
     async getMember() {
       const member = await axios.get(`/member?username=${this.$route.params.id}`)
-      this.member = member.data.data
-      return member.data.data
+      if (member) {
+        this.member = member.data.data
+        return member.data.data
+      }
+      return null
     },
     async getProfileImage(member) {
       if (!member || !member.profile_pic) {

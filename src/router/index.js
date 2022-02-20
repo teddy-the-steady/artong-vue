@@ -64,7 +64,12 @@ const router = new Router({
       path: '/signUp',
       name: 'SignUp',
       component: SignUp
-    }
+    },
+    {
+      path: '/artwork/:id',
+      name: 'Artwork',
+      // component: Login
+    },
   ]
 })
 

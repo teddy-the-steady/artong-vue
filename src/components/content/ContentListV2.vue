@@ -1,68 +1,111 @@
 <template>
-  <div>
-    <top-container class="top-container" :topImages="topContents" :selectedImage="selectedImage"
-      @image-selected="onTopImageSelect"></top-container>
-    <center-container :image="selectedImage" ref="center"></center-container>
-    <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
-      @image-selected="onBottomImageSelect"></bottom-container>
+  <div class="contents">
+    <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
+      <div class="content" v-for="(val, i) in imageList" :key="i">
+        <router-link :to="{ name: 'Artwork', params: { id: val.id_pk || val.url }}">
+          <content-box :image="val"></content-box>
+        </router-link>
+        <div class="profileBox">
+          <router-link :to="{ name: 'User', params: { id: val.username }}">
+            <under-contents-profile :image="val"></under-contents-profile>
+          </router-link>
+        </div>
+      </div>
+    </masonry>
+    <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
 </template>
 
 <script>
-import { Storage } from 'aws-amplify'
+import ContentBox from './ContentBox'
+import underContentsProfile from '../profile/underContentsProfile.vue'
+import InfiniteLoading from 'vue-infinite-loading'
 import axios from 'axios'
-import CenterContainer from './CenterContainer'
-import TopContainer from './TopContainer'
-import BottomContainer from './BottomContainer'
 import { parseS3Path } from '../../util/commonFunc'
 
 export default {
-  name: 'ContentListV2', // TODO] virtual-scroll 적용 https://github.com/Akryum/vue-virtual-scroller 혹은 https://github.com/tangbc/vue-virtual-scroll-list
-  // 2021-09-20 masonry랑 virtual-scroll를 통합하는 문제로 중단
+  name: 'ContentListV2',
   components: {
-    CenterContainer, TopContainer, BottomContainer
+    ContentBox, underContentsProfile, InfiniteLoading
+  },
+  props: {
+    contentsApi: {
+      type: Object,
+      default: null
+    },
+    numberOfContentsToLoad: {
+      type: Number,
+      default: 10
+    }
   },
   data() {
     return {
-      topContents: [],
-      bottomContents: [],
-      selectedImage: null,
-      SCROLL_LOAD_NUM: 20,
-      lastLoadedId: null
+      imageList: [],
+      lastLoadedId: null,
+      noMoreDataToLoad: false
     }
   },
   methods: {
-    async pushContentToBottom(numOfImages) {
-      const imageArrayToPush = await this.makeImageArray(numOfImages)
-      this.pushImages(imageArrayToPush, this.bottomContents)
+    async infiniteHandler($state) {
+      if (this.noMoreDataToLoad) {
+        $state.complete()
+        return
+      }
+      await this.pushContents()
+      setTimeout(function() { $state.loaded() }, 500)
     },
-    async pushContentToTop(numOfImages) {
-      const imageArrayToPush = await this.makeImageArray(numOfImages)
-      this.pushImages(imageArrayToPush, this.topContents)
+    async pushContents() {
+      const imageArrayToPush = await this.makeImageArray()
+      this.pushImages(imageArrayToPush, this.imageList)
     },
-    async makeImageArray(numOfImages) {
+    pushImages(imageArrayToPush, imageList) {
+      const lastImage = imageList[imageList.length - 1]
+      for (let i in imageArrayToPush) {
+        if (lastImage) {
+          const lastImageCopy = this.deepCopy(lastImage)
+          imageArrayToPush[i].index = ++lastImageCopy.index
+        }
+        imageList.push(imageArrayToPush[i])
+      }
+    },
+    deepCopy(obj) {
+      return JSON.parse(JSON.stringify(obj))
+    },
+    async makeImageArray() {
       const imageArrayToPush = []
-      if (Object.keys(this.$route.params).length > 0 && this.$route.params.id.indexOf('@') === -1) {
-        const results = await this.getContents(numOfImages)
+      if (this.contentsApi) {
+        let results = null
+        results = await this.getContents(this.contentsApi, this.numberOfContentsToLoad)
+
         if (results) {
           for (let i = 0; i < results.length; i++) {
             imageArrayToPush.push({
               index: i,
-              id: results[i].id,
-              url: await this.getContentFromS3(results[i].thumbnail_url)
+              id_pk: results[i].id,
+              url: this.getImageUrl(results[i].thumbnail_url),
+              profileUrl: results[i].profile_pic ? this.getImageUrl(results[i].profile_pic) : '',
+              username: results[i].username,
+              like: results[i].like
             })
           }
         }
-      } else {
-        for (let i = 0; i < numOfImages; i++) {
+      } else { // TODO] 일단은 임시 컨텐츠들. content-list props으로 contentsApi가 안넘어오면 결국은 No contents 보여줘야 할듯
+        for (let i = 0; i < this.numberOfContentsToLoad; i++) {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
             index: i,
-            url: randomInt
+            url: randomInt,
+            profileUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/superduper8989/profile/aimyon.jpeg',
+            username: 'superduper8989',
+            like: false
           })
         }
       }
       return imageArrayToPush
+    },
+    getImageUrl(path) {
+      const s3Path = parseS3Path(path)
+      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
@@ -70,121 +113,19 @@ export default {
       const result = Math.floor(Math.random() * (max - min + 1)) + min
       return result
     },
-    async getContents(numOfImages) {
-      let results = await axios.get('/uploads', {
+    async getContents(contentsApi, numOfImages) {
+      let results = await axios.get(contentsApi.url, {
         params: {
-          username: this.$route.params.id,
+          username: contentsApi.params.id ? contentsApi.params.id : null,
           pageSize: numOfImages,
           lastId: this.lastLoadedId
         }
       })
       results = results.data.data
       this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
+      this.noMoreDataToLoad = results.length < numOfImages
       return results
     },
-    async getContentFromS3(url) {
-      const s3Path = parseS3Path(url)
-      const content = await Storage.get(`${s3Path.username}/${s3Path.type}/${s3Path.file}`)
-      return content
-    },
-    pushImages(images, destContainer) {
-      let lastImageOfContainer = destContainer[destContainer.length - 1]
-      if (lastImageOfContainer) this.resetImageIndexBeforePush(images, lastImageOfContainer)
-      for (let i in images) {
-        this.pushImage(images[i], destContainer)
-      }
-    },
-    resetImageIndexBeforePush(images, lastImageOfContainer) {
-      let lastImageOfContainerCopy = this.deepCopy(lastImageOfContainer)
-      for (let i in images) {
-        images[i].index = ++lastImageOfContainerCopy.index
-      }
-    },
-    pushImage(image, destContainer) {
-      destContainer.push(image)
-    },
-    onBottomImageSelect(selectedIndex) {
-      const topContentsTail = this.bottomContents.slice(0, selectedIndex)
-      const selectedImage = this.bottomContents[selectedIndex]
-      this.bottomContents.splice(0, selectedIndex + 1)
-      this.resetImageIndex(this.bottomContents)
-      this.pushImages([this.selectedImage], this.topContents)
-      this.pushImages(topContentsTail, this.topContents)
-      this.setSelectedImage(selectedImage)
-    },
-    resetImageIndex(container) {
-      for (let i in container) {
-        container[i].index = i
-      }
-    },
-    setSelectedImage(image) {
-      this.selectedImage = image
-    },
-    onTopImageSelect(selectedIndex) {
-      const bottomContentsHead = this.topContents.slice(selectedIndex + 1)
-      const selectedImage = this.topContents[selectedIndex]
-      this.topContents.splice(selectedIndex)
-      if (this.selectedImage) {
-        this.prependImage(this.selectedImage, this.bottomContents)
-      }
-      this.prependImages(bottomContentsHead, this.bottomContents)
-      this.setSelectedImage(selectedImage)
-    },
-    prependImages(images, destContainer) {
-      for (let i = images.length - 1; i >= 0; i--) {
-        this.prependImage(images[i], destContainer)
-      }
-      this.resetImageIndex(destContainer)
-    },
-    prependImage(image, destContainer) {
-      destContainer.unshift(image)
-    },
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj))
-    },
-    emptyContentsLists() {
-      this.topContents = []
-      this.bottomContents = []
-      this.selectedImage = null
-    }
-  },
-  async created() {
-    await this.pushContentToTop(this.SCROLL_LOAD_NUM)
-  },
-  mounted() {
-    this.$watch(
-      () => { return this.$refs.center.image },
-      (val) => {
-        const center = this.$refs.center.$el
-        const centerPosition = center.offsetTop
-        const headerOffset = 55
-        const offsetPosition = centerPosition - headerOffset
-        let option = {
-          top: offsetPosition
-        }
-        if (navigator.userAgent.indexOf('Mobile') !== -1) {
-          if (navigator.userAgent.indexOf('iPhone') !== -1) {
-            option.behavior = 'auto'
-          } else if (navigator.userAgent.indexOf('Android') !== -1) {
-            option.behavior = 'smooth'
-          }
-        } else if (navigator.userAgent.indexOf('Chrome') !== -1) {
-          option.behavior = 'smooth'
-        } else {
-          option.behavior = 'auto'
-        }
-        window.scrollTo(option)
-        setTimeout(function() {
-          const centerTop = center.getBoundingClientRect().top
-          if (centerTop < 54 || centerTop > 56) {
-            window.scrollTo({
-              top: centerPosition + centerTop - 110,
-              behavior: 'smooth'
-            })
-          }
-        }, 400)
-      }
-    )
   }
 }
 </script>
@@ -192,7 +133,11 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.top-container {
+.contents {
   margin-top: 10px;
+}
+
+.profileBox {
+  padding: 10px 0
 }
 </style>
