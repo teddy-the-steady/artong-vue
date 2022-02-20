@@ -6,7 +6,7 @@
 
 <script>
 import { headerActivate } from '../../mixin'
-import ContentListV2 from '../content/ContentListV2'
+import ContentListV2 from '../contentListV2/ContentListV2'
 export default {
   name: 'Server',
   mixins: [headerActivate],
