@@ -223,8 +223,4 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-
-.top-container {
-  margin-top: 10px;
-}
 </style>

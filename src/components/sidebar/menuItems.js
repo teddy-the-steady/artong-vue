@@ -9,7 +9,7 @@ export default [
   },
   {
     href: '/',
-    title: 'Home',
+    title: 'Home test',
     icon: 'fa fa-download'
   },
   {

@@ -20,7 +20,7 @@
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import ContentList from '../content/ContentList'
+import ContentList from '../contentList/ContentList'
 import UploadModal from '../modal/UploadModal'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { headerActivate } from '../../mixin'

@@ -23,7 +23,7 @@
 
 <script>
 import InContentsProfile from '../profile/InContentsProfile'
-import ActionList from '../content/ActionList'
+import ActionList from '../contentList/ActionList'
 
 export default {
   name: 'ContentLayer',
