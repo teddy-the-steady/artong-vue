@@ -25,7 +25,7 @@ export default {
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen
     })
-  },
+  }, // some comment
   watch: {
     isSideMenuOpen() {
       document.body.classList.toggle('prevent-scroll')
