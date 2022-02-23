@@ -3,10 +3,10 @@
 
 const awsmobile = {
     "aws_project_region": "ap-northeast-2",
-    "aws_cognito_identity_pool_id": "ap-northeast-2:06ec3f8f-f878-40c9-ae54-b159e26c41e2",
+    "aws_cognito_identity_pool_id": "ap-northeast-2:818460d5-a42a-433a-9a0c-882e9c0ff0f3",
     "aws_cognito_region": "ap-northeast-2",
-    "aws_user_pools_id": "ap-northeast-2_1JuVDE68y",
-    "aws_user_pools_web_client_id": "49jgr76f4a72g8d3qjhohe46do",
+    "aws_user_pools_id": "ap-northeast-2_1hI3UZtA0",
+    "aws_user_pools_web_client_id": "6ua7pfkles8shb8sptp9lo2od9",
     "oauth": {},
     "aws_cognito_username_attributes": [
         "EMAIL"
@@ -26,7 +26,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "artong-prod-image213636-prod",
+    "aws_user_files_s3_bucket": "artong-stage-image163347-stage",
     "aws_user_files_s3_bucket_region": "ap-northeast-2"
 };
 
