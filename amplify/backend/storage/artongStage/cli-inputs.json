@@ -1,7 +1,7 @@
 {
-  "resourceName": "artongProd",
-  "policyUUID": "3bb44737",
-  "bucketName": "artong-prod-image",
+  "resourceName": "artongStage",
+  "policyUUID": "a2f05181",
+  "bucketName": "artong-stage-image",
   "storageAccess": "authAndGuest",
   "guestAccess": [
     "READ"
