@@ -1,6 +1,6 @@
 {
   "auth": {
-    "artongc56333a9": {
+    "artong905365dc": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -28,7 +28,7 @@
     }
   },
   "storage": {
-    "artongProd": {
+    "artongStage": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
