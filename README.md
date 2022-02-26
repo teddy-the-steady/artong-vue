@@ -22,6 +22,11 @@ npm run lint
 ***
 ## Amplify env checkout 하기
 
+사전 조건: amplify-cli
+```
+npm install -g @aws-amplify/cli
+```
+
 Amplify env는 prod, stage가 존재
 
 각각 git branch와 대응되며 각 환경에 맞는 aws 인프라(cognito, s3)를 사용
