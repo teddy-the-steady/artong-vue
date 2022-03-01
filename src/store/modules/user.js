@@ -26,7 +26,7 @@ const actions = {
     try {
       commit(USER_REQUEST)
       const accessToken = user.getSignInUserSession().getAccessToken().getJwtToken()
-      const member = await axios.get(`/member/${user.attributes.sub}`, {
+      const member = await axios.get(`/auth/member/${user.attributes.sub}`, {
         headers: {
           Authorization: accessToken
         }
