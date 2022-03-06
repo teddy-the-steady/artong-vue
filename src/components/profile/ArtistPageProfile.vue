@@ -39,8 +39,8 @@ export default {
     }
   },
   methods: {
-    async getMember() {
-      const member = await axios.get(`/member?username=${this.$route.params.id}`)
+    async getMember(username) {
+      const member = await axios.get(`/member?username=${username}`)
       if (member) {
         this.member = member.data.data
         return member.data.data
@@ -55,14 +55,15 @@ export default {
       return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
     }
   },
-  async mounted() {
-    const member = await this.getMember()
-    this.profileImage = await this.getProfileImage(member)
-  },
   watch: {
-    async username() {
-      const member = await this.getMember()
-      this.profileImage = await this.getProfileImage(member)
+    username: {
+      immediate: true, 
+      async handler(val) {
+        if (val) {
+          this.member = await this.getMember(val)
+          this.profileImage = await this.getProfileImage(this.member)
+        }
+      }
     }
   }
 }

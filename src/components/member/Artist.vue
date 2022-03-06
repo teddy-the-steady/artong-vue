@@ -2,7 +2,7 @@
   <div :key="componentKey">
     <div class="header">
       <div class="user-info">
-        <artist-page-profile></artist-page-profile>
+        <artist-page-profile :username="username"></artist-page-profile>
         <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
@@ -45,7 +45,8 @@ export default {
         params: {},
         query: {}
       },
-      componentKey: 0
+      componentKey: 0,
+      username: ''
     }
   },
   methods: {
@@ -53,19 +54,18 @@ export default {
       this.componentKey += 1
     }
   },
-  watch: {
-    $route() {
-      window.scrollTo({top: 0})
-    }
-  },
   created() {
+    this.username = this.$route.params.id
     this.$watch(
       () => this.$route.params,
       (toParams) => {
-        if (toParams.id === this.currentUser.username) {
-          this.$router.push({ name: 'User' }).catch(()=>{})
-        } else {
-          this.forceRerender()
+        this.username = toParams.id
+        if (toParams) {
+          if (toParams.id === this.currentUser.username) {
+            this.$router.push({ name: 'User' }).catch(()=>{})
+          } else {
+            this.forceRerender()
+          }
         }
       }
     )
