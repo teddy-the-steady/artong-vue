@@ -17,7 +17,7 @@
             </router-link>
           </div>
           <div class="profile" v-else>
-            <router-link :to="{ name: 'User', params: { id: currentUser.username }}">
+            <router-link :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}">
               <header-profile v-if="currentUser.id"></header-profile>
             </router-link>
           </div>
