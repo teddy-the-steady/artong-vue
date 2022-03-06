@@ -43,9 +43,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     window.scrollTo({top: 0})
-    next()
     next({
-      path: '/login',
       query: {
         redirect: from.fullPath
       }
