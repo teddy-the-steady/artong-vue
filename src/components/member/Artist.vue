@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div :key="componentKey">
     <div class="header">
       <div class="user-info">
-        <artist-page-profile v-if="$route.name === 'Artist'"></artist-page-profile>
-        <button v-if="$route.name === 'Artist'">SUBSCRIBE</button>
+        <artist-page-profile></artist-page-profile>
+        <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
       </div>
     </div>
     <div class="contents">
-      <content-list :contentsApi="contentsApi" v-if="$route.name === 'Artist'"></content-list>
+      <content-list :contentsApi="contentsApi"></content-list>
     </div>
   </div>
 </template>
@@ -44,13 +44,31 @@ export default {
         url: '',
         params: {},
         query: {}
-      }
+      },
+      componentKey: 0
+    }
+  },
+  methods: {
+    forceRerender() {
+      this.componentKey += 1
     }
   },
   watch: {
     $route() {
       window.scrollTo({top: 0})
     }
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (toParams) => {
+        if (toParams.id === this.currentUser.username) {
+          this.$router.push({ name: 'User' }).catch(()=>{})
+        } else {
+          this.forceRerender()
+        }
+      }
+    )
   }
 }
 </script>

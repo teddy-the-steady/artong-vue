@@ -6,7 +6,7 @@
           <content-box :image="val"></content-box>
         </router-link>
         <div class="profileBox">
-          <router-link :to="{ name: 'User', params: { id: val.username }}">
+          <router-link :to="{ name: 'UserOrArtist', params: { id: val.username }}">
             <under-contents-profile :image="val"></under-contents-profile>
           </router-link>
         </div>
