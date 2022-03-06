@@ -45,15 +45,20 @@ const router = new Router({
     },
     {
       path: '/@:id',
-      name: 'User',
-      component: User,
-      meta: { conditionalComponent: true }
+      name: 'UserOrArtist',
+      beforeEnter(to, from, next) {
+        if (store.state.user.currentUser.username === to.params.id) {
+          next({ name: 'User', params: {id: to.params.id} })
+        } else {
+          to.matched[0].components.default = Artist
+          next()
+        }
+      }
     },
     {
       path: '/@:id',
-      name: 'Artist',
-      component: Artist,
-      meta: { conditionalComponent: true }
+      name: 'User',
+      component: User
     },
     {
       path: '/login',
@@ -73,11 +78,11 @@ const router = new Router({
   ]
 })
 
-router.beforeResolve(async function(to, from, next) {
+router.beforeEach(async function(to, from, next) {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
-    let user
+    let user = null
     try {
+      const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
       if (data && data.signInUserSession) {
         user = data
       }
@@ -92,13 +97,6 @@ router.beforeResolve(async function(to, from, next) {
           }
         })
       }
-    }
-  } else if (to.matched.some(record => record.meta.conditionalComponent)) {
-    next()
-    if (store.state.user.currentUser.username === to.params.id) {
-      next({ name: 'User' })
-    } else {
-      next({ name: 'Artist' })
     }
   } else {
     next()
