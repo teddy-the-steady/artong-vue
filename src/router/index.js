@@ -48,17 +48,13 @@ const router = new Router({
       name: 'UserOrArtist',
       beforeEnter(to, from, next) {
         if (store.state.user.currentUser.username === to.params.id) {
-          next({ name: 'User', params: {id: to.params.id} })
+          to.matched[0].components.default = User
+          next()
         } else {
           to.matched[0].components.default = Artist
           next()
         }
       }
-    },
-    {
-      path: '/@:id',
-      name: 'User',
-      component: User
     },
     {
       path: '/login',
@@ -98,6 +94,12 @@ router.beforeEach(async function(to, from, next) {
         })
       }
     }
+  } else if (to.name === 'UserOrArtist' && from.name === 'UserOrArtist' && store.state.user.currentUser.username === to.params.id) {
+    to.matched[0].components.default = User
+    next()
+  } else if (to.name === 'UserOrArtist' && from.name === 'UserOrArtist' && store.state.user.currentUser.username !== to.params.id) {
+    to.matched[0].components.default = Artist
+    next()
   } else {
     next()
   }

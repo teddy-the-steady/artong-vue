@@ -34,7 +34,7 @@ export default {
     callback(function() {
       this.contentsApi = {
         url: this.currentUser.id? '/auth/uploads' : '/uploads',
-        params: {id: to.params.id}
+        params: {id: this.$route.params.id}
       }
     })
   }),
@@ -57,15 +57,10 @@ export default {
   created() {
     this.username = this.$route.params.id
     this.$watch(
-      () => this.$route.params,
-      (toParams) => {
-        this.username = toParams.id
-        if (toParams) {
-          if (toParams.id === this.currentUser.username) {
-            this.$router.push({ name: 'User' }).catch(()=>{})
-          } else {
-            this.forceRerender()
-          }
+      () => this.$route,
+      (toRoute) => {
+        if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
+          this.forceRerender()
         }
       }
     )
