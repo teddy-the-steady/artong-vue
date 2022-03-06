@@ -36,7 +36,7 @@ export default {
     callback(function() {
       this.contentsApi = {
         url: '/auth/uploads',
-        params: {id: to.params.id}
+        params: {id: this.$route.params.id}
       }
     })
   }),
