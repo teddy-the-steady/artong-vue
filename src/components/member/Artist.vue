@@ -18,12 +18,22 @@
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../contentList/ContentList'
+import baseLazyLoading from '../../util/baseLazyLoading'
+
 
 export default {
   name: 'Artist',
   components: {
     ArtistPageProfile, ContentList
   },
+  extends: baseLazyLoading((to, callback) => {
+    callback(function() {
+      this.contentsApi = {
+        url: this.currentUser.id? '/auth/uploads' : '/uploads',
+        params: {id: this.$route.params.id}
+      }
+    })
+  }),
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -51,16 +61,11 @@ export default {
       () => this.$route,
       (toRoute) => {
         if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
+          this.username = toRoute.params.id
           this.forceRerender()
         }
       }
     )
-  },
-  mounted() {
-    this.contentsApi = {
-      url: this.currentUser.id? '/auth/uploads' : '/uploads',
-      params: {id: this.$route.params.id}
-    }
   }
 }
 </script>
