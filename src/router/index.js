@@ -94,12 +94,14 @@ router.beforeEach(async function(to, from, next) {
         })
       }
     }
-  } else if (to.name === 'UserOrArtist' && from.name === 'UserOrArtist' && store.state.user.currentUser.username === to.params.id) {
-    to.matched[0].components.default = User
-    next()
-  } else if (to.name === 'UserOrArtist' && from.name === 'UserOrArtist' && store.state.user.currentUser.username !== to.params.id) {
-    to.matched[0].components.default = Artist
-    next()
+  } else if (to.name === 'UserOrArtist' && from.name === 'UserOrArtist') {
+    if (store.state.user.currentUser.username === to.params.id) {
+      to.matched[0].components.default = User
+      next()
+    } else {
+      to.matched[0].components.default = Artist
+      next()
+    }
   } else {
     next()
   }
