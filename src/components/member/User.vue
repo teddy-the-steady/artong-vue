@@ -22,7 +22,6 @@
 import MyPageProfile from '../profile/MyPageProfile'
 import ContentList from '../contentList/ContentList'
 import UploadModal from '../modal/UploadModal'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
 
@@ -32,14 +31,6 @@ export default {
   components: {
     MyPageProfile, ContentList, UploadModal
   },
-  extends: baseLazyLoading((to, callback) => {
-    callback(function() {
-      this.contentsApi = {
-        url: '/auth/uploads',
-        params: {id: this.$route.params.id}
-      }
-    })
-  }),
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
@@ -79,6 +70,12 @@ export default {
       setTimeout(() => {
         this.componentKeyForRerender = Math.round(Math.random() * 1000)
       }, timeout)
+    }
+  },
+  mounted() {
+    this.contentsApi = {
+      url: '/auth/uploads',
+      params: {id: this.$route.params.id}
     }
   },
   watch: {
