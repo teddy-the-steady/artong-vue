@@ -1,8 +1,8 @@
 <template>
   <div>
-    <top-container class="top-container" :topImages="topContents" :selectedImage="selectedImage"
+    <top-container :topImages="topContents" :selectedImage="selectedImage"
       @image-selected="onTopImageSelect"></top-container>
-    <center-container :image="selectedImage" ref="center"></center-container>
+    <center-container class="center-container" v-show="selectedImage" :image="selectedImage" ref="center"></center-container>
     <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
       @image-selected="onBottomImageSelect"></bottom-container>
     <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
@@ -223,4 +223,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+
+.center-container {
+  margin: 10px;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
+}
 </style>
