@@ -56,7 +56,6 @@ export default {
 @import '../../assets/scss/variables';
 
 .center {
-  display: inline-block;
   margin: 0.5rem;
   width: 50%;
   position: relative;
