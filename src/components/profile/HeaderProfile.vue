@@ -1,19 +1,31 @@
 <template>
   <div class="profile">
-      <img v-if="currentUser.profile.profile_pic" :src="profileImage"/>
+    <div v-if="isFirstLoading">
+      <div>
+        <skeleton-box style="width:100%;height:100%;"></skeleton-box>
+      </div>
+    </div>
+    <div v-else>
+      <img v-if="currentUser.profile.profile_pic" :src="profileImage" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { parseS3Path } from '../../util/commonFunc'
+import SkeletonBox from '../util/SkeletonBox'
 
 export default {
   name: 'HeaderProfile',
+  components: {
+    SkeletonBox
+  },
   data() {
     return {
-      profileImage: ''
+      profileImage: '',
+      isFirstLoading: true
     }
   },
   computed: {
@@ -22,7 +34,7 @@ export default {
     })
   },
   methods: {
-    async getProfileImage() {
+    getProfileImage() {
       if (this.currentUser.profile.profile_pic) {
         const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
         return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
@@ -32,12 +44,14 @@ export default {
   created() {
     console.log('HeaderProfile created')
   },
-  async mounted() {
-    this.profileImage = await this.getProfileImage()
+  mounted() {
+    this.profileImage = this.getProfileImage()
+    this.isFirstLoading = false
   },
   watch: {
-    async currentUser() {
-      this.profileImage = await this.getProfileImage()
+    currentUser() {
+      this.profileImage = this.getProfileImage()
+      this.isFirstLoading = false
     }
   }
 }
@@ -59,7 +73,7 @@ export default {
         border-radius: 50%;
     }
 
-    div {
+    div, span {
         height: 100%;
         border-radius: 50%;
 
