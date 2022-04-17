@@ -1,7 +1,10 @@
 <template>
   <div class="profile">
-    <div class="image">
-      <img v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()"/>
+    <div v-if="isFirstLoading" class="image">
+      <skeleton-box style="width:100%;height:100%;"></skeleton-box>
+    </div>
+    <div v-else class="image">
+      <img v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture" @click="$refs.fileInput.click()"></div>
       <input ref="fileInput" type="file" @change="onFileChange">
     </div>
@@ -23,9 +26,13 @@
 import { mapState } from 'vuex'
 import { Storage } from 'aws-amplify'
 import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
+import SkeletonBox from '../util/SkeletonBox'
 
 export default {
   name: 'MyPageProfile',
+  components: {
+    SkeletonBox
+  },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -33,7 +40,8 @@ export default {
   },
   data() {
     return {
-      profileImage: ''
+      profileImage: '',
+      isFirstLoading: true
     }
   },
   methods: {
@@ -62,10 +70,12 @@ export default {
   async mounted() {
     console.log('MyPageProfile mounted')
     this.profileImage = await this.getProfileImage()
+    this.isFirstLoading = false
   },
   watch: {
     async currentUser() {
       this.profileImage = await this.getProfileImage()
+      this.isFirstLoading = false
     }
   }
 }
@@ -96,7 +106,7 @@ export default {
           cursor: pointer;
         }
 
-        div {
+        div, span {
           height: 150px;
           border-radius: 50%;
 
