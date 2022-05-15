@@ -10,12 +10,12 @@
       </div>
     </transition>
     <transition name="slide-left">
-      <div class="actionList" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <action-list
+      <div class="reactionList" v-if="isLayerActive" :class="{active: isLayerActive}">
+        <reaction-list
           :isPropCommentActive="isPropCommentActive"
           :image="image"
           @handle-comment-click="handleCommentClick">
-        </action-list>
+        </reaction-list>
       </div>
     </transition>
   </div>
@@ -23,12 +23,12 @@
 
 <script>
 import InContentsProfile from '../profile/InContentsProfile'
-import ActionList from '../contentList/ActionList'
+import ReactionList from '../contentList/ReactionList'
 
 export default {
   name: 'ContentLayer',
   components: {
-    InContentsProfile, ActionList
+    InContentsProfile, ReactionList
   },
   props: {
     image: {
@@ -103,7 +103,7 @@ export default {
   }
 }
 
-.actionList {
+.reactionList {
   display: none;
   &.active {
     display: block;
