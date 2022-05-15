@@ -40,11 +40,11 @@ export default {
       }
 
       if (this.image.like) {
-        await axios.post(`/uploads/${this.image.id_pk}/actions`, {
+        await axios.post(`/contents/${this.image.id_pk}/actions`, {
           action_code: 'unlike'
         })
       } else {
-        await axios.post(`/uploads/${this.image.id_pk}/actions`, {
+        await axios.post(`/contents/${this.image.id_pk}/actions`, {
           action_code: 'like'
         })
       }
