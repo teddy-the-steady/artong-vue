@@ -16,7 +16,7 @@ import axios from 'axios'
 import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
-  name: 'ActionList',
+  name: 'ReactionList',
   props: {
     image: {
       type: Object,
@@ -41,11 +41,11 @@ export default {
 
       if (this.image.like) {
         await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          action_code: 'unlike'
+          reaction_code: 'unlike'
         })
       } else {
         await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          action_code: 'like'
+          reaction_code: 'like'
         })
       }
       this.image.like = !this.image.like
