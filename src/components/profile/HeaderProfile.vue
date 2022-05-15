@@ -6,7 +6,7 @@
       </div>
     </div>
     <div v-else>
-      <img v-if="currentUser.profile.profile_pic" :src="profileImage" @error="isFirstLoading = true"/>
+      <img v-if="profileImage" :src="profileImage" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture"></div>
     </div>
   </div>
