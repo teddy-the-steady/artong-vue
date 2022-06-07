@@ -69,6 +69,9 @@ export default {
         this.warning = error.message
         if (error.code === 'UserNotConfirmedException') {
           this.$store.commit('TOGGLE_CONFIRM')
+        } else if (error.name === 'QuotaExceededError') {
+          this.warning = 'Please login again.'
+          window.localStorage.clear()
         }
       }
     }
