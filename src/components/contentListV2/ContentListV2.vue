@@ -104,8 +104,7 @@ export default {
       return imageArrayToPush
     },
     getImageUrl(path) {
-      const s3Path = parseS3Path(path)
-      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return parseS3Path(path)
     },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
