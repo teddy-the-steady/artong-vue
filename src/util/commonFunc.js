@@ -2,12 +2,13 @@ import store from '../store'
 
 const parseS3Path = function(path) {
   path = path.split('/')
-  return {
+  const pathInfo = {
     level: path[0],
-    username: path[1],
+    user_id: path[1],
     type: path[2],
     file: path[3]
   }
+  return `${process.env.VUE_APP_IMAGE_URL}/${pathInfo.level}/${pathInfo.user_id}/${pathInfo.type}/${pathInfo.file}`
 }
 
 const setLocalStorageCurrentUserProfilePic = function(key) {
