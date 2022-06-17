@@ -119,8 +119,7 @@ export default {
       return results
     },
     getImageUrl(path) {
-      const s3Path = parseS3Path(path)
-      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return parseS3Path(path)
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]

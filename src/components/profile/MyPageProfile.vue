@@ -52,7 +52,7 @@ export default {
     async uploadProfileImage(file) {
       // TODO] 전후처리는? 사진 가공 등등
       // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
-      const result = await Storage.put(`${this.currentUser.username}/profile/${file.name}`, file, {
+      const result = await Storage.put(`${this.currentUser.id}/profile/${file.name}`, file, {
         level: 'public',
         contentType: file.type
       })
@@ -63,8 +63,7 @@ export default {
       if (!this.currentUser || !this.currentUser.profile.profile_pic) {
         return null
       }
-      const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return parseS3Path(this.currentUser.profile.profile_pic)
     }
   },
   async mounted() {

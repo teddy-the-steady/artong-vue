@@ -36,8 +36,7 @@ export default {
   methods: {
     getProfileImage() {
       if (this.currentUser.profile.profile_pic) {
-        const s3Path = parseS3Path(this.currentUser.profile.profile_pic)
-        return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+        return parseS3Path(this.currentUser.profile.profile_pic)
       }
     }
   },
