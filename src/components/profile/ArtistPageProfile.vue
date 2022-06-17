@@ -48,10 +48,9 @@ export default {
   },
   methods: {
     async getMember(username) {
-      const member = await axios.get(`/member?username=${username}`)
-      if (member) {
-        this.member = member.data.data
-        return member.data.data
+      const member = await axios.get(`/members?username=${username}`)
+      if (member.data.data.length === 1) {
+        return member.data.data[0]
       }
       return null
     },
@@ -59,8 +58,7 @@ export default {
       if (!member || !member.profile_pic) {
         return null
       }
-      const s3Path = parseS3Path(member.profile_pic)
-      return `${process.env.VUE_APP_IMAGE_URL}/${s3Path.level}/${s3Path.username}/${s3Path.type}/${s3Path.file}`
+      return parseS3Path(member.profile_pic)
     }
   },
   watch: {
