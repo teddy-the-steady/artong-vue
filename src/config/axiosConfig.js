@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Auth } from 'aws-amplify'
+import Auth from '@aws-amplify/auth'
 
 
 axios.defaults.baseURL = process.env.VUE_APP_API_URL

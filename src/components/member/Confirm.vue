@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
+import Auth from '@aws-amplify/auth'
 import { menuDeactivate } from '../../mixin'
 export default {
   name: 'Confirm',
