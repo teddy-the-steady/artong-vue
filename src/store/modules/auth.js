@@ -5,7 +5,7 @@ import {
   AUTH_LOGOUT
 } from '../actions/auth'
 import { USER_REQUEST, USER_LOGOUT } from '../actions/user'
-import { Auth } from 'aws-amplify'
+import Auth from '@aws-amplify/auth'
 
 const state = JSON.parse(localStorage.getItem('current-user'))?
 {
