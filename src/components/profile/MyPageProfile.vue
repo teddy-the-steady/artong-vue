@@ -24,7 +24,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Storage } from 'aws-amplify'
+import Storage from '@aws-amplify/storage'
 import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
 

@@ -35,7 +35,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Storage } from 'aws-amplify'
+import Storage from '@aws-amplify/storage'
 
 export default {
   name: 'UploadModal',
