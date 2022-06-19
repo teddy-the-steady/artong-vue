@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { Auth } from 'aws-amplify'
+import Auth from '@aws-amplify/auth'
 import axios from 'axios'
 import Confirm from './Confirm'
 import { mapState } from 'vuex'
