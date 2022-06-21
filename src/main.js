@@ -3,11 +3,12 @@
 import 'isomorphic-fetch'
 import Vue from 'vue'
 import App from './App'
-import Amplify from '@aws-amplify/core'
-import Auth from '@aws-amplify/auth'
-import Storage from '@aws-amplify/storage'
+import { Amplify } from '@aws-amplify/core'
+import { Auth } from '@aws-amplify/auth'
+import { Storage } from '@aws-amplify/storage'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
+import VueMobileDetection from "vue-mobile-detection"
 import Masonry from './plugin/masonry'
 import * as axios from './config/axiosConfig'
 import router from './router'
@@ -19,6 +20,7 @@ smoothscroll.polyfill()
 
 Vue.use(Amplify)
 Vue.use(Masonry)
+Vue.use(VueMobileDetection)
 
 Vue.config.productionTip = false
 
