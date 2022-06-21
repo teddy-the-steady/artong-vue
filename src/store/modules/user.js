@@ -11,12 +11,14 @@ const state = {
   status: '',
   currentUser: JSON.parse(localStorage.getItem('current-user')) || {
     id: '',
+    sub: '',
     email: '',
     username: '',
     language: '',
+    wallet_address: '',
     profile: {
       profile_pic: '',
-      display_name: ''
+      introduction: ''
     }
   } // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가.. 현재 currentUser.id로 체크중
 }
@@ -38,9 +40,10 @@ const actions = {
         email: member.data.data.email,
         username: member.data.data.username,
         language: member.data.data.language,
+        wallet_address: member.data.data.wallet_address,
         profile: {
           profile_pic: member.data.data.profile_pic,
-          display_name: member.data.data.username
+          introduction: member.data.data.username
         }
       }
 
@@ -76,13 +79,14 @@ const mutations = {
     state.status = 'signedOut'
     state.currentUser = {
       id: '',
+      sub: '',
       email: '',
-      accessToken: '',
       username: '',
       language: '',
+      wallet_address: '',
       profile: {
         profile_pic: '',
-        display_name: ''
+        introduction: ''
       }
     }
   }
