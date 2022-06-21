@@ -11,6 +11,9 @@
     <div class="contents">
       <content-list :contentsApi="contentsApi"></content-list>
     </div>
+    <div v-if="true">
+      <button @click="signOut">Sign Out</button>
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,14 @@ export default {
   methods: {
     forceRerender() {
       this.componentKey += 1
+    },
+    async signOut() {
+      try {
+        await this.$store.dispatch('AUTH_LOGOUT')
+        this.$router.go(this.$router.currentRoute)
+      } catch (error) {
+        console.log(error)
+      }
     }
   },
   created() {
