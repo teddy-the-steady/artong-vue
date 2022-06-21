@@ -7,7 +7,6 @@ import Trending from '@/components/menu/Trending'
 import Following from '@/components/menu/Following'
 import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
-import SignUp from '@/components/member/SignUp'
 import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
 
@@ -60,11 +59,6 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
-      path: '/signUp',
-      name: 'SignUp',
-      component: SignUp
     },
     {
       path: '/artwork/:id',

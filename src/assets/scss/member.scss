@@ -45,12 +45,8 @@
         }
 
         .form__footer {
-            display: flex;
-            justify-content: space-between;
-            flex-direction: row-reverse;
-
             button {
-                width: 70px;
+                width: 100%;
             }
 
             & > span:nth-child(2) {
@@ -69,7 +65,7 @@
             box-sizing: border-box;
             border-radius: 6px;
             box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
-            padding: 35px 25px;
+            padding: 15px 25px;
 
             .form__footer {
                 flex-wrap: wrap;
