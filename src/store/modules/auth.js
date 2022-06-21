@@ -2,40 +2,61 @@ import {
   AUTH_REQUEST,
   AUTH_ERROR,
   AUTH_SUCCESS,
+  AUTH_JUST_SIGNED_UP,
   AUTH_LOGOUT
 } from '../actions/auth'
-import { USER_REQUEST, USER_LOGOUT } from '../actions/user'
-import Auth from '@aws-amplify/auth'
+import { USER_LOGOUT } from '../actions/user'
+import { Auth } from '@aws-amplify/auth'
+import { getRandomString } from '../../util/commonFunc'
+import axios from 'axios'
 
 const state = JSON.parse(localStorage.getItem('current-user'))?
 {
   status: 'success',
-  confirming: false,
-  hasLoadedOnce: true
+  justSignedUp: false
 }
   :
 {
   status: '',
-  confirming: false,
-  hasLoadedOnce: false
+  justSignedUp: false
 }
 
 const actions = {
-  [AUTH_REQUEST]: async function({ commit, dispatch }, user) {
+  [AUTH_REQUEST]: async function({ commit, dispatch }, address) {
     try {
       commit(AUTH_REQUEST)
-      user = await Auth.signIn(user.username, user.password)
+      const cognitoUser = await Auth.signIn(address)
+      const messageToSign = cognitoUser.challengeParam.message
+      const signature = await window.ethereum.request({
+        method: 'personal_sign',
+        params: [address, messageToSign],
+      })
+      await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
+      const authenticatedUser = await Auth.currentAuthenticatedUser()
+      
+      if (state.justSignedUp) {
+        await axios.post('/member', {
+          wallet_address: address,
+          auth_id: authenticatedUser.attributes.sub
+        })
+      }
+
       commit(AUTH_SUCCESS)
-      await dispatch(USER_REQUEST, user)
+      return authenticatedUser
     } catch (error) {
       commit(AUTH_ERROR, error)
-      console.log(error)
-      throw error
-      // if (error.code === 'NotAuthorizedException') {
-      //   throw error
-      // } else if (error.code === 'UserNotConfirmedException') {
-      //   throw error
-      // } TODO] 인증 에러별로 처리??
+      if (error && error.message && error.message.includes('[404]')) {
+        const pw = getRandomString(30)
+        const params = {
+          username: address,
+          password: pw,
+        }
+        await Auth.signUp(params)
+        commit(AUTH_JUST_SIGNED_UP)
+        await dispatch('AUTH_REQUEST', address)
+      } else {
+        throw error
+      }
     }
   },
   [AUTH_LOGOUT]: async function({ commit, dispatch }) {
@@ -57,19 +78,16 @@ const mutations = {
   },
   [AUTH_SUCCESS]: (state) => {
     state.status = 'success'
-    state.hasLoadedOnce = true
+  },
+  [AUTH_JUST_SIGNED_UP]: (state) => {
+    state.justSignedUp = true
   },
   [AUTH_ERROR]: state => {
     state.status = 'error'
-    state.hasLoadedOnce = true
   },
   [AUTH_LOGOUT]: state => {
     state.status = 'signedOut'
-    state.hasLoadedOnce = true
   },
-  TOGGLE_CONFIRM: state => {
-    state.confirming = !state.confirming
-  }
 }
 
 export default {
