@@ -87,7 +87,7 @@ const mutations = {
   },
   [AUTH_LOGOUT]: state => {
     state.status = 'signedOut'
-  },
+  }
 }
 
 export default {
