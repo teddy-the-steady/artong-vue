@@ -1,43 +1,27 @@
 <template class="contents__body">
   <div>
     <div class="form__logo"><router-link to="/"><b><i>4</i>rtong</b></router-link></div>
-    <div class="form__box" v-if="!confirming">
-      <h1>Log In</h1>
-      <div class="form__username">
-        <p v-text="warning"></p>
-        <input v-model="username" type="text" placeholder="Enter email">
-      </div>
-      <div class="form__password">
-        <input v-model="password" v-on:keyup.enter="signIn" type="password" placeholder="Enter password">
-        Forgot password? <router-link to="">Reset password</router-link>
-      </div>
+    <div class="form__box">
+      <h1>Connect your wallet</h1>
+      <p v-text="warning"></p>
       <div class="form__footer">
         <span>
-          <button @click="signIn">Log In</button><br>
-        </span>
-        <span>
-          No account? <router-link to="/signUp">Sign Up</router-link>
+          <button @click="signIn">MetaMask</button><br>
         </span>
       </div>
     </div>
-    <confirm class="form__box" v-if="confirming" :username="username" :password="password"/>
   </div>
 </template>
 
 <script>
 import { menuDeactivate } from '../../mixin'
-import Confirm from './Confirm'
-import { mapState } from 'vuex'
+import MetaMaskOnboarding from '@metamask/onboarding';
+
 export default {
   name: 'Login',
-  components: {
-    Confirm
-  },
   mixins: [menuDeactivate],
   data() {
     return {
-      username: '',
-      password: '',
       warning: ''
     }
   },
@@ -49,30 +33,29 @@ export default {
       }
     })
   },
-  computed: {
-    ...mapState({
-      confirming: state => state.auth.confirming
-    })
-  },
   methods: {
     async signIn() {
       try {
-        const { username, password } = this
-        await this.$store.dispatch('AUTH_REQUEST', { username, password })
-        const urlToRedirect = this.$router.history.current.query['redirect']
-        if (urlToRedirect) {
-          this.$router.push(urlToRedirect)
+        if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+          if (accounts.length > 0) {
+            const address = accounts[0]
+            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
+            await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+
+            const urlToRedirect = this.$router.history.current.query['redirect']
+            if (urlToRedirect) {
+              this.$router.push(urlToRedirect)
+            } else {
+              this.$router.push('/')
+            }
+          }
         } else {
-          this.$router.push('/')
+          const onboarding = new MetaMaskOnboarding()
+          onboarding.startOnboarding()
         }
       } catch (error) {
         this.warning = error.message
-        if (error.code === 'UserNotConfirmedException') {
-          this.$store.commit('TOGGLE_CONFIRM')
-        } else if (error.name === 'QuotaExceededError') {
-          this.warning = 'Please login again.'
-          window.localStorage.clear()
-        }
       }
     }
   }
