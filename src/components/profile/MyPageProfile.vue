@@ -123,6 +123,7 @@ export default {
       display: flex;
       flex-direction: column;
       text-align: left;
+      width: 50%;
 
       .username {
         font-size: 1.5em;
