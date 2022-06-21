@@ -66,8 +66,10 @@ export default {
         bridge: "https://bridge.walletconnect.org",
         qrcodeModal: QRCodeModal,
       })
+      console.log(connector)
       try {
         if (!connector.connected) {
+          console.log('in1')
           connector.createSession()
         }
 
@@ -78,7 +80,9 @@ export default {
 
           const { accounts } = payload.params[0]
           const address = accounts[0]
+          console.log('in2',address)
           const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
+          console.log('in3',authenticatedUser)
           await this.$store.dispatch('USER_REQUEST', authenticatedUser)
           this.redirectAfterLogin()
         })

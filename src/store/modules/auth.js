@@ -44,6 +44,7 @@ const actions = {
       commit(AUTH_SUCCESS)
       return authenticatedUser
     } catch (error) {
+      console.log('AUTH_REQUEST error:',error)
       commit(AUTH_ERROR, error)
       if (error && error.message && error.message.includes('[404]')) {
         const pw = getRandomString(30)
