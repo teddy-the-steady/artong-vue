@@ -6,7 +6,9 @@
       <p v-text="warning"></p>
       <div class="form__footer">
         <span>
-          <button @click="signIn">MetaMask</button><br>
+          <button v-if="isMobile" @click="signInMobile()">CONNECT</button>
+          <button v-else @click="signIn()">METAMASK</button>
+          <br>
         </span>
       </div>
     </div>
@@ -15,7 +17,9 @@
 
 <script>
 import { menuDeactivate } from '../../mixin'
-import MetaMaskOnboarding from '@metamask/onboarding';
+import MetaMaskOnboarding from '@metamask/onboarding'
+import WalletConnect from "@walletconnect/client"
+import QRCodeModal from "@walletconnect/qrcode-modal"
 
 export default {
   name: 'Login',
@@ -23,6 +27,11 @@ export default {
   data() {
     return {
       warning: ''
+    }
+  },
+  computed: {
+    isMobile() {
+      return this.$isMobile()
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -42,13 +51,7 @@ export default {
             const address = accounts[0]
             const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
             await this.$store.dispatch('USER_REQUEST', authenticatedUser)
-
-            const urlToRedirect = this.$router.history.current.query['redirect']
-            if (urlToRedirect) {
-              this.$router.push(urlToRedirect)
-            } else {
-              this.$router.push('/')
-            }
+            this.redirectAfterLogin()
           }
         } else {
           const onboarding = new MetaMaskOnboarding()
@@ -56,6 +59,40 @@ export default {
         }
       } catch (error) {
         this.warning = error.message
+      }
+    },
+    async signInMobile() {
+      const connector = new WalletConnect({
+        bridge: "https://bridge.walletconnect.org",
+        qrcodeModal: QRCodeModal,
+      })
+      try {
+        if (!connector.connected) {
+          connector.createSession()
+        }
+
+        connector.on("connect", async (error, payload) => {
+          if (error) {
+            throw error
+          }
+
+          const { accounts } = payload.params[0]
+          const address = accounts[0]
+          const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
+          await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+          this.redirectAfterLogin()
+        })
+      } catch (error) {
+        this.warning = error.message
+        connector.killSession()
+      }
+    },
+    redirectAfterLogin() {
+      const urlToRedirect = this.$router.history.current.query['redirect']
+      if (urlToRedirect) {
+        this.$router.push(urlToRedirect)
+      } else {
+        this.$router.push('/')
       }
     }
   }
