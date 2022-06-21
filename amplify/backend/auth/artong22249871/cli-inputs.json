@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "artong905365dc_identitypool_905365dc",
-    "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "artong905365dc",
-    "userPoolName": "artong905365dc_userpool_905365dc",
+    "identityPoolName": "artong22249871_identitypool_22249871",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "artong22249871",
+    "userPoolName": "artong22249871_userpool_22249871",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -19,9 +19,7 @@
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": [
-      "email"
-    ],
+    "requiredAttributes": [],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
@@ -31,33 +29,16 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "artong905365dc_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "artong22249871_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "905365dc",
-    "resourceName": "artong905365dc",
+    "sharedId": "22249871",
+    "resourceName": "artong22249871",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
-    "usernameAttributes": [
-      "email"
-    ],
     "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true,
-    "authRoleArn": {
-      "Fn::GetAtt": [
-        "AuthRole",
-        "Arn"
-      ]
-    },
-    "unauthRoleArn": {
-      "Fn::GetAtt": [
-        "UnauthRole",
-        "Arn"
-      ]
-    },
-    "breakCircularDependency": true,
-    "dependsOn": []
+    "useEnabledMfas": true
   }
 }
