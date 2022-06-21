@@ -60,6 +60,7 @@ const actions = {
   [USER_LOGOUT]: async function({ commit }) {
     commit(USER_REQUEST)
     localStorage.removeItem('current-user')
+    localStorage.removeItem('walletconnect')
     commit(USER_LOGOUT)
   }
 }
