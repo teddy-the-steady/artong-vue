@@ -20,6 +20,8 @@ import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
 import WalletConnect from "@walletconnect/client"
 import QRCodeModal from "@walletconnect/qrcode-modal"
+import { convertUtf8ToHex } from "@walletconnect/utils"
+import { Auth } from '@aws-amplify/auth'
 
 export default {
   name: 'Login',
@@ -49,7 +51,7 @@ export default {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
           if (accounts.length > 0) {
             const address = accounts[0]
-            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
+            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST_PC', address)
             await this.$store.dispatch('USER_REQUEST', authenticatedUser)
             this.redirectAfterLogin()
           }
@@ -78,8 +80,14 @@ export default {
 
           const { accounts } = payload.params[0]
           const address = accounts[0]
-          const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
-          await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+          const cognitoUser = await Auth.signIn(address)
+          const messageToSign = cognitoUser.challengeParam.message
+          const hexMessage = convertUtf8ToHex(messageToSign)
+          const result = await connector.signPersonalMessage([address, hexMessage]);
+          console.log(result)
+
+          // const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
+          // await this.$store.dispatch('USER_REQUEST', authenticatedUser)
           this.redirectAfterLogin()
         })
       } catch (error) {
