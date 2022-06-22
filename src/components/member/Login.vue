@@ -69,41 +69,24 @@ export default {
         qrcodeModal: QRCodeModal,
       })
       try {
-        console.log('in')
         if (!connector.connected) {
           connector.createSession()
-          console.log('inin:',connector)
         }
 
         connector.on("connect", async (error, payload) => {
           if (error) {
             throw error
           }
-          console.log('connect;',payload)
+
           const { accounts } = payload.params[0]
           const address = accounts[0]
-          console.log('address:',address)
           const cognitoUser = await Auth.signIn(address)
-          console.log('cognitoUser:',cognitoUser)
           const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
-          console.log('here?!?:', signature)
           await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
-          console.log('here?')
           const authenticatedUser = await Auth.currentAuthenticatedUser()
-          console.log('here??')
           await this.$store.dispatch('USER_REQUEST', authenticatedUser)
 
-          console.log(authenticatedUser)
-
           this.redirectAfterLogin()
-        })
-
-        connector.on("session_update", async (error, payload) => {
-          if (error) {
-            throw error
-          }
-
-          console.log('session_update:',payload)
         })
       } catch (error) {
         this.warning = error.message
@@ -111,7 +94,6 @@ export default {
       }
     },
     redirectAfterLogin() {
-      console.log('not here ?!?!?!')
       const urlToRedirect = this.$router.history.current.query['redirect']
       if (urlToRedirect) {
         this.$router.push(urlToRedirect)
