@@ -69,8 +69,10 @@ export default {
         qrcodeModal: QRCodeModal,
       })
       try {
+        console.log('in')
         if (!connector.connected) {
           connector.createSession()
+          console.log('inin:',connector)
         }
 
         connector.on("connect", async (error, payload) => {
@@ -109,6 +111,7 @@ export default {
       }
     },
     redirectAfterLogin() {
+      console.log('not here ?!?!?!')
       const urlToRedirect = this.$router.history.current.query['redirect']
       if (urlToRedirect) {
         this.$router.push(urlToRedirect)
