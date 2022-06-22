@@ -77,10 +77,12 @@ export default {
           if (error) {
             throw error
           }
-
+          console.log('connect;',payload)
           const { accounts } = payload.params[0]
           const address = accounts[0]
+          console.log('address:',address)
           const cognitoUser = await Auth.signIn(address)
+          console.log('cognitoUser:',cognitoUser)
           const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
           console.log('here?!?:', signature)
           await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
@@ -96,7 +98,7 @@ export default {
 
         connector.on("session_update", async (error, payload) => {
           if (error) {
-            throw error;
+            throw error
           }
 
           console.log('session_update:',payload)
