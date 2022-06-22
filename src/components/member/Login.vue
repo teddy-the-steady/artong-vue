@@ -83,8 +83,10 @@ export default {
           const cognitoUser = await Auth.signIn(address)
           const messageToSign = cognitoUser.challengeParam.message
           const hexMessage = convertUtf8ToHex(messageToSign)
-          const result = await connector.signPersonalMessage([address, hexMessage]);
-          console.log(result)
+          const signature = await connector.signPersonalMessage([address, hexMessage]);
+          await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
+          const authenticatedUser = await Auth.currentAuthenticatedUser()
+          console.log(authenticatedUser)
 
           // const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
           // await this.$store.dispatch('USER_REQUEST', authenticatedUser)
