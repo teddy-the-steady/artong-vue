@@ -51,7 +51,7 @@ export default {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
           if (accounts.length > 0) {
             const address = accounts[0]
-            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST_PC', address)
+            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
             await this.$store.dispatch('USER_REQUEST', authenticatedUser)
             this.redirectAfterLogin()
           }
@@ -81,15 +81,13 @@ export default {
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await Auth.signIn(address)
-          const messageToSign = cognitoUser.challengeParam.message
-          const hexMessage = convertUtf8ToHex(messageToSign)
-          const signature = await connector.signPersonalMessage([address, hexMessage]);
+          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
           await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
           const authenticatedUser = await Auth.currentAuthenticatedUser()
+          await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+
           console.log(authenticatedUser)
 
-          // const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
-          // await this.$store.dispatch('USER_REQUEST', authenticatedUser)
           this.redirectAfterLogin()
         })
       } catch (error) {
