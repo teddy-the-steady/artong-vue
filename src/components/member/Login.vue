@@ -82,13 +82,24 @@ export default {
           const address = accounts[0]
           const cognitoUser = await Auth.signIn(address)
           const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
+          console.log('here?!?:', signature)
           await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
+          console.log('here?')
           const authenticatedUser = await Auth.currentAuthenticatedUser()
+          console.log('here??')
           await this.$store.dispatch('USER_REQUEST', authenticatedUser)
 
           console.log(authenticatedUser)
 
           this.redirectAfterLogin()
+        })
+
+        connector.on("session_update", async (error, payload) => {
+          if (error) {
+            throw error;
+          }
+
+          console.log('session_update:',payload)
         })
       } catch (error) {
         this.warning = error.message
