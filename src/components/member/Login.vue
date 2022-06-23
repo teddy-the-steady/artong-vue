@@ -16,10 +16,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import axios from 'axios'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
 import WalletConnect from "@walletconnect/client"
 import QRCodeModal from "@walletconnect/qrcode-modal"
+import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
   name: 'Login',
@@ -32,7 +35,10 @@ export default {
   computed: {
     isMobile() {
       return this.$isMobile()
-    }
+    },
+    ...mapState({
+      justSignedUp: state => state.auth.justSignedUp,
+    })
   },
   beforeRouteEnter(to, from, next) {
     window.scrollTo({top: 0})
@@ -49,8 +55,20 @@ export default {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
           if (accounts.length > 0) {
             const address = accounts[0]
-            const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
-            await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+            const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+            const signature = await window.ethereum.request({
+              method: 'personal_sign',
+              params: [address, cognitoUser.challengeParam.message],
+            })
+            const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+            if (this.justSignedUp) {
+              await axios.post('/member', {
+                wallet_address: address,
+                auth_id: challengeResult.attributes.sub
+              })
+            }
+            const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+            await this.$store.dispatch('CURRENT_USER', authenticatedUser)
             this.redirectAfterLogin()
           }
         } else {
@@ -63,7 +81,7 @@ export default {
     },
     async signInMobile() {
       const connector = new WalletConnect({
-        bridge: "https://bridge.walletconnect.org",
+        bridge: 'https://bridge.walletconnect.org',
         qrcodeModal: QRCodeModal,
       })
       try {
@@ -71,15 +89,24 @@ export default {
           connector.createSession()
         }
 
-        connector.on("connect", async (error, payload) => {
+        connector.on('connect', async (error, payload) => {
           if (error) {
             throw error
           }
 
           const { accounts } = payload.params[0]
           const address = accounts[0]
-          const authenticatedUser = await this.$store.dispatch('AUTH_REQUEST', address)
-          await this.$store.dispatch('USER_REQUEST', authenticatedUser)
+          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
+          const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+          if (this.justSignedUp) {
+            await axios.post('/member', {
+              wallet_address: address,
+              auth_id: challengeResult.attributes.sub
+            })
+          }
+          const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+          await this.$store.dispatch('CURRENT_USER', authenticatedUser)
           this.redirectAfterLogin()
         })
       } catch (error) {
