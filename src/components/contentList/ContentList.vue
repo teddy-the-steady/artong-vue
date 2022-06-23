@@ -16,7 +16,7 @@ import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
 import axios from 'axios'
 import { mapState } from 'vuex'
-import { parseS3Path } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ContentList',
@@ -119,7 +119,7 @@ export default {
       return results
     },
     getImageUrl(path) {
-      return parseS3Path(path)
+      return makeS3Path(path)
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]

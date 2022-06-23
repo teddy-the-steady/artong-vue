@@ -4,7 +4,7 @@
       <skeleton-box style="width:100%;height:100%;"></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profileImage" :src="profileImage" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
+      <img v-if="profilePic" :src="profilePic" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture" @click="$refs.fileInput.click()"></div>
       <input ref="fileInput" type="file" @change="onFileChange">
     </div>
@@ -25,7 +25,7 @@
 <script>
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
-import { parseS3Path, setLocalStorageCurrentUserProfilePic } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
 
 export default {
@@ -35,12 +35,12 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      currentUser: state => state.user.currentUser,
+      profilePic: state => state.user.currentUser.profile.profile_pic
     })
   },
   data() {
     return {
-      profileImage: '',
       isFirstLoading: true
     }
   },
@@ -56,26 +56,13 @@ export default {
         level: 'public',
         contentType: file.type
       })
-      const currentUser = setLocalStorageCurrentUserProfilePic(`public/${result.key}`)
-      this.$store.commit('USER_SUCCESS', currentUser)
-    },
-    async getProfileImage() {
-      if (!this.currentUser || !this.currentUser.profile.profile_pic) {
-        return null
+      if (result) {
+        this.$store.commit('CURRENT_USER_PROFILE_PIC', makeS3Path(`public/${result.key}`))
       }
-      return parseS3Path(this.currentUser.profile.profile_pic)
     }
   },
   async mounted() {
-    console.log('MyPageProfile mounted')
-    this.profileImage = await this.getProfileImage()
     this.isFirstLoading = false
-  },
-  watch: {
-    async currentUser() {
-      this.profileImage = await this.getProfileImage()
-      this.isFirstLoading = false
-    }
   }
 }
 </script>
