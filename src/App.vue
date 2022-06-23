@@ -33,8 +33,7 @@ export default {
     try {
       const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
       const member = await axios.get(`/members/${currentSession.getAccessToken().payload.sub}`)
-      // TODO] axios.get 한 결과에서 data만 꺼내오기
-      await this.$store.dispatch('CURRENT_USER', member.data.data)
+      await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
       if (this.authError === 'error') {
         await this.$store.dispatch('AUTH_LOGOUT')
