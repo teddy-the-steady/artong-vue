@@ -1,14 +1,15 @@
 import {
-  AUTH_REQUEST,
+  AUTH_SIGN_IN_AND_UP,
+  AUTH_VERIFY_USER,
   AUTH_ERROR,
   AUTH_SUCCESS,
+  AUTH_LOGOUT,
+  AUTH_CHECK_CURRENT_USER,
   AUTH_JUST_SIGNED_UP,
-  AUTH_LOGOUT
 } from '../actions/auth'
 import { USER_LOGOUT } from '../actions/user'
 import { Auth } from '@aws-amplify/auth'
 import { getRandomString } from '../../util/commonFunc'
-import axios from 'axios'
 
 const state = JSON.parse(localStorage.getItem('current-user'))?
 {
@@ -22,27 +23,11 @@ const state = JSON.parse(localStorage.getItem('current-user'))?
 }
 
 const actions = {
-  [AUTH_REQUEST]: async function({ commit, dispatch }, address) {
+  [AUTH_SIGN_IN_AND_UP]: async function({ commit, dispatch }, address) {
     try {
-      commit(AUTH_REQUEST)
+      commit(AUTH_SIGN_IN_AND_UP)
       const cognitoUser = await Auth.signIn(address)
-      const messageToSign = cognitoUser.challengeParam.message
-      const signature = await window.ethereum.request({
-        method: 'personal_sign',
-        params: [address, messageToSign],
-      })
-      await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
-      const authenticatedUser = await Auth.currentAuthenticatedUser()
-      
-      if (state.justSignedUp) {
-        await axios.post('/member', {
-          wallet_address: address,
-          auth_id: authenticatedUser.attributes.sub
-        })
-      }
-
-      commit(AUTH_SUCCESS)
-      return authenticatedUser
+      return cognitoUser
     } catch (error) {
       commit(AUTH_ERROR, error)
       if (error && error.message && error.message.includes('[404]')) {
@@ -53,15 +38,27 @@ const actions = {
         }
         await Auth.signUp(params)
         commit(AUTH_JUST_SIGNED_UP)
-        await dispatch('AUTH_REQUEST', address)
+        const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
+        return cognitoUser
       } else {
         throw error
       }
     }
   },
+  [AUTH_VERIFY_USER]: async function({ commit }, { cognitoUser, signature }) {
+    try {
+      commit(AUTH_VERIFY_USER)
+      const challengeResult = await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
+      commit(AUTH_SUCCESS)
+      return challengeResult
+    } catch (error) {
+      commit(AUTH_ERROR, error)
+      throw error
+    }
+  },
   [AUTH_LOGOUT]: async function({ commit, dispatch }) {
     try {
-      commit(AUTH_REQUEST)
+      commit(AUTH_SIGN_IN_AND_UP)
       await Auth.signOut()
       commit(AUTH_LOGOUT)
       dispatch(USER_LOGOUT)
@@ -69,12 +66,24 @@ const actions = {
       console.log(error)
       throw error
     }
+  },
+  [AUTH_CHECK_CURRENT_USER]: async function({ commit }) {
+    try {
+      const authenticatedUser = await Auth.currentAuthenticatedUser()
+      return authenticatedUser
+    } catch (error) {
+      commit(AUTH_ERROR, error)
+      throw error
+    }
   }
 }
 
 const mutations = {
-  [AUTH_REQUEST]: state => {
-    state.status = 'loading'
+  [AUTH_SIGN_IN_AND_UP]: state => {
+    state.status = 'signing in and up'
+  },
+  [AUTH_VERIFY_USER]: state => {
+    state.status = 'verifying user'
   },
   [AUTH_SUCCESS]: (state) => {
     state.status = 'success'
