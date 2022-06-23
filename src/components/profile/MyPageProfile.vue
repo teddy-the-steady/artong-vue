@@ -124,6 +124,7 @@ export default {
       flex-direction: column;
       text-align: left;
       width: 50%;
+      word-break: break-all;
 
       .username {
         font-size: 1.5em;
