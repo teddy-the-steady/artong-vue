@@ -14,6 +14,8 @@
 import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
+import axios from 'axios'
+
 export default {
   name: 'App',
   components: {
@@ -25,7 +27,19 @@ export default {
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen
     })
-  }, // some comment
+  },
+  async created() {
+    try {
+      const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
+      const member = await axios.get(`/members/${currentSession.getAccessToken().payload.sub}`)
+      // TODO] axios.get 한 결과에서 data만 꺼내오기
+      await this.$store.dispatch('CURRENT_USER', member.data.data)
+    } catch (error) {
+      if (error === 'No current user') {
+        console.log('No current user')
+      }
+    }
+  },
   watch: {
     isSideMenuOpen() {
       document.body.classList.toggle('prevent-scroll')

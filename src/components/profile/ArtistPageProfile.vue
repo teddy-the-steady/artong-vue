@@ -24,7 +24,7 @@
 <script>
 import axios from 'axios'
 import { headerActivate } from '../../mixin'
-import { parseS3Path } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
 
 export default {
@@ -54,20 +54,20 @@ export default {
       }
       return null
     },
-    async getProfileImage(member) {
+    getProfileImage(member) {
       if (!member || !member.profile_pic) {
         return null
       }
-      return parseS3Path(member.profile_pic)
+      return makeS3Path(member.profile_pic)
     }
   },
   watch: {
     username: {
-      immediate: true, 
+      immediate: true,
       async handler(val) {
         if (val) {
           this.member = await this.getMember(val)
-          this.profileImage = await this.getProfileImage(this.member)
+          this.profileImage = this.getProfileImage(this.member)
           this.isFirstLoading = false
         }
       }

@@ -4,8 +4,9 @@ import {
   AUTH_ERROR,
   AUTH_SUCCESS,
   AUTH_LOGOUT,
-  AUTH_CHECK_CURRENT_USER,
   AUTH_JUST_SIGNED_UP,
+  AUTH_CHECK_CURRENT_USER,
+  AUTH_CHECK_CURRENT_SESSION,
 } from '../actions/auth'
 import { USER_LOGOUT } from '../actions/user'
 import { Auth } from '@aws-amplify/auth'
@@ -67,10 +68,21 @@ const actions = {
       throw error
     }
   },
+  // INFO] currentAuthenicatedUser vs currentSession
+  // https://stackoverflow.com/questions/55739848/what-is-the-difference-between-auth-currentauthenticateduser-and-auth-currents
   [AUTH_CHECK_CURRENT_USER]: async function({ commit }) {
     try {
       const authenticatedUser = await Auth.currentAuthenticatedUser()
       return authenticatedUser
+    } catch (error) {
+      commit(AUTH_ERROR, error)
+      throw error
+    }
+  },
+  [AUTH_CHECK_CURRENT_SESSION]: async function({ commit }) {
+    try {
+      const currentSssion = await Auth.currentSession()
+      return currentSssion
     } catch (error) {
       commit(AUTH_ERROR, error)
       throw error

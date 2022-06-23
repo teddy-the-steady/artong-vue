@@ -10,7 +10,7 @@
   return {
     beforeRouteEnter: loadRoute,
     beforeRouteUpdate: loadRoute,
-    created: function() {
+    created() {
       loaderCallback.apply(this)
     },
     watch: {

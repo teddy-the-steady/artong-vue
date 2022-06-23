@@ -21,7 +21,7 @@ import ContentBox from './ContentBox'
 import underContentsProfile from '../profile/underContentsProfile.vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import axios from 'axios'
-import { parseS3Path } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ContentListV2',
@@ -104,7 +104,7 @@ export default {
       return imageArrayToPush
     },
     getImageUrl(path) {
-      return parseS3Path(path)
+      return makeS3Path(path)
     },
     getRandomIntInclusive(min, max) {
       min = Math.ceil(min)
