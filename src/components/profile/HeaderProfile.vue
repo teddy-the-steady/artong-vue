@@ -6,7 +6,7 @@
       </div>
     </div>
     <div v-else>
-      <img v-if="profileImage" :src="profileImage" @error="isFirstLoading = true"/>
+      <img v-if="profilePic" :src="profilePic" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture"></div>
     </div>
   </div>
@@ -14,7 +14,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { parseS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
 
 export default {
@@ -24,34 +23,16 @@ export default {
   },
   data() {
     return {
-      profileImage: '',
       isFirstLoading: true
     }
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      profilePic: state => state.user.currentUser.profile.profile_pic
     })
   },
-  methods: {
-    getProfileImage() {
-      if (this.currentUser.profile.profile_pic) {
-        return parseS3Path(this.currentUser.profile.profile_pic)
-      }
-    }
-  },
-  created() {
-    console.log('HeaderProfile created')
-  },
   mounted() {
-    this.profileImage = this.getProfileImage()
     this.isFirstLoading = false
-  },
-  watch: {
-    currentUser() {
-      this.profileImage = this.getProfileImage()
-      this.isFirstLoading = false
-    }
   }
 }
 </script>

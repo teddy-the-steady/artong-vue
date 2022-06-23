@@ -1,10 +1,11 @@
 import {
   CURRENT_USER,
+  CURRENT_USER_PROFILE_PIC,
   USER_ERROR,
   USER_LOGOUT
 } from '../actions/user'
 import { AUTH_LOGOUT } from '../actions/auth'
-import axios from 'axios'
+import { makeS3Path } from '../../util/commonFunc'
 
 const state = {
   status: '',
@@ -23,29 +24,20 @@ const state = {
 }
 
 const actions = {
-  [CURRENT_USER]: async function({ commit, dispatch }, user) {
+  [CURRENT_USER]: async function({ commit, dispatch }, member) {
     try {
-      const accessToken = user.getSignInUserSession().getAccessToken().getJwtToken()
-      const member = await axios.get(`/members/${user.attributes.sub}`, {
-        headers: {
-          Authorization: accessToken
-        }
-      })
-      // TODO] axios.get 한 결과에서 data만 꺼내오기
       const currentUser = {
-        id: member.data.data.id,
-        sub: member.data.data.auth_id,
-        email: member.data.data.email,
-        username: member.data.data.username,
-        language: member.data.data.language,
-        wallet_address: member.data.data.wallet_address,
+        id: member.id,
+        sub: member.auth_id,
+        email: member.email,
+        username: member.username,
+        language: member.language,
+        wallet_address: member.wallet_address,
         profile: {
-          profile_pic: member.data.data.profile_pic,
-          introduction: member.data.data.username
+          profile_pic: makeS3Path(member.profile_pic),
+          introduction: member.introduction
         }
       }
-
-      localStorage.setItem('current-user', JSON.stringify(currentUser))
 
       commit(CURRENT_USER, currentUser)
     } catch (error) {
@@ -54,8 +46,6 @@ const actions = {
     }
   },
   [USER_LOGOUT]: async function({ commit }) {
-    localStorage.removeItem('current-user')
-    localStorage.removeItem('walletconnect')
     commit(USER_LOGOUT)
   }
 }
@@ -64,6 +54,13 @@ const mutations = {
   [CURRENT_USER]: (state, currentUser) => {
     state.status = 'success'
     state.currentUser = currentUser
+    localStorage.setItem('current-user', JSON.stringify(currentUser))
+  },
+  [CURRENT_USER_PROFILE_PIC]: (state, path) => {
+    state.currentUser.profile.profile_pic = path
+    const currentUser = JSON.parse(localStorage.getItem('current-user'))
+    currentUser.profile.profile_pic = path
+    localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
   [USER_ERROR]: state => {
     state.status = 'error'
@@ -82,6 +79,8 @@ const mutations = {
         introduction: ''
       }
     }
+    localStorage.removeItem('current-user')
+    localStorage.removeItem('walletconnect')
   }
 }
 
