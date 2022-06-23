@@ -1,7 +1,6 @@
 import {
-  USER_REQUEST,
+  CURRENT_USER,
   USER_ERROR,
-  USER_SUCCESS,
   USER_LOGOUT
 } from '../actions/user'
 import { AUTH_LOGOUT } from '../actions/auth'
@@ -24,9 +23,8 @@ const state = {
 }
 
 const actions = {
-  [USER_REQUEST]: async function({ commit, dispatch }, user) {
+  [CURRENT_USER]: async function({ commit, dispatch }, user) {
     try {
-      commit(USER_REQUEST)
       const accessToken = user.getSignInUserSession().getAccessToken().getJwtToken()
       const member = await axios.get(`/members/${user.attributes.sub}`, {
         headers: {
@@ -49,16 +47,13 @@ const actions = {
 
       localStorage.setItem('current-user', JSON.stringify(currentUser))
 
-      commit(USER_SUCCESS, currentUser)
+      commit(CURRENT_USER, currentUser)
     } catch (error) {
-      commit(USER_ERROR)
-      console.log(error)
-      dispatch(AUTH_LOGOUT)
+      await dispatch(AUTH_LOGOUT)
       throw error
     }
   },
   [USER_LOGOUT]: async function({ commit }) {
-    commit(USER_REQUEST)
     localStorage.removeItem('current-user')
     localStorage.removeItem('walletconnect')
     commit(USER_LOGOUT)
@@ -66,10 +61,7 @@ const actions = {
 }
 
 const mutations = {
-  [USER_REQUEST]: state => {
-    state.status = 'loading'
-  },
-  [USER_SUCCESS]: (state, currentUser) => {
+  [CURRENT_USER]: (state, currentUser) => {
     state.status = 'success'
     state.currentUser = currentUser
   },
