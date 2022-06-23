@@ -1,6 +1,6 @@
 import store from '../store'
 
-const parseS3Path = function(path) {
+const makeS3Path = function(path) {
   path = path.split('/')
   const pathInfo = {
     level: path[0],
@@ -9,13 +9,6 @@ const parseS3Path = function(path) {
     file: path[3]
   }
   return `${process.env.VUE_APP_IMAGE_URL}/${pathInfo.level}/${pathInfo.user_id}/${pathInfo.type}/${pathInfo.file}`
-}
-
-const setLocalStorageCurrentUserProfilePic = function(key) { // TODO] profile_pic 말고 다른 key도 set하는 범용 함수 만들자 + user관련 로컬스토리지 조작은 user state에서!!!
-  const currentUser = JSON.parse(localStorage.getItem('current-user'))
-  currentUser.profile.profile_pic = key
-  localStorage.setItem('current-user', JSON.stringify(currentUser))
-  return currentUser
 }
 
 const isAuthenticated = function() {
@@ -36,8 +29,7 @@ const intToHex = function(nr) {
 }
 
 export {
-  parseS3Path,
-  setLocalStorageCurrentUserProfilePic,
+  makeS3Path,
   isAuthenticated,
   getRandomString
 }
