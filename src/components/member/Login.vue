@@ -5,11 +5,11 @@
       <h1>Connect your wallet</h1>
       <p v-text="warning"></p>
       <div class="form__footer">
-        <span>
-          <button v-if="isMobile" @click="signInMobile()">CONNECT</button>
-          <button v-else @click="signIn()">METAMASK</button>
-          <br>
-        </span>
+        <button v-if="isMobile" @click="signInMobile()">CONNECT</button>
+        <button v-else @click="signIn()">
+          <div class="spinner" :class="{active: isSpinnerActive}"></div>
+          <span v-show="!isSpinnerActive">METAMASK</span>
+        </button>
       </div>
     </div>
   </div>
@@ -29,7 +29,8 @@ export default {
   mixins: [menuDeactivate],
   data() {
     return {
-      warning: ''
+      warning: '',
+      isSpinnerActive: false,
     }
   },
   computed: {
@@ -52,6 +53,7 @@ export default {
     async signIn() {
       try {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+          this.isSpinnerActive = true
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
           if (accounts.length > 0) {
             const address = accounts[0]
@@ -70,6 +72,7 @@ export default {
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
             await this.$store.dispatch('CURRENT_USER', member)
+            this.isSpinnerActive = false
             this.redirectAfterLogin()
           }
         } else {
@@ -78,9 +81,11 @@ export default {
         }
       } catch (error) {
         this.warning = error.message
+        this.isSpinnerActive = false
       }
     },
     async signInMobile() {
+      this.isSpinnerActive = true
       const connector = new WalletConnect({
         bridge: 'https://bridge.walletconnect.org',
         qrcodeModal: QRCodeModal,
@@ -109,11 +114,13 @@ export default {
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
           await this.$store.dispatch('CURRENT_USER', member)
+          this.isSpinnerActive = false
           this.redirectAfterLogin()
         })
       } catch (error) {
         this.warning = error.message
         connector.killSession()
+        this.isSpinnerActive = false
       }
     },
     redirectAfterLogin() {
@@ -136,18 +143,21 @@ export default {
 }
 
 .spinner {
-  display: block;
-  position: relative;
-  top: 9px;
-  height: 30px;
-  width: 30px;
-  margin: 0px auto;
-  animation: rotation .6s infinite linear;
-  border-left: 6px solid rgba(0,174,239,.15);
-  border-right: 6px solid rgba(0,174,239,.15);
-  border-bottom: 6px solid rgba(0,174,239,.15);
-  border-top: 6px solid rgba(0,174,239,.8);
-  border-radius: 100%;
+  display: none;
+
+  &.active {
+    display: block;
+    position: relative;
+    height: 2px;
+    width: 2px;
+    margin: 0px auto;
+    animation: rotation .6s infinite linear;
+    border-left: 6px solid rgba(0,174,239,.15);
+    border-right: 6px solid rgba(0,174,239,.15);
+    border-bottom: 6px solid rgba(0,174,239,.15);
+    border-top: 6px solid $artong-white;
+    border-radius: 100%;
+  }
 }
 
 @keyframes rotation {
