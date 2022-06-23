@@ -11,7 +11,7 @@ const parseS3Path = function(path) {
   return `${process.env.VUE_APP_IMAGE_URL}/${pathInfo.level}/${pathInfo.user_id}/${pathInfo.type}/${pathInfo.file}`
 }
 
-const setLocalStorageCurrentUserProfilePic = function(key) {
+const setLocalStorageCurrentUserProfilePic = function(key) { // TODO] profile_pic 말고 다른 key도 set하는 범용 함수 만들자 + user관련 로컬스토리지 조작은 user state에서!!!
   const currentUser = JSON.parse(localStorage.getItem('current-user'))
   currentUser.profile.profile_pic = key
   localStorage.setItem('current-user', JSON.stringify(currentUser))
