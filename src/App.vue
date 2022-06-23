@@ -25,17 +25,19 @@ export default {
   computed: {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
-      isModalOpen: state => state.menu.isModalOpen
+      isModalOpen: state => state.menu.isModalOpen,
+      authError: state => state.auth.status
     })
   },
   async created() {
     try {
       const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
       const member = await axios.get(`/members/${currentSession.getAccessToken().payload.sub}`)
-      // TODO] axios.get 한 결과에서 data만 꺼내오기
-      await this.$store.dispatch('CURRENT_USER', member.data.data)
+      await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
-      if (error === 'No current user') {
+      if (this.authError === 'error') {
+        await this.$store.dispatch('AUTH_LOGOUT')
+      } else if (error === 'No current user') {
         console.log('No current user')
       }
     }
