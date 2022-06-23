@@ -113,7 +113,6 @@ export default {
           lastId: this.lastLoadedId
         }
       })
-      results = results.data.data
       this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
       this.noMoreDataToLoad = results.length < numOfImages
       return results
