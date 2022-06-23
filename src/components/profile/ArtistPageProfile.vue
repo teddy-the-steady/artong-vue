@@ -49,8 +49,8 @@ export default {
   methods: {
     async getMember(username) {
       const member = await axios.get(`/members?username=${username}`)
-      if (member.data.data.length === 1) {
-        return member.data.data[0]
+      if (member.length === 1) {
+        return member[0]
       }
       return null
     },

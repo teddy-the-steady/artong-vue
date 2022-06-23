@@ -17,6 +17,10 @@ const checkSession = function() { // TODO] currentSession 호출 없이 accessTo
         })
     })
   })
+
+  axios.interceptors.response.use(function(response) {
+    return response.data.data;
+  })
 }
 
 export {

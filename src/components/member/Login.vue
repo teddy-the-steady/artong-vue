@@ -69,7 +69,7 @@ export default {
             }
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
-            await this.$store.dispatch('CURRENT_USER', member.data.data)
+            await this.$store.dispatch('CURRENT_USER', member)
             this.redirectAfterLogin()
           }
         } else {
@@ -108,7 +108,7 @@ export default {
           }
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
-          await this.$store.dispatch('CURRENT_USER', member.data.data)
+          await this.$store.dispatch('CURRENT_USER', member)
           this.redirectAfterLogin()
         })
       } catch (error) {

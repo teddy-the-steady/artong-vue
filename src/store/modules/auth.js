@@ -84,6 +84,9 @@ const actions = {
       const currentSssion = await Auth.currentSession()
       return currentSssion
     } catch (error) {
+      if (error === 'No current user') {
+        throw error
+      }
       commit(AUTH_ERROR, error)
       throw error
     }
