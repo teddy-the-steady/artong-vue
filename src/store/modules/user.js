@@ -11,7 +11,6 @@ const state = {
   status: '',
   currentUser: JSON.parse(localStorage.getItem('current-user')) || {
     id: '',
-    sub: '',
     email: '',
     username: '',
     language: '',
@@ -28,7 +27,6 @@ const actions = {
     try {
       const currentUser = {
         id: member.id,
-        sub: member.auth_id,
         email: member.email,
         username: member.username,
         language: member.language,
@@ -66,7 +64,6 @@ const mutations = {
     state.status = 'signedOut'
     state.currentUser = {
       id: '',
-      sub: '',
       email: '',
       username: '',
       language: '',
