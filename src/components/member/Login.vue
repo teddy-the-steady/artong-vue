@@ -75,7 +75,6 @@ export default {
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
             await this.$store.dispatch('CURRENT_USER', member)
-            this.isSpinnerActive = false
             this.redirectAfterLogin()
           }
         } else {
@@ -84,6 +83,8 @@ export default {
         }
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
+        await this.$store.dispatch('AUTH_LOGOUT')
+      } finally {
         this.isSpinnerActive = false
       }
     },
@@ -109,9 +110,9 @@ export default {
           try {
             signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
           } catch (error) {
+            this.isSpinnerActive = false
             connector.killSession()
             await this.$store.dispatch('AUTH_LOGOUT')
-            this.isSpinnerActive = false
             throw error
           }
           const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
@@ -124,12 +125,12 @@ export default {
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
           await this.$store.dispatch('CURRENT_USER', member)
-          this.isSpinnerActive = false
           this.redirectAfterLogin()
         })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
         connector.killSession()
+        await this.$store.dispatch('AUTH_LOGOUT')
         throw error
       } finally {
         this.isSpinnerActive = false
