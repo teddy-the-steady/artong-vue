@@ -105,15 +105,20 @@ export default {
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
-          console.log('signature:',signature)
-          const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-          if (this.justSignedUp) {
-            await axios.post('/member', {
-              wallet_address: address,
-              auth_id: challengeResult.attributes.sub
-            })
+          try {
+            const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+            const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+            if (this.justSignedUp) {
+              await axios.post('/member', {
+                wallet_address: address,
+                auth_id: challengeResult.attributes.sub
+              })
+            }
+          } catch (error) {
+            console.log('signPersonalMessage error:',error)
+            throw error
           }
+          
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
           await this.$store.dispatch('CURRENT_USER', member)
