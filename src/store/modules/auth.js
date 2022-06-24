@@ -11,6 +11,7 @@ import {
 import { USER_LOGOUT } from '../actions/user'
 import { Auth } from '@aws-amplify/auth'
 import { getRandomString } from '../../util/commonFunc'
+import axios from 'axios'
 
 const state = JSON.parse(localStorage.getItem('current-user'))?
 {
@@ -28,6 +29,11 @@ const actions = {
     try {
       commit(AUTH_SIGN_IN_AND_UP)
       const cognitoUser = await Auth.signIn(address)
+      if (state.justSignedUp) {
+        await axios.post('/member', {
+          wallet_address: address
+        })
+      }
       return cognitoUser
     } catch (error) {
       commit(AUTH_ERROR, error)
@@ -39,8 +45,7 @@ const actions = {
         }
         await Auth.signUp(params)
         commit(AUTH_JUST_SIGNED_UP)
-        const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-        return cognitoUser
+        return await dispatch('AUTH_SIGN_IN_AND_UP', address)
       } else {
         throw error
       }
@@ -49,9 +54,8 @@ const actions = {
   [AUTH_VERIFY_USER]: async function({ commit }, { cognitoUser, signature }) {
     try {
       commit(AUTH_VERIFY_USER)
-      const challengeResult = await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
+      await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
       commit(AUTH_SUCCESS)
-      return challengeResult
     } catch (error) {
       commit(AUTH_ERROR, error)
       throw error
@@ -101,15 +105,18 @@ const mutations = {
   },
   [AUTH_SUCCESS]: (state) => {
     state.status = 'success'
+    state.justSignedUp = false
   },
   [AUTH_JUST_SIGNED_UP]: (state) => {
     state.justSignedUp = true
   },
   [AUTH_ERROR]: state => {
     state.status = 'error'
+    state.justSignedUp = false
   },
   [AUTH_LOGOUT]: state => {
     state.status = 'signedOut'
+    state.justSignedUp = false
   }
 }
 
