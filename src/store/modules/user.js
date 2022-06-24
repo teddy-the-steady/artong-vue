@@ -44,9 +44,6 @@ const actions = {
       await dispatch(AUTH_LOGOUT)
       throw error
     }
-  },
-  [USER_LOGOUT]: async function({ commit }) {
-    commit(USER_LOGOUT)
   }
 }
 
