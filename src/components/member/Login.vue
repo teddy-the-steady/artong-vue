@@ -104,6 +104,7 @@ export default {
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
+          console.log('signature:',signature)
           const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           if (this.justSignedUp) {
             await axios.post('/member', {
