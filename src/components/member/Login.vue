@@ -105,7 +105,7 @@ export default {
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
+          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
           console.log('signature:',signature)
           const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           if (this.justSignedUp) {
@@ -119,6 +119,22 @@ export default {
           await this.$store.dispatch('CURRENT_USER', member)
           this.isSpinnerActive = false
           this.redirectAfterLogin()
+        })
+
+        connector.on("session_update", (error, payload) => {
+          if (error) {
+            throw error
+          }
+
+          console.log('walletconnect session_updated:',payload)
+        })
+
+        connector.on("disconnect", (error, payload) => {
+          if (error) {
+            throw error
+          }
+
+          console.log('walletconnect disconnected:',payload)
         })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
