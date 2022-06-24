@@ -5,7 +5,10 @@
       <h1>Connect your wallet</h1>
       <p v-text="warning"></p>
       <div class="form__footer">
-        <button v-if="isMobile" @click="signInMobile()">CONNECT</button>
+        <button v-if="isMobile" @click="signInMobile()">
+          <div class="spinner" :class="{active: isSpinnerActive}"></div>
+          <span v-show="!isSpinnerActive">CONNECT</span>
+        </button>
         <button v-else @click="signIn()">
           <div class="spinner" :class="{active: isSpinnerActive}"></div>
           <span v-show="!isSpinnerActive">METAMASK</span>
@@ -80,12 +83,11 @@ export default {
           onboarding.startOnboarding()
         }
       } catch (error) {
-        this.warning = error.message
+        this.warning = 'Oops, something went wrong! Please try again'
         this.isSpinnerActive = false
       }
     },
     async signInMobile() {
-      this.isSpinnerActive = true
       const connector = new WalletConnect({
         bridge: 'https://bridge.walletconnect.org',
         qrcodeModal: QRCodeModal,
@@ -99,7 +101,7 @@ export default {
           if (error) {
             throw error
           }
-
+          this.isSpinnerActive = true
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
@@ -119,7 +121,7 @@ export default {
           this.redirectAfterLogin()
         })
       } catch (error) {
-        this.warning = error.message
+        this.warning = 'Oops, something went wrong! Please try again'
         connector.killSession()
         this.isSpinnerActive = false
       }

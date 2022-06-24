@@ -57,14 +57,13 @@ const actions = {
       throw error
     }
   },
-  [AUTH_LOGOUT]: async function({ commit, dispatch }) {
+  [AUTH_LOGOUT]: async function({ commit }) {
     try {
-      commit(AUTH_SIGN_IN_AND_UP)
       await Auth.signOut()
       commit(AUTH_LOGOUT)
-      dispatch(USER_LOGOUT)
+      commit(USER_LOGOUT)
     } catch (error) {
-      console.log(error)
+      commit(AUTH_ERROR, error)
       throw error
     }
   },
