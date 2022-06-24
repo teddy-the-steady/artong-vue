@@ -65,17 +65,10 @@ export default {
               method: 'personal_sign',
               params: [address, cognitoUser.challengeParam.message],
             })
-            const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-            if (this.justSignedUp) {
-              await axios.post('/member', {
-                wallet_address: address,
-                auth_id: challengeResult.attributes.sub
-              })
-            }
+            await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-            const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
+            const member = await axios.get(`/members/${authenticatedUser.username}`)
             await this.$store.dispatch('CURRENT_USER', member)
-            this.isSpinnerActive = false
             this.redirectAfterLogin()
           }
         } else {
@@ -83,7 +76,13 @@ export default {
           onboarding.startOnboarding()
         }
       } catch (error) {
-        this.warning = 'Oops, something went wrong! Please try again'
+        if (error.code === 4001) { // INFO] User denied message signature
+          this.warning = ''
+        } else {
+          this.warning = 'Oops, something went wrong! Please try again'
+        }
+        await this.$store.dispatch('AUTH_LOGOUT')
+      } finally {
         this.isSpinnerActive = false
       }
     },
@@ -105,23 +104,27 @@ export default {
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)]);
-          const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-          if (this.justSignedUp) {
-            await axios.post('/member', {
-              wallet_address: address,
-              auth_id: challengeResult.attributes.sub
-            })
+          let signature = null
+          try {
+            signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+          } catch (error) {
+            this.isSpinnerActive = false
+            connector.killSession()
+            await this.$store.dispatch('AUTH_LOGOUT')
+            throw error
           }
+          await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
+          const member = await axios.get(`/members/${authenticatedUser.username}`)
           await this.$store.dispatch('CURRENT_USER', member)
-          this.isSpinnerActive = false
           this.redirectAfterLogin()
         })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
         connector.killSession()
+        await this.$store.dispatch('AUTH_LOGOUT')
+        throw error
+      } finally {
         this.isSpinnerActive = false
       }
     },
