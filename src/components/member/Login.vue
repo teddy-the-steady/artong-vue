@@ -105,45 +105,33 @@ export default {
           const { accounts } = payload.params[0]
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          let signature = null
           try {
-            const signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
-            const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-            if (this.justSignedUp) {
-              await axios.post('/member', {
-                wallet_address: address,
-                auth_id: challengeResult.attributes.sub
-              })
-            }
+            signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
           } catch (error) {
-            console.log('signPersonalMessage error:',error)
+            connector.killSession()
+            await this.$store.dispatch('AUTH_LOGOUT')
+            this.isSpinnerActive = false
             throw error
           }
-          
+          const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+          if (this.justSignedUp) {
+            await axios.post('/member', {
+              wallet_address: address,
+              auth_id: challengeResult.attributes.sub
+            })
+          }
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
           await this.$store.dispatch('CURRENT_USER', member)
           this.isSpinnerActive = false
           this.redirectAfterLogin()
         })
-
-        connector.on("session_update", (error, payload) => {
-          if (error) {
-            throw error
-          }
-
-          console.log('walletconnect session_updated:',payload)
-        })
-
-        connector.on("disconnect", (error, payload) => {
-          if (error) {
-            throw error
-          }
-
-          console.log('walletconnect disconnected:',payload)
-        })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
         connector.killSession()
+        throw error
+      } finally {
         this.isSpinnerActive = false
       }
     },
