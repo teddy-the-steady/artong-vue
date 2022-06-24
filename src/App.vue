@@ -32,7 +32,7 @@ export default {
   async created() {
     try {
       const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
-      const member = await axios.get(`/members/${currentSession.getAccessToken().payload.sub}`)
+      const member = await axios.get(`/members/${currentSession.getAccessToken().payload.username}`)
       await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
       if (this.authError === 'error') {

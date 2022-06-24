@@ -65,15 +65,9 @@ export default {
               method: 'personal_sign',
               params: [address, cognitoUser.challengeParam.message],
             })
-            const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-            if (this.justSignedUp) {
-              await axios.post('/member', {
-                wallet_address: address,
-                auth_id: challengeResult.attributes.sub
-              })
-            }
+            await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-            const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
+            const member = await axios.get(`/members/${authenticatedUser.username}`)
             await this.$store.dispatch('CURRENT_USER', member)
             this.redirectAfterLogin()
           }
@@ -82,7 +76,11 @@ export default {
           onboarding.startOnboarding()
         }
       } catch (error) {
-        this.warning = 'Oops, something went wrong! Please try again'
+        if (error.code === 4001) { // INFO] User denied message signature
+          this.warning = ''
+        } else {
+          this.warning = 'Oops, something went wrong! Please try again'
+        }
         await this.$store.dispatch('AUTH_LOGOUT')
       } finally {
         this.isSpinnerActive = false
@@ -115,15 +113,9 @@ export default {
             await this.$store.dispatch('AUTH_LOGOUT')
             throw error
           }
-          const challengeResult = await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-          if (this.justSignedUp) {
-            await axios.post('/member', {
-              wallet_address: address,
-              auth_id: challengeResult.attributes.sub
-            })
-          }
+          await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          const member = await axios.get(`/members/${authenticatedUser.attributes.sub}`)
+          const member = await axios.get(`/members/${authenticatedUser.username}`)
           await this.$store.dispatch('CURRENT_USER', member)
           this.redirectAfterLogin()
         })
