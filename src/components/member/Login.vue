@@ -54,6 +54,9 @@ export default {
   },
   methods: {
     async signIn() {
+      if (this.isSpinnerActive) {
+        return
+      }
       try {
         if (MetaMaskOnboarding.isMetaMaskInstalled()) {
           this.isSpinnerActive = true
@@ -87,6 +90,9 @@ export default {
       }
     },
     async signInMobile() {
+      if (this.isSpinnerActive) {
+        return
+      }
       const connector = new WalletConnect({
         bridge: 'https://bridge.walletconnect.org',
         qrcodeModal: QRCodeModal,
