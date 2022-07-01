@@ -14,7 +14,7 @@
 import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
-import axios from 'axios'
+import { getMember } from './api/member'
 
 export default {
   name: 'App',
@@ -32,7 +32,7 @@ export default {
   async created() {
     try {
       const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
-      const member = await axios.get(`/members/${currentSession.getAccessToken().payload.username}`)
+      const member = await getMember(currentSession.getAccessToken().payload.username)
       await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
       if (this.authError === 'error') {

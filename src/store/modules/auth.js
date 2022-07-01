@@ -11,7 +11,7 @@ import {
 import { USER_LOGOUT } from '../actions/user'
 import { Auth } from '@aws-amplify/auth'
 import { getRandomString } from '../../util/commonFunc'
-import axios from 'axios'
+import { postMember } from '../../api/member'
 
 const state = JSON.parse(localStorage.getItem('current-user'))?
 {
@@ -30,9 +30,7 @@ const actions = {
       commit(AUTH_SIGN_IN_AND_UP)
       const cognitoUser = await Auth.signIn(address)
       if (state.justSignedUp) {
-        await axios.post('/member', {
-          wallet_address: address
-        })
+        await postMember(address)
       }
       return cognitoUser
     } catch (error) {

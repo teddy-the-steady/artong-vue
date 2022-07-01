@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
+import { getMembers } from '../../api/member'
 
 export default {
   name: 'ArtistPageProfile',
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     async getMember(username) {
-      const member = await axios.get(`/members?username=${username}`)
+      const member = await getMembers(username)
       if (member.length === 1) {
         return member[0]
       }
