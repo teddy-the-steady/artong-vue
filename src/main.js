@@ -10,9 +10,9 @@ import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
 import VueMobileDetection from "vue-mobile-detection"
 import Masonry from './plugin/masonry'
-import * as axios from './config/axiosConfig'
 import router from './router'
 import store from './store'
+import axiosInit from './api'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -24,7 +24,7 @@ Vue.use(VueMobileDetection)
 
 Vue.config.productionTip = false
 
-axios.checkSession()
+axiosInit
 
 /* eslint-disable no-new */
 new Vue({
