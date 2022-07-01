@@ -20,7 +20,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
+import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
 import WalletConnect from "@walletconnect/client"
@@ -70,7 +70,7 @@ export default {
             })
             await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-            const member = await axios.get(`/members/${authenticatedUser.username}`)
+            const member = await getMember(authenticatedUser.username)
             await this.$store.dispatch('CURRENT_USER', member)
             this.redirectAfterLogin()
           }
@@ -121,7 +121,7 @@ export default {
           }
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          const member = await axios.get(`/members/${authenticatedUser.username}`)
+          const member = await getMember(authenticatedUser.username)
           await this.$store.dispatch('CURRENT_USER', member)
           this.redirectAfterLogin()
         })
