@@ -1,17 +1,17 @@
 <template>
   <div>
-    <content-list-v2></content-list-v2>
+    <content-list></content-list>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
-import ContentListV2 from '../contentListV2/ContentListV2'
+import ContentList from '../contentsV2/ContentList'
 export default {
   name: 'Server',
   mixins: [headerActivate],
   components: {
-    ContentListV2
+    ContentList
   },
   data() {
     return {

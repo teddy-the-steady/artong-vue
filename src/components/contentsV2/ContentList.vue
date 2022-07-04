@@ -18,7 +18,7 @@
 
 <script>
 import ContentBox from './ContentBox'
-import underContentsProfile from '../profile/underContentsProfile.vue'
+import UnderContentsProfile from '../profile/UnderContentsProfile'
 import InfiniteLoading from 'vue-infinite-loading'
 import axios from 'axios'
 import { makeS3Path } from '../../util/commonFunc'
@@ -26,7 +26,7 @@ import { makeS3Path } from '../../util/commonFunc'
 export default {
   name: 'ContentListV2',
   components: {
-    ContentBox, underContentsProfile, InfiniteLoading
+    ContentBox, UnderContentsProfile, InfiniteLoading
   },
   props: {
     contentsApi: {
