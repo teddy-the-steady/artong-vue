@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ContentList from '../contentList/ContentList'
+import ContentList from '../contents/ContentList'
 import { headerActivate } from '../../mixin'
 export default {
   name: 'Home',
