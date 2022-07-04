@@ -20,7 +20,7 @@
 <script>
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ContentList from '../contentList/ContentList'
+import ContentList from '../contents/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
 
 
