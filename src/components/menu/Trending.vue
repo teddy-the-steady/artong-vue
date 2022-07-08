@@ -1,18 +1,17 @@
 <template>
   <div>
-    <h1>Trending Contents</h1>
-    <content-list></content-list>
+    <project-list></project-list>
   </div>
 </template>
 
 <script>
-import ContentList from '../contents/ContentList'
+import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
 export default {
   name: 'Trending',
   mixins: [headerActivate],
   components: {
-    ContentList
+    ProjectList
   }
 }
 </script>
