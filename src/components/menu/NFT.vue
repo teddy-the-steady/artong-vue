@@ -43,7 +43,6 @@ h1, h2 {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-end;
-    padding: 50px 15px 15px 15px;
 
     button {
       padding: 10px;
@@ -63,7 +62,6 @@ h1, h2 {
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
-      padding: 30px 15px 15px 15px;
 
       button {
         border-radius: 10px;

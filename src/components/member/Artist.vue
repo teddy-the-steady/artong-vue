@@ -1,9 +1,10 @@
 <template>
   <div :key="componentKey">
     <div class="header">
+      <div class="background" :style="{'background': backgroundColor}">
+      </div>
       <div class="user-info">
         <artist-page-profile :username="username"></artist-page-profile>
-        <button>SUBSCRIBE</button>
       </div>
       <div class="tab">
       </div>
@@ -22,10 +23,11 @@ import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../contents/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
-
+import { backgroundColor } from '../../mixin'
 
 export default {
   name: 'Artist',
+  mixins: [backgroundColor],
   components: {
     ArtistPageProfile, ContentList
   },
@@ -50,7 +52,8 @@ export default {
         query: {}
       },
       componentKey: 0,
-      username: ''
+      username: '',
+      backgroundColor: 'lightgrey'
     }
   },
   methods: {
@@ -77,6 +80,9 @@ export default {
         }
       }
     )
+  },
+  mounted() {
+    this.backgroundColor = this.generateGradientBackground()
   }
 }
 </script>
@@ -85,12 +91,11 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  .background {
+    height: 15em;
+  }
   .user-info {
     height: 30%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: flex-end;
-    padding: 50px 15px 15px 15px;
 
     button {
       padding: 10px;
@@ -109,8 +114,10 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .header {
+    .background {
+      height: 10em;
+    }
     .user-info {
-      padding: 30px 15px 15px 15px;
 
       button {
         border-radius: 10px;
