@@ -13,18 +13,18 @@ export default [
     icon: 'fa fa-download'
   },
   {
-    href: '/server',
-    title: 'Server',
+    href: '/nft',
+    title: 'NFT',
     icon: 'fa fa-code'
+  },
+  {
+    href: '/projects',
+    title: 'Project',
+    icon: 'fa fa-cogs'
   },
   {
     header: true,
     title: 'Example Menu'
-  },
-  {
-    href: '/trending',
-    title: 'Trending',
-    icon: 'fa fa-cogs'
   },
   {
     href: '/following',
