@@ -71,16 +71,15 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    display: flex;
-    width: 70%;
-
+    transform: translateY(-40%);
+    display: inline-block;
     .image {
+        display: inline-block;
         background-color: $artong-white;
         width: 150px;
         height: 150px;
         min-width: 100px;
         min-height: 100px;
-        margin-right: 30px;
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 
@@ -107,10 +106,7 @@ export default {
     }
 
     .info {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      width: 50%;
+      text-align: center;
       word-break: break-all;
 
       .username {
@@ -121,10 +117,10 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .profile {
+    transform: translateY(-30%);
     .image {
       width: 100px;
       height: 100px;
-      margin-right: 10px;
       div {
         height: 100px;
       }
