@@ -7,7 +7,7 @@
         </router-link>
         <div class="profileBox">
           <router-link :to="{ name: 'UserOrArtist', params: { id: val.username }}">
-            <under-contents-profile :image="val"></under-contents-profile>
+            <contents-profile :image="val"></contents-profile>
           </router-link>
         </div>
       </div>
@@ -18,7 +18,7 @@
 
 <script>
 import ContentBox from './ContentBox'
-import UnderContentsProfile from '../profile/UnderContentsProfile'
+import ContentsProfile from '../profile/ContentsProfile'
 import InfiniteLoading from 'vue-infinite-loading'
 import axios from 'axios'
 import { makeS3Path } from '../../util/commonFunc'
@@ -26,7 +26,7 @@ import { makeS3Path } from '../../util/commonFunc'
 export default {
   name: 'ContentListV2',
   components: {
-    ContentBox, UnderContentsProfile, InfiniteLoading
+    ContentBox, ContentsProfile, InfiniteLoading
   },
   props: {
     contentsApi: {
