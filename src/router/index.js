@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 import Home from '@/components/menu/Home'
-import Server from '@/components/menu/Server'
-import Trending from '@/components/menu/Trending'
+import NFT from '@/components/menu/NFT'
+import Project from '@/components/menu/Project'
 import Following from '@/components/menu/Following'
 import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
@@ -21,14 +21,14 @@ const router = new Router({
       component: Home
     },
     {
-      path: '/server',
-      name: 'Server',
-      component: Server
+      path: '/nft',
+      name: 'NFT',
+      component: NFT
     },
     {
-      path: '/trending',
-      name: 'Trending',
-      component: Trending
+      path: '/projects',
+      name: 'Project',
+      component: Project
     },
     {
       path: '/following',

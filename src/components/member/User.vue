@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="header">
+      <div class="background" :style="{'background': backgroundColor}">
+      </div>
       <div class="user-info">
         <my-page-profile></my-page-profile>
-        <button @click="toggleModal">UPLOAD</button>
+        <!-- <button @click="toggleModal">UPLOAD</button> -->
       </div>
       <div class="tab">
       </div>
@@ -20,14 +22,14 @@
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import ContentList from '../contentList/ContentList'
+import ContentList from '../contents/ContentList'
 import UploadModal from '../modal/UploadModal'
-import { headerActivate } from '../../mixin'
+import { headerActivate, backgroundColor } from '../../mixin'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
-  mixins: [headerActivate],
+  mixins: [headerActivate, backgroundColor],
   components: {
     MyPageProfile, ContentList, UploadModal
   },
@@ -45,7 +47,8 @@ export default {
         url: '',
         params: {},
         query: {}
-      }
+      },
+      backgroundColor: 'lightgrey'
     }
   },
   methods: {
@@ -77,6 +80,7 @@ export default {
       url: '/auth/uploads',
       params: {id: this.$route.params.id}
     }
+    this.backgroundColor = this.generateGradientBackground()
   },
   watch: {
     $route() {
@@ -90,12 +94,11 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  .background {
+    height: 15em;
+  }
   .user-info {
     height: 30%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: flex-end;
-    padding: 50px 15px 15px 15px;
 
     button {
       padding: 10px;
@@ -114,8 +117,10 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .header {
+    .background {
+      height: 10em;
+    }
     .user-info {
-      padding: 30px 15px 15px 15px;
 
       button {
         border-radius: 10px;
