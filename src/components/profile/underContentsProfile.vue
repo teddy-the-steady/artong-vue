@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'InContentsProfile',
+  name: 'UnderContentsProfile',
   props: {
     image: {
       type: Object,
