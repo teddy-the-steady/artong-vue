@@ -112,7 +112,7 @@ html {
             position: relative;
             background: $artong-white;
             height: 100%;
-            padding-top: 55px;
+            padding-top: 50px;
         }
     }
 }
