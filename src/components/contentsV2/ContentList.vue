@@ -5,11 +5,9 @@
         <router-link :to="{ name: 'Artwork', params: { id: val.id_pk || val.url }}">
           <content-box :image="val"></content-box>
         </router-link>
-        <div class="profileBox">
-          <router-link :to="{ name: 'UserOrArtist', params: { id: val.username }}">
-            <contents-profile :image="val"></contents-profile>
-          </router-link>
-        </div>
+        <router-link class="profileBox" :to="{ name: 'UserOrArtist', params: { id: val.username }}">
+          <contents-profile :image="val"></contents-profile>
+        </router-link>
       </div>
     </masonry>
     <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
@@ -136,6 +134,8 @@ export default {
 }
 
 .profileBox {
+  display: block;
+  height: 30px;
   padding: 10px;
 }
 </style>
