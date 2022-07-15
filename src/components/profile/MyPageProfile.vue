@@ -61,7 +61,7 @@ export default {
       }
     }
   },
-  async mounted() {
+  mounted() {
     this.isFirstLoading = false
   }
 }
