@@ -37,6 +37,7 @@ export default {
   position: relative;
   vertical-align: middle;
   overflow: hidden;
+  isolation: isolate;
   background-color: #EEEEEE;
   
   &::after {
