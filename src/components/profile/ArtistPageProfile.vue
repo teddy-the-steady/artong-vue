@@ -81,7 +81,9 @@ export default {
 
 .profile {
     transform: translateY(-40%);
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .image {
         display: inline-block;
         background-color: $artong-white;
