@@ -1,11 +1,9 @@
 <template>
   <div class="profile">
-    <div v-if="isFirstLoading">
-      <div>
-        <skeleton-box style="width:100%;height:100%;"></skeleton-box>
-      </div>
+    <div v-if="isFirstLoading" class="image">
+      <skeleton-box style="width:100%;height:100%;border-radius:50%"></skeleton-box>
     </div>
-    <div v-else>
+    <div v-else class="image">
       <img v-if="profilePic" :src="profilePic" @error="isFirstLoading = true"/>
       <div v-else class="basicProfilePicture"></div>
     </div>
@@ -41,23 +39,20 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    background-color: $artong-white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+    display: inline;
+    .image {
+        display: inline;
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
 
-    div, span {
-        height: 100%;
-        border-radius: 50%;
-
-        &.basicProfilePicture {
+        .basicProfilePicture {
+            height: 100%;
+            border-radius: 50%;
             background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
         }
     }
