@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;"></skeleton-box>
+      <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image">
       <img v-if="profilePic" :src="profilePic" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
@@ -61,7 +61,7 @@ export default {
       }
     }
   },
-  async mounted() {
+  mounted() {
     this.isFirstLoading = false
   }
 }
@@ -72,14 +72,14 @@ export default {
 
 .profile {
     transform: translateY(-40%);
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .image {
         display: inline-block;
         background-color: $artong-white;
         width: 150px;
         height: 150px;
-        min-width: 100px;
-        min-height: 100px;
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 
@@ -91,13 +91,10 @@ export default {
           cursor: pointer;
         }
 
-        div, span {
+        .basicProfilePicture {
           height: 150px;
           border-radius: 50%;
-
-          &.basicProfilePicture {
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-          }
+          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
         }
 
         input {
