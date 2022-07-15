@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div v-if="isFirstLoading" class="image">
+    <div v-if="true" class="image">
       <skeleton-box style="width:30px;height:30px;"></skeleton-box>
       <skeleton-box class="username" style="width:70%;height:70%;"></skeleton-box>
     </div>
