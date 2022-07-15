@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div v-if="true" class="image">
+    <div v-if="isFirstLoading" class="image">
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image" @error="isFirstLoading = true">
