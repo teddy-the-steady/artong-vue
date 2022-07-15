@@ -102,7 +102,7 @@ export default {
         }
 
         .basicProfilePicture {
-          height: 150px;
+          height: 100%;
           border-radius: 50%;
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
         }
