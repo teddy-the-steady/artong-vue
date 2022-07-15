@@ -99,7 +99,6 @@ export default {
           height: 100%;
           object-fit: cover;
           border-radius: 50%;
-          cursor: pointer;
         }
 
         .basicProfilePicture {
