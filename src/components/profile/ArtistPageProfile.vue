@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;"></skeleton-box>
+      <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image" @error="isFirstLoading = true">
       <img v-if="profileImage" :src="profileImage"/>
@@ -102,13 +102,10 @@ export default {
           cursor: pointer;
         }
 
-        div, span {
+        .basicProfilePicture {
           height: 150px;
           border-radius: 50%;
-
-          &.basicProfilePicture {
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-          }
+          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
         }
 
         input {

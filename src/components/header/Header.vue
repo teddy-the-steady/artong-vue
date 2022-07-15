@@ -16,7 +16,7 @@
               SIGN IN
             </router-link>
           </div>
-          <div class="profile" v-else>
+          <div class="header-profile" v-else>
             <router-link :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}">
               <header-profile></header-profile>
             </router-link>
@@ -101,10 +101,11 @@ export default {
         }
       }
 
-      .profile {
+      .header-profile {
+        display: block;
         width: 30px;
         height: 30px;
-        border-radius: 2rem;
+        border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
       }
     }
