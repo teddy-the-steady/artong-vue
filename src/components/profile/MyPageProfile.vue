@@ -81,7 +81,7 @@ export default {
         width: 150px;
         height: 150px;
         border-radius: 50%;
-        box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+        border: 2px solid $artong-white;
 
         img {
           width: 100%;
