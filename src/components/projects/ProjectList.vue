@@ -57,7 +57,7 @@ export default {
 
 .projects {
   display: flex;
-  flex-flow: wrap;
+  flex-flow: row wrap;
 
   .project {
     flex: 1;
