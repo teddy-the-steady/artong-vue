@@ -49,18 +49,26 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-@mixin max-width($width) {
-  @media screen and (max-width: $width) {
-    @content;
-  }
-}
-
 .projects {
   display: flex;
   flex-flow: row wrap;
 
   .project {
     flex: 1;
+  }
+}
+
+@mixin max-width($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}
+
+@media screen {
+  .projects {
+    .project {
+      flex-basis: 20%;
+    }
   }
 }
 
@@ -95,4 +103,5 @@ export default {
     }
   }
 }
+
 </style>
