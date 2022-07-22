@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="navbar__logo">
-        <router-link to="/"><b><i>4</i>rtong</b></router-link>
+        <router-link to="/"><b>4rtong</b></router-link>
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
