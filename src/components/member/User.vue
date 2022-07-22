@@ -80,7 +80,7 @@ export default {
       url: '/auth/uploads',
       params: {id: this.$route.params.id}
     }
-    this.backgroundColor = this.generateGradientBackground()
+    this.backgroundColor = this.generateGradientBackground(this.currentUser.wallet_address)
   },
   watch: {
     $route() {
