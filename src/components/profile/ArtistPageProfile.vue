@@ -25,7 +25,6 @@
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
-import { getMembers } from '../../api/member'
 
 export default {
   name: 'ArtistPageProfile',
@@ -36,24 +35,16 @@ export default {
   data() {
     return {
       profileImage: '',
-      member: '',
       isFirstLoading: true
     }
   },
   props: {
-    username: {
-      type: String,
-      default: ''
+    member: {
+      type: Object,
+      default: () => {}
     }
   },
   methods: {
-    async getMember(username) {
-      const member = await getMembers(username)
-      if (member.length === 1) {
-        return member[0]
-      }
-      return null
-    },
     getProfileImage(member) {
       if (!member || !member.profile_pic) {
         return null
@@ -62,11 +53,10 @@ export default {
     }
   },
   watch: {
-    username: {
-      immediate: true,
-      async handler(val) {
+    member: {
+      deep: true,
+      handler(val) {
         if (val) {
-          this.member = await this.getMember(val)
           this.profileImage = this.getProfileImage(this.member)
           this.isFirstLoading = false
         }
