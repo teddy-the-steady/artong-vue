@@ -4,7 +4,7 @@
       <div class="background" :style="{'background': backgroundColor}">
       </div>
       <div class="user-info">
-        <artist-page-profile :username="username"></artist-page-profile>
+        <artist-page-profile :member="member"></artist-page-profile>
       </div>
       <div class="tab">
       </div>
@@ -24,6 +24,7 @@ import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../contents/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { backgroundColor } from '../../mixin'
+import { getMembers } from '../../api/member'
 
 export default {
   name: 'Artist',
@@ -52,8 +53,9 @@ export default {
         query: {}
       },
       componentKey: 0,
+      member: {},
       username: '',
-      backgroundColor: 'lightgrey'
+      backgroundColor: 'white'
     }
   },
   methods: {
@@ -67,22 +69,31 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async getMember(username) {
+      const member = await getMembers(username)
+      if (member.length === 1) {
+        return member[0]
+      }
+      return null
     }
   },
-  created() {
+  async created() {
     this.username = this.$route.params.id
+    this.member = await this.getMember(this.username)
+    this.backgroundColor = this.generateGradientBackground(this.member.wallet_address)
     this.$watch(
       () => this.$route,
-      (toRoute) => {
+      async (toRoute) => {
         if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
+          this.backgroundColor = 'white'
           this.username = toRoute.params.id
           this.forceRerender()
+          this.member = await this.getMember(this.username)
+          this.backgroundColor = this.generateGradientBackground(this.member.wallet_address)
         }
       }
     )
-  },
-  mounted() {
-    this.backgroundColor = this.generateGradientBackground()
   }
 }
 </script>
