@@ -1,6 +1,6 @@
 <template class="contents__body">
   <div>
-    <div class="form__logo"><router-link to="/"><b><i>4</i>rtong</b></router-link></div>
+    <div class="form__logo"><router-link to="/"><b>4rtong</b></router-link></div>
     <div class="form__box">
       <h1>Connect your wallet</h1>
       <p v-text="warning"></p>
