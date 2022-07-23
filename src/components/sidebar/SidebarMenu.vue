@@ -23,17 +23,20 @@
       </div>
     </div>
     <slot name="footer" />
-    <div class="art--footer">sidebar footer</div>
+    <div class="art--footer">
+      <light-dark-switch @is-dark="onLightDarkToggleClick"></light-dark-switch>
+    </div>
   </div>
 </template>
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem'
+import LightDarkSwitch from '../util/LightDarkSwitch'
 
 export default {
   name: 'SidebarMenu',
   components: {
-    SidebarMenuItem
+    SidebarMenuItem, LightDarkSwitch
   },
   props: {
     menu: {
@@ -86,6 +89,9 @@ export default {
       if (item === this.activeShow) {
         this.activeShow = newItem
       }
+    },
+    onLightDarkToggleClick(isDark) {
+      this.$emit('light-dark-toggle', isDark)
     }
   },
   provide() {
