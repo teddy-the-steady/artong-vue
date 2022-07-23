@@ -10,6 +10,7 @@
                     :theme="selectedTheme"
                     :show-one-child="true"
                     @item-click="onItemClick"
+                    @light-dark-toggle="onLightDarkToggle"
                 />
             </div>
         </transition>
@@ -28,7 +29,7 @@ export default {
   data() {
     return {
       menu: menuItems,
-      selectedTheme: 'white-theme'
+      selectedTheme: 'default-theme'
     }
   },
   computed: {
@@ -44,6 +45,13 @@ export default {
       console.log('onItemClick')
       console.log(event)
       console.log(item)
+    },
+    onLightDarkToggle(isDark) {
+      if (isDark) {
+        this.selectedTheme = 'default-theme'
+      } else {
+        this.selectedTheme = 'white-theme'
+      }
     }
   }
 }
