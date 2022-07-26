@@ -24,7 +24,7 @@
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <light-dark-switch @is-dark="onLightDarkToggleClick"></light-dark-switch>
+      <light-dark-switch ></light-dark-switch>
     </div>
   </div>
 </template>
@@ -89,9 +89,6 @@ export default {
       if (item === this.activeShow) {
         this.activeShow = newItem
       }
-    },
-    onLightDarkToggleClick(isDark) {
-      this.$emit('light-dark-toggle', isDark)
     }
   },
   provide() {
