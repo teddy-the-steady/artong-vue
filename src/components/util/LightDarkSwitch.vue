@@ -10,16 +10,18 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'LightDarkSwitch',
-  data() {
-    return {
-      isDark: false // TODO] theme cookie 에서 auto, dark, light 읽어서 세팅해주기?
-    }
+  computed: {
+    ...mapState({
+      isDark: state => state.menu.isDark
+    })
   },
   methods: {
     toggle() {
-      this.$emit('is-dark', this.isDark)
+      this.$store.commit('TOGGLE_THEME')
     }
   }
 }
