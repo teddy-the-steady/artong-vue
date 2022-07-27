@@ -2,7 +2,7 @@
   <div>
     <div class="header">
       <div class="user-info">
-        <artist-page-profile :username="username"></artist-page-profile>
+        <artist-page-profile></artist-page-profile>
       </div>
       <div class="tab">
       </div>
