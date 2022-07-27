@@ -28,6 +28,9 @@ $dropdown-bg: #e3e3e3;
       & .art--icon {
         background-color: $icon-bg;
       }
+      & .art--title {
+        color: $artong-black
+      }
     }
     &_hover,
     &:hover {
