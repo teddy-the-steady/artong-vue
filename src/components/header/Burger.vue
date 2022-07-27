@@ -34,6 +34,7 @@ export default {
 @import '../../assets/scss/variables';
 
 #burger {
+    z-index: 2030;
     &.active {
         .burger-button {
             transform: rotate(-180deg);
@@ -42,15 +43,15 @@ export default {
                 background-color: $artong-black;
             }
             .burger-bar__1 {
-                transform: translateX(-3px) rotate(75deg) scaleY(1.5);
+                transform: translateX(-3px) rotate(90deg) scaleY(1.5);
             }
 
             .burger-bar__2 {
-                transform: translateX(-2px) translateY(-3px) scaleX(.6);
+                transform: translateX(-2px) translateY(-3px) scaleX(0.8);
             }
 
             .burger-bar__3 {
-                transform: scaleY(1.3) translateX(6px) rotate(-46deg);
+                transform: scaleY(1.4) translateX(5px) rotate(-42deg);
             }
         }
     }
