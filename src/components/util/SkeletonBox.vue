@@ -32,13 +32,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .SkeletonBox {
   display: inline-block;
   position: relative;
   vertical-align: middle;
   overflow: hidden;
   isolation: isolate;
-  background-color: #EEEEEE;
+  background-color: $lightergray;
   
   &::after {
     position: absolute;

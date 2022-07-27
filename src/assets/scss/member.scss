@@ -2,14 +2,16 @@
 
 .contents__body {
     height: 100vh;
-    background: $artong-main;
+    background: $artong-black;
 
     .form__logo {
         font-size: 60px;
         margin-bottom: 15px;
 
         a {
-            color: $artong-white;
+            b {
+                color: $artong-white;
+            }
             text-decoration: none;
         }
     }
@@ -23,6 +25,7 @@
         box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
         box-sizing: border-box;
         min-width: 320px;
+        color: black;
 
         h3 > span {
             text-decoration: underline;

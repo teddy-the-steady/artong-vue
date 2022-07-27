@@ -23,17 +23,20 @@
       </div>
     </div>
     <slot name="footer" />
-    <div class="art--footer">sidebar footer</div>
+    <div class="art--footer">
+      <light-dark-switch ></light-dark-switch>
+    </div>
   </div>
 </template>
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem'
+import LightDarkSwitch from '../util/LightDarkSwitch'
 
 export default {
   name: 'SidebarMenu',
   components: {
-    SidebarMenuItem
+    SidebarMenuItem, LightDarkSwitch
   },
   props: {
     menu: {
