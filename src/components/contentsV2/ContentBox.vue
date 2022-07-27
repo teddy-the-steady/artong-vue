@@ -34,7 +34,7 @@ export default {
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
   margin: 0 10px;
   &:hover {
-    box-shadow: 1px 1px .5em $darkgrey, -1px -1px .5em $darkgrey;
+    box-shadow: 1px 1px .5em $darkgray, -1px -1px .5em $darkgray;
   }
 
  img {

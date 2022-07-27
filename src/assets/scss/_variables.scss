@@ -1,18 +1,17 @@
-$artong-main: black !default;
+$artong-main: #2a2a2e !default;
 $artong-white: white !default;
 $artong-black: black !default;
-$darkgrey: #454545 !default;
-$lightslategray: gray !default;
+$darkgray: #454545 !default;
 $lightgray: lightgray !default;
-$aliceblue: aliceblue !default;
-$sidebar-backdrop: rgba(0,0,0,.5) !default;
+$lightergray: #EEEEEE !default;
+$backdrop: rgba(0,0,0,.5) !default;
 $head-height: 50px !default;
 
 // from vsm
 $primary-color: $artong-main !default;
-$base-bg: #2a2a2e !default;
+$base-bg: $artong-main !default;
 
-$item-color: #fff !default;
+$item-color: $artong-white !default;
 
 $item-active-color: $item-color !default;
 

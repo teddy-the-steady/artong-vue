@@ -85,7 +85,6 @@ export default {
   position: relative;
   width: 100%;
   min-height: 57px;
-  background: $artong-white;
   box-shadow: 1px 1px .5em $lightgray;
   border-radius: 20px;
 
