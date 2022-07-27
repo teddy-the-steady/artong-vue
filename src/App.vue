@@ -67,8 +67,11 @@ html {
     body {
         margin: 0;
         height: 100%;
-        background: $artong-main;
         overflow-y: scroll;
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
 
         a {
             color: $artong-main;
@@ -80,34 +83,17 @@ html {
             touch-action: manipulation;
             cursor: pointer;
             color: $artong-white;
-            background-color: $artong-main;
+            background-color: $artong-black;
             text-transform: uppercase;
             padding: 14px 0;
             letter-spacing: 1.1px;
             border: none;
         }
 
-        #app {
-            font-family: 'Avenir', Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background: $artong-white;
-            color: $artong-main;
-            text-align: center;
-            height: 100%;
-            min-height: 100%;
-
-            #header-bar {
-              z-index: 2020;
-            }
-
-            #side-bar {
-              z-index: 2030;
-            }
-
+        #header-bar {
+          z-index: 2020;
         }
 
-        /* #app 안에 넣으면 다른 template들 덮어쓰는 문제 */
         .contents__body {
             position: relative;
             background: $artong-white;

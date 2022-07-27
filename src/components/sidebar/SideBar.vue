@@ -27,13 +27,13 @@ export default {
   },
   data() {
     return {
-      menu: menuItems,
-      selectedTheme: 'white-theme'
+      menu: menuItems
     }
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: state => state.menu.isSideMenuOpen
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      selectedTheme: state => state.menu.isDark? 'default-theme' : 'white-theme'
     })
   },
   methods: {
@@ -74,7 +74,7 @@ export default {
 }
 
 .sidebar-backdrop {
-    background-color: $sidebar-backdrop;
+    background-color: $backdrop;
     width: 100%;
     height: 100%;
     position: fixed;

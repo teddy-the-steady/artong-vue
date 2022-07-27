@@ -4,11 +4,20 @@
       <div class="navbar__side left">
         <div class="navbar__menu">
           <burger></burger>
+          <router-link to="/" class="logo" :class="{active: isSideMenuOpen}">
+            <b>
+              <span :class="{active: isSideMenuOpen}">4</span>
+              <span :class="{active: isSideMenuOpen}">r</span>
+              <span :class="{active: isSideMenuOpen}">t</span>
+              <span :class="{active: isSideMenuOpen}">o</span>
+              <span :class="{active: isSideMenuOpen}">n</span>
+              <span :class="{active: isSideMenuOpen}">g</span>
+            </b>
+          </router-link>
         </div>
       </div>
-      <div class="navbar__logo">
-        <router-link to="/"><b>4rtong</b></router-link>
-      </div>
+      <!-- <div class="navbar__logo">
+      </div> -->
       <div class="navbar__side right">
         <div class="navbar__icons">
           <div class="login" v-if="!currentUser.id">
@@ -40,6 +49,7 @@ export default {
   computed: {
     ...mapState({
       isHeadNavOpen: state => state.menu.isHeadNavOpen,
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
       currentUser: state => state.user.currentUser
     })
   }
@@ -72,18 +82,103 @@ export default {
   height: $head-height;
   box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
 
-  .navbar__logo {
-    font-size: 24px;
+  .navbar__menu {
+    display: flex;
 
-    a {
-      color: $artong-black;
-      text-decoration: none;
+    .logo {
+      position: absolute;
+      left: 45px;
+      width: 80px;
+      font-size: 24px;
+
+      span:nth-child(1) {
+        &.active {
+          color: white;
+        }
+      }
+
+      span:nth-child(2) {
+        &.active {
+          position: relative;
+          top: 0px;
+          display: inline-block;
+          animation: bounce .2s ease 7.5 alternate;
+          transform: translateX(-25px);
+          transition: all 1.5s ease-in;
+          animation-delay: 0.1s;
+          transition-delay: 0.1s;
+        }
+      }
+
+      span:nth-child(3) {
+        &.active {
+          position: relative;
+          top: 0px;
+          display: inline-block;
+          animation: bounce .2s ease 7.5 alternate;
+          transform: translateX(-25px);
+          transition: all 1.5s ease-in;
+          animation-delay: 0.4s;
+          transition-delay: 0.4s;
+        }
+      }
+
+      span:nth-child(4) {
+        &.active {
+          position: relative;
+          top: 0px;
+          display: inline-block;
+          animation: bounce .2s ease 7.5 alternate;
+          transform: translateX(-25px);
+          transition: all 1.5s ease-in;
+          animation-delay: 0.3s;
+          transition-delay: 0.3s;
+        }
+      }
+
+      span:nth-child(5) {
+        &.active {
+          position: relative;
+          top: 0px;
+          display: inline-block;
+          animation: bounce .2s ease 7.5 alternate;
+          transform: translateX(-25px);
+          transition: all 1.5s ease-in;
+          animation-delay: 0.2s;
+          transition-delay: 0.2s;
+        }
+      }
+
+      span:nth-child(6) {
+        &.active {
+          position: relative;
+          top: 0px;
+          display: inline-block;
+          animation: bounce .2s ease 7.5 alternate;
+          transform: translateX(-25px);
+          transition: all 1.5s ease-in;
+          animation-delay: 0.5s;
+          transition-delay: 0.5s;
+        }
+      }
+
+      @keyframes bounce {
+        100% {
+          top: -10px;
+        }
+      }
+
+      @keyframes slide {
+        100% {
+          left: 0;
+        }
+      }
     }
   }
 
   .navbar__side {
     padding: 0 12px;
-    width: 20%;
+    width: 25%;
 
     .navbar__icons {
       .login {
