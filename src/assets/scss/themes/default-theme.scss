@@ -18,6 +18,9 @@
       & .art--icon {
         background-color: $icon-bg;
       }
+      & .art--title {
+        color: $artong-white
+      }
     }
     &_hover,
     &:hover {
