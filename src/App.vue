@@ -74,7 +74,7 @@ html {
         text-align: center;
 
         a {
-            color: $artong-main;
+            color: $artong-black;
             text-decoration: none;
         }
 
