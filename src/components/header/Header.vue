@@ -7,11 +7,11 @@
           <router-link to="/" class="logo" :class="{active: isSideMenuOpen}">
             <b>
               <span :class="{active: isSideMenuOpen}">4</span>
-              <span :class="{active: isSideMenuOpen}">r</span>
-              <span :class="{active: isSideMenuOpen}">t</span>
-              <span :class="{active: isSideMenuOpen}">o</span>
-              <span :class="{active: isSideMenuOpen}">n</span>
-              <span :class="{active: isSideMenuOpen}">g</span>
+              <span :class="{active: isSideMenuOpen}" :style="animationDelayTime">r</span>
+              <span :class="{active: isSideMenuOpen}" :style="animationDelayTime">t</span>
+              <span :class="{active: isSideMenuOpen}" :style="animationDelayTime">o</span>
+              <span :class="{active: isSideMenuOpen}" :style="animationDelayTime">n</span>
+              <span :class="{active: isSideMenuOpen}" :style="animationDelayTime">g</span>
             </b>
           </router-link>
         </div>
@@ -46,12 +46,48 @@ export default {
     Burger,
     HeaderProfile
   },
+  data() {
+    return {
+      animationDelayTime1: '0.1s',
+      animationDelayTime2: '0.2s',
+      animationDelayTime3: '0.3s',
+      animationDelayTime4: '0.4s',
+      animationDelayTime5: '0.5s'
+    }
+  },
   computed: {
     ...mapState({
       isHeadNavOpen: state => state.menu.isHeadNavOpen,
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       currentUser: state => state.user.currentUser
-    })
+    }),
+    animationDelayTime() {
+      return {
+        "--animationDelayTime1": this.animationDelayTime1,
+        "--animationDelayTime2": this.animationDelayTime2,
+        "--animationDelayTime3": this.animationDelayTime3,
+        "--animationDelayTime4": this.animationDelayTime4,
+        "--animationDelayTime5": this.animationDelayTime5
+      }
+    }
+  },
+  methods: {
+    shuffleAnimationDelayTime() {
+      const times = ['0.1s', '0.2s', '0.3s', '0.4s', '0.5s']
+      times.sort(() => Math.random() - 0.5)
+      this.animationDelayTime1 = times[0]
+      this.animationDelayTime2 = times[1]
+      this.animationDelayTime3 = times[2]
+      this.animationDelayTime4 = times[3]
+      this.animationDelayTime5 = times[4]
+    }
+  },
+  watch: {
+    isSideMenuOpen(val) {
+      if (val) {
+        this.shuffleAnimationDelayTime()
+      }
+    }
   }
 }
 </script>
@@ -97,7 +133,7 @@ export default {
         }
       }
 
-      span:nth-child(2) {
+      span:nth-child(n+2) {
         &.active {
           position: relative;
           top: 0px;
@@ -105,60 +141,41 @@ export default {
           animation: bounce .2s ease 7.5 alternate;
           transform: translateX(-25px);
           transition: all 1.5s ease-in;
-          animation-delay: 0.1s;
-          transition-delay: 0.1s;
+        }
+      }
+
+      span:nth-child(2) {
+        &.active {
+          animation-delay: var(--animationDelayTime1);
+          transition-delay: var(--animationDelayTime1);
         }
       }
 
       span:nth-child(3) {
         &.active {
-          position: relative;
-          top: 0px;
-          display: inline-block;
-          animation: bounce .2s ease 7.5 alternate;
-          transform: translateX(-25px);
-          transition: all 1.5s ease-in;
-          animation-delay: 0.4s;
-          transition-delay: 0.4s;
+          animation-delay: var(--animationDelayTime2);
+          transition-delay: var(--animationDelayTime2);
         }
       }
 
       span:nth-child(4) {
         &.active {
-          position: relative;
-          top: 0px;
-          display: inline-block;
-          animation: bounce .2s ease 7.5 alternate;
-          transform: translateX(-25px);
-          transition: all 1.5s ease-in;
-          animation-delay: 0.3s;
-          transition-delay: 0.3s;
+          animation-delay: var(--animationDelayTime3);
+          transition-delay: var(--animationDelayTime3);
         }
       }
 
       span:nth-child(5) {
         &.active {
-          position: relative;
-          top: 0px;
-          display: inline-block;
-          animation: bounce .2s ease 7.5 alternate;
-          transform: translateX(-25px);
-          transition: all 1.5s ease-in;
-          animation-delay: 0.2s;
-          transition-delay: 0.2s;
+          animation-delay: var(--animationDelayTime4);
+          transition-delay: var(--animationDelayTime4);
         }
       }
 
       span:nth-child(6) {
         &.active {
-          position: relative;
-          top: 0px;
-          display: inline-block;
-          animation: bounce .2s ease 7.5 alternate;
-          transform: translateX(-25px);
-          transition: all 1.5s ease-in;
-          animation-delay: 0.5s;
-          transition-delay: 0.5s;
+          animation-delay: var(--animationDelayTime5);
+          transition-delay: var(--animationDelayTime5);
         }
       }
 
