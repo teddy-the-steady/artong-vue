@@ -93,7 +93,7 @@ export default {
 
       span:nth-child(1) {
         &.active {
-          color: white;
+          color: transparent;
         }
       }
 
@@ -165,12 +165,6 @@ export default {
       @keyframes bounce {
         100% {
           top: -10px;
-        }
-      }
-
-      @keyframes slide {
-        100% {
-          left: 0;
         }
       }
     }
