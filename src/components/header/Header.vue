@@ -69,9 +69,7 @@ export default {
   },
   methods: {
     shuffleAnimationDelayTime() {
-      const times = ['0.1s', '0.2s', '0.3s', '0.4s', '0.5s']
-      times.sort(() => Math.random() - 0.5)
-      this.animationDelayTime = times
+      this.animationDelayTime.sort(() => Math.random() - 0.5)
     }
   },
   watch: {
