@@ -147,32 +147,119 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../assets/scss/member';
+@import '../../assets/scss/variables';
 
-.form__password {
-    margin-bottom: 25px;
-}
+.contents__body {
+  height: 100vh;
+  background: $artong-black;
 
-.spinner {
-  display: none;
+  .form__logo {
+    font-size: 60px;
+    margin-bottom: 15px;
 
-  &.active {
-    display: block;
-    position: relative;
-    height: 2px;
-    width: 2px;
-    margin: 0px auto;
-    animation: rotation .6s infinite linear;
-    border-left: 6px solid rgba(0,174,239,.15);
-    border-right: 6px solid rgba(0,174,239,.15);
-    border-bottom: 6px solid rgba(0,174,239,.15);
-    border-top: 6px solid $artong-white;
-    border-radius: 100%;
+    a {
+      b {
+        color: $artong-white;
+      }
+      text-decoration: none;
+    }
+  }
+
+  .form__box {
+    background-color: $artong-white;
+    padding: 35px 40px;
+    text-align: left;
+    display: inline-block;
+    border-radius: 6px;
+    box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
+    box-sizing: border-box;
+    min-width: 320px;
+    color: black;
+
+    h3 > span {
+      text-decoration: underline;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      font-size: 14px;
+      background-image: none;
+      border: 1px solid $lightgray;
+      border-radius: 3px;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+
+    .form__username p {
+      width: 230px;
+    }
+
+    .form__footer {
+      .spinner {
+        display: none;
+
+        &.active {
+          display: block;
+          position: relative;
+          height: 2px;
+          width: 2px;
+          margin: 0px auto;
+          animation: rotation .6s infinite linear;
+          border-left: 6px solid rgba(0,174,239,.15);
+          border-right: 6px solid rgba(0,174,239,.15);
+          border-bottom: 6px solid rgba(0,174,239,.15);
+          border-top: 6px solid $artong-white;
+          border-radius: 100%;
+        }
+      }
+
+      @keyframes rotation {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(359deg);}
+      }
+      button {
+        width: 100%;
+      }
+
+      & > span:nth-child(2) {
+        align-self: center;
+      }
+    }
   }
 }
 
-@keyframes rotation {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(359deg);}
+@media only screen and (max-width: 599px) {
+  .contents__body {
+    padding-top: 0;
+
+    .form__box {
+      width: 80%;
+      box-sizing: border-box;
+      border-radius: 6px;
+      box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
+      padding: 15px 25px 35px;
+
+      .form__footer {
+        flex-wrap: wrap;
+
+        & > span:nth-child(1) {
+          width: 100%;
+
+          & > button {
+            width: 100%;
+            margin-bottom: 32px;
+          }
+        }
+
+        & > span:nth-child(2) {
+          align-self: center;
+          text-align: center;
+          flex: 0 0 100%;
+        }
+      }
+    }
+  }
 }
 </style>
