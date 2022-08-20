@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <nav class="navbar" v-if="isHeadNavOpen">
+    <nav class="navbar" :class="{active: isSideMenuOpen}" v-if="isHeadNavOpen">
       <div class="navbar__side left">
         <div class="navbar__menu">
           <burger></burger>
@@ -75,6 +75,7 @@ export default {
   watch: {
     isSideMenuOpen(val) {
       if (val) {
+
         this.shuffleAnimationDelayTime()
       }
     }
@@ -216,6 +217,11 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .navbar {
+    background-color: transparent;
+    box-shadow: none;
+    &.active {
+      background-color: $artong-white;
+    }
     .navbar__side {
       .navbar__icons {
         .login {
