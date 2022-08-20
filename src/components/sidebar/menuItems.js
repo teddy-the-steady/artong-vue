@@ -5,43 +5,54 @@ const separator = {
 export default [
   {
     header: true,
-    title: 'Main Menu'
+    title: 'Alarms',
   },
   {
-    href: '/',
-    title: 'Home test',
-    icon: 'fa fa-download'
+    href: '',
+    title: 'Example Alarm',
+    icon: 'far fa-bell',
+    badge: {
+      text: '2m ago',
+    }
   },
   {
-    href: '/nft',
-    title: 'NFT',
-    icon: 'fa fa-code'
-  },
-  {
-    href: '/projects',
-    title: 'Project',
-    icon: 'fa fa-cogs'
-  },
-  {
-    header: true,
-    title: 'Example Menu'
-  },
-  {
-    href: '/following',
-    title: 'Following',
-    icon: 'fa fa-bell'
-  },
-  {
-    href: '/workplace',
-    title: 'Workplace',
-    icon: 'fa fa-palette'
+    href: '',
+    title: 'Example Alarm',
+    icon: 'far fa-bell',
+    badge: {
+      text: '10m ago',
+    }
   },
   {
     component: separator
   },
   {
     header: true,
-    title: 'Others'
+    title: 'Menu'
+  },
+  {
+    href: '/',
+    title: 'Home',
+    icon: 'fa fa-home'
+  },
+  {
+    href: '/projects',
+    title: 'Projects',
+    icon: 'fa fa-folder-open'
+  },
+  {
+    href: '/nft',
+    title: 'NFTs',
+    icon: 'fa fa-image'
+  },
+  {
+    href: '/following',
+    title: 'Feed',
+    icon: 'fa fa-bolt'
+  },
+  {
+    header: true,
+    title: 'Example'
   },
   {
     href: '/disabled',
