@@ -29,6 +29,34 @@ export default {
       authError: state => state.auth.status
     })
   },
+  methods: {
+    async getWalletOnFirstLoad() {
+      if (window.ethereum) {
+        const metamaskSignedInAccount = await window.ethereum.request({ method: 'eth_accounts' })
+        if (metamaskSignedInAccount.length > 0) {
+          this.$store.commit('WALLET_ACCOUNT', metamaskSignedInAccount[0])
+          this.$store.commit('WALLET_NETWORK', parseInt(window.ethereum.networkVersion))
+        }
+      }
+    },
+    addWalletEventHandler() {
+      window.addEventListener('load', () => {
+        if (window.ethereum) {
+          window.ethereum.on('accountsChanged', async (accounts) => {
+            this.$store.commit('WALLET_ACCOUNT', accounts[0])
+            if (accounts.length === 0) {
+              await this.$store.dispatch('AUTH_LOGOUT')
+              this.$router.go(this.$router.currentRoute)
+            }
+          })
+
+          window.ethereum.on('chainChanged', (networkId) => {
+            this.$store.commit('WALLET_NETWORK', parseInt(networkId, 16))
+          })
+        }
+      })
+    }
+  },
   async created() {
     try {
       const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
@@ -41,6 +69,10 @@ export default {
         console.log('No current user')
       }
     }
+  },
+  async mounted() {
+    this.addWalletEventHandler()
+    await this.getWalletOnFirstLoad()
   },
   watch: {
     isSideMenuOpen() {
