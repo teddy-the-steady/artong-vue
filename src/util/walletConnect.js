@@ -3,23 +3,27 @@ import QRCodeModal from "@walletconnect/qrcode-modal"
 import Vue from 'vue'
 
 const setUpMobileWalletConnect = function() {
-  Vue.prototype.$walletConnect = new WalletConnect({
+  console.log('setUpMobileWalletConnect')
+  const connector = new WalletConnect({
     bridge: 'https://bridge.walletconnect.org',
     qrcodeModal: QRCodeModal,
   })
 
-  Vue.prototype.$walletConnect.on('session_update', async (error, payload) => {
+  connector.on('session_update', async (error, payload) => {
     if (error) {
       throw error
     }
     const { accounts } = payload.params[0]
+    console.log('come on!', accounts)
     if (accounts.length > 0) {
+      console.log('in?!?!?!')
       await this.$store.dispatch('AUTH_LOGOUT')
       this.$router.go(this.$router.currentRoute)
     }
   })
 
-  return Vue.prototype.$walletConnect
+  Vue.prototype.$walletConnect = connector
+  return connector
 }
 
 export {
