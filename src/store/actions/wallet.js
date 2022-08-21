@@ -1,0 +1,2 @@
+export const WALLET_ACCOUNT = 'WALLET_ACCOUNT'
+export const WALLET_NETWORK = 'WALLET_NETWORK'
