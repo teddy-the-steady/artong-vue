@@ -36,6 +36,8 @@ export default {
         if (metamaskSignedInAccount.length > 0) {
           this.$store.commit('WALLET_ACCOUNT', metamaskSignedInAccount[0])
           this.$store.commit('WALLET_NETWORK', parseInt(window.ethereum.networkVersion))
+        } else {
+          await this.$store.dispatch('AUTH_LOGOUT')
         }
       }
     },
