@@ -23,8 +23,7 @@ import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
-import WalletConnect from "@walletconnect/client"
-import QRCodeModal from "@walletconnect/qrcode-modal"
+import { setUpMobileWalletConnect } from '../../util/walletConnect'
 import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
@@ -97,13 +96,7 @@ export default {
         return
       }
 
-      let connector = this.$walletConnect
-      if (this.isMobile && !connector) {
-        connector = new WalletConnect({
-          bridge: 'https://bridge.walletconnect.org',
-          qrcodeModal: QRCodeModal,
-        })
-      }
+      const connector = setUpMobileWalletConnect()
 
       try {
         if (!connector.connected) {
