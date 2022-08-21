@@ -97,13 +97,13 @@ export default {
         return
       }
 
-      let connector = this.$walletConnect
-      if (this.isMobile && !connector) {
-        connector = new WalletConnect({
-          bridge: 'https://bridge.walletconnect.org',
-          qrcodeModal: QRCodeModal,
-        })
-      }
+      // let connector = this.$walletConnect
+      // if (this.isMobile && !connector) {
+      const connector = new WalletConnect({
+        bridge: 'https://bridge.walletconnect.org',
+        qrcodeModal: QRCodeModal,
+      })
+      // }
 
       try {
         if (!connector.connected) {
@@ -132,6 +132,13 @@ export default {
           const member = await getMember(authenticatedUser.username)
           await this.$store.dispatch('CURRENT_USER', member)
           this.redirectAfterLogin()
+        })
+
+        connector.on('session_update', (error, payload) => {
+            if (error) {
+              throw error
+            }
+            console.log('session_update!!1!!',payload)
         })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'

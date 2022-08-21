@@ -15,9 +15,9 @@ import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
 import { getMember } from './api/member'
-import WalletConnect from "@walletconnect/client"
-import QRCodeModal from "@walletconnect/qrcode-modal"
-import Vue from 'vue'
+// import WalletConnect from "@walletconnect/client"
+// import QRCodeModal from "@walletconnect/qrcode-modal"
+// import Vue from 'vue'
 
 export default {
   name: 'App',
@@ -64,13 +64,13 @@ export default {
         }
       })
     },
-    setUpMobileWalletConnect() {
-      Vue.prototype.$walletConnect = new WalletConnect({
-        bridge: 'https://bridge.walletconnect.org',
-        qrcodeModal: QRCodeModal,
-      })
-      return Vue.prototype.$walletConnect
-    }
+    // setUpMobileWalletConnect() {
+    //   Vue.prototype.$walletConnect = new WalletConnect({
+    //     bridge: 'https://bridge.walletconnect.org',
+    //     qrcodeModal: QRCodeModal,
+    //   })
+    //   return Vue.prototype.$walletConnect
+    // }
   },
   async created() {
     try {
@@ -89,15 +89,15 @@ export default {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
 
-    if (this.isMobile) {
-      const connect = this.setUpMobileWalletConnect()
-      connect.on('session_update', (error, payload) => {
-          if (error) {
-            throw error
-          }
-          console.log('session_update!!!!',payload)
-      })
-    }
+    // if (this.isMobile) {
+    //   const connect = this.setUpMobileWalletConnect()
+    //   connect.on('session_update', (error, payload) => {
+    //       if (error) {
+    //         throw error
+    //       }
+    //       console.log('session_update!!!!',payload)
+    //   })
+    // }
   },
   watch: {
     isSideMenuOpen() {
