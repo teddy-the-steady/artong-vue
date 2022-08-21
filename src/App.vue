@@ -15,9 +15,7 @@ import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
 import { getMember } from './api/member'
-import WalletConnect from "@walletconnect/client"
-import QRCodeModal from "@walletconnect/qrcode-modal"
-import Vue from 'vue'
+// import { setUpMobileWalletConnect } from './util/walletConnect'
 
 export default {
   name: 'App',
@@ -63,13 +61,6 @@ export default {
           })
         }
       })
-    },
-    setUpMobileWalletConnect() {
-      Vue.prototype.$walletConnect = new WalletConnect({
-        bridge: 'https://bridge.walletconnect.org',
-        qrcodeModal: QRCodeModal,
-      })
-      return Vue.prototype.$walletConnect
     }
   },
   async created() {
@@ -89,19 +80,9 @@ export default {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
 
-    if (this.isMobile) {
-      const connector = this.setUpMobileWalletConnect()
-      connector.on('session_update', async (error, payload) => {
-          if (error) {
-            throw error
-          }
-          const { accounts } = payload.params[0]
-          if (accounts.length > 0) {
-            await this.$store.dispatch('AUTH_LOGOUT')
-            this.$router.go(this.$router.currentRoute)
-          }
-      })
-    }
+    // if (this.isMobile) {
+    //   setUpMobileWalletConnect()
+    // }
   },
   watch: {
     isSideMenuOpen() {
