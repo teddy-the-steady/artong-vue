@@ -96,10 +96,9 @@ export default {
             throw error
           }
           const { accounts } = payload.params[0]
-          console.log(accounts)
           if (accounts.length > 0) {
-            console.log('hell yeah')
             await this.$store.dispatch('AUTH_LOGOUT')
+            this.$router.go(this.$router.currentRoute)
           }
       })
     }
