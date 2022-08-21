@@ -111,8 +111,9 @@ export default {
           if (error) {
             throw error
           }
-          console.log('session_updated:', payload.params[0])
-          const { accounts } = payload.params[0]
+          const { accounts, chainId } = payload.params[0]
+          console.log('session_updated:', accounts)
+          console.log('session_updated:', chainId)
           if (accounts.length > 0) {
             await this.$store.dispatch('AUTH_LOGOUT')
             this.$router.go(this.$router.currentRoute)
@@ -128,7 +129,9 @@ export default {
           }
           console.log('connected:', payload.params[0])
           this.isSpinnerActive = true
-          const { accounts } = payload.params[0]
+          const { accounts, chainId } = payload.params[0]
+          console.log('connected:', accounts)
+          console.log('connected:', chainId)
           const address = accounts[0]
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           let signature = null
