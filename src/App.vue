@@ -15,7 +15,6 @@ import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
 import { getMember } from './api/member'
-// import { setUpMobileWalletConnect } from './util/walletConnect'
 
 export default {
   name: 'App',
@@ -79,10 +78,6 @@ export default {
   async mounted() {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
-
-    // if (this.isMobile) {
-    //   setUpMobileWalletConnect()
-    // }
   },
   watch: {
     isSideMenuOpen() {
