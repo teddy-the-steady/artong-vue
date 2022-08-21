@@ -72,6 +72,7 @@ export default {
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await getMember(authenticatedUser.username)
             await this.$store.dispatch('CURRENT_USER', member)
+            this.$store.commit('WALLET_NETWORK', parseInt(window.ethereum.networkVersion))
             this.redirectAfterLogin()
           }
         } else {
@@ -95,10 +96,15 @@ export default {
       if (this.isSpinnerActive) {
         return
       }
-      const connector = new WalletConnect({
-        bridge: 'https://bridge.walletconnect.org',
-        qrcodeModal: QRCodeModal,
-      })
+
+      let connector = this.$walletConnect
+      if (this.isMobile && !connector) {
+        connector = new WalletConnect({
+          bridge: 'https://bridge.walletconnect.org',
+          qrcodeModal: QRCodeModal,
+        })
+      }
+
       try {
         if (!connector.connected) {
           connector.createSession()
