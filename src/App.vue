@@ -91,7 +91,7 @@ export default {
 
     if (this.isMobile) {
       const connector = this.setUpMobileWalletConnect()
-      connector.on('session_update', (error, payload) => {
+      connector.on('session_update', async (error, payload) => {
           if (error) {
             throw error
           }
