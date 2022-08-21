@@ -23,7 +23,8 @@ import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
-import { setUpMobileWalletConnect } from '../../util/walletConnect'
+import WalletConnect from '@walletconnect/client'
+import QRCodeModal from '@walletconnect/qrcode-modal'
 import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
@@ -96,12 +97,27 @@ export default {
         return
       }
 
-      const connector = setUpMobileWalletConnect()
+      const connector = new WalletConnect({
+        bridge: 'https://bridge.walletconnect.org',
+        qrcodeModal: QRCodeModal,
+      })
 
       try {
         if (!connector.connected) {
           connector.createSession()
         }
+
+        console.log('move move move')
+        connector.on('session_update', async (error, payload) => {
+          if (error) {
+            throw error
+          }
+          const { accounts } = payload.params[0]
+          if (accounts.length > 0) {
+            await this.$store.dispatch('AUTH_LOGOUT')
+            this.$router.go(this.$router.currentRoute)
+          }
+        })
 
         connector.on('connect', async (error, payload) => {
           if (error) {
