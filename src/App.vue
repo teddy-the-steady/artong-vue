@@ -15,6 +15,9 @@ import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
 import { mapState } from 'vuex'
 import { getMember } from './api/member'
+import WalletConnect from "@walletconnect/client"
+import QRCodeModal from "@walletconnect/qrcode-modal"
+import Vue from 'vue'
 
 export default {
   name: 'App',
@@ -27,10 +30,13 @@ export default {
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen,
       authError: state => state.auth.status
-    })
+    }),
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   methods: {
-    async getWalletOnFirstLoad() {
+    async getPcWalletOnFirstLoad() {
       if (window.ethereum) {
         const metamaskSignedInAccount = await window.ethereum.request({ method: 'eth_accounts' })
         if (metamaskSignedInAccount.length > 0) {
@@ -41,7 +47,7 @@ export default {
         }
       }
     },
-    addWalletEventHandler() {
+    addPcWalletEventHandler() {
       window.addEventListener('load', () => {
         if (window.ethereum) {
           window.ethereum.on('accountsChanged', async (accounts) => {
@@ -57,6 +63,13 @@ export default {
           })
         }
       })
+    },
+    setUpMobileWalletConnect() {
+      Vue.prototype.$walletConnect = new WalletConnect({
+        bridge: 'https://bridge.walletconnect.org',
+        qrcodeModal: QRCodeModal,
+      })
+      return Vue.prototype.$walletConnect
     }
   },
   async created() {
@@ -73,8 +86,18 @@ export default {
     }
   },
   async mounted() {
-    this.addWalletEventHandler()
-    await this.getWalletOnFirstLoad()
+    this.addPcWalletEventHandler()
+    await this.getPcWalletOnFirstLoad()
+
+    if (this.isMobile) {
+      const connect = this.setUpMobileWalletConnect()
+      connect.on('session_update', (error, payload) => {
+          if (error) {
+            throw error
+          }
+          console.log('session_update!!!!',payload)
+      })
+    }
   },
   watch: {
     isSideMenuOpen() {
