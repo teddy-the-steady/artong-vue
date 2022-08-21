@@ -107,13 +107,16 @@ export default {
           connector.createSession()
         }
 
-        console.log('move move move')
         connector.on('session_update', async (error, payload) => {
           if (error) {
             throw error
           }
+          console.log('session_updated:', payload.params[0])
           const { accounts } = payload.params[0]
           if (accounts.length > 0) {
+            await this.$store.dispatch('AUTH_LOGOUT')
+            this.$router.go(this.$router.currentRoute)
+          } else {
             await this.$store.dispatch('AUTH_LOGOUT')
             this.$router.go(this.$router.currentRoute)
           }
@@ -123,6 +126,7 @@ export default {
           if (error) {
             throw error
           }
+          console.log('connected:', payload.params[0])
           this.isSpinnerActive = true
           const { accounts } = payload.params[0]
           const address = accounts[0]
