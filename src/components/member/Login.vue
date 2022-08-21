@@ -81,6 +81,8 @@ export default {
       } catch (error) {
         if (error.code === 4001) { // INFO] User denied message signature
           this.warning = ''
+        } else if (error.code === -32002) {
+          this.warning = 'Please check your metamask'
         } else {
           this.warning = 'Oops, something went wrong! Please try again'
         }
