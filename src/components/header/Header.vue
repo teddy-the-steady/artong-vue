@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <nav class="navbar" :class="{active: isSideMenuOpen}" v-if="isHeadNavOpen">
-      <div class="navbar__side left">
+      <div class="navbar__side">
         <div class="navbar__menu">
           <burger></burger>
           <router-link to="/" class="logo" :class="{active: isSideMenuOpen}">
@@ -20,16 +20,22 @@
         <div class="navbar__icons">
           <div class="login" v-if="!currentUser.id">
             <router-link to="/login">
-              SIGN IN
+              CONNECT
             </router-link>
           </div>
-          <div class="header-profile" v-else>
-            <router-link :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}">
+          <div class="header-profile" @mousedown="mouseDown" @mouseup="mouseUp" v-else>
+            <!-- <router-link :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}"> -->
               <header-profile></header-profile>
-            </router-link>
+            <!-- </router-link> -->
           </div>
         </div>
       </div>
+      <user-dialog
+        class="user_dialog"
+        :class="{active: isDialogActive}"
+        @dialog-focus-out="closeDialog"
+        ref="dialog">
+      </user-dialog>
     </nav>
   </transition>
 </template>
@@ -37,16 +43,21 @@
 <script>
 import Burger from './Burger'
 import HeaderProfile from '../profile/HeaderProfile'
+import UserDialog from '../dialog/UserDialog'
 import { mapState } from 'vuex'
 export default {
   name: 'Header',
   components: {
     Burger,
-    HeaderProfile
+    HeaderProfile,
+    UserDialog
   },
   data() {
     return {
-      animationDelayTime: ['0.1s', '0.2s', '0.3s', '0.4s','0.5s']
+      animationDelayTime: ['0.1s', '0.2s', '0.3s', '0.4s','0.5s'],
+      isDialogActive: false,
+      isMouseDown: false,
+      isMouseUp: false
     }
   },
   computed: {
@@ -68,13 +79,31 @@ export default {
   methods: {
     shuffleAnimationDelayTime() {
       this.animationDelayTime.sort(() => Math.random() - 0.5)
+    },
+    closeDialog() {
+      this.isDialogActive = false
+      this.isMouseDown = false
+      this.isMouseUp = false
+    },
+    mouseDown() {
+      this.isMouseDown = true
+    },
+    mouseUp() {
+      this.isMouseUp = true
+      if (this.isMouseDown) {
+        this.isDialogActive = true
+      }
     }
   },
   watch: {
     isSideMenuOpen(val) {
       if (val) {
-
         this.shuffleAnimationDelayTime()
+      }
+    },
+    isDialogActive(val) {
+      if (val) {
+        this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     }
   }
@@ -184,7 +213,7 @@ export default {
       .login {
         height: 2rem;
         border-radius: 2rem;
-        width: 80px;
+        width: 90px;
         background-color: $artong-black;
 
         a {
@@ -202,6 +231,7 @@ export default {
         height: 30px;
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
+        cursor: pointer;
       }
     }
   }
@@ -209,6 +239,13 @@ export default {
   .right {
     .navbar__icons {
       float: right;
+    }
+  }
+
+  .user_dialog {
+    display: none;
+    &.active {
+      display: block;
     }
   }
 }
@@ -223,7 +260,7 @@ export default {
     .navbar__side {
       .navbar__icons {
         .login {
-          width: 60px;
+          width: 70px;
           a {
             font-size: .8rem;
           }
