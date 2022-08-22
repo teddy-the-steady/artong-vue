@@ -5,7 +5,7 @@
       </div>
       <div class="user-info">
         <my-page-profile></my-page-profile>
-        <!-- <button @click="toggleModal">UPLOAD</button> -->
+        <button @click="toggleModal">UPLOAD</button>
       </div>
       <div class="tab">
       </div>
@@ -13,10 +13,9 @@
     <div class="contents">
       <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"></content-list>
     </div>
-    <div v-if="true">
-      <button @click="signOut">Sign Out</button>
-    </div>
-    <upload-modal v-if="isModalOpen" @close="close"></upload-modal>
+    <upload-modal v-if="isModalOpen">
+      <span slot="header" class="modal_header" @click="close">X</span>
+    </upload-modal>
   </div>
 </template>
 
@@ -52,14 +51,6 @@ export default {
     }
   },
   methods: {
-    async signOut() {
-      try {
-        await this.$store.dispatch('AUTH_LOGOUT')
-        this.$router.go(this.$router.currentRoute)
-      } catch (error) {
-        console.log(error)
-      }
-    },
     close(isSuccess) {
       this.toggleModal()
       if (isSuccess) { // TODO] 업로드 성공 이후 업로드한 컨텐츠가 안보이는 이슈,, s3업로드랑 db insert하는 람다트리거가 따로라서 발생.
@@ -113,6 +104,10 @@ export default {
 
 .contents {
   padding: 0 10%;
+}
+
+.modal_header {
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 599px) {
