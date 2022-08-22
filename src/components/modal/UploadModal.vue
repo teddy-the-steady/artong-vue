@@ -5,9 +5,7 @@
         <div class="modal-container">
 
           <div class="modal-header">
-            <slot name="header">
-              <span @click="$emit('close')">X</span>
-            </slot>
+            <slot name="header"></slot>
           </div>
 
           <div class="modal-body">
@@ -109,11 +107,6 @@ export default {
         float: right;
         font-size: 20px;
         color: $lightgray;
-        cursor: pointer;
-        h3 {
-          margin-top: 0;
-          color: $darkgray;
-        }
       }
 
       .modal-body {

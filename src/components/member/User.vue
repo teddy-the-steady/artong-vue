@@ -5,7 +5,7 @@
       </div>
       <div class="user-info">
         <my-page-profile></my-page-profile>
-        <!-- <button @click="toggleModal">UPLOAD</button> -->
+        <button @click="toggleModal">UPLOAD</button>
       </div>
       <div class="tab">
       </div>
@@ -16,7 +16,9 @@
     <div v-if="true">
       <button @click="signOut">Sign Out</button>
     </div>
-    <upload-modal v-if="isModalOpen" @close="close"></upload-modal>
+    <upload-modal v-if="isModalOpen">
+      <span slot="header" class="modal_header" @click="close">X</span>
+    </upload-modal>
   </div>
 </template>
 
@@ -113,6 +115,10 @@ export default {
 
 .contents {
   padding: 0 10%;
+}
+
+.modal_header {
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 599px) {

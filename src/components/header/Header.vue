@@ -16,8 +16,6 @@
           </router-link>
         </div>
       </div>
-      <!-- <div class="navbar__logo">
-      </div> -->
       <div class="navbar__side right">
         <div class="navbar__icons">
           <div class="login" v-if="!currentUser.id">
