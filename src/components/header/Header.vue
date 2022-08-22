@@ -34,7 +34,14 @@
         class="user_dialog"
         :class="{active: isDialogActive}"
         @dialog-focus-out="closeDialog"
-        ref="dialog">
+        ref="dialog"
+      >
+        <router-link slot="body" tag="div"
+          :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}">
+          Profile
+        </router-link>
+        <div slot="body">Settings</div>
+        <div slot="body" @click="signOut">Disconnect</div>
       </user-dialog>
     </nav>
   </transition>
@@ -92,6 +99,14 @@ export default {
       this.isMouseUp = true
       if (this.isMouseDown) {
         this.isDialogActive = true
+      }
+    },
+    async signOut() {
+      try {
+        await this.$store.dispatch('AUTH_LOGOUT')
+        this.$router.go(this.$router.currentRoute)
+      } catch (error) {
+        console.log(error)
       }
     }
   },

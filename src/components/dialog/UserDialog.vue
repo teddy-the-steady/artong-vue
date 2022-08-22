@@ -47,16 +47,16 @@ export default {
 .dialog-mask {
   position: absolute;
   z-index: 9998;
-  top: 300px;
-  left: 300px;
+  top: 45px;
+  right: 10px;
+  outline: 0;
 
   .dialog-wrapper {
     display: table-cell;
     vertical-align: middle;
 
     .dialog-container {
-      width:300px;
-      padding: 20px 30px;
+      width: 150px;
       background-color: $artong-white;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
       transition: all .3s ease;
@@ -68,13 +68,11 @@ export default {
       }
 
       .dialog-body {
-        margin: 20px 0;
-      }
-
-      .dialog-footer {
-        .dialog-default-button {
-          float: right;
-          width: 100px;
+        div {
+          font-size: 20px;
+          padding: 10px;
+          cursor: pointer;
+          text-align: left;
         }
       }
     }
