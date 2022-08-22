@@ -1,29 +1,26 @@
 <template>
-  <transition name="dialog">
-    <div class="dialog-mask">
-      <div class="dialog-wrapper">
-        <div class="dialog-container">
+  <div
+    class="dialog-mask"
+    @focusout="handleFocusOut"
+    tabindex="0"
+  >
+    <div class="dialog-wrapper">
+      <div class="dialog-container">
 
-          <div class="dialog-header">
-            <slot name="header"></slot>
-          </div>
+        <div class="dialog-header">
+          <slot name="header"></slot>
+        </div>
 
-          <div class="dialog-body">
-            <slot name="body">
-            </slot>
-          </div>
+        <div class="dialog-body">
+          <slot name="body"></slot>
+        </div>
 
-          <div class="dialog-footer">
-            <slot name="footer">
-              <button class="modal-default-button">
-                OK
-              </button>
-            </slot>
-          </div>
+        <div class="dialog-footer">
+          <slot name="footer"></slot>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -35,6 +32,11 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser
     })
+  },
+  methods: {
+    handleFocusOut() {
+      this.$emit('dialog-focus-out')
+    }
   }
 }
 </script>
@@ -43,15 +45,10 @@ export default {
 @import '../../assets/scss/variables';
 
 .dialog-mask {
-  position: fixed;
+  position: absolute;
   z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: $backdrop;
-  display: table;
-  transition: opacity .3s ease;
+  top: 300px;
+  left: 300px;
 
   .dialog-wrapper {
     display: table-cell;
@@ -59,13 +56,10 @@ export default {
 
     .dialog-container {
       width:300px;
-      margin: 0px auto;
       padding: 20px 30px;
       background-color: $artong-white;
-      border-radius: 2px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
       transition: all .3s ease;
-      font-family: Helvetica, Arial, sans-serif;
 
       .dialog-header {
         float: right;
@@ -85,20 +79,6 @@ export default {
       }
     }
   }
-}
-
-.dialog-enter {
-  opacity: 0;
-}
-
-.dialog-leave-active {
-  opacity: 0;
-}
-
-.dialog-enter .dialog-container,
-.dialog-leave-active .dialog-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 
 @media only screen and (max-width: 599px) {
