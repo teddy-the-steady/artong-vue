@@ -1,28 +1,29 @@
 import {
   WALLET_ACCOUNT,
-  WALLET_NETWORK
+  WALLET_CHAIN
 } from '../actions/wallet'
 
 const state = {
-  networkId: 0x0,
-  accountAddress: ''
+  chainId: 0x0,
+  address: '',
+  status: false
 }
 
 const actions = {
   [WALLET_ACCOUNT]: function({ commit }, address) {
     commit(WALLET_ACCOUNT, address)
   },
-  [WALLET_NETWORK]: function({ commit }, networkId) {
-    commit(WALLET_NETWORK, networkId)
+  [WALLET_CHAIN]: function({ commit }, chainId) {
+    commit(WALLET_CHAIN, chainId)
   }
 }
 
 const mutations = {
   [WALLET_ACCOUNT]: (state, address) => {
-    state.accountAddress = address
+    state.address = address
   },
-  [WALLET_NETWORK]: (state, networkId) => {
-    state.networkId = networkId
+  [WALLET_CHAIN]: (state, chainId) => {
+    state.chainId = chainId
   }
 }
 

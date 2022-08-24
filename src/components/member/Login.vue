@@ -23,9 +23,8 @@ import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
-import WalletConnect from '@walletconnect/client'
-import QRCodeModal from '@walletconnect/qrcode-modal'
 import { convertUtf8ToHex } from "@walletconnect/utils"
+import { provider } from '../../util/walletConnectProvider'
 
 export default {
   name: 'Login',
@@ -72,7 +71,7 @@ export default {
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await getMember(authenticatedUser.username)
             await this.$store.dispatch('CURRENT_USER', member)
-            this.$store.commit('WALLET_NETWORK', parseInt(window.ethereum.networkVersion))
+            this.$store.commit('WALLET_CHAIN', parseInt(window.ethereum.networkVersion))
             this.redirectAfterLogin()
           }
         } else {
