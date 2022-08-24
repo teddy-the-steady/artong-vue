@@ -23,10 +23,8 @@
               CONNECT
             </router-link>
           </div>
-          <div class="header-profile" @mousedown="mouseDown" @mouseup="mouseUp" v-else>
-            <!-- <router-link :to="{ name: 'UserOrArtist', params: { id: currentUser.username }}"> -->
+          <div class="header-profile" @mousedown="profileMouseDown" @mouseup="profileMouseUp" v-else>
               <header-profile></header-profile>
-            <!-- </router-link> -->
           </div>
         </div>
       </div>
@@ -63,8 +61,8 @@ export default {
     return {
       animationDelayTime: ['0.1s', '0.2s', '0.3s', '0.4s','0.5s'],
       isDialogActive: false,
-      isMouseDown: false,
-      isMouseUp: false
+      isMouseDownOnProfile: false,
+      isMouseUpOnProfile: false
     }
   },
   computed: {
@@ -89,15 +87,15 @@ export default {
     },
     closeDialog() {
       this.isDialogActive = false
-      this.isMouseDown = false
-      this.isMouseUp = false
+      this.isMouseDownOnProfile = false
+      this.isMouseUpOnProfile = false
     },
-    mouseDown() {
-      this.isMouseDown = true
+    profileMouseDown() {
+      this.isMouseDownOnProfile = true
     },
-    mouseUp() {
-      this.isMouseUp = true
-      if (this.isMouseDown) {
+    profileMouseUp() {
+      this.isMouseUpOnProfile = true
+      if (this.isMouseDownOnProfile) {
         this.isDialogActive = true
       }
     },
@@ -109,6 +107,10 @@ export default {
         console.log(error)
       }
     }
+  },
+  afterEach(to, from) {
+    console.log(to)
+    console.log(from)
   },
   watch: {
     isSideMenuOpen(val) {
