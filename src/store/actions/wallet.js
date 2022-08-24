@@ -1,2 +1,2 @@
 export const WALLET_ACCOUNT = 'WALLET_ACCOUNT'
-export const WALLET_NETWORK = 'WALLET_NETWORK'
+export const WALLET_CHAIN = 'WALLET_CHAIN'
