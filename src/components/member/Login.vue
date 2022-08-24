@@ -149,6 +149,16 @@ export default {
           await this.$store.dispatch('CURRENT_USER', member)
           this.redirectAfterLogin()
         })
+
+        connector.on('disconnect', async (error, payload) => {
+          if (error) {
+            throw error
+          }
+
+          console.log('disconnected:', payload.params[0])
+          const { message } = payload.params[0]
+          console.log('disconnected:', message)
+        })
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
         connector.killSession()
