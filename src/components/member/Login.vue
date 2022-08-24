@@ -72,7 +72,7 @@ export default {
             const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
             const member = await getMember(authenticatedUser.username)
             await this.$store.dispatch('CURRENT_USER', member)
-            this.$store.commit('WALLET_NETWORK', parseInt(window.ethereum.networkVersion))
+            this.$store.commit('WALLET_CHAIN', parseInt(window.ethereum.networkVersion))
             this.redirectAfterLogin()
           }
         } else {
