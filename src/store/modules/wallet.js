@@ -6,7 +6,6 @@ import {
   AUTO_CONNECT_WALLET,
   DISCONNECT_WALLET
 } from '../actions/wallet'
-import { providers } from 'ethers'
 import Provider from '../../util/walletConnectProvider'
 
 const defaultState = {
@@ -29,12 +28,27 @@ const actions = {
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
       await Provider.provider.enable()
-      const web3Provider = new providers.Web3Provider(Provider.provider)
-      const signer = await web3Provider.getSigner()
-      const address = await signer.getAddress()
+      // const web3Provider = new providers.Web3Provider(Provider.provider)
+      // const signer = await web3Provider.getSigner()
+      // const address = await signer.getAddress()
+      const address = Provider.provider.wc.accounts[0]
+      console.log('Provider.provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
+
+      Provider.provider.on('connect', (val) => {
+        console.log('connected1:', val)
+      })
+
+      Provider.provider.connector.on('connect', (error, payload) => {
+        if (error) {
+          throw error
+        }
+        console.log('connected2:', payload.params[0])
+        const { accounts, chainId } = payload.params[0]
+        console.log(accounts, chainId)
+      })
 
       Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
@@ -54,7 +68,7 @@ const actions = {
       })
 
       return {
-        provider: Provider.provider,
+        connector: Provider.provider.connector,
         address
       }
     } catch (error) {
