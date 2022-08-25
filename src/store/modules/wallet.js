@@ -47,11 +47,11 @@ const actions = {
         const member = await getMember(authenticatedUser.username)
         await dispatch('CURRENT_USER', member)
       }
-      const signature = await signer.signMessage(cognitoUser.challengeParam.message)
-      await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-      const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
-      const member = await getMember(authenticatedUser.username)
-      await dispatch('CURRENT_USER', member)
+      // const signature = await signer.signMessage(cognitoUser.challengeParam.message)
+      // await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+      // const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
+      // const member = await getMember(authenticatedUser.username)
+      // await dispatch('CURRENT_USER', member)
 
       Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
