@@ -107,8 +107,17 @@ export default {
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           console.log('cognitoUser:', cognitoUser)
-          const signature = await signer.signMessage(cognitoUser.challengeParam.message)
-          console.log('signature:', signature)
+          let signature = null
+          try {
+            signature = await signer.signMessage(cognitoUser.challengeParam.message)
+            console.log('signature:', signature)
+          } catch (error) {
+            console.log('error!!!', error)
+            this.isSpinnerActive = false
+            connector.killSession()
+            await this.$store.dispatch('AUTH_LOGOUT')
+            throw error
+          }
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           console.log('authenticatedUser:', authenticatedUser)
