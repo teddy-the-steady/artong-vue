@@ -8,7 +8,6 @@ import {
 } from '../actions/wallet'
 import { providers } from 'ethers'
 import Provider from '../../util/walletConnectProvider'
-import { getMember } from '../../api/member'
 
 const defaultState = {
   chainId: 0x0,
@@ -29,24 +28,13 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
-      const result1 = await Provider.provider.enable()
-      console.log('Provider.provider.enable():', result1)
+      await Provider.provider.enable()
       const web3Provider = new providers.Web3Provider(Provider.provider)
-      console.log('web3Provider:', web3Provider)
       const signer = await web3Provider.getSigner()
-      console.log('signer:', signer)
       const address = await signer.getAddress()
-      console.log('address:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
-
-      const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-      const signature = await signer.signMessage(cognitoUser.challengeParam.message)
-      await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-      const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
-      const member = await getMember(authenticatedUser.username)
-      await dispatch('CURRENT_USER', member)
 
       Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
@@ -65,7 +53,7 @@ const actions = {
         commit(WALLET_CHAIN, chainId)
       })
 
-      return true
+      return signer
     } catch (error) {
       console.log(error)
       if (error.message === 'User closed modal') {
