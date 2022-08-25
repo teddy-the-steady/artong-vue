@@ -100,8 +100,17 @@ export default {
 
       try {
         this.isSpinnerActive = true
-        const result = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
-        if (result) {
+        const signer = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+        if (signer) {
+          console.log('signer?',signer)
+          const address = await signer.getAddress()
+          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          const signature = await signer.signMessage(cognitoUser.challengeParam.message)
+          await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+          const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+          const member = await getMember(authenticatedUser.username)
+          await this.$store.dispatch('CURRENT_USER', member)
+          
           this.redirectAfterLogin()
         }
       } catch (error) {
