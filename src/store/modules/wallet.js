@@ -9,7 +9,7 @@ import {
 import Provider from '../../util/walletConnectProvider'
 
 const defaultState = {
-  chainId: 0x0,
+  chainId: 0,
   address: '',
   status: false
 }
@@ -27,20 +27,18 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
-      const provider = Provider.provider
-      const connector = Provider.provider.connector
-      connector.createSession()
+      await Provider.provider.enable()
       const address = Provider.provider.wc.accounts[0]
-      console.log('Provider.provider.wc.accounts[0]:', address)
+      console.log('provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
-      commit(WALLET_CHAIN, await provider.request({ method: 'eth_chainId' }))
+      commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
-      provider.on('connect', (val) => {
+      Provider.provider.on('connect', (val) => {
         console.log('connected1:', val)
       })
 
-      connector.on('connect', (error, payload) => {
+      Provider.provider.connector.on('connect', (error, payload) => {
         if (error) {
           throw error
         }
@@ -49,47 +47,38 @@ const actions = {
         console.log(accounts, chainId)
       })
 
-      connector.on('session_update', async (error, payload) => {
+      Provider.provider.connector.on('session_update', async (error, payload) => {
         if (error) {
           throw error
         }
         const { accounts, chainId } = payload.params[0]
-        console.log('session_updated:', accounts)
-        console.log('session_updated:', chainId)
-        if (accounts.length > 0) {
-          await this.$store.dispatch('AUTH_LOGOUT')
-          this.$router.go(this.$router.currentRoute)
-        } else {
-          await this.$store.dispatch('AUTH_LOGOUT')
-          this.$router.go(this.$router.currentRoute)
-        }
+        console.log('session_updated:', accounts, chainId)
       })
 
-      provider.on('disconnect', (code, reason) => {
+      Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
         commit(WALLET_STATUS, false)
         commit(WALLET_ACCOUNT, '')
         localStorage.removeItem('userWalletConnectState')
       });
   
-      provider.on('accountsChanged', (accounts) => {
+      Provider.provider.on('accountsChanged', (accounts) => {
         console.log('accountsChanged:', accounts[0])
         if (accounts.length > 0) {
           commit(WALLET_ACCOUNT, accounts[0])
         }
       })
   
-      provider.on('chainChanged', (chainId) => {
+      Provider.provider.on('chainChanged', (chainId) => {
         console.log('chainChanged:', chainId)
         commit(WALLET_CHAIN, chainId)
       })
 
       return {
-        connector: connector,
+        connector: Provider.provider.connector,
         address
       }
     } catch (error) {
-      console.log(error)
       if (error.message === 'User closed modal') {
         Provider.resetProvider()
         return false
