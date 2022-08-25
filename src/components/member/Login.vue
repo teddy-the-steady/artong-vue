@@ -23,6 +23,7 @@ import { mapState, mapGetters } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
+import { convertUtf8ToHex } from "@walletconnect/utils"
 import ethers from 'ethers'
 
 export default {
@@ -109,14 +110,15 @@ export default {
           const address = await signer.getAddress()
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          console.log('cognitoUser:', cognitoUser)
+          console.log('cognitoUser:', cognitoUser.challengeParam.message)
           const signature = await web3Provider.send(
             'personal_sign',
             [
-              ethers.utils.hexlify(ethers.utils.toUtf8Bytes(cognitoUser.challengeParam.message)),
+              ethers.utils.hexlify(convertUtf8ToHex(cognitoUser.challengeParam.message)),
               address.toLowerCase()
             ]
           )
+          console.log('signature:', signature)
 
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
