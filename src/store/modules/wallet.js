@@ -53,7 +53,7 @@ const actions = {
         commit(WALLET_CHAIN, chainId)
       })
 
-      return signer
+      return web3Provider
     } catch (error) {
       console.log(error)
       if (error.message === 'User closed modal') {
