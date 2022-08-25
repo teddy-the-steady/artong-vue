@@ -53,7 +53,10 @@ const actions = {
         commit(WALLET_CHAIN, chainId)
       })
 
-      return web3Provider
+      return {
+        provider: Provider.provider,
+        address
+      }
     } catch (error) {
       console.log(error)
       if (error.message === 'User closed modal') {
