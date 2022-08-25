@@ -114,6 +114,7 @@ export default {
           this.redirectAfterLogin()
         }
       } catch (error) {
+        console.log('error!', error)
         this.warning = 'Oops, something went wrong! Please try again'
         await this.$store.dispatch('AUTH_LOGOUT')
         throw error
