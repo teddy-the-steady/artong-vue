@@ -74,7 +74,6 @@ const mutations = {
       }
     }
     localStorage.removeItem('current-user')
-    localStorage.removeItem('walletconnect')
   }
 }
 
