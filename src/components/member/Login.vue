@@ -109,14 +109,16 @@ export default {
           console.log('cognitoUser.challengeParam.message:', cognitoUser.challengeParam.message)
           let signature = null
           try {
+            console.log('provider.connector:', provider.connector)
             signature = await provider.connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+            console.log('signature:', signature)
           } catch (error) {
+            console.log('error!@!@', error)
             this.isSpinnerActive = false
             provider.connector.killSession()
             await this.$store.dispatch('AUTH_LOGOUT')
             throw error
           }
-          console.log('signature:', signature)
 
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
