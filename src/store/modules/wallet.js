@@ -29,10 +29,14 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
-      await Provider.provider.enable()
+      const result1 = await Provider.provider.enable()
+      console.log('Provider.provider.enable():', result1)
       const web3Provider = new providers.Web3Provider(Provider.provider)
+      console.log('web3Provider:', web3Provider)
       const signer = await web3Provider.getSigner()
+      console.log('signer:', signer)
       const address = await signer.getAddress()
+      console.log('address:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
