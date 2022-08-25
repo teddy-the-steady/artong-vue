@@ -114,7 +114,7 @@ export default {
           } catch (error) {
             console.log('error!!!', error)
             this.isSpinnerActive = false
-            connector.killSession()
+            this.$store.dispatch('DISCONNECT_WALLET')
             await this.$store.dispatch('AUTH_LOGOUT')
             throw error
           }
