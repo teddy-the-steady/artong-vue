@@ -34,13 +34,12 @@ const actions = {
       const web3Provider = new providers.Web3Provider(Provider.provider)
       const signer = await web3Provider.getSigner()
       const address = await signer.getAddress()
-      console.log('signer.getAddress():', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
       const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-      const signature = await signer.signMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+      const signature = await signer.signMessage(convertUtf8ToHex(cognitoUser.challengeParam.message))
       await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
       const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
       const member = await getMember(authenticatedUser.username)
@@ -65,7 +64,6 @@ const actions = {
 
       return true
     } catch (error) {
-      console.log('error!!!!',error)
       if (error.message === 'User closed modal') {
         Provider.resetProvider()
         return false
