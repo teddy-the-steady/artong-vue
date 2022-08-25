@@ -19,13 +19,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
-import WalletConnect from '@walletconnect/client'
-import QRCodeModal from '@walletconnect/qrcode-modal'
-import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
   name: 'Login',
@@ -42,6 +39,10 @@ export default {
     },
     ...mapState({
       justSignedUp: state => state.auth.justSignedUp,
+      walletConnectState: state => state.wallet
+    }),
+    ...mapGetters({
+      getDefaultWalletConnectState: 'getDefaultWalletConnectState'
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -97,71 +98,14 @@ export default {
         return
       }
 
-      const connector = new WalletConnect({
-        bridge: 'https://bridge.walletconnect.org',
-        qrcodeModal: QRCodeModal,
-      })
-
       try {
-        if (!connector.connected) {
-          connector.createSession()
-        }
-
-        connector.on('session_update', async (error, payload) => {
-          if (error) {
-            throw error
-          }
-          const { accounts, chainId } = payload.params[0]
-          console.log('session_updated:', accounts)
-          console.log('session_updated:', chainId)
-          if (accounts.length > 0) {
-            await this.$store.dispatch('AUTH_LOGOUT')
-            this.$router.go(this.$router.currentRoute)
-          } else {
-            await this.$store.dispatch('AUTH_LOGOUT')
-            this.$router.go(this.$router.currentRoute)
-          }
-        })
-
-        connector.on('connect', async (error, payload) => {
-          if (error) {
-            throw error
-          }
-          console.log('connected:', payload.params[0])
-          this.isSpinnerActive = true
-          const { accounts, chainId } = payload.params[0]
-          console.log('connected:', accounts)
-          console.log('connected:', chainId)
-          const address = accounts[0]
-          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          let signature = null
-          try {
-            signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
-          } catch (error) {
-            this.isSpinnerActive = false
-            connector.killSession()
-            await this.$store.dispatch('AUTH_LOGOUT')
-            throw error
-          }
-          await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-          const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          const member = await getMember(authenticatedUser.username)
-          await this.$store.dispatch('CURRENT_USER', member)
+        this.isSpinnerActive = true
+        const result = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+        if (result) {
           this.redirectAfterLogin()
-        })
-
-        connector.on('disconnect', async (error, payload) => {
-          if (error) {
-            throw error
-          }
-
-          console.log('disconnected:', payload.params[0])
-          const { message } = payload.params[0]
-          console.log('disconnected:', message)
-        })
+        }
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
-        connector.killSession()
         await this.$store.dispatch('AUTH_LOGOUT')
         throw error
       } finally {
@@ -174,6 +118,14 @@ export default {
         this.$router.push(urlToRedirect)
       } else {
         this.$router.push('/')
+      }
+    }
+  },
+  watch: {
+    walletConnectState: {
+      deep: true,
+      handler(state) {
+        localStorage.setItem('userWalletConnectState', JSON.stringify(state));
       }
     }
   }
