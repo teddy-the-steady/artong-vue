@@ -101,21 +101,20 @@ export default {
 
       try {
         this.isSpinnerActive = true
-        const { provider, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
-        if (provider) {
-          console.log('provider:', provider)
+        const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+        if (connector) {
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           console.log('cognitoUser.challengeParam.message:', cognitoUser.challengeParam.message)
           let signature = null
           try {
-            console.log('provider.connector:', provider.connector)
-            signature = await provider.connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+            console.log('connector:', connector)
+            signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
             console.log('signature:', signature)
           } catch (error) {
             console.log('error!@!@', error)
             this.isSpinnerActive = false
-            provider.connector.killSession()
+            connector.killSession()
             await this.$store.dispatch('AUTH_LOGOUT')
             throw error
           }
