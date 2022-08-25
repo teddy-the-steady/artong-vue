@@ -103,6 +103,22 @@ export default {
         this.isSpinnerActive = true
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
+          connector.on('session_update', async (error, payload) => {
+            if (error) {
+              throw error
+            }
+            const { accounts, chainId } = payload.params[0]
+            console.log('session_updated:', accounts)
+            console.log('session_updated:', chainId)
+            if (accounts.length > 0) {
+              await this.$store.dispatch('AUTH_LOGOUT')
+              this.$router.go(this.$router.currentRoute)
+            } else {
+              await this.$store.dispatch('AUTH_LOGOUT')
+              this.$router.go(this.$router.currentRoute)
+            }
+          })
+
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           console.log('cognitoUser.challengeParam.message:', cognitoUser.challengeParam.message)
