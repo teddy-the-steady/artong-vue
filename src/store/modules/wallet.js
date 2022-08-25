@@ -8,7 +8,6 @@ import {
 } from '../actions/wallet'
 import { providers } from 'ethers'
 import Provider from '../../util/walletConnectProvider'
-import { convertUtf8ToHex } from '@walletconnect/utils'
 import { getMember } from '../../api/member'
 
 const defaultState = {
@@ -39,7 +38,16 @@ const actions = {
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
       const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-      const signature = await signer.signMessage(convertUtf8ToHex(cognitoUser.challengeParam.message))
+      console.log(cognitoUser.challengeParam.message)
+      const promptAnswer = prompt('will you sign?')
+      if (promptAnswer) {
+        const signature = await signer.signMessage(cognitoUser.challengeParam.message)
+        await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+        const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
+        const member = await getMember(authenticatedUser.username)
+        await dispatch('CURRENT_USER', member)
+      }
+      const signature = await signer.signMessage(cognitoUser.challengeParam.message)
       await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
       const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
       const member = await getMember(authenticatedUser.username)
