@@ -104,21 +104,29 @@ export default {
         if (signer) {
           console.log('signer?',signer)
           const address = await signer.getAddress()
+          console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          console.log('cognitoUser:', cognitoUser)
           const signature = await signer.signMessage(cognitoUser.challengeParam.message)
+          console.log('signature:', signature)
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+          console.log('authenticatedUser:', authenticatedUser)
           const member = await getMember(authenticatedUser.username)
+          console.log('member:', member)
           await this.$store.dispatch('CURRENT_USER', member)
+          console.log('?!??')
           
           this.redirectAfterLogin()
         }
       } catch (error) {
         console.log('error!', error)
         this.warning = 'Oops, something went wrong! Please try again'
+        console.log('what?!?!?')
         await this.$store.dispatch('AUTH_LOGOUT')
         throw error
       } finally {
+        console.log('wtf?')
         this.isSpinnerActive = false
       }
     },
