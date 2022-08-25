@@ -24,7 +24,6 @@ import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
 import { convertUtf8ToHex } from "@walletconnect/utils"
-import ethers from 'ethers'
 
 export default {
   name: 'Login',
@@ -113,7 +112,7 @@ export default {
             signature = await provider.connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
           } catch (error) {
             this.isSpinnerActive = false
-            connector.killSession()
+            provider.connector.killSession()
             await this.$store.dispatch('AUTH_LOGOUT')
             throw error
           }
