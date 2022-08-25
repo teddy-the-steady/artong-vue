@@ -13,7 +13,7 @@
 <script>
 import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { getMember } from './api/member'
 
 export default {
@@ -26,8 +26,10 @@ export default {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen,
-      authError: state => state.auth.status,
-      walletConnectState: state => state.wallet
+      authError: state => state.auth.status
+    }),
+    ...mapGetters({
+      getDefaultWalletConnectState: 'getDefaultWalletConnectState'
     }),
     isMobile() {
       return this.$isMobile()
@@ -79,8 +81,7 @@ export default {
   async mounted() {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
-    console.log('app walletConnectState:', this.walletConnectState)
-    await this.$store.dispatch('AUTO_CONNECT_WALLET', this.walletConnectState)
+    await this.$store.dispatch('AUTO_CONNECT_WALLET', this.getDefaultWalletConnectState)
   },
   watch: {
     isSideMenuOpen() {
