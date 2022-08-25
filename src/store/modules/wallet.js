@@ -6,7 +6,7 @@ import {
   AUTO_CONNECT_WALLET,
   DISCONNECT_WALLET
 } from '../actions/wallet'
-import { providers } from 'ethers';
+import { providers } from 'ethers'
 import Provider from '../../util/walletConnectProvider'
 import { convertUtf8ToHex } from '@walletconnect/utils'
 import { getMember } from '../../api/member'
@@ -35,11 +35,11 @@ const actions = {
       const signer = await web3Provider.getSigner()
       const address = await signer.getAddress()
       commit(WALLET_STATUS, true)
-      commit(WALLET_ACCOUNT, address)
+      commit(WALLET_ACCOUNT, address[0])
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
-      const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-      const signature = await signer.signMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+      const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address[0])
+      const signature = await signer.signMessage([address[0], convertUtf8ToHex(cognitoUser.challengeParam.message)])
       await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
       const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
       const member = await getMember(authenticatedUser.username)
