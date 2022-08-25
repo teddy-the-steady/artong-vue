@@ -26,7 +26,8 @@ export default {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen,
-      authError: state => state.auth.status
+      authError: state => state.auth.status,
+      walletConnectState: state => state.wallet
     }),
     isMobile() {
       return this.$isMobile()
@@ -78,6 +79,7 @@ export default {
   async mounted() {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
+    await this.$store.dispatch('AUTO_CONNECT_WALLET', this.walletConnectState)
   },
   watch: {
     isSideMenuOpen() {
