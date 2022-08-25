@@ -27,21 +27,19 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
-      await Provider.provider.enable()
-      // const web3Provider = new providers.Web3Provider(Provider.provider)
-      // const signer = await web3Provider.getSigner()
-      // const address = await signer.getAddress()
+      const connector = Provider.provider.connector
+      connector.createSession()
       const address = Provider.provider.wc.accounts[0]
       console.log('Provider.provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
-      Provider.provider.on('connect', (val) => {
+      Provider.provider.on('connect', async (val) => {
         console.log('connected1:', val)
       })
 
-      Provider.provider.connector.on('connect', (error, payload) => {
+      connector.on('connect', async (error, payload) => {
         if (error) {
           throw error
         }
@@ -68,7 +66,7 @@ const actions = {
       })
 
       return {
-        connector: Provider.provider.connector,
+        connector: connector,
         address
       }
     } catch (error) {

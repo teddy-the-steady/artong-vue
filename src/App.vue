@@ -79,6 +79,7 @@ export default {
   async mounted() {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
+    console.log('app walletConnectState:', this.walletConnectState)
     await this.$store.dispatch('AUTO_CONNECT_WALLET', this.walletConnectState)
   },
   watch: {
