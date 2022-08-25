@@ -62,6 +62,7 @@ const actions = {
   [AUTH_LOGOUT]: async function({ commit }) {
     try {
       await Auth.signOut()
+      await dispatch('DISCONNECT_WALLET')
       commit(AUTH_LOGOUT)
       commit(USER_LOGOUT)
     } catch (error) {
