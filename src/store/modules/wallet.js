@@ -27,19 +27,20 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
     try {
+      const provider = Provider.provider
       const connector = Provider.provider.connector
       connector.createSession()
       const address = Provider.provider.wc.accounts[0]
       console.log('Provider.provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
-      commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
+      commit(WALLET_CHAIN, await provider.request({ method: 'eth_chainId' }))
 
-      Provider.provider.on('connect', async (val) => {
+      provider.on('connect', (val) => {
         console.log('connected1:', val)
       })
 
-      connector.on('connect', async (error, payload) => {
+      connector.on('connect', (error, payload) => {
         if (error) {
           throw error
         }
@@ -48,20 +49,22 @@ const actions = {
         console.log(accounts, chainId)
       })
 
-      Provider.provider.on('disconnect', (code, reason) => {
+      provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
         commit(WALLET_STATUS, false)
         commit(WALLET_ACCOUNT, '')
         localStorage.removeItem('userWalletConnectState')
       });
   
-      Provider.provider.on('accountsChanged', (accounts) => {
+      provider.on('accountsChanged', (accounts) => {
+        console.log('accountsChanged:', accounts[0])
         if (accounts.length > 0) {
           commit(WALLET_ACCOUNT, accounts[0])
         }
       })
   
-      Provider.provider.on('chainChanged', (chainId) => {
+      provider.on('chainChanged', (chainId) => {
+        console.log('chainChanged:', chainId)
         commit(WALLET_CHAIN, chainId)
       })
 
