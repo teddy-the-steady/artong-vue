@@ -23,6 +23,7 @@ import { mapState, mapGetters } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
+import ethers from 'ethers'
 
 export default {
   name: 'Login',
@@ -100,24 +101,23 @@ export default {
 
       try {
         this.isSpinnerActive = true
-        const signer = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
-        if (signer) {
-          console.log('signer?',signer)
+        const web3Provider = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+        if (web3Provider) {
+          console.log('web3Provider?', web3Provider)
+          const signer = await web3Provider.getSigner()
+          console.log('signer?', signer)
           const address = await signer.getAddress()
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           console.log('cognitoUser:', cognitoUser)
-          let signature = null
-          try {
-            signature = await signer.signMessage(cognitoUser.challengeParam.message)
-            console.log('signature:', signature)
-          } catch (error) {
-            console.log('error!!!', error)
-            this.isSpinnerActive = false
-            this.$store.dispatch('DISCONNECT_WALLET')
-            await this.$store.dispatch('AUTH_LOGOUT')
-            throw error
-          }
+          const signature = await web3Provider.send(
+            'personal_sign',
+            [
+              ethers.utils.hexlify(ethers.utils.toUtf8Bytes(cognitoUser.challengeParam.message)),
+              address.toLowerCase()
+            ]
+          )
+
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
           console.log('authenticatedUser:', authenticatedUser)
