@@ -38,20 +38,11 @@ const actions = {
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
 
       const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', address)
-      console.log(cognitoUser.challengeParam.message)
-      const promptAnswer = prompt('will you sign?')
-      if (promptAnswer) {
-        const signature = await signer.signMessage(cognitoUser.challengeParam.message)
-        await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-        const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
-        const member = await getMember(authenticatedUser.username)
-        await dispatch('CURRENT_USER', member)
-      }
-      // const signature = await signer.signMessage(cognitoUser.challengeParam.message)
-      // await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-      // const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
-      // const member = await getMember(authenticatedUser.username)
-      // await dispatch('CURRENT_USER', member)
+      const signature = await signer.signMessage(cognitoUser.challengeParam.message)
+      await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+      const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
+      const member = await getMember(authenticatedUser.username)
+      await dispatch('CURRENT_USER', member)
 
       Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
@@ -72,6 +63,7 @@ const actions = {
 
       return true
     } catch (error) {
+      console.log(error)
       if (error.message === 'User closed modal') {
         Provider.resetProvider()
         return false
