@@ -102,22 +102,21 @@ export default {
 
       try {
         this.isSpinnerActive = true
-        const web3Provider = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
-        if (web3Provider) {
-          console.log('web3Provider?', web3Provider)
-          const signer = await web3Provider.getSigner()
-          console.log('signer?', signer)
-          const address = await signer.getAddress()
+        const { provider, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+        if (provider) {
+          console.log('provider:', provider)
           console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          console.log('cognitoUser:', cognitoUser.challengeParam.message)
-          const signature = await web3Provider.send(
-            'personal_sign',
-            [
-              ethers.utils.hexlify(convertUtf8ToHex(cognitoUser.challengeParam.message)),
-              address.toLowerCase()
-            ]
-          )
+          console.log('cognitoUser.challengeParam.message:', cognitoUser.challengeParam.message)
+          let signature = null
+          try {
+            signature = await provider.connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+          } catch (error) {
+            this.isSpinnerActive = false
+            connector.killSession()
+            await this.$store.dispatch('AUTH_LOGOUT')
+            throw error
+          }
           console.log('signature:', signature)
 
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
