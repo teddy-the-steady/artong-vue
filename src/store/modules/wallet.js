@@ -29,31 +29,9 @@ const actions = {
     try {
       await Provider.provider.enable()
       const address = Provider.provider.wc.accounts[0]
-      console.log('provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(WALLET_CHAIN, await Provider.provider.request({ method: 'eth_chainId' }))
-
-      Provider.provider.on('connect', (val) => {
-        console.log('connected1:', val)
-      })
-
-      Provider.provider.connector.on('connect', (error, payload) => {
-        if (error) {
-          throw error
-        }
-        console.log('connected2:', payload.params[0])
-        const { accounts, chainId } = payload.params[0]
-        console.log(accounts, chainId)
-      })
-
-      Provider.provider.connector.on('session_update', async (error, payload) => {
-        if (error) {
-          throw error
-        }
-        const { accounts, chainId } = payload.params[0]
-        console.log('session_updated:', accounts, chainId)
-      })
 
       Provider.provider.on('disconnect', (code, reason) => {
         console.log('disconnected:', code, reason)
@@ -63,14 +41,12 @@ const actions = {
       });
   
       Provider.provider.on('accountsChanged', (accounts) => {
-        console.log('accountsChanged:', accounts[0])
         if (accounts.length > 0) {
           commit(WALLET_ACCOUNT, accounts[0])
         }
       })
   
       Provider.provider.on('chainChanged', (chainId) => {
-        console.log('chainChanged:', chainId)
         commit(WALLET_CHAIN, chainId)
       })
 
@@ -90,25 +66,21 @@ const actions = {
   [AUTO_CONNECT_WALLET]: async function({ commit, dispatch }, state) {
     if (state.status) {
       if (localStorage.getItem('walletconnect') == null) {
-        console.log('disconnected from AUTO_CONNECT')
         commit(WALLET_STATUS, false)
         commit(WALLET_ACCOUNT, '')
         localStorage.removeItem('userWalletConnectState')
       }
       if (localStorage.getItem('walletconnect')) {
         (async () => {
-          console.log('AUTO_CONNECT')
           await dispatch('SET_UP_WALLET_CONNECTION')
         })()
       }
     }
   },
-  [DISCONNECT_WALLET]: async function({ commit, dispatch }) {
+  [DISCONNECT_WALLET]: async function({ commit }) {
     await Provider.provider.disconnect()
     commit(WALLET_STATUS, false)
     commit(WALLET_ACCOUNT, '')
-    localStorage.removeItem('userWalletConnectState')
-    await dispatch('AUTH_LOGOUT')
   }
 }
 

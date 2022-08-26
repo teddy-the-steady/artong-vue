@@ -67,6 +67,7 @@ const actions = {
       }
       commit(AUTH_LOGOUT)
       commit(USER_LOGOUT)
+      localStorage.removeItem('userWalletConnectState')
     } catch (error) {
       commit(AUTH_ERROR, error)
       throw error

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import MetaMaskOnboarding from '@metamask/onboarding'
@@ -39,11 +39,7 @@ export default {
       return this.$isMobile()
     },
     ...mapState({
-      justSignedUp: state => state.auth.justSignedUp,
-      walletConnectState: state => state.wallet
-    }),
-    ...mapGetters({
-      getDefaultWalletConnectState: 'getDefaultWalletConnectState'
+      justSignedUp: state => state.auth.justSignedUp
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -75,6 +71,7 @@ export default {
             const member = await getMember(authenticatedUser.username)
             await this.$store.dispatch('CURRENT_USER', member)
             this.$store.commit('WALLET_CHAIN', parseInt(window.ethereum.networkVersion))
+            this.$store.commit('WALLET_ACCOUNT', address)
             this.redirectAfterLogin()
           }
         } else {
@@ -103,16 +100,11 @@ export default {
         this.isSpinnerActive = true
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
-          console.log('address:', address)
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          console.log('cognitoUser.challengeParam.message:', cognitoUser.challengeParam.message)
           let signature = null
           try {
-            console.log('connector:', connector)
             signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
-            console.log('signature:', signature)
           } catch (error) {
-            console.log('error!@!@', error)
             this.isSpinnerActive = false
             connector.killSession()
             await this.$store.dispatch('AUTH_LOGOUT')
@@ -121,22 +113,16 @@ export default {
 
           await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
           const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          console.log('authenticatedUser:', authenticatedUser)
           const member = await getMember(authenticatedUser.username)
-          console.log('member:', member)
           await this.$store.dispatch('CURRENT_USER', member)
-          console.log('?!??')
           
           this.redirectAfterLogin()
         }
       } catch (error) {
-        console.log('error!', error)
         this.warning = 'Oops, something went wrong! Please try again'
-        console.log('what?!?!?')
         await this.$store.dispatch('AUTH_LOGOUT')
         throw error
       } finally {
-        console.log('wtf?')
         this.isSpinnerActive = false
       }
     },
@@ -146,14 +132,6 @@ export default {
         this.$router.push(urlToRedirect)
       } else {
         this.$router.push('/')
-      }
-    }
-  },
-  watch: {
-    walletConnectState: {
-      deep: true,
-      handler(state) {
-        localStorage.setItem('userWalletConnectState', JSON.stringify(state));
       }
     }
   }
