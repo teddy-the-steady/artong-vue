@@ -35,7 +35,8 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isModalOpen: state => state.menu.isModalOpen
+      isModalOpen: state => state.menu.isModalOpen,
+      walletConnectState: state => state.wallet
     })
   },
   data() {
