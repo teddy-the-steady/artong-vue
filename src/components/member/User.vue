@@ -7,6 +7,8 @@
         <my-page-profile></my-page-profile>
         <button @click="toggleModal">UPLOAD</button>
       </div>
+      <div>address: {{walletConnectState.address}}</div>
+      <div>chainId: {{walletConnectState.chainId}}</div>
       <div class="tab">
       </div>
     </div>
