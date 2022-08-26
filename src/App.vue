@@ -26,7 +26,8 @@ export default {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen,
-      authError: state => state.auth.status
+      authError: state => state.auth.status,
+      walletConnectState: state => state.wallet
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState'
@@ -37,7 +38,7 @@ export default {
   },
   methods: {
     async getPcWalletOnFirstLoad() {
-      if (window.ethereum) {
+      if (window.ethereum && localStorage.getItem('userWalletConnectState')) {
         const metamaskSignedInAccount = await window.ethereum.request({ method: 'eth_accounts' })
         if (metamaskSignedInAccount.length > 0) {
           this.$store.commit('WALLET_ACCOUNT', metamaskSignedInAccount[0])
@@ -57,7 +58,7 @@ export default {
           })
 
           window.ethereum.on('chainChanged', (networkId) => {
-            this.$store.commit('WALLET_NETWORK', parseInt(networkId, 16))
+            this.$store.commit('WALLET_CHAIN', parseInt(networkId, 16))
           })
         }
       })
@@ -87,6 +88,12 @@ export default {
     },
     isModalOpen() {
       document.body.classList.toggle('prevent-scroll')
+    },
+    walletConnectState: {
+      deep: true,
+      handler(state) {
+        localStorage.setItem('userWalletConnectState', JSON.stringify(state))
+      }
     }
   }
 }
