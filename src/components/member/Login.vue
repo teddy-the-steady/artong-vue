@@ -15,6 +15,11 @@
         </button>
       </div>
     </div>
+    <confirm-modal
+      v-show="isModalOpen"
+      @close-modal="toggleModal"
+      ref="confirmModal"
+    />
   </div>
 </template>
 
@@ -22,16 +27,20 @@
 import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
+import ConfirmModal from '../modal/ConfirmModal'
 import MetaMaskOnboarding from '@metamask/onboarding'
 import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
   name: 'Login',
   mixins: [menuDeactivate],
+  components: {
+    ConfirmModal
+  },
   data() {
     return {
       warning: '',
-      isSpinnerActive: false,
+      isSpinnerActive: false
     }
   },
   computed: {
@@ -39,7 +48,8 @@ export default {
       return this.$isMobile()
     },
     ...mapState({
-      justSignedUp: state => state.auth.justSignedUp
+      justSignedUp: state => state.auth.justSignedUp,
+      isModalOpen: state => state.menu.isModalOpen
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -100,30 +110,34 @@ export default {
         this.isSpinnerActive = true
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
-          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           let signature = null
-          try {
-            if(confirm('Sign message?')) {
-              const response = await fetch('https://catfact.ninja/fact')
-              const data = await response.json()
-              console.log('cats response', data)
-              signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
-            } else {
-              throw new Error('User denied signing')
+          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          if (cognitoUser) {
+            this.toggleModal()
+            await this.$nextTick()
+            const ok = await this.$refs.confirmModal.waitForAnswer()
+            if (ok) {
+              try {
+                signature = await connector.signPersonalMessage(
+                  [address, convertUtf8ToHex(cognitoUser.challengeParam.message)]
+                )
+              } catch (error) {
+                this.isSpinnerActive = false
+                connector.killSession()
+                await this.$store.dispatch('AUTH_LOGOUT')
+                throw error
+              }
             }
-          } catch (error) {
-            this.isSpinnerActive = false
-            connector.killSession()
-            await this.$store.dispatch('AUTH_LOGOUT')
-            throw error
           }
-
-          await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-          const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-          const member = await getMember(authenticatedUser.username)
-          await this.$store.dispatch('CURRENT_USER', member)
           
-          this.redirectAfterLogin()
+          if (signature) {
+            await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+            const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+            const member = await getMember(authenticatedUser.username)
+            await this.$store.dispatch('CURRENT_USER', member)
+            
+            this.redirectAfterLogin()
+          }
         }
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
@@ -140,6 +154,9 @@ export default {
       } else {
         this.$router.push('/')
       }
+    },
+    toggleModal() {
+      this.$store.commit('TOGGLE_MODAL')
     }
   }
 }
