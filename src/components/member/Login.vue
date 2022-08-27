@@ -101,9 +101,14 @@ export default {
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          console.log(cognitoUser)
           let signature = null
           try {
-            signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+            if(confirm('Sign message?')) {
+              signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
+            } else {
+              throw new Error('User denied signing')
+            }
           } catch (error) {
             this.isSpinnerActive = false
             connector.killSession()
