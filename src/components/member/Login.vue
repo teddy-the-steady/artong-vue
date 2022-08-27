@@ -104,6 +104,9 @@ export default {
           let signature = null
           try {
             if(confirm('Sign message?')) {
+              const response = await fetch('https://catfact.ninja/fact')
+              const data = await response.json()
+              console.log('cats response', data)
               signature = await connector.signPersonalMessage([address, convertUtf8ToHex(cognitoUser.challengeParam.message)])
             } else {
               throw new Error('User denied signing')
