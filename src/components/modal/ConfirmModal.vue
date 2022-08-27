@@ -14,10 +14,10 @@
           </div>
 
           <div class="modal-footer">
-            <!-- <slot name="footer"> -->
+            <slot name="footer">
               <button class="modal-button" @click="confirm()">{{ okButton }}</button>
               <button class="modal-button" @click="cancel()">{{ cancelButton }}</button>
-            <!-- </slot> -->
+            </slot>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default {
     },
     cancel() {
       this.$emit('close-modal')
-      this.rejectPromise(new Error('User cancelled the modal'))
+      this.rejectPromise(new Error('Cancelled signing message'))
     }
   }
 }

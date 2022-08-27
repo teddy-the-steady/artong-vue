@@ -19,7 +19,9 @@
       v-show="isModalOpen"
       @close-modal="toggleModal"
       ref="confirmModal"
-    />
+    >
+      <span slot="body">Continue with your wallet</span>
+    </confirm-modal>
   </div>
 </template>
 
@@ -141,6 +143,9 @@ export default {
         }
       } catch (error) {
         this.warning = 'Oops, something went wrong! Please try again'
+        if (error.message === 'Cancelled signing message') {
+          this.warning = error.message
+        }
         await this.$store.dispatch('AUTH_LOGOUT')
         throw error
       } finally {
