@@ -38,17 +38,32 @@ const actions = {
         commit(WALLET_STATUS, false)
         commit(WALLET_ACCOUNT, '')
         localStorage.removeItem('userWalletConnectState')
-      });
-  
-      Provider.provider.on('accountsChanged', (accounts) => {
+      })
+
+      Provider.provider.connector.on('session_update', async (error, payload) => {
+        if (error) {
+          throw error
+        }
+        
+        const { accounts, chainId } = payload.params[0]
+
         if (accounts.length > 0) {
           commit(WALLET_ACCOUNT, accounts[0])
         }
+        if (chainId) {
+          commit(WALLET_CHAIN, chainId)
+        }
       })
+
+      // Provider.provider.on('accountsChanged', (accounts) => {
+      //   if (accounts.length > 0) {
+      //     commit(WALLET_ACCOUNT, accounts[0])
+      //   }
+      // })
   
-      Provider.provider.on('chainChanged', (chainId) => {
-        commit(WALLET_CHAIN, chainId)
-      })
+      // Provider.provider.on('chainChanged', (chainId) => {
+      //   commit(WALLET_CHAIN, chainId)
+      // })
 
       return {
         connector: Provider.provider.connector,
