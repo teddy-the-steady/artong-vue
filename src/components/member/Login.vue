@@ -101,7 +101,6 @@ export default {
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
-          console.log(cognitoUser)
           let signature = null
           try {
             if(confirm('Sign message?')) {
