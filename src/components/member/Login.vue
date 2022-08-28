@@ -31,7 +31,6 @@ import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import ConfirmModal from '../modal/ConfirmModal'
 import MetaMaskOnboarding from '@metamask/onboarding'
-import { convertUtf8ToHex } from "@walletconnect/utils"
 
 export default {
   name: 'Login',
@@ -121,7 +120,7 @@ export default {
             if (ok) {
               try {
                 signature = await connector.signPersonalMessage(
-                  [address, convertUtf8ToHex(cognitoUser.challengeParam.message)]
+                  [cognitoUser.challengeParam.message, address]
                 )
               } catch (error) {
                 this.isSpinnerActive = false
