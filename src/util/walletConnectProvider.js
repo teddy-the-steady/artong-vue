@@ -7,7 +7,7 @@ class Provider {
       qrcodeModalOptions: {
         mobileLinks: [
           'metamask',
-          'trust',
+          'rainbow'
         ]
       }
     })
@@ -19,7 +19,7 @@ class Provider {
       qrcodeModalOptions: {
         mobileLinks: [
           'metamask',
-          'trust',
+          'rainbow'
         ]
       }
     })
