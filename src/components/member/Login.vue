@@ -15,13 +15,6 @@
         </button>
       </div>
     </div>
-    <confirm-modal
-      v-show="isModalOpen"
-      @close-modal="toggleModal"
-      ref="confirmModal"
-    >
-      <span slot="body">Continue with your wallet</span>
-    </confirm-modal>
   </div>
 </template>
 
@@ -29,15 +22,11 @@
 import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
-import ConfirmModal from '../modal/ConfirmModal'
 import MetaMaskOnboarding from '@metamask/onboarding'
 
 export default {
   name: 'Login',
   mixins: [menuDeactivate],
-  components: {
-    ConfirmModal
-  },
   data() {
     return {
       warning: '',
@@ -49,8 +38,7 @@ export default {
       return this.$isMobile()
     },
     ...mapState({
-      justSignedUp: state => state.auth.justSignedUp,
-      isModalOpen: state => state.menu.isModalOpen
+      justSignedUp: state => state.auth.justSignedUp
     })
   },
   beforeRouteEnter(to, from, next) {
@@ -114,9 +102,9 @@ export default {
           let signature = null
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           if (cognitoUser) {
-            this.toggleModal()
+            this.$store.commit('TOGGLE_CONFIRM_MODAL')
             await this.$nextTick()
-            const ok = await this.$refs.confirmModal.waitForAnswer()
+            const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
             if (ok) {
               try {
                 signature = await connector.signPersonalMessage(
@@ -158,9 +146,6 @@ export default {
       } else {
         this.$router.push('/')
       }
-    },
-    toggleModal() {
-      this.$store.commit('TOGGLE_MODAL')
     }
   }
 }

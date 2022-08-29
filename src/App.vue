@@ -7,12 +7,20 @@
         <router-view class="contents__body"/>
       </keep-alive>
     </div>
+    <confirm-modal
+      v-show="isConfirmModalOpen"
+      @close-modal="toggleConfirmModal"
+      ref="confirmModal"
+    >
+      <span slot="body">Continue with your wallet</span>
+    </confirm-modal>
   </div>
 </template>
 
 <script>
 import HeaderBar from './components/header/Header'
 import SideBar from './components/sidebar/SideBar'
+import ConfirmModal from './components/modal/ConfirmModal'
 import { mapState, mapGetters } from 'vuex'
 import { getMember } from './api/member'
 
@@ -20,14 +28,16 @@ export default {
   name: 'App',
   components: {
     HeaderBar,
-    SideBar
+    SideBar,
+    ConfirmModal
   },
   computed: {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       isModalOpen: state => state.menu.isModalOpen,
       authError: state => state.auth.status,
-      walletConnectState: state => state.wallet
+      walletConnectState: state => state.wallet,
+      isConfirmModalOpen: state => state.menu.isConfirmModalOpen
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState'
@@ -62,6 +72,9 @@ export default {
           })
         }
       })
+    },
+    toggleConfirmModal() {
+      this.$store.commit('TOGGLE_CONFIRM_MODAL')
     }
   },
   async created() {
