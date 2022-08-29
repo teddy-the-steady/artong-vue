@@ -94,6 +94,7 @@ export default {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
     await this.$store.dispatch('AUTO_CONNECT_WALLET', this.getDefaultWalletConnectState)
+    this.$store.commit('CONFIRM_MODAL_WAIT_FOR_ANSWER', this.$refs.confirmModal.waitForAnswer)
   },
   watch: {
     isSideMenuOpen() {

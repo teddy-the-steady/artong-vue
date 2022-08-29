@@ -13,7 +13,8 @@ const state = {
   isHeadNavOpen: true,
   isModalOpen: false,
   isConfirmModalOpen: false,
-  isDark: false
+  isDark: false,
+  waitForAnswer: null
 }
 
 const mutations = {
@@ -37,7 +38,7 @@ const mutations = {
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
-  },
+  }
 }
 
 export default {
