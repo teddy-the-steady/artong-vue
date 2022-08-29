@@ -4,14 +4,17 @@ import {
   WALLET_STATUS,
   SET_UP_WALLET_CONNECTION,
   AUTO_CONNECT_WALLET,
-  DISCONNECT_WALLET
+  DISCONNECT_WALLET,
+  CONFIRM_MODAL_WAIT_FOR_ANSWER
 } from '../actions/wallet'
 import Provider from '../../util/walletConnectProvider'
+import { getMember } from '../../api/member'
 
 const defaultState = {
   chainId: 0,
   address: '',
-  status: false
+  status: false,
+  waitForAnswer: null
 }
 const state = defaultState
 
@@ -25,7 +28,7 @@ const actions = {
   [WALLET_STATUS]: function({ commit }, status) {
     commit(WALLET_STATUS, status)
   },
-  [SET_UP_WALLET_CONNECTION]: async function({ commit, dispatch }) {
+  [SET_UP_WALLET_CONNECTION]: async function({ state, commit, dispatch }) {
     try {
       await Provider.provider.enable()
       const address = Provider.provider.wc.accounts[0]
@@ -49,6 +52,25 @@ const actions = {
 
         if (accounts.length > 0) {
           commit(WALLET_ACCOUNT, accounts[0])
+
+          let signature = null
+          const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
+          if (cognitoUser) {
+            commit('TOGGLE_CONFIRM_MODAL')
+            const ok = await state.waitForAnswer()
+            if (ok) {
+              signature = await Provider.provider.connector.signPersonalMessage(
+                [cognitoUser.challengeParam.message, accounts[0]]
+              )
+            }
+          }
+
+          if (signature) {
+            await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+            const authenticatedUser = await dispatch('AUTH_CHECK_CURRENT_USER')
+            const member = await getMember(authenticatedUser.username)
+            await dispatch('CURRENT_USER', member)
+          }
         }
         if (chainId) {
           commit(WALLET_CHAIN, chainId)
@@ -98,6 +120,9 @@ const mutations = {
   },
   [WALLET_STATUS]: (state, status) => {
     state.status = status
+  },
+  [CONFIRM_MODAL_WAIT_FOR_ANSWER]: (state, waitForAnswer) => {
+    state.waitForAnswer = waitForAnswer
   }
 }
 

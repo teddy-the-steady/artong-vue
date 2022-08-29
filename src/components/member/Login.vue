@@ -103,7 +103,6 @@ export default {
           const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
           if (cognitoUser) {
             this.$store.commit('TOGGLE_CONFIRM_MODAL')
-            await this.$nextTick()
             const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
             if (ok) {
               try {
