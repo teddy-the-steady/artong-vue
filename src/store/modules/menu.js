@@ -4,6 +4,7 @@ import {
   SET_HEAD_NAV_TRUE,
   SET_SIDE_MENU_FALSE,
   TOGGLE_MODAL,
+  TOGGLE_CONFIRM_MODAL,
   TOGGLE_THEME
 } from '../actions/menu'
 
@@ -11,6 +12,7 @@ const state = {
   isSideMenuOpen: false,
   isHeadNavOpen: true,
   isModalOpen: false,
+  isConfirmModalOpen: false,
   isDark: false
 }
 
@@ -32,7 +34,10 @@ const mutations = {
   },
   [TOGGLE_THEME]: state => {
     state.isDark = !state.isDark
-  }
+  },
+  [TOGGLE_CONFIRM_MODAL]: state => {
+    state.isConfirmModalOpen = !state.isConfirmModalOpen
+  },
 }
 
 export default {
