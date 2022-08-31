@@ -60,10 +60,21 @@ export default {
       window.addEventListener('load', () => {
         if (window.ethereum) {
           window.ethereum.on('accountsChanged', async (accounts) => {
-            this.$store.commit('WALLET_ACCOUNT', accounts[0])
-            if (accounts.length === 0) {
-              await this.$store.dispatch('AUTH_LOGOUT')
-              this.$router.go(this.$router.currentRoute)
+            if (accounts.length > 0) {
+              this.toggleConfirmModal()
+              const ok = await this.$refs.confirmModal.waitForAnswer()
+              if (ok) {
+                const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
+                const signature = await window.ethereum.request({
+                  method: 'personal_sign',
+                  params: [accounts[0], cognitoUser.challengeParam.message],
+                })
+                await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
+                const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+                const member = await getMember(authenticatedUser.username)
+                await this.$store.dispatch('CURRENT_USER', member)
+                this.$store.commit('WALLET_ACCOUNT', accounts[0])
+              }
             }
           })
 
