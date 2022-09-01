@@ -51,6 +51,11 @@ export default [
     icon: 'fa fa-bolt'
   },
   {
+    href: '/create/project',
+    title: 'CreateProject',
+    icon: 'fa fa-hammer'
+  },
+  {
     header: true,
     title: 'Example'
   },
