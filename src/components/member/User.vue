@@ -5,7 +5,7 @@
       </div>
       <div class="user-info">
         <my-page-profile></my-page-profile>
-        <button @click="toggleModal">UPLOAD</button>
+        <button @click="toggleModal">Create Collection</button>
       </div>
       <div>address: {{walletConnectState.address}}</div>
       <div>chainId: {{walletConnectState.chainId}}</div>
