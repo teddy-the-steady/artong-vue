@@ -9,6 +9,7 @@ import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
 import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
+import CreateProject from '@/components/menu/CreateProject'
 
 Vue.use(Router)
 
@@ -65,6 +66,11 @@ const router = new Router({
       name: 'Artwork',
       // component: Login
     },
+    {
+      path: '/create/project',
+      name: 'CreateProject',
+      component: CreateProject
+    }
   ]
 })
 
