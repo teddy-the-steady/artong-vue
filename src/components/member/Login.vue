@@ -171,8 +171,7 @@ export default {
   background: $artong-black;
 
   .form__logo {
-    font-size: 60px;
-    margin-bottom: 15px;
+    padding: 100px 0 20px;
 
     .logo {
       width: 300px;
