@@ -64,6 +64,7 @@ export default {
               this.toggleConfirmModal()
               const ok = await this.$refs.confirmModal.waitForAnswer()
               if (ok) {
+                await this.$store.dispatch('AUTH_LOGOUT')
                 const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
                 const signature = await window.ethereum.request({
                   method: 'personal_sign',

@@ -54,6 +54,7 @@ const actions = {
           commit(WALLET_ACCOUNT, accounts[0])
 
           let signature = null
+          await this.$store.dispatch('AUTH_LOGOUT')
           const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
           if (cognitoUser) {
             commit('TOGGLE_CONFIRM_MODAL')
