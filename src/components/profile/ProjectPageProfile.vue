@@ -40,6 +40,7 @@ export default {
 .profile {
     display: flex;
     margin-left: 15%;
+    transform: translateY(-40%);
 
     .image {
       display: inline-block;
