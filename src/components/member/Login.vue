@@ -197,6 +197,10 @@ export default {
     min-width: 320px;
     color: black;
 
+    h1 {
+      margin-top: 0;
+    }
+
     h3 > span {
       text-decoration: underline;
     }
@@ -260,7 +264,7 @@ export default {
       box-sizing: border-box;
       border-radius: 6px;
       box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.5);
-      padding: 15px 25px 35px;
+      padding: 30px 25px 35px;
 
       .form__footer {
         flex-wrap: wrap;
