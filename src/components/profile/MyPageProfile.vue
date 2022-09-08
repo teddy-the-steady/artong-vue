@@ -116,6 +116,7 @@ export default {
     transform: translateY(-30%);
     flex-direction: column;
     align-items: center;
+    margin-left: 0;
 
     .image {
       width: 100px;
