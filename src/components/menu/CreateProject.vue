@@ -26,9 +26,16 @@
 <script>
 import { ethers } from 'ethers'
 import { FACTORY_ABI, FACTORY, getSigner } from '../../contracts'
+import { postProject } from '../../api/projects'
+import { mapState } from 'vuex'
 
 export default {
   name: 'CreateProject',
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
+  },
   data() {
     return {
       name: '',
@@ -48,17 +55,33 @@ export default {
         this.maxAmount,
         this.policy
       )
+      // TODO] mainnet에선 tx.wait가 매우 오래 걸릴 수 있음. foundation처럼 CollectionByContractAddress polling 하자
       const res = await tx.wait()
-      console.log('res:',res)
-      res.events.map(evt => {
+
+      const address = this.getProjectAddressFromContractCreatedEvent(res)
+      const result = await postProject({
+        address: address,
+        name: this.name
+      })
+      console.log(result)
+    },
+    getProjectAddressFromContractCreatedEvent(txResult) {
+      const resultArray = txResult.events.map(evt => {
         if (
           evt.topics[0] ===
           '0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b'
         ) {
           const address = ethers.utils.hexDataSlice(evt.data, 44)
-          console.log('nft address:', address)
+          return address
         }
       })
+
+      for (let i = 0; i < resultArray.length; i++) {
+        const isAddressExists = resultArray[i]
+        if (isAddressExists) {
+          return resultArray[i]
+        }
+      }
     }
   }
 }

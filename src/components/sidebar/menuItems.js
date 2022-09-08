@@ -41,8 +41,8 @@ export default [
     icon: 'fa fa-folder-open'
   },
   {
-    href: '/nft',
-    title: 'NFTs',
+    href: '/projects/123',
+    title: 'Project 123',
     icon: 'fa fa-image'
   },
   {
