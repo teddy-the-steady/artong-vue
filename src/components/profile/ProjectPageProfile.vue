@@ -38,8 +38,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    transform: translate(10%, -40%);
     display: flex;
+    margin-left: 15%;
 
     .image {
       display: inline-block;
@@ -85,6 +85,7 @@ export default {
     transform: translateY(-30%);
     align-items: center;
     flex-direction: column;
+    margin-left: 0;
 
     .image {
       width: 100px;
