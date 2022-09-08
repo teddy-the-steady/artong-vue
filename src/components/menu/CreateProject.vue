@@ -48,6 +48,7 @@ export default {
         this.maxAmount,
         this.policy
       )
+      // TODO] mainnet에선 tx.wait가 매우 오래 걸릴 수 있음. foundation처럼 CollectionByContractAddress polling 하자
       const res = await tx.wait()
       console.log('res:',res)
       res.events.map(evt => {
