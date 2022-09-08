@@ -1,8 +1,6 @@
 <template>
   <div :key="componentKey">
     <div class="header">
-      <div class="background" :style="{'background': backgroundColor}">
-      </div>
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
@@ -20,12 +18,10 @@ import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../contents/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import { backgroundColor } from '../../mixin'
 import { getMembers } from '../../api/member'
 
 export default {
   name: 'Artist',
-  mixins: [backgroundColor],
   components: {
     ArtistPageProfile, ContentList
   },
@@ -51,8 +47,7 @@ export default {
       },
       componentKey: 0,
       member: {},
-      username: '',
-      backgroundColor: 'white'
+      username: ''
     }
   },
   methods: {
@@ -70,16 +65,13 @@ export default {
   async created() {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
-    this.backgroundColor = this.generateGradientBackground(this.member.wallet_address)
     this.$watch(
       () => this.$route,
       async (toRoute) => {
         if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
-          this.backgroundColor = 'white'
           this.username = toRoute.params.id
           this.forceRerender()
           this.member = await this.getMember(this.username)
-          this.backgroundColor = this.generateGradientBackground(this.member.wallet_address)
         }
       }
     )
@@ -91,9 +83,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
-  .background {
-    height: 15em;
-  }
+  margin-top: 50px;
+
   .user-info {
     height: 30%;
 
@@ -114,9 +105,6 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .header {
-    .background {
-      height: 10em;
-    }
     .user-info {
 
       button {

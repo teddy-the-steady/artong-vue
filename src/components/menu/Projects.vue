@@ -8,7 +8,7 @@
 import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
 export default {
-  name: 'Project',
+  name: 'Projects',
   mixins: [headerActivate],
   components: {
     ProjectList

@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="header">
+      <div class="background" :style="{'background': backgroundColor}"></div>
       <div class="user-info">
-        <artist-page-profile></artist-page-profile>
+        <project-page-profile></project-page-profile>
       </div>
       <div class="tab">
       </div>
@@ -12,20 +13,24 @@
 </template>
 
 <script>
-import { headerActivate } from '../../mixin'
+import { backgroundColor } from '../../mixin'
 import ContentList from '../contentsV2/ContentList'
-import ArtistPageProfile from '../profile/ArtistPageProfile'
+import ProjectPageProfile from '../profile/ProjectPageProfile'
 
 export default {
-  name: 'NFT',
-  mixins: [headerActivate],
+  name: 'Project',
+  mixins: [backgroundColor],
   components: {
-    ContentList, ArtistPageProfile
+    ContentList, ProjectPageProfile
   },
   data() {
     return {
-      info: ''
+      projectAddress: ''
     }
+  },
+  created() {
+    this.projectAddress = this.$route.params.id
+    this.backgroundColor = this.generateGradientBackground(this.projectAddress)
   }
 }
 </script>
@@ -33,17 +38,12 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-h1, h2 {
-  color: $artong-black;
-}
-
 .header {
+  .background {
+    height: 15em;
+  }
   .user-info {
     height: 30%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: flex-end;
-
     button {
       padding: 10px;
       border-radius: 10px;
@@ -62,6 +62,8 @@ h1, h2 {
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
+      display: flex;
+      justify-content: center;
 
       button {
         border-radius: 10px;
