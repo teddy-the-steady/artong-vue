@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="header">
-      <div class="background" :style="{'background': backgroundColor}">
-      </div>
       <div class="user-info">
         <my-page-profile></my-page-profile>
         <button @click="toggleModal">Create Collection</button>
@@ -25,12 +23,12 @@
 import MyPageProfile from '../profile/MyPageProfile'
 import ContentList from '../contents/ContentList'
 import UploadModal from '../modal/UploadModal'
-import { headerActivate, backgroundColor } from '../../mixin'
+import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
-  mixins: [headerActivate, backgroundColor],
+  mixins: [headerActivate],
   components: {
     MyPageProfile, ContentList, UploadModal
   },
@@ -49,8 +47,7 @@ export default {
         url: '',
         params: {},
         query: {}
-      },
-      backgroundColor: 'lightgrey'
+      }
     }
   },
   methods: {
@@ -74,7 +71,6 @@ export default {
       url: '/auth/uploads',
       params: {id: this.$route.params.id}
     }
-    this.backgroundColor = this.generateGradientBackground(this.currentUser.wallet_address)
   },
   watch: {
     $route() {
@@ -88,9 +84,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
-  .background {
-    height: 15em;
-  }
+  margin-top: 50px;
+
   .user-info {
     height: 30%;
 
@@ -115,11 +110,7 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .header {
-    .background {
-      height: 10em;
-    }
     .user-info {
-
       button {
         border-radius: 10px;
       }

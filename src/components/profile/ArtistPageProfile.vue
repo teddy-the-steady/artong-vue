@@ -70,17 +70,14 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    transform: translateY(-40%);
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-left: 15%;
+
     .image {
         display: inline-block;
         background-color: $artong-white;
         width: 150px;
         height: 150px;
-        min-width: 100px;
-        min-height: 100px;
         border-radius: 50%;
         border: 2px solid $artong-white;
 
@@ -115,6 +112,8 @@ export default {
 @media only screen and (max-width: 599px) {
   .profile {
     transform: translateY(-30%);
+    flex-direction: column;
+    align-items: center;
     .image {
       width: 100px;
       height: 100px;
