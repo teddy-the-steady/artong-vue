@@ -25,7 +25,12 @@
 
 <script>
 import { ethers } from 'ethers'
-import { FACTORY_ABI, FACTORY, getSigner } from '../../contracts'
+import {
+  FACTORY_ABI,
+  FACTORY,
+  getPcSigner,
+  getWalletConnectSigner
+} from '../../contracts'
 import { postProject } from '../../api/projects'
 import { mapState } from 'vuex'
 
@@ -34,7 +39,10 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
-    })
+    }),
+    isMobile() {
+      return this.$isMobile()
+    }
   },
   data() {
     return {
@@ -46,8 +54,13 @@ export default {
   },
   methods: {
     async createProject() {
-      console.log(this.name, this.symbol, this.maxAmount, this.policy)
-      const signer = await getSigner()
+      let signer = null
+      if (this.isMobile) {
+        signer = await getWalletConnectSigner() // TODO] tx 지갑에 넘어가고 session_update 이벤트 발생하는 버그. 재현이 잘 안됨..
+      } else {
+        signer = await getPcSigner()
+      }
+
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
       const tx = await contract.createNFTContract(
         this.name,
