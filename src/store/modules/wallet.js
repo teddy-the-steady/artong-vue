@@ -9,6 +9,7 @@ import {
 } from '../actions/wallet'
 import Provider from '../../util/walletConnectProvider'
 import { getMember } from '../../api/member'
+import { Auth } from '@aws-amplify/auth'
 
 const defaultState = {
   chainId: 0,
@@ -54,7 +55,7 @@ const actions = {
           commit(WALLET_ACCOUNT, accounts[0])
 
           let signature = null
-          await this.$store.dispatch('AUTH_LOGOUT')
+          await Auth.signOut()
           const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
           if (cognitoUser) {
             commit('TOGGLE_CONFIRM_MODAL')
