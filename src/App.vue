@@ -23,6 +23,7 @@ import SideBar from './components/sidebar/SideBar'
 import ConfirmModal from './components/modal/ConfirmModal'
 import { mapState, mapGetters } from 'vuex'
 import { getMember } from './api/member'
+import { Auth } from '@aws-amplify/auth'
 
 export default {
   name: 'App',
@@ -41,10 +42,7 @@ export default {
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState'
-    }),
-    isMobile() {
-      return this.$isMobile()
-    },
+    })
   },
   methods: {
     async getPcWalletOnFirstLoad() {
@@ -64,7 +62,7 @@ export default {
               this.toggleConfirmModal()
               const ok = await this.$refs.confirmModal.waitForAnswer()
               if (ok) {
-                await this.$store.dispatch('AUTH_LOGOUT')
+                await Auth.signOut()
                 const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
                 const signature = await window.ethereum.request({
                   method: 'personal_sign',
