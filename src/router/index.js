@@ -9,7 +9,8 @@ import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
 import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
-import CreateProject from '@/components/menu/CreateProject'
+import CreateProject from '@/components/projects/CreateProject'
+import CreatingProject from '@/components/projects/CreatingProject'
 
 Vue.use(Router)
 
@@ -69,7 +70,19 @@ const router = new Router({
     {
       path: '/create/project',
       name: 'CreateProject',
-      component: CreateProject
+      component: CreateProject,
+      beforeEnter(to, from, next) {
+        if (to.query.txHash) {
+          next({ name: 'CreatingProject', query: to.query })
+        } else {
+          next()
+        }
+      }
+    },
+    {
+      path: '/create/project',
+      name: 'CreatingProject',
+      component: CreatingProject
     }
   ]
 })

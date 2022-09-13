@@ -33,6 +33,7 @@ import {
 } from '../../contracts'
 import { postProject } from '../../api/projects'
 import { mapState } from 'vuex'
+import { PENDING } from '../../constants'
 
 export default {
   name: 'CreateProject',
@@ -68,34 +69,57 @@ export default {
         this.maxAmount,
         this.policy
       )
-      // TODO] mainnet에선 tx.wait가 매우 오래 걸릴 수 있음. foundation처럼 CollectionByContractAddress polling 하자
-      const res = await tx.wait()
+      console.log('tx:',tx)
 
-      const address = this.getProjectAddressFromContractCreatedEvent(res)
-      const result = await postProject({
-        address: address,
-        name: this.name
+      const postResult = await postProject({
+        create_tx_hash: tx.hash,
+        name: this.name,
+        status: PENDING
       })
-      console.log(result)
-    },
-    getProjectAddressFromContractCreatedEvent(txResult) {
-      const resultArray = txResult.events.map(evt => {
-        if (
-          evt.topics[0] ===
-          '0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b'
-        ) {
-          const address = ethers.utils.hexDataSlice(evt.data, 44)
-          return address
-        }
-      })
-
-      for (let i = 0; i < resultArray.length; i++) {
-        const isAddressExists = resultArray[i]
-        if (isAddressExists) {
-          return resultArray[i]
-        }
+      console.log(postResult)
+      
+      if (postResult) {
+        this.$router.push({ name: 'CreatingProject', query: { txHash: tx.hash } })
       }
-    }
+
+      // TODO] mainnet에선 tx.wait가 매우 오래 걸릴 수 있음.
+      // foundation처럼 CollectionByContractAddress polling 하자.
+      // FE 에서 polling
+      // FE polling 시에만 getTransactionReceipt 해줘도 괜찮을듯
+      // 성공시 project address update
+
+      // const tasks = [1,2,3,4,5,6,7,8,9,10]
+      // const wait = (timeToDelay) => new Promise((resolve) => setTimeout(resolve, timeToDelay))
+      // for(let task of tasks) {
+      //   const result = await provider.getTransactionReceipt(tx.hash)
+      //   console.log(task,'getTransactionReceipt:', result)
+      //   await wait(3000)
+      //   if (result) {
+      //     break
+      //   }
+      // }
+
+      // const res = await tx.wait()
+      // console.log('res:', res)
+    },
+    // getProjectAddressFromContractCreatedEvent(txResult) {
+    //   const resultArray = txResult.events.map(evt => {
+    //     if (
+    //       evt.topics[0] ===
+    //       '0x2d49c67975aadd2d389580b368cfff5b49965b0bd5da33c144922ce01e7a4d7b'
+    //     ) {
+    //       const address = ethers.utils.hexDataSlice(evt.data, 44)
+    //       return address
+    //     }
+    //   })
+
+    //   for (let i = 0; i < resultArray.length; i++) {
+    //     const isAddressExists = resultArray[i]
+    //     if (isAddressExists) {
+    //       return resultArray[i]
+    //     }
+    //   }
+    // }
   }
 }
 </script>
