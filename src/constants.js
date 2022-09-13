@@ -1,0 +1,7 @@
+const PENDING = 'PENDING'
+const CREATED = 'CREATED'
+
+export {
+	PENDING,
+	CREATED,
+}
