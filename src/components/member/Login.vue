@@ -73,7 +73,9 @@ export default {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
           if (accounts.length > 0) {
             const address = accounts[0]
-            const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+            const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', {
+              address: address
+            })
             const signature = await window.ethereum.request({
               method: 'personal_sign',
               params: [address, cognitoUser.challengeParam.message],
@@ -113,7 +115,9 @@ export default {
         const { connector, address } = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
         if (connector) {
           let signature = null
-          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', address)
+          const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', {
+            address: address
+          })
           if (cognitoUser) {
             this.$store.commit('TOGGLE_CONFIRM_MODAL')
             const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
