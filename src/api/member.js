@@ -12,9 +12,10 @@ const getMember = async function(walletAddress) {
   return await instance.get(`/members/${walletAddress}`)
 }
 
-const postMember = async function(walletAddress) {
-  return await instance.post('/member', {
-    wallet_address: walletAddress
+const postMember = async function(walletAddress, principalId) {
+  return await instance.post('/members', {
+    wallet_address: walletAddress,
+    principal_id: principalId
   })
 }
  

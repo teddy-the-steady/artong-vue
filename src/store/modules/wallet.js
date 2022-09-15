@@ -56,7 +56,9 @@ const actions = {
 
           let signature = null
           await Auth.signOut()
-          const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
+          const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', {
+            address: accounts[0]
+          })
           if (cognitoUser) {
             commit('TOGGLE_CONFIRM_MODAL')
             const ok = await state.waitForAnswer()
