@@ -5,10 +5,15 @@ const postProject = async function(body) {
 }
 
 const patchProject = async function(txHash, body) {
-  return await instance.patchProject(`/projects/${txHash}`, body)
+  return await instance.patch(`/projects/${txHash}`, body)
+}
+
+const getProjectWhileUpdatingCreatedPendingOne = async function(txHash) {
+  return await instance.get(`/projects/${txHash}`)
 }
  
 export {
   postProject,
   patchProject,
+  getProjectWhileUpdatingCreatedPendingOne,
 }

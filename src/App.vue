@@ -63,7 +63,9 @@ export default {
               const ok = await this.$refs.confirmModal.waitForAnswer()
               if (ok) {
                 await Auth.signOut()
-                const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', accounts[0])
+                const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', {
+                  address: accounts[0]
+                })
                 const signature = await window.ethereum.request({
                   method: 'personal_sign',
                   params: [accounts[0], cognitoUser.challengeParam.message],
