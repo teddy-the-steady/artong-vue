@@ -25,12 +25,12 @@ const state = JSON.parse(localStorage.getItem('current-user'))?
 }
 
 const actions = {
-  [AUTH_SIGN_IN_AND_UP]: async function({ commit, dispatch }, address) {
+  [AUTH_SIGN_IN_AND_UP]: async function({ commit, dispatch }, payload) {
     try {
       commit(AUTH_SIGN_IN_AND_UP)
-      const cognitoUser = await Auth.signIn(address)
-      if (state.justSignedUp) {
-        await postMember(address)
+      const cognitoUser = await Auth.signIn(payload.address)
+      if (state.justSignedUp && payload.principalId) {
+        await postMember(payload.address, payload.principalId)
       }
       return cognitoUser
     } catch (error) {
@@ -38,12 +38,15 @@ const actions = {
       if (error && error.message && error.message.includes('[404]')) {
         const pw = getRandomString(30)
         const params = {
-          username: address,
+          username: payload.address,
           password: pw,
         }
-        await Auth.signUp(params)
+        const signUpUser = await Auth.signUp(params)
         commit(AUTH_JUST_SIGNED_UP)
-        return await dispatch('AUTH_SIGN_IN_AND_UP', address)
+        return await dispatch('AUTH_SIGN_IN_AND_UP', {
+          address: payload.address,
+          principalId: signUpUser.userSub
+        })
       } else {
         throw error
       }
