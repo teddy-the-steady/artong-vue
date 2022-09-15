@@ -19,8 +19,9 @@ export default {
     },
     async getProjectWhileUpdatingCreatedPendingOne() {
       for (;;) {
-        const result = getProjectWhileUpdatingCreatedPendingOne(this.txHash)
-        if (result.data && result.data.status === 'CREATED') {
+        const result = await getProjectWhileUpdatingCreatedPendingOne(this.txHash)
+        if (result && result.status === 'CREATED') {
+          // TODO] 다른 화면으로 리다이렉트!!!
           break
         }
         if (this.$router.currentRoute.name !== 'CreatingProject') {
