@@ -11,6 +11,7 @@ import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
 import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
+import MintToken from '@/components/projects/MintToken'
 
 Vue.use(Router)
 
@@ -83,6 +84,11 @@ const router = new Router({
       path: '/create/project',
       name: 'CreatingProject',
       component: CreatingProject
+    },
+    {
+      path: '/mint/token',
+      name: 'MintToken',
+      component: MintToken
     }
   ]
 })
