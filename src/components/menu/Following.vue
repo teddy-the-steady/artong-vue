@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ContentList from '../contents/ContentList'
+import ContentList from '../contents(deprecated)/ContentList'
 import { headerActivate } from '../../mixin'
 export default {
   name: 'Following',
