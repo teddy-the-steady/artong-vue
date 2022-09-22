@@ -23,7 +23,7 @@
 
 <script>
 import InContentsProfile from '../profile/InContentsProfile'
-import ReactionList from '../contents/ReactionList'
+import ReactionList from '../contents(deprecated)/ReactionList'
 
 export default {
   name: 'ContentLayer',
