@@ -1201,6 +1201,25 @@ export const ERC721_ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "enum Policy",
+        "name": "policy",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "updater",
+        "type": "address"
+      }
+    ],
+    "name": "UpdatePolicy",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
