@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
+import { isAuthenticated } from '../util/commonFunc'
 import Home from '@/components/menu/Home'
 import Project from '@/components/projects/Project'
 import Projects from '@/components/menu/Projects'
@@ -20,8 +21,20 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'HomeOrMain',
+      component: () => {
+        if (isAuthenticated()) {
+          return import('@/components/menu/Home')
+        } else {
+          return import('@/components/menu/Main')
+        }
+      },
+      beforeEnter(to, from, next) {
+        if (from.name === 'Login') {
+          to.matched[0].components.default = Home
+        }
+        next()
+      }
     },
     {
       path: '/projects/:id',
