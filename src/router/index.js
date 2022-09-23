@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
+import { Auth } from '@aws-amplify/auth'
+import { isAuthenticated } from '../util/commonFunc'
 import Home from '@/components/menu/Home'
 import Project from '@/components/projects/Project'
 import Projects from '@/components/menu/Projects'
 import Following from '@/components/menu/Following'
-import Workplace from '@/components/menu/Workplace'
 import Login from '@/components/member/Login'
 import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
 import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import MintToken from '@/components/projects/MintToken'
+import Tokens from '@/components/menu/Tokens'
 
 Vue.use(Router)
 
@@ -20,8 +22,20 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'HomeOrMain',
+      component: () => {
+        if (isAuthenticated()) {
+          return import('@/components/menu/Home')
+        } else {
+          return import('@/components/menu/Main')
+        }
+      },
+      beforeEnter(to, from, next) {
+        if (from.name === 'Login') {
+          to.matched[0].components.default = Home
+        }
+        next()
+      }
     },
     {
       path: '/projects/:id',
@@ -36,13 +50,7 @@ const router = new Router({
     {
       path: '/following',
       name: 'Following',
-      component: Following
-      // meta: { requiresAuth: true }
-    },
-    {
-      path: '/workplace',
-      name: 'Workplace',
-      component: Workplace,
+      component: Following,
       meta: { requiresAuth: true }
     },
     {
@@ -64,9 +72,14 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/artwork/:id',
+      path: '/artworks/:id',
       name: 'Artwork',
       // component: Login
+    },
+    {
+      path: '/artworks',
+      name: 'Artworks',
+      component: Tokens
     },
     {
       path: '/create/project',
@@ -78,7 +91,8 @@ const router = new Router({
         } else {
           next()
         }
-      }
+      },
+      meta: { requiresAuth: true }
     },
     {
       path: '/create/project',
@@ -97,7 +111,7 @@ router.beforeEach(async function(to, from, next) {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let user = null
     try {
-      const data = await Vue.prototype.$Amplify.Auth.currentAuthenticatedUser()
+      const data = await Auth.currentAuthenticatedUser()
       if (data && data.signInUserSession) {
         user = data
       }
