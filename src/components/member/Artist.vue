@@ -16,7 +16,7 @@
 <script>
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ContentList from '../contents(deprecated)/ContentList'
+import ContentList from '../contents/ContentList'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
 
