@@ -21,7 +21,7 @@
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import ContentList from '../contents(deprecated)/ContentList'
+import ContentList from '../contents/ContentList'
 import UploadModal from '../modal/UploadModal'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
