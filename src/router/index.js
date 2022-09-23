@@ -31,7 +31,7 @@ const router = new Router({
         }
       },
       beforeEnter(to, from, next) {
-        if (from.name === 'Login') {
+        if (isAuthenticated()) {
           to.matched[0].components.default = Home
         }
         next()
