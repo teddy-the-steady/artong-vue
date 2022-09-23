@@ -1,9 +1,9 @@
 <template>
   <div class="projects">
     <div class="project" v-for="(val, i) in projectList" :key="i">
-      <!-- <router-link :to="{ name: 'Artwork', params: { id: val.id_pk || val.url }}"> -->
-      <project-box :project="val"></project-box>
-      <!-- </router-link> -->
+      <router-link :to="{ name: 'Project', params: { id: val.id }}">
+        <project-box :project="val"></project-box>
+      </router-link>
     </div>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
