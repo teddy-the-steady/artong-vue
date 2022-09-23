@@ -4,8 +4,7 @@
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
-      <div class="tab">
-      </div>
+      <profile-tab></profile-tab>
     </div>
     <div class="contents">
       <content-list :contentsApi="contentsApi"></content-list>
@@ -17,13 +16,14 @@
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ContentList from '../contents/ContentList'
+import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
 
 export default {
   name: 'Artist',
   components: {
-    ArtistPageProfile, ContentList
+    ArtistPageProfile, ContentList, ProfileTab
   },
   extends: baseLazyLoading((to, callback) => {
     callback(function() {
