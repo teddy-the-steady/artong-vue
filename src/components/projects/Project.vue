@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      projectAddress: ''
+      projectAddress: '0x1973718236'
     }
   },
   created() {
