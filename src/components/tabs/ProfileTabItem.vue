@@ -1,7 +1,7 @@
 <template>
-  <button @click="$emit('input', id)" :class="[active, 'tab']">
+  <span @click="$emit('tabClick', id)" class='tab' :class="{active: isTabActive}">
     {{ label }}
-  </button>
+  </span>
 </template>
 
 <script>
@@ -13,24 +13,24 @@ export default {
     value: Number
   },
   computed: {
-    active() {
-      return this.value === this.id ? 'active' : false
+    isTabActive() {
+      return this.value === this.id ? true : false
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
 .tab {
-  border-radius: 2px 2px 0 0;
-  background: #fff;
-  color: #311d0a;
-  line-height: 24px;
+  cursor: pointer;
+  &:hover {
+    background: $lightgray;
+  }
+  &.active {
+    background: #f7c9c9;
+  }
 }
-.tab:hover {
-  background: #eeeeee;
-}
-.active {
-  background: #f7c9c9;
-}
+
 </style>
