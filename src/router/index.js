@@ -43,6 +43,11 @@ const router = new Router({
       component: Project
     },
     {
+      path: '/projects/:id/mint',
+      name: 'MintToken',
+      component: MintToken
+    },
+    {
       path: '/projects',
       name: 'Projects',
       component: Projects
@@ -99,11 +104,6 @@ const router = new Router({
       name: 'CreatingProject',
       component: CreatingProject
     },
-    {
-      path: '/mint/token',
-      name: 'MintToken',
-      component: MintToken
-    }
   ]
 })
 
