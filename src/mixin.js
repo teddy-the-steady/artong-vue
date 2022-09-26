@@ -168,7 +168,7 @@ export const backgroundColor = {
     generateGradientBackground(address) {
       let color1, color2 = null
 
-      if (address && address.startsWith('0x')) {
+      if (address && typeof address === 'string' && address.startsWith('0x')) {
         const hexString = address.split('x')[1]
         color1 = '#' + hexString.slice(0, 6)
         color2 = '#' + hexString.slice(hexString.length - 6, hexString.length)
