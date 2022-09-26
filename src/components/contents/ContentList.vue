@@ -16,7 +16,7 @@ import TopContainer from './TopContainer'
 import BottomContainer from './BottomContainer'
 import axios from 'axios'
 import { mapState } from 'vuex'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, deepCopy } from '../../util/commonFunc'
 
 export default {
   name: 'ContentList',
@@ -128,7 +128,7 @@ export default {
       }
     },
     resetImageIndexBeforePush(images, lastImageOfContainer) {
-      let lastImageOfContainerCopy = this.deepCopy(lastImageOfContainer)
+      let lastImageOfContainerCopy = deepCopy(lastImageOfContainer)
       for (let i in images) {
         images[i].index = ++lastImageOfContainerCopy.index
       }
@@ -171,9 +171,6 @@ export default {
     },
     prependImage(image, destContainer) {
       destContainer.unshift(image)
-    },
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj))
     },
     emptyContentsLists() {
       this.topContents = []
