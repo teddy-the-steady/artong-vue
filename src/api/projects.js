@@ -11,9 +11,16 @@ const patchProject = async function(txHash, body) {
 const getProject = async function(txHash) {
   return await instance.get(`/projects/${txHash}`)
 }
+
+const getProjects = async function(params) {
+  return await instance.get('/projects', {
+    params: {...params}
+  })
+}
  
 export {
   postProject,
   patchProject,
   getProject,
+  getProjects,
 }
