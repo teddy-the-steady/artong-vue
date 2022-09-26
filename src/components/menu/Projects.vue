@@ -1,17 +1,37 @@
 <template>
   <div>
-    <project-list></project-list>
+    <project-list :projectsApi="projectsApi"></project-list>
   </div>
 </template>
 
 <script>
 import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
+import { getProjects } from '../../api/projects'
+
 export default {
   name: 'Projects',
   mixins: [headerActivate],
   components: {
     ProjectList
+  },
+  data() {
+    return {
+      projectsApi: {
+        func: null,
+        query: {}
+      }
+    }
+  },
+  mounted() {
+    this.projectsApi = {
+        func: getProjects,
+        query: {
+          start_num: 0,
+          count_num: 5,
+          status: 'CREATED'
+        }
+      }
   }
 }
 </script>
