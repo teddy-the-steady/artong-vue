@@ -2,41 +2,52 @@
   <div>
     <div class="tabs">
       <profile-tab-item
-        v-for="item in list"
-        v-bind="item" :key="item.id"
+        v-for="tab in tabs"
+        v-bind="tab" :key="tab.id"
         v-model="currentId"
         @tabClick="tabClick"/>
     </div>
-    <div class="contents">
+    <div class="items">
       <section class="item" :key="currentId">
-        {{ current.content }}
+        <div v-if="current.type === 'TOKENS'">
+          <content-list :contentsApi="current.api"></content-list>
+        </div>
+        <div v-else>
+          {{ current }}
+        </div>
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ProfileTabItem from './ProfileTabItem'
+import ContentList from '../contentsV2/ContentList'
 
 export default {
   name: 'ProfileTab',
   components: {
-    ProfileTabItem
+    ProfileTabItem, ContentList
+  },
+  props: {
+    tabs: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
-      currentId: 1,
-      list: [
-        { id: 1, label: 'Tab1', content: '콘텐츠1' },
-        { id: 2, label: 'Tab2', content: '콘텐츠2' },
-        { id: 3, label: 'Tab3', content: '콘텐츠3' }
-      ]
+      currentId: 1
     }
   },
   computed: {
     current() {
-      return this.list.find(el => el.id === this.currentId) || {}
-    }
+      return this.tabs.find(el => el.id === this.currentId) || {}
+    },
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
   },
   methods: {
     tabClick(id) {
@@ -47,4 +58,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.item {
+  padding: 0 10%;
+}
 </style>
