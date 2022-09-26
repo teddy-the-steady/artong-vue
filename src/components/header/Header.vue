@@ -128,9 +128,10 @@ export default {
       }
     },
     contribute() {
-      console.log(this.$router.currentRoute)
       if (this.$router.currentRoute.name === 'Project') {
         this.$router.push({ name: 'MintToken' })
+      } else if (this.$router.currentRoute.name === 'Projects') {
+        alert('First, choose a project to contribute!')
       } else {
         alert('First, choose a project to contribute!')
         this.$router.push({ name: 'Projects' })

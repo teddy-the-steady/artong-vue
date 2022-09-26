@@ -19,7 +19,6 @@ Storage.configure(awsconfig)
 smoothscroll.polyfill()
 
 Vue.use(Amplify)
-console.log('Vue.use(Amplify)')
 Vue.use(Masonry)
 Vue.use(VueMobileDetection)
 
