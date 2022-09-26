@@ -4,10 +4,7 @@
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
-      <profile-tab></profile-tab>
-    </div>
-    <div class="contents">
-      <content-list :contentsApi="contentsApi"></content-list>
+      <profile-tab :tabs="tabs"/>
     </div>
   </div>
 </template>
@@ -15,7 +12,6 @@
 <script>
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ContentList from '../contents/ContentList'
 import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
@@ -23,12 +19,12 @@ import { getMembers } from '../../api/member'
 export default {
   name: 'Artist',
   components: {
-    ArtistPageProfile, ContentList, ProfileTab
+    ArtistPageProfile, ProfileTab
   },
   extends: baseLazyLoading((to, callback) => {
     callback(function() {
-      this.contentsApi = {
-        url: this.currentUser.id? '/auth/uploads' : '/uploads',
+      this.tabs[0].api = {
+        url: '/uploads',
         params: {id: this.$route.params.id}
       }
     })
@@ -40,14 +36,23 @@ export default {
   },
   data() {
     return {
-      contentsApi: {
-        url: '',
-        params: {},
-        query: {}
-      },
       componentKey: 0,
       member: {},
-      username: ''
+      username: '',
+      tabs: [
+        {
+          id: 1, label: 'Contributed', type: 'TOKENS',
+          api: { url: '/uploads', params: {id: this.$route.params.id}, query: {} }
+        },
+        {
+          id: 2, label: 'Projects', type: 'PROJECTS',
+          api: { url: '', params: {}, query: {} }
+        },
+        {
+          id: 3, label: 'Owned', type: 'TOKENS',
+          api: { url: '', params: {}, query: {} }
+        }
+      ]
     }
   },
   methods: {
