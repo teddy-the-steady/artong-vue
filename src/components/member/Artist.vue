@@ -15,6 +15,7 @@ import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
+import { getProjects } from '../../api/projects'
 
 export default {
   name: 'Artist',
@@ -27,6 +28,15 @@ export default {
         url: '/uploads',
         params: {id: this.$route.params.id}
       }
+      this.tabs[1].api = {
+        func: getProjects,
+        query: {
+          start_num: 0,
+          count_num: 5,
+          member_id: this.member.id,
+          status: 'CREATED'
+        }
+      }
     })
   }),
   computed: {
@@ -37,21 +47,13 @@ export default {
   data() {
     return {
       componentKey: 0,
+      tabKey: 0,
       member: {},
       username: '',
       tabs: [
-        {
-          id: 1, label: 'Contributed', type: 'TOKENS',
-          api: { url: '/uploads', params: {id: this.$route.params.id}, query: {} }
-        },
-        {
-          id: 2, label: 'Projects', type: 'PROJECTS',
-          api: { url: '', params: {}, query: {} }
-        },
-        {
-          id: 3, label: 'Owned', type: 'TOKENS',
-          api: { url: '', params: {}, query: {} }
-        }
+        { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
+        { id: 2, label: 'Projects', type: 'PROJECTS', api: {} },
+        { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
       ]
     }
   },
@@ -72,9 +74,12 @@ export default {
     this.member = await this.getMember(this.username)
     this.$watch(
       () => this.$route,
-      async (toRoute) => {
-        if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
-          this.username = toRoute.params.id
+      async (to, from) => {
+        if (to.path === from.path) {
+          return
+        }
+        if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
+          this.username = to.params.id
           this.forceRerender()
           this.member = await this.getMember(this.username)
         }
