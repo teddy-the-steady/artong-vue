@@ -1,9 +1,12 @@
 <template>
-  <div class="projects">
-    <div class="project" v-for="(val, i) in projectList" :key="i">
-      <router-link :to="{ name: 'Project', params: { id: val.address }}">
-        <project-box :project="val"></project-box>
-      </router-link>
+  <div>
+    <div class="projects">
+      <div class="info">explore projects</div>
+      <div class="project" v-for="(val, i) in projectList" :key="i">
+        <router-link :to="{ name: 'Project', params: { id: val.address }}">
+          <project-box :project="val"></project-box>
+        </router-link>
+      </div>
     </div>
     <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
   </div>
@@ -27,7 +30,7 @@ export default {
   },
   data() {
     return {
-      projectList: [{id: 0, name: "test"}],
+      projectList: [],
       noMoreDataToLoad: false
     }
   },
@@ -70,7 +73,7 @@ export default {
     },
     async getContents() {
       const results = await this.projectsApi.func(this.projectsApi.query)
-      this.projectsApi.query.start_num += 5
+      this.projectsApi.query.start_num += this.projectsApi.query.count_num
       this.noMoreDataToLoad = results.length < this.projectsApi.query.count_num
       return results
     },
@@ -98,8 +101,14 @@ export default {
   display: flex;
   flex-flow: row wrap;
 
+  .info {
+    display: none;
+  }
+
   .project {
     flex: 1;
+    height: 400px;
+    margin: 10px;
   }
 }
 
