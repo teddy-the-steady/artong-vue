@@ -28,15 +28,16 @@ export default {
         url: '/uploads',
         params: {id: this.$route.params.id}
       }
+
       this.tabs[1].api = {
-        func: getProjects,
-        query: {
-          start_num: 0,
-          count_num: 5,
-          member_id: this.member.id,
-          status: 'CREATED'
-        }
+      func: getProjects,
+      query: {
+        start_num: 0,
+        count_num: 5,
+        member_id: this.member.id,
+        status: 'CREATED'
       }
+    }
     })
   }),
   computed: {
@@ -72,6 +73,17 @@ export default {
   async created() {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
+    
+    this.tabs[1].api = {
+      func: getProjects,
+      query: {
+        start_num: 0,
+        count_num: 5,
+        member_id: this.member.id,
+        status: 'CREATED'
+      }
+    }
+
     this.$watch(
       () => this.$route,
       async (to, from) => {
