@@ -21,8 +21,7 @@ export default {
 
 .box {
   display: block;
-  height: 300px;
-  margin: 10px;
+  height: 100%;
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
 }
 </style>
