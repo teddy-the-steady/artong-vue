@@ -9,12 +9,13 @@
     </div>
     <div class="items">
       <section class="item" :key="currentId">
-        <div v-if="current.type === 'TOKENS'">
+        <div v-show="current.type === 'TOKENS'">
           <content-list :contentsApi="current.api"></content-list>
         </div>
-        <div v-else>
-          {{ current }}
+        <div v-show="current.type === 'PROJECTS'">
+          <project-list :projectsApi="current.api"></project-list>
         </div>
+        {{ current }}
       </section>
     </div>
   </div>
@@ -24,11 +25,12 @@
 import { mapState } from 'vuex'
 import ProfileTabItem from './ProfileTabItem'
 import ContentList from '../contentsV2/ContentList'
+import ProjectList from '../projects/ProjectList.vue'
 
 export default {
   name: 'ProfileTab',
   components: {
-    ProfileTabItem, ContentList
+    ProfileTabItem, ContentList, ProjectList
   },
   props: {
     tabs: {
@@ -38,7 +40,7 @@ export default {
   },
   data() {
     return {
-      currentId: 1
+      currentId: parseInt(this.$router.currentRoute.query.tab) || 1
     }
   },
   computed: {
@@ -52,6 +54,14 @@ export default {
   methods: {
     tabClick(id) {
       this.currentId = id
+      this.$router.push({ query: { tab: id } })
+    }
+  },
+  watch: {
+    async $route(val) {
+      if (val) {
+        this.currentId = parseInt(val.query.tab)
+      }
     }
   }
 }
