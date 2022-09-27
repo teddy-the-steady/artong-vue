@@ -25,13 +25,13 @@ export default {
   },
   mounted() {
     this.projectsApi = {
-        func: getProjects,
-        query: {
-          start_num: 0,
-          count_num: 5,
-          status: 'CREATED'
-        }
+      func: getProjects,
+      query: {
+        start_num: 0,
+        count_num: 5,
+        status: 'CREATED'
       }
+    }
   }
 }
 </script>
