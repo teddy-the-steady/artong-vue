@@ -121,7 +121,15 @@ export default {
 @media screen {
   .projects {
     .project {
-      flex-basis: 20%;
+      flex-basis: 10%;
+    }
+  }
+}
+
+@include max-width(2200px) {
+  .projects {
+    .project {
+      flex-basis: 15%;
     }
   }
 }
