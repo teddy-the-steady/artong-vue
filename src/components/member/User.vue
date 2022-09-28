@@ -7,12 +7,8 @@
       </div>
       <div>address: {{walletConnectState.address}}</div>
       <div>chainId: {{walletConnectState.chainId}}</div>
-      <div class="tab">
-      </div>
     </div>
-    <div class="contents">
-      <content-list :key="componentKeyForRerender" :contentsApi="contentsApi"></content-list>
-    </div>
+    <profile-tab :tabs="tabs"/>
     <upload-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
     </upload-modal>
@@ -21,16 +17,17 @@
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import ContentList from '../contentsV2/ContentList'
 import UploadModal from '../modal/UploadModal'
+import ProfileTab from '../tabs/ProfileTab'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
+import { getProjects } from '../../api/projects'
 
 export default {
   name: 'User',
   mixins: [headerActivate],
   components: {
-    MyPageProfile, ContentList, UploadModal
+    MyPageProfile, UploadModal, ProfileTab
   },
   computed: {
     ...mapState({
@@ -42,39 +39,43 @@ export default {
   data() {
     return {
       username: '',
-      componentKeyForRerender: 0,
-      contentsApi: {
-        url: '',
-        params: {},
-        query: {}
-      }
+      tabs: [
+        { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
+        { id: 2, label: 'Projects', type: 'PROJECTS', api: {} },
+        { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
+      ]
     }
   },
   methods: {
-    close(isSuccess) {
+    close() {
       this.toggleModal()
-      if (isSuccess) { // TODO] 업로드 성공 이후 업로드한 컨텐츠가 안보이는 이슈,, s3업로드랑 db insert하는 람다트리거가 따로라서 발생.
-        this.resetUserContentListKey(3000) // 3초후 reload말고 어떻게? 람다트리거 완료인지 클라에서 근본적으로 어떻게 알지? 어차피 성공하고 넘어오니까 클라이언트 배열에 그냥 이미지 삽입?
-      }
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
     },
-    resetUserContentListKey(timeout) {
-      setTimeout(() => {
-        this.componentKeyForRerender = Math.round(Math.random() * 1000)
-      }, timeout)
-    }
   },
-  mounted() {
-    this.contentsApi = {
-      url: '/auth/uploads',
-      params: {id: this.$route.params.id}
+  created() {
+    this.tabs[1].api = {
+      func: getProjects,
+      query: {
+        start_num: 0,
+        count_num: 5,
+        member_id: this.currentUser.id,
+        status: 'CREATED'
+      }
     }
   },
   watch: {
-    $route() {
-      window.scrollTo({top: 0})
+    '$route': function() {
+      this.tabs[1].api = {
+        func: getProjects,
+        query: {
+          start_num: 0,
+          count_num: 5,
+          member_id: this.currentUser.id,
+          status: 'CREATED'
+        }
+      }
     }
   }
 }

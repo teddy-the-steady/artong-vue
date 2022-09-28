@@ -60,7 +60,7 @@ export default {
   watch: {
     async $route(val) {
       if (val) {
-        this.currentId = parseInt(val.query.tab)
+        this.currentId = parseInt(val.query.tab) || 1
       }
     }
   }
