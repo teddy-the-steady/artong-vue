@@ -4,7 +4,7 @@
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
-      <profile-tab :tabs="tabs"/>
+      <profile-tab v-if="member.id" :tabs="tabs"/>
     </div>
   </div>
 </template>
@@ -28,16 +28,6 @@ export default {
         url: '/uploads',
         params: {id: this.$route.params.id}
       }
-
-      this.tabs[1].api = {
-      func: getProjects,
-      query: {
-        start_num: 0,
-        count_num: 5,
-        member_id: this.member.id,
-        status: 'CREATED'
-      }
-    }
     })
   }),
   computed: {
@@ -48,7 +38,6 @@ export default {
   data() {
     return {
       componentKey: 0,
-      tabKey: 0,
       member: {},
       username: '',
       tabs: [
@@ -73,7 +62,7 @@ export default {
   async created() {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
-    
+
     this.tabs[1].api = {
       func: getProjects,
       query: {
@@ -97,6 +86,19 @@ export default {
         }
       }
     )
+  },
+  watch: {
+    '$route': function() {
+      this.tabs[1].api = {
+        func: getProjects,
+        query: {
+          start_num: 0,
+          count_num: 5,
+          member_id: this.member.id,
+          status: 'CREATED'
+        }
+      }
+    }
   }
 }
 </script>
