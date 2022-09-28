@@ -10,10 +10,7 @@
     </div>
     <div class="info">
       <div class="username">
-        {{ $route.params.id }}
-      </div>
-      <div class="display-name">
-        {{ currentUser.profile.display_name }}
+        {{ currentUser.username }}
       </div>
       <div class="intro">
         {{ currentUser.email }}
@@ -52,7 +49,7 @@ export default {
     async uploadProfileImage(file) {
       // TODO] 전후처리는? 사진 가공 등등
       // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
-      const result = await Storage.put(`${this.currentUser.id}/profile/${file.name}`, file, {
+      const result = await Storage.put(`profile/${this.currentUser.id}/${file.name}`, file, {
         level: 'public',
         contentType: file.type
       })
