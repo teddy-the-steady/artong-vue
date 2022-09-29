@@ -19,7 +19,7 @@ import ContentBox from './ContentBox'
 import ContentsProfile from '../profile/ContentsProfile'
 import InfiniteLoading from 'vue-infinite-loading'
 import axios from 'axios'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, deepCopy } from '../../util/commonFunc'
 
 export default {
   name: 'ContentListV2',
@@ -60,14 +60,11 @@ export default {
       const lastImage = imageList[imageList.length - 1]
       for (let i in imageArrayToPush) {
         if (lastImage) {
-          const lastImageCopy = this.deepCopy(lastImage)
+          const lastImageCopy = deepCopy(lastImage)
           imageArrayToPush[i].index = ++lastImageCopy.index
         }
         imageList.push(imageArrayToPush[i])
       }
-    },
-    deepCopy(obj) {
-      return JSON.parse(JSON.stringify(obj))
     },
     async makeImageArray() {
       const imageArrayToPush = []
