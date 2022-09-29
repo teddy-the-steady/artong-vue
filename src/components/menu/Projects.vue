@@ -8,6 +8,7 @@
 import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
 import { getProjects } from '../../api/projects'
+import { CREATED } from '../../constants'
 
 export default {
   name: 'Projects',
@@ -29,7 +30,7 @@ export default {
       query: {
         start_num: 0,
         count_num: 5,
-        status: 'CREATED'
+        status: CREATED
       }
     }
   }
