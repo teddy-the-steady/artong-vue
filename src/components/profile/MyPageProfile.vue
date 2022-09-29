@@ -78,13 +78,13 @@ export default {
         height: 150px;
         border-radius: 50%;
         border: 2px solid $artong-white;
+        cursor: pointer;
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           border-radius: 50%;
-          cursor: pointer;
         }
 
         .basicProfilePicture {
