@@ -74,6 +74,7 @@ export default {
       const postResult = await postProject({
         create_tx_hash: tx.hash,
         name: this.name,
+        symbol: this.symbol,
         status: PENDING
       })
       console.log(postResult)

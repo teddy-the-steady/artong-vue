@@ -32,13 +32,18 @@
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
-          <div class="login" v-if="!currentUser.id">
+          <div class="before_login" v-if="!currentUser.id">
             <router-link to="/login">
               CONNECT
             </router-link>
           </div>
-          <div class="header-profile" @mousedown="profileMouseDown" @mouseup="profileMouseUp" v-else>
+          <div class="after_login" v-else>
+            <div class="contribute">
+              <a @click="contribute">Contribute</a>
+            </div>
+            <div class="header-profile" @mousedown="profileMouseDown" @mouseup="profileMouseUp">
               <header-profile></header-profile>
+            </div>
           </div>
         </div>
       </div>
@@ -120,6 +125,18 @@ export default {
         this.$router.go(this.$router.currentRoute)
       } catch (error) {
         console.log(error)
+      }
+    },
+    contribute() {
+      if (this.$router.currentRoute.name === 'Project') {
+        this.$router.push({ name: 'MintToken' })
+      } else if (this.$router.currentRoute.name === 'Projects') {
+        alert('First, choose a project to contribute!')
+      } else if (this.$router.currentRoute.name === 'MintToken') {
+        return
+      } else {
+        alert('First, choose a project to contribute!')
+        this.$router.push({ name: 'Projects' })
       }
     }
   },
@@ -286,7 +303,7 @@ export default {
     width: 25%;
 
     .navbar__icons {
-      .login {
+      .before_login {
         height: 2rem;
         border-radius: 2rem;
         width: 90px;
@@ -308,6 +325,28 @@ export default {
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
         cursor: pointer;
+      }
+    }
+
+    .after_login {
+      display: flex;
+      align-items: center;
+
+      .contribute {
+        margin-right: 10px;
+        height: 2rem;
+        border-radius: 2rem;
+        width: 90px;
+        background-color: $artong-black;
+        cursor: pointer;
+
+        a {
+          font-weight: 800;
+          font-size: 1.1rem;
+          color: $artong-white;
+          text-decoration: none;
+          vertical-align: -webkit-baseline-middle;
+        }
       }
     }
   }
@@ -335,7 +374,7 @@ export default {
     }
     .navbar__side {
       .navbar__icons {
-        .login {
+        .before_login {
           width: 70px;
           a {
             font-size: .8rem;

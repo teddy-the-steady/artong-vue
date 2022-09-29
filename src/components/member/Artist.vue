@@ -4,11 +4,7 @@
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
-      <div class="tab">
-      </div>
-    </div>
-    <div class="contents">
-      <content-list :contentsApi="contentsApi"></content-list>
+      <profile-tab v-if="member.id" :tabs="tabs"/>
     </div>
   </div>
 </template>
@@ -16,19 +12,20 @@
 <script>
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ContentList from '../contents/ContentList'
+import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
+import { getProjects } from '../../api/projects'
 
 export default {
   name: 'Artist',
   components: {
-    ArtistPageProfile, ContentList
+    ArtistPageProfile, ProfileTab
   },
   extends: baseLazyLoading((to, callback) => {
     callback(function() {
-      this.contentsApi = {
-        url: this.currentUser.id? '/auth/uploads' : '/uploads',
+      this.tabs[0].api = {
+        url: '/uploads',
         params: {id: this.$route.params.id}
       }
     })
@@ -40,14 +37,14 @@ export default {
   },
   data() {
     return {
-      contentsApi: {
-        url: '',
-        params: {},
-        query: {}
-      },
       componentKey: 0,
       member: {},
-      username: ''
+      username: '',
+      tabs: [
+        { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
+        { id: 2, label: 'Projects', type: 'PROJECTS', api: {} },
+        { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
+      ]
     }
   },
   methods: {
@@ -65,16 +62,43 @@ export default {
   async created() {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
+
+    this.tabs[1].api = {
+      func: getProjects,
+      query: {
+        start_num: 0,
+        count_num: 5,
+        member_id: this.member.id,
+        status: 'CREATED'
+      }
+    }
+
     this.$watch(
       () => this.$route,
-      async (toRoute) => {
-        if (toRoute.name === 'UserOrArtist' && toRoute.params.id !== this.currentUser.username) {
-          this.username = toRoute.params.id
+      async (to, from) => {
+        if (to.path === from.path) {
+          return
+        }
+        if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
+          this.username = to.params.id
           this.forceRerender()
           this.member = await this.getMember(this.username)
         }
       }
     )
+  },
+  watch: {
+    '$route': function() {
+      this.tabs[1].api = {
+        func: getProjects,
+        query: {
+          start_num: 0,
+          count_num: 5,
+          member_id: this.member.id,
+          status: 'CREATED'
+        }
+      }
+    }
   }
 }
 </script>

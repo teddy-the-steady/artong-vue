@@ -30,8 +30,13 @@ const intToHex = function(nr) {
   return nr.toString(16).padStart(2, '0')
 }
 
+const deepCopy = function(obj) {
+  return JSON.parse(JSON.stringify(obj))
+}
+
 export {
   makeS3Path,
   isAuthenticated,
-  getRandomString
+  getRandomString,
+  deepCopy,
 }

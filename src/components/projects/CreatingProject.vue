@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getProjectWhileUpdatingCreatedPendingOne } from '../../api/projects'
+import { getProject } from '../../api/projects'
 export default {
   name: 'CreatingProject',
   data() {
@@ -17,9 +17,9 @@ export default {
     wait(timeToDelay) {
       return new Promise((resolve) => setTimeout(resolve, timeToDelay))
     },
-    async getProjectWhileUpdatingCreatedPendingOne() {
+    async getProject() {
       for (;;) {
-        const result = await getProjectWhileUpdatingCreatedPendingOne(this.txHash)
+        const result = await getProject(this.txHash)
         if (result && result.status === 'CREATED') {
           // TODO] 다른 화면으로 리다이렉트!!!
           break
@@ -32,12 +32,12 @@ export default {
     }
   },
   async mounted() {
-    await this.getProjectWhileUpdatingCreatedPendingOne()
+    await this.getProject()
   },
   watch: {
     async $route(val) {
       if (val.name === 'CreatingProject') {
-        await this.getProjectWhileUpdatingCreatedPendingOne()
+        await this.getProject()
       }
     }
   }
