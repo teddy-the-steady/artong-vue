@@ -19,6 +19,7 @@
     "core-js": "^3.20.1",
     "ethers": "^5.7.0",
     "isomorphic-fetch": "^2.2.1",
+    "nft.storage": "^7.0.0",
     "smoothscroll-polyfill": "^0.4.4",
     "vue": "^2.6.14",
     "vue-infinite-loading": "^2.4.5",
