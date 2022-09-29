@@ -40,7 +40,7 @@ export default {
   border-radius: 20px;
   margin: 7px;
   width: 90%;
-  max-height: 300px;
+  max-height: 500px;
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
   &:hover {
     box-shadow: 1px 1px .5em $darkgray, -1px -1px .5em $darkgray;

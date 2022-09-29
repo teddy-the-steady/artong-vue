@@ -1,0 +1,71 @@
+<template>
+  <div>
+    <div class="tabs">
+      <profile-tab-item
+        v-for="tab in tabs"
+        v-bind="tab" :key="tab.id"
+        v-model="currentId"
+        @tabClick="tabClick"/>
+    </div>
+    <div class="items">
+      <section class="item" :key="currentId">
+        <div v-show="current.type === 'TOKENS'">
+          <content-list :contentsApi="current.api"></content-list>
+        </div>
+        <div v-show="current.type === 'PROJECTS'">
+          <project-list :projectsApi="current.api"></project-list>
+        </div>
+        {{ current }}
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+import ProfileTabItem from './ProfileTabItem'
+import ContentList from '../contentsV2/ContentList'
+import ProjectList from '../projects/ProjectList.vue'
+
+export default {
+  name: 'ProfileTab',
+  components: {
+    ProfileTabItem, ContentList, ProjectList
+  },
+  props: {
+    tabs: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      currentId: parseInt(this.$router.currentRoute.query.tab) || 1
+    }
+  },
+  computed: {
+    current() {
+      return this.tabs.find(el => el.id === this.currentId) || {}
+    },
+    ...mapState({
+      currentUser: state => state.user.currentUser
+    })
+  },
+  methods: {
+    tabClick(id) {
+      this.currentId = id
+      this.$router.push({ query: { tab: id } })
+    }
+  },
+  watch: {
+    async $route(val) {
+      if (val) {
+        this.currentId = parseInt(val.query.tab) || 1
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>
