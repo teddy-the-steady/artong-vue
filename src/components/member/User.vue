@@ -22,6 +22,7 @@ import ProfileTab from '../tabs/ProfileTab'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
 import { getProjects } from '../../api/projects'
+import { CREATED } from '../../constants'
 
 export default {
   name: 'User',
@@ -61,7 +62,7 @@ export default {
         start_num: 0,
         count_num: 5,
         member_id: this.currentUser.id,
-        status: 'CREATED'
+        status: CREATED
       }
     }
   },
@@ -73,7 +74,7 @@ export default {
           start_num: 0,
           count_num: 5,
           member_id: this.currentUser.id,
-          status: 'CREATED'
+          status: CREATED
         }
       }
     }
