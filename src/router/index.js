@@ -45,7 +45,8 @@ const router = new Router({
     {
       path: '/projects/:id/mint',
       name: 'MintToken',
-      component: MintToken
+      component: MintToken,
+      meta: { requiresAuth: true }
     },
     {
       path: '/projects',
