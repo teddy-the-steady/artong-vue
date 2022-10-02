@@ -16,6 +16,7 @@ import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
 import { getProjects } from '../../api/projects'
+import { CREATED } from '../../constants'
 
 export default {
   name: 'Artist',
@@ -69,7 +70,7 @@ export default {
         start_num: 0,
         count_num: 5,
         member_id: this.member.id,
-        status: 'CREATED'
+        status: CREATED
       }
     }
 
@@ -95,7 +96,7 @@ export default {
           start_num: 0,
           count_num: 5,
           member_id: this.member.id,
-          status: 'CREATED'
+          status: CREATED
         }
       }
     }
