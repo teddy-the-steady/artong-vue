@@ -2,14 +2,7 @@ import store from '../store'
 
 const makeS3Path = function(path) {
   if (path) {
-    path = path.split('/')
-    const pathInfo = {
-      level: path[0],
-      user_id: path[1],
-      type: path[2],
-      file: path[3]
-    }
-    return `${process.env.VUE_APP_IMAGE_URL}/${pathInfo.level}/${pathInfo.user_id}/${pathInfo.type}/${pathInfo.file}`
+    return `${process.env.VUE_APP_IMAGE_URL}/${path}`
   }
 }
 
