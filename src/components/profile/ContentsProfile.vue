@@ -52,6 +52,7 @@ export default {
     cursor: pointer;
 
     .image {
+      overflow: hidden;
       display: flex;
       align-items: center;
       height: 100%;
