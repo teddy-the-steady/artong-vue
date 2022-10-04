@@ -67,7 +67,7 @@ export default {
     }
   },
   watch: {
-    '$route': function() {
+    $route() {
       this.tabs[1].api = {
         func: getProjects,
         query: {

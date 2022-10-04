@@ -14,7 +14,7 @@
       loaderCallback.apply(this)
     },
     watch: {
-      '$route': function() {
+      $route() {
         loaderCallback.apply(this)
       }
     }
