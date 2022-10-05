@@ -16,6 +16,7 @@
 import { backgroundColor } from '../../mixin'
 import ContentList from '../contentsV2/ContentList'
 import ProjectPageProfile from '../profile/ProjectPageProfile'
+import { getProject } from '../../api/projects'
 
 export default {
   name: 'Project',
@@ -31,6 +32,12 @@ export default {
   created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.projectAddress)
+  },
+  async beforeRouteEnter(to, from, next) {
+    const result = await getProject(to.params.id)
+    console.log(result)
+    // TODO] 로딩으로 화면 막기
+    next()
   }
 }
 </script>
