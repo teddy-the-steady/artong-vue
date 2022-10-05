@@ -134,7 +134,7 @@ export default {
       ) // TODO] thumbnail 생성
     },
   }
-}
+ }
 </script>
 
 <style lang="scss" scoped>
