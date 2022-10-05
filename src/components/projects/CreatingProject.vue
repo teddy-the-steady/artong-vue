@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getProject } from '../../api/projects'
+import { getProjectWhileUpdatingPendingToCreated } from '../../api/projects'
 import { CREATED } from '../../constants'
 
 export default {
@@ -21,7 +21,7 @@ export default {
     },
     async getProject() {
       for (;;) {
-        const result = await getProject(this.txHash)
+        const result = await getProjectWhileUpdatingPendingToCreated(this.txHash)
         if (result && result.status === CREATED) {
           // TODO] 다른 화면으로 리다이렉트!!!
           break
