@@ -1,15 +1,43 @@
 <template>
   <div class="info">
-    <div class="container1">
-      <div class="intro-title">
-        Open
-        Art NFT
-        Marketplace
+    <div class="container0">
+      <div class="container1">
+        <div class="intro-title">
+          Open
+          Art NFT
+          Marketplace
+        </div>
+        <div class="intro-content">
+          Lorem ipsum dolor sit amet, consectetur Arcu fames nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla facilisis eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum dolor sit amet,     
+        </div>
+        <button class="start-btn">Start contributing</button>
       </div>
-      <div class="intro-content">
-        Lorem ipsum dolor sit amet, consectetur Arcu fames nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla facilisis eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum dolor sit amet,     
+      <div class="container1-2">
+        <svg width="67" height="22" viewBox="0 0 67 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.6094 9.28125H15.9102C15.623 7.45898 14.1992 6.39844 12.4062 6.39844C10.209 6.39844 8.58594 8.04492 8.58594 10.7578C8.58594 13.4707 10.1973 15.1172 12.4062 15.1172C14.2754 15.1172 15.6406 13.9453 15.9102 12.2695L14.6094 12.2578C14.3867 13.3418 13.4844 13.9395 12.418 13.9336C10.959 13.9395 9.86914 12.8262 9.86328 10.7578C9.86914 8.70117 10.9531 7.57617 12.418 7.58203C13.4961 7.57617 14.4043 8.18555 14.6094 9.28125ZM16.9062 13.207C16.9004 14.4492 17.8438 15.1406 19.0508 15.1406C20.1055 15.1406 20.6914 14.6074 20.9375 14.1328H20.9844V15H22.2031V10.7695C22.1973 8.92383 20.7207 8.55469 19.707 8.55469C18.2012 8.55469 17.2168 9.31641 17.1055 10.3711H18.3477C18.4766 9.90234 18.9219 9.5625 19.6602 9.5625C20.5098 9.5625 20.9551 9.97852 20.9492 10.6992L20.9551 11.209C20.6621 11.2207 19.707 11.2734 19.2852 11.2969C18.1367 11.3789 16.9004 11.7539 16.9062 13.207ZM18.125 13.2188C18.125 12.5918 18.6406 12.2812 19.4609 12.2227C19.7598 12.2051 20.668 12.1406 20.9551 12.123L20.9609 12.7031C20.9609 13.459 20.3516 14.1387 19.332 14.1445C18.6289 14.1387 18.125 13.8281 18.125 13.2188ZM26.6914 8.63672H25.3906V7.11328H24.1484V8.63672H23.2109V9.63281H24.1484V13.3828C24.1367 14.543 25.0215 15.082 26 15.082C26.3457 15.082 26.6152 15.0586 26.7852 15.0352V13.9453C26.6094 13.9629 26.334 13.9805 26.1523 13.9805C25.748 13.9746 25.3965 13.8457 25.3906 13.125V9.63281H26.6914V8.63672ZM30.582 15.1289C31.9824 15.1289 32.9609 14.4375 33.2422 13.4062H31.9766C31.7656 13.793 31.3027 14.0977 30.5938 14.0977C29.5508 14.0977 28.8359 13.4121 28.8008 12.1992H33.3242V11.7539C33.3242 9.45117 31.9473 8.55469 30.5 8.55469C28.7246 8.55469 27.5527 9.90234 27.5586 11.8594C27.5527 13.834 28.707 15.1289 30.582 15.1289ZM28.8066 11.2617C28.8594 10.3652 29.5098 9.58008 30.5117 9.58594C31.4668 9.58008 32.0938 10.2949 32.0938 11.2617H28.8066ZM37.2383 17.5195C38.8789 17.5195 40.1152 16.7754 40.1094 15.1406V8.63672H38.8906V9.66797H38.8086C38.5742 9.26953 38.1406 8.55469 36.957 8.55469C35.4277 8.55469 34.2852 9.7207 34.2852 11.7539C34.2852 13.7871 35.4453 14.9062 36.9453 14.9062C38.1172 14.9062 38.5742 14.25 38.7969 13.8398H38.8789V15.0938C38.873 16.084 38.2461 16.5176 37.25 16.5117C36.4238 16.5176 35.8613 16.2246 35.7383 15.6211H34.4609C34.5723 16.8105 35.6328 17.5195 37.2383 17.5195ZM35.5625 11.7773C35.5566 10.5586 36.1191 9.61523 37.2266 9.62109C38.3047 9.61523 38.8906 10.4883 38.8906 11.7773C38.8906 13.0898 38.293 13.8691 37.2266 13.875C36.1309 13.8691 35.5566 13.0254 35.5625 11.7773ZM44.3281 15.1289C46.1211 15.1289 47.293 13.8164 47.293 11.8477C47.293 9.86719 46.1211 8.55469 44.3281 8.55469C42.5234 8.55469 41.3457 9.86719 41.3516 11.8477C41.3457 13.8164 42.5234 15.1289 44.3281 15.1289ZM42.6055 11.8477C42.6055 10.6289 43.1621 9.5918 44.3281 9.58594C45.4766 9.5918 46.0273 10.6289 46.0273 11.8477C46.0273 13.0605 45.4766 14.0859 44.3281 14.0859C43.1621 14.0859 42.6055 13.0605 42.6055 11.8477ZM48.5234 15H49.7773V11.1211C49.7773 10.2891 50.4219 9.68555 51.2891 9.69141C51.5469 9.68555 51.8398 9.73828 51.9453 9.76172V8.56641C51.8164 8.55469 51.5703 8.53711 51.418 8.54297C50.6738 8.53711 50.0352 8.96484 49.8008 9.64453H49.7305V8.63672H48.5234V15ZM53.8555 17.3906C54.9043 17.3848 55.5488 16.8516 55.918 15.8438L58.543 8.63672H57.1953L55.5898 13.5703H55.5195L53.9141 8.63672H52.5781L54.9102 15.082L54.7578 15.5039C54.459 16.3066 54.1367 16.3301 53.75 16.3359C53.5742 16.3301 53.3281 16.3242 53.1875 16.3125V17.3555C53.3457 17.3789 53.5977 17.3848 53.8555 17.3906Z" fill="#F22E3E"/>
+          <rect x="0.5" y="0.5" width="66" height="21" rx="10.5" stroke="#F22E3E"/>
+        </svg>
+        <div class="nft-name">NFT Name</div>
+        <div class="nft-name-img"></div>
+        <div class="container1-2-bottom">
+          <div class="container1-2-bottom-left">
+            <div class="container1-2-bottom-title">Collection</div>
+            <div class="container1-2-bottom-content">
+              <div class="container1-2-bottom-left-content-img"></div>
+              <div class="container1-2-bottom-content-name">Collection Name</div>
+            </div>
+          </div>
+          <div class="container1-2-bottom-right">
+            <div class="container1-2-bottom-title">Created by</div>
+            <div class="container1-2-bottom-content">
+              <div class="container1-2-bottom-right-content-img"></div>
+              <div class="container1-2-bottom-content-name">@Nickname</div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
-      <button class="start-btn">Start contributing</button>
     </div>
     <div class="container2">
       <div class="title">
@@ -139,6 +167,7 @@ export default {
 
 <style lang="scss" scoped>
   @media (max-width:1080px){
+    // container0 어떻게 처리..?
   .container1{
     display: flex;
     flex-direction: column;
@@ -187,6 +216,9 @@ export default {
     border-radius: 5px;
     text-transform: none;
     margin-bottom:48px;
+  }
+  .container1-2{
+    display:none;
   }
   .container2{
     display: flex;
@@ -310,9 +342,275 @@ export default {
     margin-bottom: 25px;
   }
   }
+  // width over 1080px
   @media(min-width: 1080px){
+    .container0{
+      display: flex;
+      flex-direction: row;
+      
+      margin-top: 96px;
+      // 중앙정렬..??
+      margin-left: 11.1%;
+      margin-right: 11.1%;
+    }
+    .container1{
+    display: flex;
+    flex-direction: column;
+    flex-basis: 420px;
+
+    margin-left:16px;
+    margin-right:16px;
+    margin-top: 48px;
+    row-gap: 48px;
+  }
+  .intro-title{
+    width: 295px;
+    height: 216px;
+
+    font-family: 'Mustica Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 72px;
+    text-transform: capitalize;
+
+    color: #000000;
+
+    text-align:left;    
+  }
+  .intro-content{
+    width: 91.1%;
+    //height: 133px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+
+    color: #4D4D4D;
+    align-self:stretch;
+
+    text-align:left;
+  }
+  .start-btn{
+    padding: 15px 24px 16px;
+    width: 161px;
+    height: 48px;
+
+    background: #000000;
+    border-radius: 5px;
+    text-transform: none;
+    margin-bottom:48px;
+  }
+  .container1-2{
+    display: flex;
+    flex-direction: column;
+    flex-basis: 420px;
+    gap: 10px;
+    //
+    height: 553px;
+  }
+  .nft-name{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    text-align: left;
+
+    color: #000000;
+
+    margin-bottom: 6px;
+  }
+  .nft-name-img{
+    width: 400px;
+    height: 400px;
+    
+    background-color:black;
+
+    border-radius: 14px;
+
+    margin-bottom: 6px;
+  }
+  .container1-2-bottom{
+    display:flex;
+    flex-direction:row;
 
   }
+  .container1-2-bottom-left{
+    display: flex;
+    flex-direction: column;
+    //gap: 8px;
+    flex-basis: 200px;
+  }  
+  .conatiner1-2-bottom-right{
+    display: flex;
+    flex-direction: column;
+    //gap: 8px;    
+    flex-basis: 200px;
+  }
+  .container1-2-bottom-title{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    
+    margin-bottom:8px;
+    text-align: left;
+
+    color: #000000;
+  }
+  .container1-2-bottom-content{
+    display: flex;
+    flex-direction: row;
+    gap:8px;
+  }
+  .container1-2-bottom-left-content-img{
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+
+    background-color: black;
+  }
+  .container1-2-bottom-right-content-img{
+    width: 32px;
+    height: 32px;
+    background-color: black;
+    border-radius: 999px;
+  }
+  .container1-2-bottom-content-name{
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    text-align:left;
+    margin-top:auto;
+    margin-bottom:auto;
+    color: #000000;
+  }
+  .container2{
+    display: flex;
+    flex-direction: column;
+    margin-top: 48px;
+  }
+
+  .title{
+    width: 308px;
+    height: 44px;
+
+    font-family: 'Mustica Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 44px;
+    margin: auto;
+    margin-bottom: 48px;
+
+    color: #000000;
+  }
+  .intro-img{
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    margin-bottom:16px;
+  }
+  .subtitle{
+    width: 185px;
+    height: 24px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #000000;
+
+    margin: auto;
+    margin-bottom: 16px;
+  }
+  .content{
+    width: 91.1%;
+    max-width: 432px;
+    //height: 168px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    
+    text-align: center;
+
+    color: #4D4D4D;
+
+    margin:auto;
+    margin-bottom:40px;
+  }
+  .container3{
+    display: flex;
+    flex-direction:column;
+    row-gap: 40px;
+    margin-top: 48px;
+    margin-bottom: 48px;
+  }
+  .button-block{
+    width: 91.1%;
+    height: 160px;
+
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+    border-radius: 14px;
+
+    margin:auto;
+
+    // 격자
+    background-image: linear-gradient(90deg, rgba(242,46,62,0.1) 1px, transparent 1px), linear-gradient(0deg, rgba(242,46,62,0.1) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .button-block-img{
+    width: 24px;
+    height: 24px;
+
+    margin: auto;
+    margin-top: 25px;
+  }
+  .button-block-title{
+    width: 181px;
+    height: 22px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+
+    color: #000000;
+
+    margin:auto;
+    margin-top: 10.4px;
+    margin-bottom: 8px;
+    
+  }
+  .button-block-description{
+    width: 248px;
+    height: 48px; 
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+
+    color: #4D4D4D;
+
+    margin:auto;
+    margin-bottom: 25px;
+  }
+  }
+
   // curated collections
   .container4{
     //width: 360px;
