@@ -9,21 +9,11 @@
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-              <div class="upload">
-                {{ message }}
-                <img v-if="image" :src="image"/>
-                <input ref="fileInput" type="file" @change="onFileChange">
-              </div>
-            </slot>
+            <slot name="body"></slot>
           </div>
 
           <div class="modal-footer">
-            <slot name="footer">
-              <button class="modal-default-button" @click="uploadImage">
-                OK
-              </button>
-            </slot>
+            <slot name="footer"></slot>
           </div>
         </div>
       </div>
@@ -32,46 +22,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import Storage from '@aws-amplify/storage'
-
 export default {
-  name: 'UploadModal',
-  computed: {
-    ...mapState({
-      currentUser: state => state.user.currentUser
-    })
-  },
-  data() {
-    return {
-      file: null,
-      image: '',
-      message: ''
-    }
-  },
-  methods: {
-    async onFileChange(e) {
-      this.file = e.target.files[0]
-      this.image = URL.createObjectURL(this.file)
-      this.message = ''
-    },
-    async uploadImage() {
-      if (!this.file) {
-        this.message = '업로드할 이미지가 없습니다.'
-        return
-      }
-      try {
-        await Storage.put(`${this.currentUser.username}/contents/${this.file.name}`, this.file, {
-          level: 'public',
-          contentType: this.file.type
-        })
-        this.$emit('close', true)
-      } catch (error) {
-        this.message = '업로드 실패. 다시 시도해주세요.'
-        this.$emit('close')
-      }
-    }
-  }
+  name: 'MintModal'
 }
 </script>
 

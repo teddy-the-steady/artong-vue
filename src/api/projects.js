@@ -8,8 +8,12 @@ const patchProject = async function(txHash, body) {
   return await instance.patch(`/projects/${txHash}`, body)
 }
 
-const getProject = async function(txHash) {
-  return await instance.get(`/projects/${txHash}`)
+const getProjectWhileUpdatingPendingToCreated = async function(txHash) {
+  return await instance.get(`/projects/${txHash}/tx_receipt_updated`)
+}
+
+const getProject = async function(address) {
+  return await instance.get(`/projects/${address}`)
 }
 
 const getProjects = async function(params) {
@@ -21,6 +25,7 @@ const getProjects = async function(params) {
 export {
   postProject,
   patchProject,
+  getProjectWhileUpdatingPendingToCreated,
   getProject,
   getProjects,
 }
