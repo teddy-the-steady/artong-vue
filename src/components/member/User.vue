@@ -3,21 +3,16 @@
     <div class="header">
       <div class="user-info">
         <my-page-profile></my-page-profile>
-        <button @click="toggleModal">Create Collection</button>
       </div>
       <div>address: {{walletConnectState.address}}</div>
       <div>chainId: {{walletConnectState.chainId}}</div>
     </div>
     <profile-tab :tabs="tabs"/>
-    <upload-modal v-if="isModalOpen">
-      <span slot="header" class="modal_header" @click="close">X</span>
-    </upload-modal>
   </div>
 </template>
 
 <script>
 import MyPageProfile from '../profile/MyPageProfile'
-import UploadModal from '../modal/UploadModal'
 import ProfileTab from '../tabs/ProfileTab'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
@@ -28,12 +23,11 @@ export default {
   name: 'User',
   mixins: [headerActivate],
   components: {
-    MyPageProfile, UploadModal, ProfileTab
+    MyPageProfile, ProfileTab
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isModalOpen: state => state.menu.isModalOpen,
       walletConnectState: state => state.wallet
     })
   },
@@ -46,14 +40,6 @@ export default {
         { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
       ]
     }
-  },
-  methods: {
-    close() {
-      this.toggleModal()
-    },
-    toggleModal() {
-      this.$store.commit('TOGGLE_MODAL')
-    },
   },
   created() {
     this.tabs[1].api = {
@@ -104,10 +90,6 @@ export default {
 
 .contents {
   padding: 0 10%;
-}
-
-.modal_header {
-  cursor: pointer;
 }
 
 @media only screen and (max-width: 599px) {
