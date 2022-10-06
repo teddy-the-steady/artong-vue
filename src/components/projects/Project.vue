@@ -37,9 +37,9 @@ export default {
       isModalOpen: state => state.menu.isModalOpen
     })
   },
-  extends: baseLazyLoading(async (to, callback) => {
-    const result = await getProject(to.params.id)
-    callback(function() {
+  extends: baseLazyLoading((to, callback) => {
+    callback(async function() {
+      const result = await getProject(to.params.id)
       this.projectInfo = result
     })
   }),
