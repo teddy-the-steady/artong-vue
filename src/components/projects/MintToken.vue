@@ -14,6 +14,7 @@
       <input v-model="description" placeholder="description">
     </div>
     <div>
+      {{ projectInfo }}
       <span>WHEN?</span>
       <input type="radio" id="r1" v-model="policy" value="0">
       <label for="r1">Mint Now</label>
@@ -45,6 +46,12 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser
     })
+  },
+  props: {
+    projectInfo: {
+      type: Object,
+      default: null
+    }
   },
   data() {
     return {
