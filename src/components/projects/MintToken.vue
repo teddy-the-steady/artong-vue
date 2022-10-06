@@ -14,14 +14,14 @@
       <input v-model="description" placeholder="description">
     </div>
     <div>
-      {{ projectInfo }}
       <span>WHEN?</span>
-      <input type="radio" id="r1" v-model="policy" value="0">
+      <input type="radio" id="r1" v-model="policy" value="0" :disabled="projectInfo.policy === 1">
       <label for="r1">Mint Now</label>
-      <input type="radio" id="r2" v-model="policy" value="1">
+      <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
       <label for="r2">Lazy Mint</label>
     </div>
     <button @click="mint">MINT</button>
+    {{ projectInfo }}
   </div>
 </template>
 
@@ -59,7 +59,7 @@ export default {
       image: '',
       name: '',
       description: '',
-      policy: 0,
+      policy: 1,
       message: '',
       s3Result: {},
       S3_PRIVACY_LEVEL: 'public'
