@@ -20,7 +20,8 @@
       <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
       <label for="r2">Lazy Mint</label>
     </div>
-    <button @click="mint">MINT</button>
+    <button class="btn_mint" @click="mint">MINT</button>
+    <button @click="redeem">REDEEM(test)</button>
     {{ projectInfo }}
   </div>
 </template>
@@ -37,7 +38,8 @@ import { ethers } from 'ethers'
 import {
   ERC721_ABI,
   getPcSigner,
-  getWalletConnectSigner
+  getWalletConnectSigner,
+  LazyMinter
 } from '../../contracts'
 
 export default {
@@ -77,25 +79,33 @@ export default {
         return
       }
 
+      const lazyMint = this.policy === 1
+
       try {
         const postResult = await postContent({
           project_address: this.$router.currentRoute.params.id,
           content_url: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
-        const uplaodResult = await uploadToNftStorageAndUpdateContent({
+        const uploadResult = await uploadToNftStorageAndUpdateContent({
           content_id: postResult.id,
           name: this.name,
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
 
-        const tx = await this.doMint(uplaodResult.project_address, uplaodResult.ipfs_url)
-        const approveReceipt = await tx.wait()
-        const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+        if (lazyMint) {
+          const voucher = await this.makeLazyMintingVoucher(
+            uploadResult.project_address,
+            uploadResult.ipfs_url
+          )
+          await patchContent(postResult.id, { voucher: voucher })
+        } else {
+          const tx = await this.doMint(uploadResult.project_address, uploadResult.ipfs_url)
+          const approveReceipt = await tx.wait()
+          const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
 
-        await patchContent(postResult.id, { tokenId: tokenId })
-
-        // TODO] lazy minting(policy 미리 가져와서 자동으로 선택)
+          await patchContent(postResult.id, { tokenId: tokenId })
+        }
       } catch (error) {
         this.message = error
         this.image = null
@@ -131,6 +141,21 @@ export default {
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri)
       return tx
     },
+    async makeLazyMintingVoucher(projectAddress, tokenUri) {
+      let signer = null
+      if (this.isMobile) {
+        signer = await getWalletConnectSigner()
+      } else {
+        signer = await getPcSigner()
+      }
+
+      const lazyMinter = new LazyMinter({
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
+        signer: signer
+      })
+      const voucher = await lazyMinter.createVoucher(this.currentUser.wallet_address, tokenUri, 1)
+      return voucher
+    },
     async onFileChange(e) {
       this.file = e.target.files[0]
       this.image = URL.createObjectURL(this.file)
@@ -140,6 +165,9 @@ export default {
         this.file.name
       ) // TODO] thumbnail 생성
     },
+    async redeem() {
+      console.log('redeem')
+    }
   }
  }
 </script>
@@ -149,5 +177,9 @@ export default {
   img {
     max-width: 500px;
   }
+}
+
+.btn_mint {
+  margin: 10px;
 }
 </style>
