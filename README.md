@@ -40,4 +40,3 @@ amplify status
 amplify env checkout <branch> --restore
 ```
 명령어로 env 맞춰주기.
-dfssdf
