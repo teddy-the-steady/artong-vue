@@ -24,6 +24,7 @@ import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
+import { patchMemberProfileS3key } from '../../api/member'
 
 export default {
   name: 'MyPageProfile',
@@ -38,7 +39,8 @@ export default {
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      S3_PRIVACY_LEVEL: 'public'
     }
   },
   methods: {
@@ -48,11 +50,12 @@ export default {
     },
     async uploadProfileImage(file) {
       const result = await Storage.put(`profile/${this.currentUser.id}/${file.name}`, file, {
-        level: 'public',
+        level: this.S3_PRIVACY_LEVEL,
         contentType: file.type
       })
       if (result) {
-        this.$store.commit('CURRENT_USER_PROFILE_IMAGE_URL', makeS3Path(`public/${result.key}`))
+        await patchMemberProfileS3key(`${this.S3_PRIVACY_LEVEL}/${result.key}`)
+        this.$store.commit('CURRENT_USER_PROFILE_IMAGE_URL', makeS3Path(`${this.S3_PRIVACY_LEVEL}/${result.key}`))
       }
     }
   },

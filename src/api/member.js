@@ -18,9 +18,16 @@ const postMember = async function(walletAddress, principalId) {
     principal_id: principalId
   })
 }
- 
+
+const patchMemberProfileS3key = async function(s3key) {
+  return await instance.patch(`/members/profile_s3key`, {
+    profile_s3key: s3key
+  })
+}
+
 export {
   getMembers,
   getMember,
   postMember,
+  patchMemberProfileS3key,
 }
