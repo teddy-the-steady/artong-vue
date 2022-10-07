@@ -4,8 +4,8 @@
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image" @error="isFirstLoading = true">
-      <img v-if="profileImage" :src="profileImage"/>
-      <div v-else class="basicProfilePicture"></div>
+      <img v-if="profileImageUrl" :src="profileImageUrl"/>
+      <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
       <div class="username">
@@ -34,7 +34,7 @@ export default {
   mixins: [headerActivate],
   data() {
     return {
-      profileImage: '',
+      profileImageUrl: '',
       isFirstLoading: true
     }
   },
@@ -45,11 +45,11 @@ export default {
     }
   },
   methods: {
-    getProfileImage(member) {
-      if (!member || !member.profile_pic) {
+    getProfileImageUrl(member) {
+      if (!member || !member.profile_s3key) {
         return null
       }
-      return makeS3Path(member.profile_pic)
+      return makeS3Path(member.profile_s3key)
     }
   },
   watch: {
@@ -57,7 +57,7 @@ export default {
       deep: true,
       handler(val) {
         if (val) {
-          this.profileImage = this.getProfileImage(this.member)
+          this.profileImageUrl = this.getProfileImageUrl(this.member)
           this.isFirstLoading = false
         }
       }
@@ -88,7 +88,7 @@ export default {
           border-radius: 50%;
         }
 
-        .basicProfilePicture {
+        .basicProfileImage {
           height: 100%;
           border-radius: 50%;
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
