@@ -78,7 +78,7 @@ export default {
               index: i,
               id_pk: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
-              profileUrl: results[i].profile_pic ? this.getImageUrl(results[i].profile_pic) : '',
+              profileImageUrl: results[i].profile_s3key ? this.getImageUrl(results[i].profile_s3key) : '',
               username: results[i].username,
               like: results[i].like
             })
@@ -90,7 +90,7 @@ export default {
           imageArrayToPush.push({
             index: i,
             url: randomInt,
-            profileUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/profile/316/IMG_6450.PNG',
+            profileImageUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/profile/316/IMG_6450.PNG',
             username: '0xf042403cdf2cb073a2a371dce25a4f94dc8660df',
             like: false
           })

@@ -84,7 +84,7 @@ export default {
       try {
         const postResult = await postContent({
           project_address: this.$router.currentRoute.params.id,
-          content_url: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
+          content_s3key: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
         const uploadResult = await uploadToNftStorageAndUpdateContent({
           content_id: postResult.id,
