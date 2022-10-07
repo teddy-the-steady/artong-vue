@@ -5,7 +5,7 @@
       <skeleton-box class="username" style="width:70%;height:70%;"></skeleton-box>
     </div>
     <div v-else class="image" @error="isFirstLoading = true">
-      <img v-if="image" :src="image.profileUrl" alt=""/>
+      <img v-if="image" :src="image.profileImageUrl" alt=""/>
       <img v-else src="../../assets/images/profile.svg" alt="">
       <a class="username">{{image.username}}</a>
     </div>
