@@ -4,8 +4,8 @@
       <skeleton-box style="width:100%;height:100%;border-radius:50%"></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profilePic" :src="profilePic" @error="isFirstLoading = true"/>
-      <div v-else class="basicProfilePicture"></div>
+      <img v-if="profileImageUrl" :src="profileImageUrl" @error="isFirstLoading = true"/>
+      <div v-else class="basicProfileImage"></div>
     </div>
   </div>
 </template>
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     ...mapState({
-      profilePic: state => state.user.currentUser.profile.profile_pic
+      profileImageUrl: state => state.user.currentUser.profile.profile_image_url
     })
   },
   mounted() {
@@ -50,7 +50,7 @@ export default {
             border-radius: 50%;
         }
 
-        .basicProfilePicture {
+        .basicProfileImage {
             height: 100%;
             border-radius: 50%;
             background: url('../../assets/images/profile.svg') 50% 50% no-repeat;

@@ -1,6 +1,6 @@
 import {
   CURRENT_USER,
-  CURRENT_USER_PROFILE_PIC,
+  CURRENT_USER_PROFILE_IMAGE_URL,
   USER_ERROR,
   USER_LOGOUT
 } from '../actions/user'
@@ -16,7 +16,7 @@ const state = {
     language: '',
     wallet_address: '',
     profile: {
-      profile_pic: '',
+      profile_image_url: '',
       introduction: ''
     }
   } // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가.. 현재 currentUser.id로 체크중
@@ -32,7 +32,7 @@ const actions = {
         language: member.language,
         wallet_address: member.wallet_address,
         profile: {
-          profile_pic: makeS3Path(member.profile_pic),
+          profile_image_url: makeS3Path(member.profile_s3key),
           introduction: member.introduction
         }
       }
@@ -51,10 +51,10 @@ const mutations = {
     state.currentUser = currentUser
     localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
-  [CURRENT_USER_PROFILE_PIC]: (state, path) => {
-    state.currentUser.profile.profile_pic = path
+  [CURRENT_USER_PROFILE_IMAGE_URL]: (state, path) => {
+    state.currentUser.profile.profile_image_url = path
     const currentUser = JSON.parse(localStorage.getItem('current-user'))
-    currentUser.profile.profile_pic = path
+    currentUser.profile.profile_image_url = path
     localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
   [USER_ERROR]: state => {
@@ -69,7 +69,7 @@ const mutations = {
       language: '',
       wallet_address: '',
       profile: {
-        profile_pic: '',
+        profile_image_url: '',
         introduction: ''
       }
     }
