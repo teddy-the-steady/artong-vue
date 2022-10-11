@@ -21,7 +21,9 @@
       <label for="r2">Lazy Mint</label>
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
+    <input v-model="mintPrice" placeholder="mintPrice">
     <button @click="redeem">REDEEM(test)</button>
+    <input v-model="redeemPrice" placeholder="redeemPrice">
     {{ projectInfo }}
   </div>
 </template>
@@ -32,7 +34,8 @@ import { mapState } from 'vuex'
 import {
   postContent,
   patchContent,
-  uploadToNftStorageAndUpdateContent
+  uploadToNftStorageAndUpdateContent,
+  getContent,
 } from '../../api/contents'
 import { ethers } from 'ethers'
 import {
@@ -64,7 +67,9 @@ export default {
       policy: 1,
       message: '',
       s3Result: {},
-      S3_PRIVACY_LEVEL: 'public'
+      S3_PRIVACY_LEVEL: 'public',
+      redeemPrice: 0,
+      mintPrice: 0
     }
   },
   methods: {
@@ -98,7 +103,10 @@ export default {
             uploadResult.project_address,
             uploadResult.ipfs_url
           )
-          await patchContent(postResult.id, { voucher: voucher })
+          await patchContent(postResult.id, {
+            voucher: voucher,
+            isRedeemed: false,
+          })
         } else {
           const tx = await this.doMint(uploadResult.project_address, uploadResult.ipfs_url)
           const approveReceipt = await tx.wait()
@@ -153,7 +161,11 @@ export default {
         contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
         signer: signer
       })
-      const voucher = await lazyMinter.createVoucher(this.currentUser.wallet_address, tokenUri, 1)
+      const voucher = await lazyMinter.createVoucher(
+        this.currentUser.wallet_address,
+        tokenUri,
+        this.mintPrice
+      )
       return voucher
     },
     async onFileChange(e) {
@@ -166,7 +178,27 @@ export default {
       ) // TODO] thumbnail 생성
     },
     async redeem() {
-      console.log('redeem')
+      let signer = null
+      if (this.isMobile) {
+        signer = await getWalletConnectSigner()
+      } else {
+        signer = await getPcSigner()
+      }
+
+      const contentId = 101
+
+      const contentResult = await getContent(contentId)
+      const voucher = contentResult.voucher
+
+      const contract = new ethers.Contract(this.$router.currentRoute.params.id, ERC721_ABI, signer)
+      const tx = await contract.redeem(this.currentUser.wallet_address, voucher, {value: this.redeemPrice})
+      const approveReceipt = await tx.wait()
+      const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+
+      await patchContent(contentId, {
+        tokenId: tokenId,
+        isRedeemed: true
+      })
     }
   }
  }
