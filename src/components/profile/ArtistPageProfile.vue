@@ -46,10 +46,9 @@ export default {
   },
   methods: {
     getProfileImageUrl(member) {
-      if (!member || !member.profile_s3key) {
-        return null
-      }
-      return makeS3Path(member.profile_s3key)
+      return member.profile_thumbnail_s3key ?
+        makeS3Path(member.profile_thumbnail_s3key) :
+        makeS3Path(member.profile_s3key)
     }
   },
   watch: {
