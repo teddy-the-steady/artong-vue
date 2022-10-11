@@ -12,8 +12,13 @@ const uploadToNftStorageAndUpdateContent = async function(body) {
   return await instance.post('/nft/storage', body)
 }
 
+const getContent = async function(pathParam) {
+  return await instance.get(`/nft/${pathParam}`)
+}
+
 export {
   postContent,
   patchContent,
   uploadToNftStorageAndUpdateContent,
+  getContent,
 }
