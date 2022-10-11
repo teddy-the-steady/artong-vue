@@ -32,7 +32,9 @@ const actions = {
         language: member.language,
         wallet_address: member.wallet_address,
         profile: {
-          profile_image_url: makeS3Path(member.profile_s3key),
+          profile_image_url: member.profile_thumbnail_s3key?
+            makeS3Path(member.profile_thumbnail_s3key) :
+            makeS3Path(member.profile_s3key),
           introduction: member.introduction
         }
       }
