@@ -80,7 +80,9 @@ export default {
               index: i,
               id_pk: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
-              profileImageUrl: results[i].profile_s3key ? this.getImageUrl(results[i].profile_s3key) : '',
+              profileImageUrl: results[i].profile_thumbnail_s3key ?
+                this.getImageUrl(results[i].profile_thumbnail_s3key) :
+                this.getImageUrl(results[i].profile_s3key),
               username: results[i].username,
               like: results[i].like
             })
