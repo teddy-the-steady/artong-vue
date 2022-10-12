@@ -175,7 +175,7 @@ export default {
         this.$router.currentRoute.params.id,
         this.currentUser.id,
         this.file.name
-      ) // TODO] thumbnail 생성
+      )
     },
     async redeem() {
       let signer = null
