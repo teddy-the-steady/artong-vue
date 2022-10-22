@@ -1,12 +1,16 @@
 <template>
-  <div class="profile">
-    <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:30px;height:30px;"></skeleton-box>
+  <div>
+    <div v-if="isFirstLoading" class="profile">
+      <div class="image">
+        <skeleton-box style="width:30px;height:30px;"></skeleton-box>
+      </div>
       <skeleton-box class="username" style="width:70%;height:70%;"></skeleton-box>
     </div>
-    <div v-else class="image" @error="isFirstLoading = true">
-      <img v-if="image" :src="image.profileUrl" alt=""/>
-      <img v-else src="../../assets/images/profile.svg" alt="">
+    <div v-else class="profile">
+      <div class="image" @error="isFirstLoading = true">
+        <img v-if="image" :src="image.profileImageUrl" alt=""/>
+        <img v-else src="../../assets/images/profile.svg" alt="">
+      </div>
       <a class="username">{{image.username}}</a>
     </div>
   </div>
@@ -48,13 +52,12 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    height: 30px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
 
     .image {
-      overflow: hidden;
-      display: flex;
-      align-items: center;
       height: 100%;
 
       img, span {
@@ -64,11 +67,11 @@ export default {
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
       }
+    }
 
-      .username {
-        border-radius: 0;
-        margin-left: 5px;
-      }
+    .username {
+      margin-left: 5px;
+      overflow: hidden;
     }
 }
 </style>
