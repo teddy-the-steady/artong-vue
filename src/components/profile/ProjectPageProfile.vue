@@ -1,11 +1,11 @@
 <template>
-  <div class="profile">
+  <div class="project">
     <div v-if="isFirstLoading" class="image">
       <skeleton-box style="width:100%;height:100%;"></skeleton-box>
     </div>
     <div v-else class="image" @error="isFirstLoading = true">
-      <img v-if="profileImage" :src="profileImage"/>
-      <div v-else class="basicProfilePicture"></div>
+      <img v-if="projectImageUrl" :src="projectImageUrl"/>
+      <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
       <div class="username">
@@ -27,7 +27,7 @@ export default {
   mixins: [headerActivate],
   data() {
     return {
-      profileImage: '',
+      projectImageUrl: '',
       isFirstLoading: true
     }
   }
@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.profile {
+.project {
     display: flex;
     margin-left: 15%;
     transform: translateY(-40%);
@@ -58,7 +58,7 @@ export default {
         border-radius: 50%;
       }
 
-      .basicProfilePicture {
+      .basicProfileImage {
         height: 100%;
         border-radius: 50%;
         background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
@@ -82,7 +82,7 @@ export default {
 }
 
 @media only screen and (max-width: 599px) {
-  .profile {
+  .project {
     transform: translateY(-30%);
     align-items: center;
     flex-direction: column;
