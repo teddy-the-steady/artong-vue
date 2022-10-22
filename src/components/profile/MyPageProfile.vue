@@ -4,8 +4,8 @@
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profilePic" :src="profilePic" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
-      <div v-else class="basicProfilePicture" @click="$refs.fileInput.click()"></div>
+      <img v-if="profileImageUrl" :src="profileImageUrl" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
+      <div v-else class="basicProfileImage" @click="$refs.fileInput.click()"></div>
       <input ref="fileInput" type="file" @change="onFileChange">
     </div>
     <div class="info">
@@ -24,6 +24,7 @@ import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox'
+import { patchMemberProfileS3key } from '../../api/member'
 
 export default {
   name: 'MyPageProfile',
@@ -33,12 +34,13 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      profilePic: state => state.user.currentUser.profile.profile_pic
+      profileImageUrl: state => state.user.currentUser.profile.profile_image_url
     })
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      S3_PRIVACY_LEVEL: 'public'
     }
   },
   methods: {
@@ -47,14 +49,13 @@ export default {
       await this.uploadProfileImage(file)
     },
     async uploadProfileImage(file) {
-      // TODO] 전후처리는? 사진 가공 등등
-      // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
       const result = await Storage.put(`profile/${this.currentUser.id}/${file.name}`, file, {
-        level: 'public',
+        level: this.S3_PRIVACY_LEVEL,
         contentType: file.type
       })
       if (result) {
-        this.$store.commit('CURRENT_USER_PROFILE_PIC', makeS3Path(`public/${result.key}`))
+        await patchMemberProfileS3key(`${this.S3_PRIVACY_LEVEL}/${result.key}`)
+        this.$store.commit('CURRENT_USER_PROFILE_IMAGE_URL', makeS3Path(`${this.S3_PRIVACY_LEVEL}/${result.key}`))
       }
     }
   },
@@ -87,7 +88,7 @@ export default {
           border-radius: 50%;
         }
 
-        .basicProfilePicture {
+        .basicProfileImage {
           height: 100%;
           border-radius: 50%;
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
