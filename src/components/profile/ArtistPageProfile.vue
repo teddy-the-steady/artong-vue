@@ -3,8 +3,8 @@
     <div v-if="isFirstLoading" class="image">
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
-    <div v-else class="image" @error="isFirstLoading = true">
-      <img v-if="profileImageUrl" :src="profileImageUrl"/>
+    <div v-else class="image">
+      <img v-if="profileImageUrl" :src="profileImageUrl" @error="isFirstLoading = true"/>
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
