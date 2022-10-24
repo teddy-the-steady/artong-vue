@@ -114,15 +114,31 @@
         
       </div>
     </div> <!--end of container4-->
+    <div class="profile-bundle"> <!--이거 하는 중이었음-->
+      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
+      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
+      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
+      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
+      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
+    </div>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
+  components:{
+    ContentsProfile
+  },
+  data(){
+    return{
+      needUserName: false,
+    }
+  }
 }
 </script>
 
@@ -303,6 +319,17 @@ export default {
     margin:auto;
     margin-bottom: 25px;
   }
+  // 이거 하는 중이었음
+  .profile-bundle{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+  }
+  .contents-profile{
+    position:absolute;
+    left: 2%;
+  }
+  
   // width over 1080px
   @media(min-width: 1080px)and(max-width:1920px){
     .container0{
