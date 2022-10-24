@@ -2,16 +2,16 @@
   <div>
     <div v-if="isFirstLoading" class="profile">
       <div class="image">
-        <skeleton-box style="width:30px;height:30px;"></skeleton-box>
+        <skeleton-box style="width:30px;height:30px;"></skeleton-box> <!--이거 border radius 어디에서 줌?-->
       </div>
-      <skeleton-box class="username" style="width:70%;height:70%;"></skeleton-box>
+      <skeleton-box v-if="needUserName" class="username" style="width:70%;height:70%;"></skeleton-box>
     </div>
     <div v-else class="profile">
       <div class="image" @error="isFirstLoading = true">
         <img v-if="image" :src="image.profileImageUrl" alt=""/>
         <img v-else src="../../assets/images/profile.svg" alt="">
       </div>
-      <a class="username">{{image.username}}</a>
+      <a v-if="needUserName" class="username">{{image.username}}</a>
     </div>
   </div>
 </template>
@@ -28,11 +28,15 @@ export default {
     image: {
       type: Object,
       default: null
+    },
+    needUserName: {
+      type: Boolean,
     }
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      //needUserName: true, // 부모에서 props로 값 받아오기
     }
   },
   watch: {
