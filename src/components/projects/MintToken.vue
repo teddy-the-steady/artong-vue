@@ -34,8 +34,9 @@ import { mapState } from 'vuex'
 import {
   postContent,
   patchContent,
-  uploadToNftStorageAndUpdateContent,
+  uploadToNftStorage,
   getContent,
+  getIpfsMetadata,
 } from '../../api/contents'
 import { ethers } from 'ethers'
 import {
@@ -91,18 +92,24 @@ export default {
           project_address: this.$router.currentRoute.params.id,
           content_s3key: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
-        const uploadResult = await uploadToNftStorageAndUpdateContent({
-          content_id: postResult.id,
+        const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
+        const patchResult = await patchContent(postResult.id, {
+          ipfs_url: metadata.url
+        })
+        const metadataObject = await getIpfsMetadata(metadata)
+        if (metadataObject && metadataObject.data && metadataObject.data.image) {
+          patchResult.content_url = metadataObject.data.image
+        }
 
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
-            uploadResult.project_address,
-            uploadResult.ipfs_url,
-            uploadResult.content_url,
+            patchResult.project_address,
+            patchResult.ipfs_url,
+            patchResult.content_url,
           )
           await patchContent(postResult.id, {
             voucher: voucher,
@@ -110,9 +117,9 @@ export default {
           })
         } else {
           const tx = await this.doMint(
-            uploadResult.project_address,
-            uploadResult.ipfs_url,
-            uploadResult.content_url
+            patchResult.project_address,
+            patchResult.ipfs_url,
+            patchResult.content_url
           )
           const approveReceipt = await tx.wait()
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
@@ -191,7 +198,7 @@ export default {
         signer = await getPcSigner()
       }
 
-      const contentId = 103
+      const contentId = 113
 
       const contentResult = await getContent(contentId)
       const voucher = contentResult.voucher
