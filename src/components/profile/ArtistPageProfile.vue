@@ -3,16 +3,16 @@
     <div v-if="isFirstLoading" class="image">
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
-    <div v-else class="image" @error="isFirstLoading = true">
+    <div v-else class="image" @error="isFirstLoading = true"> <!--image에서 error날 것이 있음?-->
       <img v-if="profileImageUrl" :src="profileImageUrl"/>
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
-      <div class="username">
+      <div class="username"> <!--userName이 필요할 때만 표시-->
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member? member.display_name : '' }}
+        {{ member? member.display_name : '' }}  <!--이게 뭐임? 안 쓰는 거임-->
       </div>
       <div class="intro">
         {{ member? member.introduction : '' }}
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       profileImageUrl: '',
-      isFirstLoading: true
+      isFirstLoading: true,
     }
   },
   props: {
