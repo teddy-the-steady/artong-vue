@@ -8,7 +8,12 @@
     </div>
     <div v-else class="profile">
       <div class="image">
-        <img v-if="image" :src="image.profileImageUrl" @error="isFirstLoading = true"/>
+        <img v-if="image"
+          :src="image.profileImageUrl"
+          @error="hasErrorGettingImage = true"
+          class="profileImage"
+          :class="{error: hasErrorGettingImage}"
+        />
         <img v-else src="../../assets/images/profile.svg" alt="">
       </div>
       <a class="username">{{image.username}}</a>
@@ -32,7 +37,8 @@ export default {
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      hasErrorGettingImage: false
     }
   },
   watch: {
@@ -59,6 +65,13 @@ export default {
 
     .image {
       height: 100%;
+
+      .profileImage {
+        &.error {
+          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+          text-indent: -10000px;
+        }
+      }
 
       img, span {
         width: 30px;

@@ -92,7 +92,7 @@ export default {
           imageArrayToPush.push({
             index: i,
             url: randomInt,
-            profileImageUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/thumbnails/profile/316/resized-KakaoTalk_Photo_2022-08-26-09-47-59 002.jpeg',
+            profileImageUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/thumbnails/profile/316/resized-img.jpg',
             username: '0xf042403cdf2cb073a2a371dce25a4f94dc8660df',
             like: false
           })

@@ -4,7 +4,13 @@
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profileImageUrl" :src="profileImageUrl" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
+      <img v-if="profileImageUrl"
+        :src="profileImageUrl"
+        @click="$refs.fileInput.click()"
+        @error="hasErrorGettingImage = true"
+        class="profileImage"
+        :class="{error: hasErrorGettingImage}"
+      />
       <div v-else class="basicProfileImage" @click="$refs.fileInput.click()"></div>
       <input ref="fileInput" type="file" @change="onFileChange">
     </div>
@@ -40,7 +46,8 @@ export default {
   data() {
     return {
       isFirstLoading: true,
-      S3_PRIVACY_LEVEL: 'public'
+      S3_PRIVACY_LEVEL: 'public',
+      hasErrorGettingImage: false
     }
   },
   methods: {
@@ -80,6 +87,13 @@ export default {
         border-radius: 50%;
         border: 2px solid $artong-white;
         cursor: pointer;
+
+        .profileImage {
+          &.error {
+            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+            text-indent: -10000px;
+          }
+        }
 
         img {
           width: 100%;
