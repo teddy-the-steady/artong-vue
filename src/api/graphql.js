@@ -1,14 +1,9 @@
-import axios from 'axios';
+import instance from './index';
 
-const subgraph = async function(body) {
-  return await axios({
-    url: '/query/36284/artong-test/v0.0.11',
-    baseURL: process.env.VUE_APP_GRAPH_HTTP,
-    method: 'POST',
-    data: body
-  })
+const graphql = async function(body) {
+  return await instance.post('/graphql', body)
 }
 
 export {
-  subgraph
+  graphql,
 }
