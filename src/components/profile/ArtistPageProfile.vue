@@ -3,8 +3,13 @@
     <div v-if="isFirstLoading" class="image">
       <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
     </div>
-    <div v-else class="image" @error="isFirstLoading = true"> <!--image에서 error날 것이 있음?-->
-      <img v-if="profileImageUrl" :src="profileImageUrl"/>
+    <div v-else class="image">
+      <img v-if="profileImageUrl"
+        :src="profileImageUrl"
+        @error="hasErrorGettingImage = true"
+        class="profileImage"
+        :class="{error: hasErrorGettingImage}"
+      />
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
@@ -36,6 +41,7 @@ export default {
     return {
       profileImageUrl: '',
       isFirstLoading: true,
+      hasErrorGettingImage: false
     }
   },
   props: {
@@ -85,6 +91,13 @@ export default {
           height: 100%;
           object-fit: cover;
           border-radius: 50%;
+        }
+
+        .profileImage {
+          &.error {
+            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+            text-indent: -10000px;
+          }
         }
 
         .basicProfileImage {
