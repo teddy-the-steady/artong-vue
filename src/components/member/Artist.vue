@@ -43,7 +43,7 @@ export default {
       username: '',
       tabs: [
         { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
-        { id: 2, label: 'Projects', type: 'PROJECTS', api: {} },
+        { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
         { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
       ]
     }

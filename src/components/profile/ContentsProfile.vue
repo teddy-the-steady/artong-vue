@@ -4,7 +4,8 @@
       <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading=true" class="image">
-      <img v-if="image" :src="image.profileImageUrl"/>
+      <img v-if="image" :src="image.profileImageUrl" @error="hasErrorGettingImage = true" class="profileImage"
+          :class="{error: hasErrorGettingImage}"/>
       <img v-else src="../../assets/images/profile.svg"/>
     </div>
     <div class="info" v-if="needUserName&&!isFirstLoading">
@@ -41,7 +42,8 @@ export default {
   },
   data() {
     return {
-      isFirstLoading: false,
+      isFirstLoading: true,
+      hasErrorGettingImage: false
     }
   },
   watch: {
@@ -73,6 +75,13 @@ export default {
       border-radius: 50%;
       overflow:hidden;
       background-color: white;
+
+      .profileImage { //?
+        &.error {
+          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+          text-indent: -10000px;
+        }
+      }
     }
 
     .info {

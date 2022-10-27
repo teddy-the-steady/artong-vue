@@ -34,8 +34,9 @@ import { mapState } from 'vuex'
 import {
   postContent,
   patchContent,
-  uploadToNftStorageAndUpdateContent,
+  uploadToNftStorage,
   getContent,
+  getIpfsMetadata,
 } from '../../api/contents'
 import { ethers } from 'ethers'
 import {
@@ -91,24 +92,35 @@ export default {
           project_address: this.$router.currentRoute.params.id,
           content_s3key: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
-        const uploadResult = await uploadToNftStorageAndUpdateContent({
-          content_id: postResult.id,
+        const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
+        const patchResult = await patchContent(postResult.id, {
+          ipfs_url: metadata.url
+        })
+        const metadataObject = await getIpfsMetadata(metadata)
+        if (metadataObject && metadataObject.data && metadataObject.data.image) {
+          patchResult.content_url = metadataObject.data.image
+        }
 
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
-            uploadResult.project_address,
-            uploadResult.ipfs_url
+            patchResult.project_address,
+            patchResult.ipfs_url,
+            patchResult.content_url,
           )
           await patchContent(postResult.id, {
             voucher: voucher,
             isRedeemed: false,
           })
         } else {
-          const tx = await this.doMint(uploadResult.project_address, uploadResult.ipfs_url)
+          const tx = await this.doMint(
+            patchResult.project_address,
+            patchResult.ipfs_url,
+            patchResult.content_url
+          )
           const approveReceipt = await tx.wait()
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
 
@@ -137,7 +149,7 @@ export default {
         this.file = null
       }
     },
-    async doMint(projectAddress, tokenUri) {
+    async doMint(projectAddress, tokenUri, contentUri) {
       let signer = null
       if (this.isMobile) {
         signer = await getWalletConnectSigner()
@@ -146,10 +158,10 @@ export default {
       }
 
       const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
-      const tx = await contract.mint(this.currentUser.wallet_address, tokenUri)
+      const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
       return tx
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri) {
+    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
       let signer = null
       if (this.isMobile) {
         signer = await getWalletConnectSigner()
@@ -164,6 +176,7 @@ export default {
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
         tokenUri,
+        contentUri,
         this.mintPrice
       )
       return voucher
@@ -175,7 +188,7 @@ export default {
         this.$router.currentRoute.params.id,
         this.currentUser.id,
         this.file.name
-      ) // TODO] thumbnail 생성
+      )
     },
     async redeem() {
       let signer = null
@@ -185,7 +198,7 @@ export default {
         signer = await getPcSigner()
       }
 
-      const contentId = 101
+      const contentId = 113
 
       const contentResult = await getContent(contentId)
       const voucher = contentResult.voucher
