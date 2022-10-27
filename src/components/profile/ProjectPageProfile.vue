@@ -3,7 +3,7 @@
     <div v-if="isFirstLoading" class="image">
       <SkeletonBox style="width:100%;height:100%;"></SkeletonBox>
     </div>
-    <div v-else @error="isFirstLoading = true"> <!--class="image" 뺌-->
+    <div v-else @error="isFirstLoading = true"> <!--class="image" 뺌 onerror 수정-->
       <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage"/>
       <div v-else class="basicProfileImage"></div>
     </div>
