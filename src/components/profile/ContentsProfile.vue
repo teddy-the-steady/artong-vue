@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="profile">
     <div v-if="isFirstLoading" class="image">
       <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
-    <div v-else class="image">
-      <img v-if="image" :src="image.profileImageUrl" alt="" @error="isFirstLoading=true"/>
-      <img v-else src="../../assets/images/profile.svg" alt="" @error="isFirstLoading=true"/>
+    <div v-else @error="isFirstLoading=true" class="image">
+      <img v-if="image" :src="image.profileImageUrl"/>
+      <img v-else src="../../assets/images/profile.svg"/>
     </div>
     <div class="info" v-if="needUserName&&!isFirstLoading">
       <a class="username">
@@ -36,13 +36,12 @@ export default {
     },
     needUserName: {
       type: Boolean,
-      default: false
+      default: true
     },
   },
   data() {
     return {
-      isFirstLoading: true,
-      //needUserName: true, // 부모에서 props로 값 받아오기
+      isFirstLoading: false,
     }
   },
   watch: {
@@ -68,20 +67,31 @@ export default {
   cursor: pointer;
 
     .image {
-      height: 100%;
-
-      img, span {
-        width: 30px;
-        height: 30px;
-        object-fit: cover;
-        border-radius: 50%;
-        box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
-      }
+      width:30px;
+      height: 30px;
+      object-fit:cover;
+      border-radius: 50%;
+      overflow:hidden;
+      background-color: white;
     }
 
-    .username {
-      margin-left: 5px;
-      overflow: hidden;
+    .info {
+      margin-left:8px;
+      height:32px;
+      .username{
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 32px;
+      }
+      .username_box{
+        margin-top:7.5px;
+        width: 77px;
+        height:17px;
+        border-radius:4px;
+        overflow:hidden;
+      }
     }
 }
 </style>
