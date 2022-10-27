@@ -37,7 +37,7 @@ export default {
 .SkeletonBox {
   display: inline-block;
   position: relative;
-  vertical-align: middle;
+  //vertical-align: middle;
   overflow: hidden;
   isolation: isolate;
   background-color: $lightergray;

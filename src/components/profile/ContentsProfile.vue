@@ -1,17 +1,22 @@
 <template>
   <div>
-    <div v-if="isFirstLoading" class="profile">
-      <div class="image">
-        <skeleton-box style="width:30px;height:30px;"></skeleton-box> <!--이거 border radius 어디에서 줌?-->
-      </div>
-      <skeleton-box v-if="needUserName" class="username" style="width:70%;height:70%;"></skeleton-box>
+    <div v-if="isFirstLoading" class="image">
+      <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
-    <div v-else class="profile">
-      <div class="image" @error="isFirstLoading = true">
-        <img v-if="image" :src="image.profileImageUrl" alt=""/>
-        <img v-else src="../../assets/images/profile.svg" alt="">
+    <div v-else class="image">
+      <img v-if="image" :src="image.profileImageUrl" alt="" @error="isFirstLoading=true"/>
+      <img v-else src="../../assets/images/profile.svg" alt="" @error="isFirstLoading=true"/>
+    </div>
+    <div class="info" v-if="needUserName&&!isFirstLoading">
+      <a class="username">
+        hello
+        {{image.username}}
+      </a>
+    </div>
+    <div class="info" v-else-if="needUserName&&isFirstLoading">
+      <div class="username_box">
+        <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
       </div>
-      <a v-if="needUserName" class="username">{{image.username}}</a>
     </div>
   </div>
 </template>
@@ -31,7 +36,8 @@ export default {
     },
     needUserName: {
       type: Boolean,
-    }
+      default: false
+    },
   },
   data() {
     return {

@@ -114,31 +114,34 @@
         
       </div>
     </div> <!--end of container4-->
-    <div class="profile-bundle"> <!--이거 하는 중이었음-->
-      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
-      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
-      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
-      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
-      <ContentsProfile class="contents-profile" :needUserName="needUserName"></ContentsProfile>
-    </div>
+    <ContentsProfileBundle></ContentsProfileBundle>
+    
+    <ProjectPageProfile_wrapped/>
+    <ProjectPageProfile></ProjectPageProfile>
+    <ProjectPageProfile_small/>
+    <ContentsProfile/>
+    
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
+import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
+import ProjectPageProfile from '../profile/ProjectPageProfile.vue';
+import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
   components:{
+    ContentsProfileBundle,
+    ProjectPageProfile,
+    ProjectPageProfile_wrapped,
+    ProjectPageProfile_small,
     ContentsProfile
   },
-  data(){
-    return{
-      needUserName: false,
-    }
-  }
 }
 </script>
 
@@ -319,17 +322,7 @@ export default {
     margin:auto;
     margin-bottom: 25px;
   }
-  // 이거 하는 중이었음
-  .profile-bundle{
-    display: flex;
-    flex-direction: row;
-    position: relative;
-  }
-  .contents-profile{
-    position:absolute;
-    left: 2%;
-  }
-  
+
   // width over 1080px
   @media(min-width: 1080px)and(max-width:1920px){
     .container0{
