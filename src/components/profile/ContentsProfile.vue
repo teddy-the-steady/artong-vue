@@ -10,8 +10,7 @@
     </div>
     <div class="info" v-if="needUserName&&!isFirstLoading">
       <a class="username">
-        hello
-        {{image.username}}
+        <!-- {{image.username}} -->
       </a>
     </div>
     <div class="info" v-else-if="needUserName&&isFirstLoading">
