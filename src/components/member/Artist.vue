@@ -15,8 +15,7 @@ import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
-import { getProjects } from '../../api/projects'
-import { CREATED } from '../../constants'
+import { graphql } from '../../api/graphql'
 
 export default {
   name: 'Artist',
@@ -65,12 +64,31 @@ export default {
     this.member = await this.getMember(this.username)
 
     this.tabs[1].api = {
-      func: getProjects,
-      query: {
-        start_num: 0,
-        count_num: 5,
-        member_id: this.member.id,
-        status: CREATED
+      func: graphql,
+      body: {query: `
+        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+          projects(first: $first, skip: $skip, where: {creator: $creator}) {
+            id
+            creator
+            owner
+            name
+            symbol
+            maxAmount
+            policy
+            isDisabled
+            createdAt
+            updatedAt
+            _db_project_s3key
+            _db_project_thumbnail_s3key
+            _db_background_s3key
+            _db_background_thumbnail_s3key
+          }
+        }
+      `, variables: {
+          first: 1,
+          skip: 0,
+          creator: this.member.wallet_address
+        }
       }
     }
 
@@ -91,12 +109,31 @@ export default {
   watch: {
     $route() {
       this.tabs[1].api = {
-        func: getProjects,
-        query: {
-          start_num: 0,
-          count_num: 5,
-          member_id: this.member.id,
-          status: CREATED
+        func: graphql,
+        body: {query: `
+          query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+            projects(first: $first, skip: $skip, where: {creator: $creator}) {
+              id
+              creator
+              owner
+              name
+              symbol
+              maxAmount
+              policy
+              isDisabled
+              createdAt
+              updatedAt
+              _db_project_s3key
+              _db_project_thumbnail_s3key
+              _db_background_s3key
+              _db_background_thumbnail_s3key
+            }
+          }
+        `, variables: {
+            first: 1,
+            skip: 0,
+            creator: this.member.wallet_address
+          }
         }
       }
     }
