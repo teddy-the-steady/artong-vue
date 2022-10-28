@@ -1,14 +1,13 @@
 <template>
   <div>
-    <project-list :projectsApi="projectsApi"></project-list>
+    <project-list :queryProjects="queryProjects"></project-list>
   </div>
 </template>
 
 <script>
 import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
-import { getProjects } from '../../api/projects'
-import { CREATED } from '../../constants'
+import { graphql } from '../../api/graphql'
 
 export default {
   name: 'Projects',
@@ -18,19 +17,38 @@ export default {
   },
   data() {
     return {
-      projectsApi: {
+      queryProjects: {
         func: null,
-        query: {}
+        body: {}
       }
     }
   },
   mounted() {
-    this.projectsApi = {
-      func: getProjects,
-      query: {
-        start_num: 0,
-        count_num: 5,
-        status: CREATED
+    this.queryProjects = {
+      func: graphql,
+      body: {query: `
+        query Projects($first: Int, $skip: Int) {
+          projects(first: $first, skip: $skip) {
+            id
+            creator
+            owner
+            name
+            symbol
+            maxAmount
+            policy
+            isDisabled
+            createdAt
+            updatedAt
+            _db_project_s3key
+            _db_project_thumbnail_s3key
+            _db_background_s3key
+            _db_background_thumbnail_s3key
+          }
+        }
+      `, variables: {
+          first: 1,
+          skip: 0
+        }
       }
     }
   }
