@@ -22,7 +22,7 @@ import ContentList from '../contentsV2/ContentList'
 import ProjectPageProfile from '../profile/ProjectPageProfile'
 import MintModal from '../modal/MintModal'
 import MintToken from '../projects/MintToken'
-import { getProject } from '../../api/projects'
+import { graphql } from '../../api/graphql'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { mapState } from 'vuex'
 
@@ -39,7 +39,27 @@ export default {
   },
   extends: baseLazyLoading((to, callback) => {
     callback(async function() {
-      const result = await getProject(to.params.id)
+      const result = await graphql({query: `
+        query Project($id: String) {
+          project(id: $id) {
+            id
+            creator
+            owner
+            name
+            symbol
+            maxAmount
+            policy
+            isDisabled
+            createdAt
+            updatedAt
+            _db_project_s3key
+            _db_project_thumbnail_s3key
+            _db_background_s3key
+            _db_background_thumbnail_s3key
+          }
+        }
+        `, variables: { id: to.params.id }
+      })
       this.projectInfo = result
     })
   }),
