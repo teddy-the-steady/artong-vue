@@ -16,8 +16,7 @@ import MyPageProfile from '../profile/MyPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
-import { getProjects } from '../../api/projects'
-import { CREATED } from '../../constants'
+import { graphql } from '../../api/graphql'
 
 export default {
   name: 'User',
@@ -43,25 +42,63 @@ export default {
   },
   created() {
     this.tabs[1].api = {
-      func: getProjects,
-      query: {
-        start_num: 0,
-        count_num: 5,
-        member_id: this.currentUser.id,
-        status: CREATED
+      func: graphql,
+      body: {query: `
+        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+          projects(first: $first, skip: $skip, where: {creator: $creator}) {
+            id
+            creator
+            owner
+            name
+            symbol
+            maxAmount
+            policy
+            isDisabled
+            createdAt
+            updatedAt
+            _db_project_s3key
+            _db_project_thumbnail_s3key
+            _db_background_s3key
+            _db_background_thumbnail_s3key
+          }
+        }
+      `, variables: {
+          first: 1,
+          skip: 0,
+          creator: this.currentUser.wallet_address
+        }
       }
     }
   },
   watch: {
     $route() {
       this.tabs[1].api = {
-        func: getProjects,
-        query: {
-          start_num: 0,
-          count_num: 5,
-          member_id: this.currentUser.id,
-          status: CREATED
+        func: graphql,
+        body: {query: `
+        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+          projects(first: $first, skip: $skip, where: {creator: $creator}) {
+            id
+            creator
+            owner
+            name
+            symbol
+            maxAmount
+            policy
+            isDisabled
+            createdAt
+            updatedAt
+            _db_project_s3key
+            _db_project_thumbnail_s3key
+            _db_background_s3key
+            _db_background_thumbnail_s3key
+          }
         }
+      `, variables: {
+          first: 1,
+          skip: 0,
+          creator: this.currentUser.wallet_address
+        }
+      }
       }
     }
   }

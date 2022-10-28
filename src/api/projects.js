@@ -11,16 +11,9 @@ const patchProject = async function(txHash, body) {
 const getProjectWhileUpdatingPendingToCreated = async function(txHash) {
   return await instance.get(`/projects/${txHash}/tx_receipt_updated`)
 }
-
-const getProjects = async function(params) {
-  return await instance.get('/projects', {
-    params: {...params}
-  })
-}
  
 export {
   postProject,
   patchProject,
   getProjectWhileUpdatingPendingToCreated,
-  getProjects,
 }
