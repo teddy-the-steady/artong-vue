@@ -40,18 +40,20 @@ export default {
         $state.complete()
         return
       }
-      await this.pushContents()
-      this.checkMoreDataToLoad()
+      await this.pushData()
       setTimeout(function() { $state.loaded() }, 1000)
     },
-    async pushContents() {
+    async pushData() {
       const projectArrayToPush = await this.makeProjectArray()
-      this.pushProjects(projectArrayToPush, this.projectList)
+      if (projectArrayToPush.length > 0) {
+        this.pushProjects(projectArrayToPush, this.projectList)
+        this.checkMoreDataToLoad()
+      }
     },
     async makeProjectArray() {
       const projectArrayToPush = []
       if (this.queryProjects) {
-        const results = await this.getContents(this.queryProjects)
+        const results = await this.getProjects(this.queryProjects)
         this.queryProjects.body.variables.skip += this.queryProjects.body.variables.first
 
         if (results.length > 0) {
@@ -70,12 +72,14 @@ export default {
               total: results[i].total
             })
           }
+        } else {
+          this.noMoreDataToLoad = true
         }
       }
 
       return projectArrayToPush
     },
-    async getContents() {
+    async getProjects() {
       const results = await this.queryProjects.func(this.queryProjects.body)
       return results
     },
