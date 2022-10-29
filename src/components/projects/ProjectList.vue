@@ -59,16 +59,19 @@ export default {
         if (results.length > 0) {
           for (let i = 0; i < results.length; i++) {
             projectArrayToPush.push({
-              index: i,
-              address: results[i].address,
-              member_id: results[i].member_id,
+              address: results[i].id,
+              creator: results[i].creator,
               name: results[i].name,
               symbol: results[i].symbol,
-              status: results[i].status,
-              background_url: this.getImageUrl(results[i].background_url),
-              thumbnail_url: this.getImageUrl(results[i].thumbnail_url),
-              created_at: results[i].created_at,
-              updated_at: results[i].updated_at,
+              // status: results[i].status,
+              policy: results[i].policy,
+              max_amount: results[i].maxAmount,
+              background_s3key: this.getImageUrl(results[i].background_s3key),
+              background_thumbnail_s3key: this.getImageUrl(results[i].background_thumbnail_s3key),
+              project_s3key: this.getImageUrl(results[i].thumbnail_s3key),
+              project_thumbnail_s3key: this.getImageUrl(results[i].project_thumbnail_s3key),
+              created_at: results[i].createdAt,
+              updated_at: results[i].updatedAt,
               total: results[i].total
             })
           }
