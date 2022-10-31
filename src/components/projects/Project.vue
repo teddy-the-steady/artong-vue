@@ -60,7 +60,7 @@ export default {
         }
         `, variables: { id: to.params.id }
       })
-      this.projectInfo = result
+      this.projectInfo = result.project
     })
   }),
   data() {

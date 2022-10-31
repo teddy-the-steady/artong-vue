@@ -84,7 +84,7 @@ export default {
     },
     async getProjects() {
       const results = await this.queryProjects.func(this.queryProjects.body)
-      return results
+      return results.projects
     },
     pushProjects(projectArrayToPush, projectList) {
       const lastProject = projectList[projectList.length - 1]
