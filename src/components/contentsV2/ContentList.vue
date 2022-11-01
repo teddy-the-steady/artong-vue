@@ -1,7 +1,7 @@
 <template>
   <div class="contents">
     <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
-      <div class="content" v-for="(val, i) in imageList" :key="i">
+      <div class="content" v-for="(val, i) in contentList" :key="i">
         <router-link :to="{ name: 'Content', params: {
           project_address: val.address,
           token_id: val.id_pk || val.index
@@ -21,7 +21,6 @@
 import ContentBox from './ContentBox'
 import ContentsProfile from '../profile/ContentsProfile'
 import InfiniteLoading from 'vue-infinite-loading'
-import axios from 'axios'
 import { makeS3Path, deepCopy } from '../../util/commonFunc'
 
 export default {
@@ -30,19 +29,14 @@ export default {
     ContentBox, ContentsProfile, InfiniteLoading
   },
   props: {
-    contentsApi: {
+    queryContents: {
       type: Object,
       default: null
-    },
-    numberOfContentsToLoad: {
-      type: Number,
-      default: 10
     }
   },
   data() {
     return {
-      imageList: [],
-      lastLoadedId: null,
+      contentList: [],
       noMoreDataToLoad: false
     }
   },
@@ -52,32 +46,26 @@ export default {
         $state.complete()
         return
       }
-      await this.pushContents()
-      setTimeout(function() { $state.loaded() }, 500)
+      await this.pushData()
+      setTimeout(function() { $state.loaded() }, 1000)
     },
-    async pushContents() {
-      const imageArrayToPush = await this.makeImageArray()
-      this.pushImages(imageArrayToPush, this.imageList)
-    },
-    pushImages(imageArrayToPush, imageList) {
-      const lastImage = imageList[imageList.length - 1]
-      for (let i in imageArrayToPush) {
-        if (lastImage) {
-          const lastImageCopy = deepCopy(lastImage)
-          imageArrayToPush[i].index = ++lastImageCopy.index
-        }
-        imageList.push(imageArrayToPush[i])
+    async pushData() {
+      const contentArrayToPush = await this.makeContentArray()
+      if (contentArrayToPush.length > 0) {
+        this.pushContents(contentArrayToPush, this.contentList)
+        this.checkMoreDataToLoad()
       }
     },
-    async makeImageArray() {
-      const imageArrayToPush = []
-      if (this.contentsApi) {
+    async makeContentArray() {
+      const contentArrayToPush = []
+      if (this.queryContents) {
         let results = null
-        results = await this.getContents(this.contentsApi, this.numberOfContentsToLoad)
+        results = await this.getContents(this.queryContents)
+        this.queryContents.body.variables.skip += this.queryContents.body.variables.first
 
-        if (results) {
+        if (results.length > 0) {
           for (let i = 0; i < results.length; i++) {
-            imageArrayToPush.push({
+            contentArrayToPush.push({
               index: i,
               id_pk: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
@@ -89,42 +77,34 @@ export default {
             })
           }
         }
-      } else { // TODO] 일단은 임시 컨텐츠들. content-list props으로 contentsApi가 안넘어오면 결국은 No contents 보여줘야 할듯
-        for (let i = 0; i < this.numberOfContentsToLoad; i++) {
-          const randomInt = this.getRandomIntInclusive(11, 20)
-          imageArrayToPush.push({
-            index: i,
-            url: randomInt,
-            profileImageUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/thumbnails/profile/316/resized-img.jpg',
-            username: '0xf042403cdf2cb073a2a371dce25a4f94dc8660df',
-            like: false,
-            address: '0x0868428d39ef123780af022f63f4bee9e4baaa41'
-          })
-        }
+      } else {
+        this.noMoreDataToLoad = true
       }
-      return imageArrayToPush
+
+      return contentArrayToPush
+    },
+    async getContents() {
+      const results = await this.queryContents.func(this.queryContents.body)
+      return results.tokens
+    },
+    pushContents(contentArrayToPush, contentList) {
+      const lastContent = contentList[contentList.length - 1]
+      for (let i in contentArrayToPush) {
+        if (lastContent) {
+          const lastContentCopy = deepCopy(lastContent)
+          contentArrayToPush[i].index = ++lastContentCopy.index
+        }
+        contentList.push(contentArrayToPush[i])
+      }
+    },
+    checkMoreDataToLoad() {
+      if (this.contentList.length === this.contentList[0].total) {
+        this.noMoreDataToLoad = true
+      }
     },
     getImageUrl(path) {
       return makeS3Path(path)
-    },
-    getRandomIntInclusive(min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      const result = Math.floor(Math.random() * (max - min + 1)) + min
-      return result
-    },
-    async getContents(contentsApi, numOfImages) {
-      let results = await axios.get(contentsApi.url, {
-        params: {
-          username: contentsApi.params.id ? contentsApi.params.id : null,
-          pageSize: numOfImages,
-          lastId: this.lastLoadedId
-        }
-      })
-      this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
-      this.noMoreDataToLoad = results.length < numOfImages
-      return results
-    },
+    }
   }
 }
 </script>
