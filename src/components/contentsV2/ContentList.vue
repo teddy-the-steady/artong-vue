@@ -2,7 +2,10 @@
   <div class="contents">
     <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
       <div class="content" v-for="(val, i) in imageList" :key="i">
-        <router-link :to="{ name: 'Artwork', params: { id: val.id_pk || val.url }}">
+        <router-link :to="{ name: 'Content', params: {
+          project_address: val.address,
+          token_id: val.id_pk || val.index
+        }}">
           <content-box :image="val"></content-box>
         </router-link>
         <router-link class="profileBox" :to="{ name: 'UserOrArtist', params: { id: val.username }}">
@@ -94,7 +97,8 @@ export default {
             url: randomInt,
             profileImageUrl: 'https://artong-stage-image163347-stage.s3.ap-northeast-2.amazonaws.com/public/thumbnails/profile/316/resized-img.jpg',
             username: '0xf042403cdf2cb073a2a371dce25a4f94dc8660df',
-            like: false
+            like: false,
+            address: '0x0868428d39ef123780af022f63f4bee9e4baaa41'
           })
         }
       }

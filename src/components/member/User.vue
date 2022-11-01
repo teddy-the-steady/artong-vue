@@ -34,9 +34,9 @@ export default {
     return {
       username: '',
       tabs: [
-        { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
+        { id: 1, label: 'Contributed', type: 'CONTENTS', api: {} },
         { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
+        { id: 3, label: 'Owned', type: 'CONTENTS', api: {} }
       ]
     }
   },
@@ -75,30 +75,30 @@ export default {
       this.tabs[1].api = {
         func: graphql,
         body: {query: `
-        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-          projects(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
+          query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+            projects(first: $first, skip: $skip, where: {creator: $creator}) {
+              id
+              creator
+              owner
+              name
+              symbol
+              maxAmount
+              policy
+              isDisabled
+              createdAt
+              updatedAt
+              _db_project_s3key
+              _db_project_thumbnail_s3key
+              _db_background_s3key
+              _db_background_thumbnail_s3key
+            }
+          }
+        `, variables: {
+            first: 1,
+            skip: 0,
+            creator: this.currentUser.wallet_address
           }
         }
-      `, variables: {
-          first: 1,
-          skip: 0,
-          creator: this.currentUser.wallet_address
-        }
-      }
       }
     }
   }
