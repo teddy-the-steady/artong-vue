@@ -36,8 +36,8 @@ export default [
     icon: 'fa fa-folder-open'
   },
   {
-    href: '/artworks',
-    title: 'Tokens',
+    href: '/contents',
+    title: 'Contents',
     icon: 'fa fa-image'
   },
   {
