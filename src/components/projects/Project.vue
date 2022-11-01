@@ -8,7 +8,7 @@
       <div class="tab">
       </div>
     </div>
-    <content-list></content-list>
+    <content-list :queryContents="queryContents"></content-list>
     <mint-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
@@ -66,7 +66,8 @@ export default {
   data() {
     return {
       projectAddress: '',
-      projectInfo: {}
+      projectInfo: {},
+      queryContents: {}
     }
   },
   methods: {
@@ -80,6 +81,30 @@ export default {
   created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.projectAddress)
+
+    this.queryContents = {
+      func: graphql,
+      body: {query: `
+        query TokensByProject($first: Int, $skip: Int, $project: String) {
+          tokens(first: $first, skip: $skip, where: {project: $project}) {
+            id
+            tokenId
+            creator
+            owner
+            createdAt
+            updatedAt
+            project {
+              id
+            }
+          }
+        }
+      `, variables: {
+          first: 1,
+          skip: 0,
+          project: this.projectAddress
+        }
+      }
+    }
   },
   mounted() {
     this.$root.$on('contribute', () => {
