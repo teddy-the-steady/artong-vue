@@ -37,29 +37,29 @@ export default {
       isModalOpen: state => state.menu.isModalOpen
     })
   },
-  extends: baseLazyLoading((to, callback) => {
-    callback(async function() {
-      const result = await graphql({query: `
-        query Project($id: String) {
-          project(id: $id) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
+  extends: baseLazyLoading(async (to, callback) => {
+    const result = await graphql({query: `
+      query Project($id: String) {
+        project(id: $id) {
+          id
+          creator
+          owner
+          name
+          symbol
+          maxAmount
+          policy
+          isDisabled
+          createdAt
+          updatedAt
+          _db_project_s3key
+          _db_project_thumbnail_s3key
+          _db_background_s3key
+          _db_background_thumbnail_s3key
         }
-        `, variables: { id: to.params.id }
-      })
+      }
+      `, variables: { id: to.params.id }
+    })
+    callback(function() {
       this.projectInfo = result.project
     })
   }),

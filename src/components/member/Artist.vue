@@ -41,9 +41,9 @@ export default {
       member: {},
       username: '',
       tabs: [
-        { id: 1, label: 'Contributed', type: 'TOKENS', api: {} },
+        { id: 1, label: 'Contributed', type: 'CONTENTS', api: {} },
         { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 3, label: 'Owned', type: 'TOKENS', api: {} }
+        { id: 3, label: 'Owned', type: 'CONTENTS', api: {} }
       ]
     }
   },
