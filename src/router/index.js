@@ -12,7 +12,8 @@ import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
 import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
-import Tokens from '@/components/menu/Tokens'
+import Contents from '@/components/menu/Contents'
+import Content from '@/components/menu/Content'
 
 Vue.use(Router)
 
@@ -39,12 +40,22 @@ const router = new Router({
     {
       path: '/projects/:id',
       name: 'Project',
-      component: Project
+      component: Project,
     },
     {
       path: '/projects',
       name: 'Projects',
       component: Projects
+    },
+    {
+      path: '/projects/:project_address/contents/:token_id',
+      name: 'Content',
+      component: Content
+    },
+    {
+      path: '/contents',
+      name: 'Contents',
+      component: Contents
     },
     {
       path: '/following',
@@ -69,16 +80,6 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
-      path: '/artworks/:id',
-      name: 'Artwork',
-      // component: Login
-    },
-    {
-      path: '/artworks',
-      name: 'Artworks',
-      component: Tokens
     },
     {
       path: '/create/project',

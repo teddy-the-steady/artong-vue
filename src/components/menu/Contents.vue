@@ -8,7 +8,7 @@
 import ContentList from '../contentsV2/ContentList'
 import { headerActivate } from '../../mixin'
 export default {
-  name: 'Tokens',
+  name: 'Contents',
   mixins: [headerActivate],
   components: {
     ContentList

@@ -9,7 +9,7 @@
     </div>
     <div class="items">
       <section class="item" :key="currentId">
-        <div v-show="current.type === 'TOKENS'">
+        <div v-show="current.type === 'CONTENTS'">
           <content-list :contentsApi="current.api"></content-list>
         </div>
         <div v-show="current.type === 'PROJECTS'">
