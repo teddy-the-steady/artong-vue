@@ -31,7 +31,7 @@ export default {
   props: {
     queryContents: {
       type: Object,
-      default: null
+      default: () => {}
     }
   },
   data() {
@@ -77,7 +77,8 @@ export default {
                 this.getImageUrl(results[i].content_thumbnail_s3key) :
                 this.getImageUrl(results[i].content_s3key),
               createdAt: results[i].createdAt,
-              updatedAt: results[i].updatedAt
+              updatedAt: results[i].updatedAt,
+              total: results[i].total
             })
           }
         } else {
@@ -108,6 +109,15 @@ export default {
     },
     getImageUrl(path) {
       return makeS3Path(path)
+    }
+  },
+  watch: {
+    queryContents: {
+      async handler(val) {
+        this.noMoreDataToLoad = false
+        this.contentList = []
+        this.queryContents = val
+      }
     }
   }
 }
