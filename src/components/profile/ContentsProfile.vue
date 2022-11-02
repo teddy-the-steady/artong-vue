@@ -8,21 +8,22 @@
     </div>
     <div v-else class="profile">
       <div class="image">
-        <img v-if="image"
-          :src="image.profileImageUrl"
+        <img v-if="member"
+          :src="getImageUrl(member.profile_thumbnail_s3key)"
           @error="hasErrorGettingImage = true"
           class="profileImage"
           :class="{error: hasErrorGettingImage}"
         />
         <img v-else src="../../assets/images/profile.svg" alt="">
       </div>
-      <a class="username">{{image.username}}</a>
+      <a class="username">{{member.username}}</a>
     </div>
   </div>
 </template>
 
 <script>
 import SkeletonBox from '../util/SkeletonBox'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ContentsProfile',
@@ -30,7 +31,7 @@ export default {
     SkeletonBox
   },
   props: {
-    image: {
+    member: {
       type: Object,
       default: null
     }
@@ -41,8 +42,13 @@ export default {
       hasErrorGettingImage: false
     }
   },
+  methods: {
+    getImageUrl(path) {
+      return makeS3Path(path)
+    }
+  },
   watch: {
-    image: {
+    member: {
       immediate: true,
       handler(val) {
         if (val) {

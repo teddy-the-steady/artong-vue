@@ -1,7 +1,6 @@
 <template>
   <div class="box" @click="imageSelect()">
-    <img v-if="isNaN(image.url)" :src="image.url" alt="" ref="box"/>
-    <img v-else :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
+    <img :src="image.content_s3key" alt="" ref="box"/>
   </div>
 </template>
 
