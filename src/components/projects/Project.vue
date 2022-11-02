@@ -89,10 +89,14 @@ export default {
           tokens(first: $first, skip: $skip, where: {project: $project}) {
             id
             tokenId
+            tokenURI
+            contentURI
             creator
             owner
             createdAt
             updatedAt
+            _db_voucher
+            _db_content_s3key
             project {
               id
             }

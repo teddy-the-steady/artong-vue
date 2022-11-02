@@ -3,13 +3,13 @@
     <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
       <div class="content" v-for="(val, i) in contentList" :key="i">
         <router-link :to="{ name: 'Content', params: {
-          project_address: val.address,
-          token_id: val.id_pk || val.index
+          project_address: val.projectAddress,
+          token_id: val.tokenId
         }}">
           <content-box :image="val"></content-box>
         </router-link>
-        <router-link class="profileBox" :to="{ name: 'UserOrArtist', params: { id: val.username }}">
-          <contents-profile :image="val"></contents-profile>
+        <router-link class="profileBox" :to="{ name: 'UserOrArtist', params: { id: val.owner.username }}">
+          <contents-profile :member="val.owner"></contents-profile>
         </router-link>
       </div>
     </masonry>
@@ -66,19 +66,23 @@ export default {
         if (results.length > 0) {
           for (let i = 0; i < results.length; i++) {
             contentArrayToPush.push({
-              index: i,
-              id_pk: results[i].id,
-              url: this.getImageUrl(results[i].thumbnail_url),
-              profileImageUrl: results[i].profile_thumbnail_s3key ?
-                this.getImageUrl(results[i].profile_thumbnail_s3key) :
-                this.getImageUrl(results[i].profile_s3key),
-              username: results[i].username,
-              like: results[i].like
+              id: results[i].id,
+              tokenId: results[i].tokenId,
+              projectAddress: results[i].project.id,
+              tokenURI: results[i].tokenURI,
+              contentURI: results[i].contentURI,
+              creator: results[i].creator,
+              owner: results[i].owner,
+              content_s3key: results[i].content_thumbnail_s3key ?
+                this.getImageUrl(results[i].content_thumbnail_s3key) :
+                this.getImageUrl(results[i].content_s3key),
+              createdAt: results[i].createdAt,
+              updatedAt: results[i].updatedAt
             })
           }
+        } else {
+          this.noMoreDataToLoad = true
         }
-      } else {
-        this.noMoreDataToLoad = true
       }
 
       return contentArrayToPush
