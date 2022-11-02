@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       projectAddress: '',
+      backgroundColor: null,
       projectInfo: {},
       queryContents: {}
     }
@@ -80,7 +81,7 @@ export default {
   },
   created() {
     this.projectAddress = this.$route.params.id
-    this.backgroundColor = this.generateGradientBackground(this.projectAddress)
+    this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
 
     this.queryContents = {
       func: graphql,
@@ -105,7 +106,7 @@ export default {
       `, variables: {
           first: 1,
           skip: 0,
-          project: this.projectAddress
+          project: this.$route.params.id
         }
       }
     }
@@ -114,6 +115,42 @@ export default {
     this.$root.$on('contribute', () => {
       this.toggleModal()
     })
+  },
+  watch: {
+    async $route(val) {
+      if (val.name === 'Project') {
+        this.projectAddress = val.params.id
+        this.backgroundColor = this.generateGradientBackground(val.params.id)
+
+        this.queryContents = {
+          func: graphql,
+          body: {query: `
+            query TokensByProject($first: Int, $skip: Int, $project: String) {
+              tokens(first: $first, skip: $skip, where: {project: $project}) {
+                id
+                tokenId
+                tokenURI
+                contentURI
+                creator
+                owner
+                createdAt
+                updatedAt
+                _db_voucher
+                _db_content_s3key
+                project {
+                  id
+                }
+              }
+            }
+          `, variables: {
+              first: 1,
+              skip: 0,
+              project: val.params.id
+            }
+          }
+        }
+      }
+    }
   }
 }
 </script>
