@@ -23,7 +23,7 @@ export default {
     ProjectBox, InfiniteLoading
   },
   props: {
-    projectsApi: {
+    queryProjects: {
       type: Object,
       default: null
     }
@@ -40,42 +40,51 @@ export default {
         $state.complete()
         return
       }
-      await this.pushContents()
+      await this.pushData()
       setTimeout(function() { $state.loaded() }, 1000)
     },
-    async pushContents() {
+    async pushData() {
       const projectArrayToPush = await this.makeProjectArray()
-      this.pushProjects(projectArrayToPush, this.projectList)
+      if (projectArrayToPush.length > 0) {
+        this.pushProjects(projectArrayToPush, this.projectList)
+        this.checkMoreDataToLoad()
+      }
     },
     async makeProjectArray() {
       const projectArrayToPush = []
-      if (this.projectsApi) {
-        const results = await this.getContents(this.projectsApi)
+      if (this.queryProjects) {
+        const results = await this.getProjects(this.queryProjects)
+        this.queryProjects.body.variables.skip += this.queryProjects.body.variables.first
 
         if (results.length > 0) {
           for (let i = 0; i < results.length; i++) {
             projectArrayToPush.push({
-              index: i,
-              address: results[i].address,
-              member_id: results[i].member_id,
+              address: results[i].id,
+              creator: results[i].creator,
               name: results[i].name,
               symbol: results[i].symbol,
-              status: results[i].status,
-              background_url: this.getImageUrl(results[i].background_url),
-              thumbnail_url: this.getImageUrl(results[i].thumbnail_url),
-              created_at: results[i].created_at,
-              updated_at: results[i].updated_at,
+              // status: results[i].status,
+              policy: results[i].policy,
+              max_amount: results[i].maxAmount,
+              background_s3key: this.getImageUrl(results[i].background_s3key),
+              background_thumbnail_s3key: this.getImageUrl(results[i].background_thumbnail_s3key),
+              project_s3key: this.getImageUrl(results[i].thumbnail_s3key),
+              project_thumbnail_s3key: this.getImageUrl(results[i].project_thumbnail_s3key),
+              created_at: results[i].createdAt,
+              updated_at: results[i].updatedAt,
+              total: results[i].total
             })
           }
+        } else {
+          this.noMoreDataToLoad = true
         }
       }
+
       return projectArrayToPush
     },
-    async getContents() {
-      const results = await this.projectsApi.func(this.projectsApi.query)
-      this.projectsApi.query.start_num += this.projectsApi.query.count_num
-      this.noMoreDataToLoad = results.length < this.projectsApi.query.count_num
-      return results
+    async getProjects() {
+      const results = await this.queryProjects.func(this.queryProjects.body)
+      return results.projects
     },
     pushProjects(projectArrayToPush, projectList) {
       const lastProject = projectList[projectList.length - 1]
@@ -85,6 +94,11 @@ export default {
           projectArrayToPush[i].index = ++lastProjectCopy.index
         }
         projectList.push(projectArrayToPush[i])
+      }
+    },
+    checkMoreDataToLoad() {
+      if (this.projectList.length === this.projectList[0].total) {
+        this.noMoreDataToLoad = true
       }
     },
     getImageUrl(path) {
