@@ -114,15 +114,34 @@
         
       </div>
     </div> <!--end of container4-->
+    <ContentsProfileBundle></ContentsProfileBundle>
+    
+    <ProjectPageProfile_wrapped/>
+    <ProjectPageProfile></ProjectPageProfile>
+    <ProjectPageProfile_small/>
+    <ContentsProfile/>
+    
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
+import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
+import ProjectPageProfile from '../profile/ProjectPageProfile.vue';
+import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
+  components:{
+    ContentsProfileBundle,
+    ProjectPageProfile,
+    ProjectPageProfile_wrapped,
+    ProjectPageProfile_small,
+    ContentsProfile
+  },
 }
 </script>
 
@@ -303,6 +322,7 @@ export default {
     margin:auto;
     margin-bottom: 25px;
   }
+
   // width over 1080px
   @media(min-width: 1080px)and(max-width:1920px){
     .container0{

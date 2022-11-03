@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div v-if="isFirstLoading" class="profile">
-      <div class="image">
-        <skeleton-box style="width:30px;height:30px;"></skeleton-box>
-      </div>
-      <skeleton-box class="username" style="width:70%;height:70%;"></skeleton-box>
+  <div class="profile">
+    <div v-if="isFirstLoading" class="image">
+      <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
-    <div v-else class="profile">
-      <div class="image">
-        <img v-if="member"
-          :src="getImageUrl(member.profile_thumbnail_s3key)"
-          @error="hasErrorGettingImage = true"
-          class="profileImage"
-          :class="{error: hasErrorGettingImage}"
-        />
-        <img v-else src="../../assets/images/profile.svg" alt="">
+    <div v-else @error="isFirstLoading=true" class="image">
+      <img v-if="member" :src="getImageUrl(member.profile_thumbnail_s3key)" @error="hasErrorGettingImage = true" class="profileImage"
+          :class="{error: hasErrorGettingImage}"/>
+      <img v-else src="../../assets/images/profile.svg"/>
+    </div>
+    <div class="info" v-if="needUserName&&!isFirstLoading">
+      <a class="username">
+        <!-- {{member.username}} -->
+      </a>
+    </div>
+    <div class="info" v-else-if="needUserName&&isFirstLoading">
+      <div class="username_box">
+        <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
       </div>
-      <a class="username">{{member.username}}</a>
     </div>
   </div>
 </template>
@@ -34,7 +34,11 @@ export default {
     member: {
       type: Object,
       default: null
-    }
+    },
+    needUserName: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -70,27 +74,39 @@ export default {
   cursor: pointer;
 
     .image {
-      height: 100%;
+      width:30px;
+      height: 30px;
+      object-fit:cover;
+      border-radius: 50%;
+      overflow:hidden;
+      background-color: white;
 
-      .profileImage {
+      .profileImage { //?
+        height:100%;
         &.error {
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
           text-indent: -10000px;
         }
       }
-
-      img, span {
-        width: 30px;
-        height: 30px;
-        object-fit: cover;
-        border-radius: 50%;
-        box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
-      }
     }
 
-    .username {
-      margin-left: 5px;
-      overflow: hidden;
+    .info {
+      margin-left:8px;
+      height:32px;
+      .username{
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 32px;
+      }
+      .username_box{
+        margin-top:7.5px;
+        width: 77px;
+        height:17px;
+        border-radius:4px;
+        overflow:hidden;
+      }
     }
 }
 </style>

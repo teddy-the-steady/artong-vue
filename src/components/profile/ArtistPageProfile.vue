@@ -13,11 +13,11 @@
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
-      <div class="username">
+      <div class="username"> <!--userName이 필요할 때만 표시-->
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member? member.display_name : '' }}
+        {{ member? member.display_name : '' }}  <!--이게 뭐임? 안 쓰는 거임-->
       </div>
       <div class="intro">
         {{ member? member.introduction : '' }}
