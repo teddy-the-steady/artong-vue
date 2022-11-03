@@ -4,13 +4,13 @@
       <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading=true" class="image">
-      <img v-if="image" :src="image.profileImageUrl" @error="hasErrorGettingImage = true" class="profileImage"
+      <img v-if="member" :src="getImageUrl(member.profile_thumbnail_s3key)" @error="hasErrorGettingImage = true" class="profileImage"
           :class="{error: hasErrorGettingImage}"/>
       <img v-else src="../../assets/images/profile.svg"/>
     </div>
     <div class="info" v-if="needUserName&&!isFirstLoading">
       <a class="username">
-        <!-- {{image.username}} -->
+        <!-- {{member.username}} -->
       </a>
     </div>
     <div class="info" v-else-if="needUserName&&isFirstLoading">
@@ -23,6 +23,7 @@
 
 <script>
 import SkeletonBox from '../util/SkeletonBox'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ContentsProfile',
@@ -30,7 +31,7 @@ export default {
     SkeletonBox
   },
   props: {
-    image: {
+    member: {
       type: Object,
       default: null
     },
@@ -45,8 +46,13 @@ export default {
       hasErrorGettingImage: false
     }
   },
+  methods: {
+    getImageUrl(path) {
+      return makeS3Path(path)
+    }
+  },
   watch: {
-    image: {
+    member: {
       immediate: true,
       handler(val) {
         if (val) {
@@ -76,6 +82,7 @@ export default {
       background-color: white;
 
       .profileImage { //?
+        height:100%;
         &.error {
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
           text-indent: -10000px;
