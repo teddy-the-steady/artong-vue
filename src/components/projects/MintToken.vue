@@ -97,34 +97,33 @@ export default {
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
-        const patchResult = await patchContent(postResult.id, {
-          ipfs_url: metadata.url
-        })
+
         const metadataObject = await getIpfsMetadata(metadata)
-        if (metadataObject && metadataObject.data && metadataObject.data.image) {
-          patchResult.content_url = metadataObject.data.image
-        }
 
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
-            patchResult.project_address,
-            patchResult.ipfs_url,
-            patchResult.content_url,
+            postResult.project_address,
+            metadata.url,
+            metadataObject.data.image || '',
           )
           await patchContent(postResult.id, {
             voucher: voucher,
             isRedeemed: false,
+            ipfs_url: metadata.url
           })
         } else {
           const tx = await this.doMint(
-            patchResult.project_address,
-            patchResult.ipfs_url,
-            patchResult.content_url
+            postResult.project_address,
+            metadata.url,
+            metadataObject.data.image || ''
           )
           const approveReceipt = await tx.wait()
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
 
-          await patchContent(postResult.id, { tokenId: tokenId })
+          await patchContent(postResult.id, {
+            tokenId: tokenId,
+            ipfs_url: metadata.url
+          })
         }
       } catch (error) {
         this.message = error
