@@ -68,6 +68,7 @@ export default {
       policy: 1,
       message: '',
       s3Result: {},
+      postResult: {},
       S3_PRIVACY_LEVEL: 'public',
       redeemPrice: 0,
       mintPrice: 0
@@ -88,10 +89,6 @@ export default {
       const lazyMint = this.policy === 1
 
       try {
-        const postResult = await postContent({
-          project_address: this.$router.currentRoute.params.id,
-          content_s3key: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
-        })
         const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
@@ -102,25 +99,25 @@ export default {
 
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
-            postResult.project_address,
+            this.postResult.project_address,
             metadata.url,
             metadataObject.data.image || '',
           )
-          await patchContent(postResult.id, {
+          await patchContent(this.postResult.id, {
             voucher: voucher,
             isRedeemed: false,
             ipfs_url: metadata.url
           })
         } else {
           const tx = await this.doMint(
-            postResult.project_address,
+            this.postResult.project_address,
             metadata.url,
             metadataObject.data.image || ''
           )
           const approveReceipt = await tx.wait()
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
 
-          await patchContent(postResult.id, {
+          await patchContent(this.postResult.id, {
             tokenId: tokenId,
             ipfs_url: metadata.url
           })
@@ -183,6 +180,12 @@ export default {
     async onFileChange(e) {
       this.file = e.target.files[0]
       this.image = URL.createObjectURL(this.file)
+
+      this.postResult = await postContent({
+        project_address: this.$router.currentRoute.params.id,
+        content_s3key: `${this.S3_PRIVACY_LEVEL}/nft/${this.$router.currentRoute.params.id}/${this.currentUser.id}/${this.file.name}`
+      })
+
       this.s3Result = await this.uploadToS3(
         this.$router.currentRoute.params.id,
         this.currentUser.id,
