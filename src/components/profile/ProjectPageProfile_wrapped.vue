@@ -1,10 +1,10 @@
 <template>
   <div class="project">
     <div v-if="isFirstLoading" class="image">
-      <SkeletonBox style="width:100%;height:100%;"></SkeletonBox>
+      <SkeletonBox class="skeleton-box" style="width:84%;height:84%;"></SkeletonBox>
     </div>
-    <div v-else @error="isFirstLoading = true"> <!--class="image" 뺌 onerror 수정-->
-      <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage"/>
+    <div v-else @error="isFirstLoading = true" class="image2"> <!--class="image" 뺌-->
+      <img v-if="projectImageUrl" :src="projectImageUrl"/>
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info" v-if="needProjectName&&!isFirstLoading">
@@ -26,7 +26,7 @@ import { headerActivate } from '../../mixin'
 import SkeletonBox from '../util/SkeletonBox'
 
 export default {
-  name: 'ProjectPageProfile',
+  name: 'ProjectPageProfile_wrapped',
   components: {
     SkeletonBox
   },
@@ -56,34 +56,52 @@ export default {
 
     .image {
       display: inline-block;
-      background-color: $artong-white;
+      //background-color: $artong-white;
       width: 100px;
       height: 100px;
       min-width: 100px;
       min-height: 100px;
       border-radius: 15px;
-      overflow:hidden;
+      border: 2px solid #f22e3e;
+
+      .skeleton-box {
+        background-color: $lightergray;
+        width: 84px;
+        height: 84px;
+        min-width: 84px;
+        min-height: 84px;
+        border-radius: 15px;
+        overflow:hidden;
+        margin:8px;
+      }
 
       // input {
       //   display: none;
       // }
     }
-    .realImage{
-        width: 100px;
-        height: 100px;
+    .image2{
+      display: inline-block;
+      //background-color: $artong-white;
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+      border: 2px solid #f22e3e;
+      img{
+        width: 84px;
+        height: 84px;
         object-fit: cover;
-        border:1px solid #E5E5E5;
         border-radius: 15px;
-    }
-    .basicProfileImage {
-        width: 100px;
-        height: 100px;
+        margin: 8px;
+      }
+      .basicProfileImage {
+        width: 84px;
+        height: 84px;
         object-fit: fill;
-        border:1px solid #E5E5E5;
         border-radius: 15px;
+        margin: 8px;
         background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+      }
     }
-
     .info {
       word-break: break-all;
       margin-left:16px;
