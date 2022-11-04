@@ -18,13 +18,12 @@ export default {
       this.$emit('image-selected', this.image.index)
     },
     replaceImage(e) {
-      e.target.src = this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
-      // const imageUrl = e.target.currentSrc
-      // if (imageUrl.indexOf('resized-') > -1) {
-      //   e.target.src = this.image.content_s3key
-      // } else {
-      //   e.target.src = this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
-      // }
+      const imageUrl = e.target.currentSrc
+      if (imageUrl.indexOf('resized-') > -1) {
+        e.target.src = this.image.content_s3key
+      } else {
+        e.target.src = this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      }
     }
   }
 }
