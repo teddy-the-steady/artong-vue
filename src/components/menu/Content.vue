@@ -33,7 +33,8 @@ export default {
         }
       }
       `, variables: {
-        id: to.params.project_address + to.params.token_id,
+        id: to.params.project_address + to.params.token_id
+      }, db: {
         project_address: to.params.project_address,
         token_id: to.params.token_id
       }
