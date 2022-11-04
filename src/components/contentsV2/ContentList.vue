@@ -73,9 +73,8 @@ export default {
               contentURI: results[i].contentURI,
               creator: results[i].creator,
               owner: results[i].owner,
-              content_s3key: results[i].content_thumbnail_s3key ?
-                this.getImageUrl(results[i].content_thumbnail_s3key) :
-                this.getImageUrl(results[i].content_s3key),
+              content_s3key: this.getImageUrl(results[i].content_s3key),
+              content_thumbnail_s3key: this.getImageUrl(results[i].content_thumbnail_s3key),
               createdAt: results[i].createdAt,
               updatedAt: results[i].updatedAt,
               total: results[i].total
