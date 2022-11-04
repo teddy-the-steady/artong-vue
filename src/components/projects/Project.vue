@@ -101,6 +101,7 @@ export default {
             _db_content_thumbnail_s3key
             project {
               id
+              policy
             }
           }
         }
@@ -141,6 +142,7 @@ export default {
                 _db_content_thumbnail_s3key
                 project {
                   id
+                  policy
                 }
               }
             }
