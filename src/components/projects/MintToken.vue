@@ -150,10 +150,11 @@ export default {
       if (this.isMobile) {
         console.log('this.isMobile:',this.isMobile)
         signer = await getWalletConnectSigner()
-        console.log(signer)
       } else {
+        console.log('this.isMobile:',this.isMobile)
         signer = await getPcSigner()
       }
+      console.log(signer)
 
       const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
       console.log(contract)
