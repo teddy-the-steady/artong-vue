@@ -117,8 +117,11 @@ export default {
             metadata.url,
             metadataObject.data.image || ''
           )
+          console.log('tx:',tx)
           const approveReceipt = await tx.wait()
+          console.log('approveReceipt:',approveReceipt)
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+          console.log('tokenId:',tokenId)
 
           await patchContent(this.postResult.id, {
             tokenId: tokenId,
