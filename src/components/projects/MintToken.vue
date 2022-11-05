@@ -148,13 +148,17 @@ export default {
     async doMint(projectAddress, tokenUri, contentUri) {
       let signer = null
       if (this.isMobile) {
+        console.log('this.isMobile:',this.isMobile)
         signer = await getWalletConnectSigner()
+        console.log(signer)
       } else {
         signer = await getPcSigner()
       }
 
       const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
+      console.log(contract)
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
+      console.log(tx)
       return tx
     },
     async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
@@ -222,7 +226,7 @@ export default {
 <style lang="scss" scoped>
 .upload {
   img {
-    max-width: 500px;
+    max-width: 80%;
   }
 }
 
