@@ -93,16 +93,16 @@ export default {
       if (postResult) {
         this.$router.push({ name: 'CreatingProject', query: { txHash: tx.hash } })
       }
+    },
+    async _createNFTContract(contract) {
+      const tx = await contract.createNFTContract(
+        this.name,
+        this.symbol,
+        this.maxAmount,
+        this.policy
+      )
+      return tx
     }
-  },
-  async _createNFTContract(contract) {
-    const tx = await contract.createNFTContract(
-      this.name,
-      this.symbol,
-      this.maxAmount,
-      this.policy
-    )
-    return tx
   }
 }
 </script>
