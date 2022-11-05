@@ -74,11 +74,11 @@ export default {
         const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
         if (ok) {
-          tx = await this.createNFTContract(contract)
+          tx = await this._createNFTContract(contract)
           console.log('tx1:',tx)
         }
       } else {
-        tx = await this.createNFTContract(contract)
+        tx = await this._createNFTContract(contract)
         console.log('tx2:',tx)
       }
 
@@ -95,7 +95,7 @@ export default {
       }
     }
   },
-  async createNFTContract(contract) {
+  async _createNFTContract(contract) {
     const tx = await contract.createNFTContract(
       this.name,
       this.symbol,
