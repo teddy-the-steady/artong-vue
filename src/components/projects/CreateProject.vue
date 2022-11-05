@@ -34,7 +34,7 @@ import {
 import { postProject } from '../../api/projects'
 import { mapState } from 'vuex'
 import { PENDING } from '../../constants'
-import { isAuthenticated } from '../../util/commonFunc'
+// import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
   name: 'CreateProject',
@@ -74,11 +74,11 @@ export default {
         const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
         if (ok) {
-          tx = await this.createNFTContract()
+          tx = await this.createNFTContract(contract)
           console.log('tx1:',tx)
         }
       } else {
-        tx = await this.createNFTContract()
+        tx = await this.createNFTContract(contract)
         console.log('tx2:',tx)
       }
 
@@ -95,7 +95,7 @@ export default {
       }
     }
   },
-  async createNFTContract() {
+  async createNFTContract(contract) {
     const tx = await contract.createNFTContract(
       this.name,
       this.symbol,
