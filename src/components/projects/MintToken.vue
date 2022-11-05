@@ -51,7 +51,10 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
-    })
+    }),
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   props: {
     projectInfo: {
@@ -222,7 +225,7 @@ export default {
 <style lang="scss" scoped>
 .upload {
   img {
-    max-width: 500px;
+    max-width: 80%;
   }
 }
 
