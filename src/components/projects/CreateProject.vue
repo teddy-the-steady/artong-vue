@@ -34,10 +34,12 @@ import {
 import { postProject } from '../../api/projects'
 import { mapState } from 'vuex'
 import { PENDING } from '../../constants'
+import { headerActivate } from '../../mixin'
 // import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
   name: 'CreateProject',
+  mixins: [headerActivate],
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -75,11 +77,9 @@ export default {
 
         if (ok) {
           tx = await this._createNFTContract(contract)
-          console.log('tx1:',tx)
         }
       } else {
         tx = await this._createNFTContract(contract)
-        console.log('tx2:',tx)
       }
 
       const postResult = await postProject({
@@ -88,7 +88,6 @@ export default {
         symbol: this.symbol,
         status: PENDING
       })
-      console.log(postResult)
 
       if (postResult) {
         this.$router.push({ name: 'CreatingProject', query: { txHash: tx.hash } })
