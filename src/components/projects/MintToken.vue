@@ -51,7 +51,10 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
-    })
+    }),
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   props: {
     projectInfo: {
@@ -148,18 +151,13 @@ export default {
     async doMint(projectAddress, tokenUri, contentUri) {
       let signer = null
       if (this.isMobile) {
-        console.log('this.isMobile:',this.isMobile)
         signer = await getWalletConnectSigner()
       } else {
-        console.log('this.isMobile:',this.isMobile)
         signer = await getPcSigner()
       }
-      console.log(signer)
 
       const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
-      console.log(contract)
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
-      console.log(tx)
       return tx
     },
     async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
