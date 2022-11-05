@@ -9,7 +9,7 @@ import {
 } from '../actions/wallet'
 import Provider from '../../util/walletConnectProvider'
 import { getMember } from '../../api/member'
-import { Auth } from '@aws-amplify/auth'
+// import { Auth } from '@aws-amplify/auth'
 
 const defaultState = {
   chainId: 0,
@@ -48,7 +48,7 @@ const actions = {
         if (error) {
           throw error
         }
-        console.log('session_update:', payload)
+        console.log('session_update:', payload) // current-user랑 payload.params[0].accounts[0] 다를때만 재로그인?
         
         const { accounts, chainId } = payload.params[0]
 
@@ -56,7 +56,8 @@ const actions = {
           commit(WALLET_ACCOUNT, accounts[0])
 
           let signature = null
-          await Auth.signOut()
+          // await Auth.signOut()
+          await dispatch('AUTH_LOGOUT')
           const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', {
             address: accounts[0]
           })
