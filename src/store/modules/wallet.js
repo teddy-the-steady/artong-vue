@@ -48,6 +48,7 @@ const actions = {
         if (error) {
           throw error
         }
+        console.log('session_update:', payload)
         
         const { accounts, chainId } = payload.params[0]
 
