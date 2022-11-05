@@ -1,6 +1,11 @@
 <template>
   <div class="box" @click="imageSelect()">
-    <img :src="image.content_thumbnail_s3key || image.content_s3key" @error="replaceImage"/>
+    <img
+      :src="image.content_thumbnail_s3key ||
+            image.content_s3key ||
+            this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')"
+      @error="replaceImage"
+    />
   </div>
 </template>
 
