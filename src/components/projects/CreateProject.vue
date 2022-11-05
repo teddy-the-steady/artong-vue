@@ -34,6 +34,7 @@ import {
 import { postProject } from '../../api/projects'
 import { mapState } from 'vuex'
 import { PENDING } from '../../constants'
+import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
   name: 'CreateProject',
@@ -55,6 +56,9 @@ export default {
   },
   methods: {
     async createProject() {
+      // if (!isAuthenticated()) {
+      // }
+
       let signer = null
       if (this.isMobile) {
         signer = await getWalletConnectSigner() // TODO] tx 지갑에 넘어가고 session_update 이벤트 발생하는 버그. 재현이 잘 안됨..
@@ -63,13 +67,20 @@ export default {
       }
 
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
-      const tx = await contract.createNFTContract(
-        this.name,
-        this.symbol,
-        this.maxAmount,
-        this.policy
-      )
-      console.log('tx:',tx)
+      let tx = null
+
+      if (this.isMobile) {
+        this.$store.commit('TOGGLE_CONFIRM_MODAL')
+        const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+
+        if (ok) {
+          tx = await this.createNFTContract()
+          console.log('tx1:',tx)
+        }
+      } else {
+        tx = await this.createNFTContract()
+        console.log('tx2:',tx)
+      }
 
       const postResult = await postProject({
         create_tx_hash: tx.hash,
@@ -78,11 +89,20 @@ export default {
         status: PENDING
       })
       console.log(postResult)
-      
+
       if (postResult) {
         this.$router.push({ name: 'CreatingProject', query: { txHash: tx.hash } })
       }
     }
+  },
+  async createNFTContract() {
+    const tx = await contract.createNFTContract(
+      this.name,
+      this.symbol,
+      this.maxAmount,
+      this.policy
+    )
+    return tx
   }
 }
 </script>
