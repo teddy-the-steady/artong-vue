@@ -9,7 +9,7 @@ import {
 } from '../actions/wallet'
 import Provider from '../../util/walletConnectProvider'
 import { getMember } from '../../api/member'
-// import { Auth } from '@aws-amplify/auth'
+import { Auth } from '@aws-amplify/auth'
 
 const defaultState = {
   chainId: 0,
@@ -52,11 +52,11 @@ const actions = {
         const { accounts, chainId } = payload.params[0]
         const currentUser = JSON.parse(localStorage.getItem('current-user'))
 
-        if (accounts.length > 0 && accounts[0] !== currentUser.wallet_address) {
+        if (accounts.length > 0 && accounts[0].toLowerCase() !== currentUser.wallet_address) {
           commit(WALLET_ACCOUNT, accounts[0])
 
           let signature = null
-          await dispatch('AUTH_LOGOUT')
+          await Auth.signOut()
           const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', {
             address: accounts[0]
           })
