@@ -49,7 +49,7 @@ const actions = {
         if (error) {
           throw error
         }
-        console.log('session_update:',payload)
+        console.log('session_update:',payload.params[0].accounts)
         const { accounts, chainId } = payload.params[0]
         const currentUser = JSON.parse(localStorage.getItem('current-user'))
 
