@@ -63,7 +63,7 @@ export default {
 
       let signer = null
       if (this.isMobile) {
-        signer = await getWalletConnectSigner()
+        signer = getWalletConnectSigner()
       } else {
         signer = await getPcSigner()
       }
@@ -76,12 +76,7 @@ export default {
         const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
         if (ok) {
-          tx = await contract.createNFTContract(
-            this.name,
-            this.symbol,
-            this.maxAmount,
-            this.policy
-          )
+          tx = await this._createNFTContract(contract)
         }
       } else {
         tx = await this._createNFTContract(contract)
