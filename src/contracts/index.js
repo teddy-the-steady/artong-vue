@@ -15,7 +15,8 @@ export const getPcSigner = async () => {
   return signer
 }
 
-export const getWalletConnectSigner = () => {
+export const getWalletConnectSigner = async () => {
+  await Provider.provider.enable()
   const provider = new ethers.providers.Web3Provider(Provider.provider)
   const signer = provider.getSigner()
   return signer
