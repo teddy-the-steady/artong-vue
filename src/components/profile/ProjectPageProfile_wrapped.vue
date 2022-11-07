@@ -51,8 +51,8 @@ export default {
 
 .project {
     display: flex;
-    margin-left: 15%;
-    transform: translateY(-40%);
+    //margin-left: 15%;
+    //transform: translateY(-40%);
 
     .image {
       display: inline-block;
@@ -62,7 +62,7 @@ export default {
       min-width: 100px;
       min-height: 100px;
       border-radius: 15px;
-      border: 2px solid #f22e3e;
+      border: 2px solid $profile-border-red;
 
       .skeleton-box {
         background-color: $lightergray;
@@ -85,7 +85,7 @@ export default {
       width: 100px;
       height: 100px;
       border-radius: 15px;
-      border: 2px solid #f22e3e;
+      border: 2px solid $profile-border-red;
       img{
         width: 84px;
         height: 84px;
@@ -108,8 +108,8 @@ export default {
       height:38px;
 
       .username {
-        font-family: 'Pretendard';
-        font-style: normal;
+        font-family: $item-font;
+        font-style: $item-font-style;
         font-weight: 700;
         font-size: 32px;
         line-height: 100px;
@@ -124,29 +124,29 @@ export default {
     }
 }
 
-// @media only screen and (max-width: 599px) {
-//   .project {
-//     transform: translateY(-30%);
-//     align-items: center;
-//     flex-direction: column;
-//     margin-left: 0;
+@media only screen and (max-width: 599px) {
+  .project {
+    //transform: translateY(-30%);
+    align-items: center;
+    flex-direction: column;
+    margin-left: 0;
 
-//     .image {
-//       width: 100px;
-//       height: 100px;
-//       div {
-//         height: 100px;
-//       }
-//       input {
-//         display: none;
-//       }
-//     }
+    .image {
+      width: 100px;
+      height: 100px;
+      div {
+        height: 100px;
+      }
+      input {
+        display: none;
+      }
+    }
 
-//     .info {
-//       .username {
-//         position: inherit;
-//       }
-//     }
-//   }
-// }
+    .info {
+      .username {
+        position: inherit;
+      }
+    }
+  }
+}
 </style>
