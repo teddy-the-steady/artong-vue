@@ -63,7 +63,7 @@ export default {
 
       let signer = null
       if (this.isMobile) {
-        signer = await getWalletConnectSigner() // TODO] tx 지갑에 넘어가고 session_update 이벤트 발생하는 버그. 재현이 잘 안됨..
+        signer = await getWalletConnectSigner()
       } else {
         signer = await getPcSigner()
       }
@@ -76,7 +76,12 @@ export default {
         const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
         if (ok) {
-          tx = await this._createNFTContract(contract)
+          tx = await contract.createNFTContract(
+            this.name,
+            this.symbol,
+            this.maxAmount,
+            this.policy
+          )
         }
       } else {
         tx = await this._createNFTContract(contract)
