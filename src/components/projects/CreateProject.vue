@@ -63,7 +63,7 @@ export default {
 
       let signer = null
       if (this.isMobile) {
-        signer = await getWalletConnectSigner()
+        signer = getWalletConnectSigner()
       } else {
         signer = await getPcSigner()
       }
