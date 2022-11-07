@@ -71,16 +71,16 @@ export default {
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
       let tx = null
 
-      if (this.isMobile) {
-        this.$store.commit('TOGGLE_CONFIRM_MODAL')
-        const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+      // if (this.isMobile) {
+      //   this.$store.commit('TOGGLE_CONFIRM_MODAL')
+      //   const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
-        if (ok) {
-          tx = await this._createNFTContract(contract)
-        }
-      } else {
+      //   if (ok) {
+      //     tx = await this._createNFTContract(contract)
+      //   }
+      // } else {
         tx = await this._createNFTContract(contract)
-      }
+      // }
 
       const postResult = await postProject({
         create_tx_hash: tx.hash,
