@@ -112,16 +112,33 @@ export default {
             ipfs_url: metadata.url
           })
         } else {
-          const tx = await this.doMint(
-            this.postResult.project_address,
-            metadata.url,
-            metadataObject.data.image || ''
-          )
-          console.log('tx:',tx)
+          let signer = null
+          let tx = null
+          if (this.isMobile) {
+            signer = await getWalletConnectSigner()
+            this.$store.commit('TOGGLE_CONFIRM_MODAL')
+            const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+
+            if (ok) {
+              tx = await this.doMint(
+                this.postResult.project_address,
+                metadata.url,
+                metadataObject.data.image || '',
+                signer
+              )
+            }
+          } else {
+            signer = await getPcSigner()
+            tx = await this.doMint(
+              this.postResult.project_address,
+              metadata.url,
+              metadataObject.data.image || '',
+              signer
+            )
+          }
+
           const approveReceipt = await tx.wait()
-          console.log('approveReceipt:',approveReceipt)
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
-          console.log('tokenId:',tokenId)
 
           await patchContent(this.postResult.id, {
             tokenId: tokenId,
@@ -151,14 +168,7 @@ export default {
         this.file = null
       }
     },
-    async doMint(projectAddress, tokenUri, contentUri) {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
+    async doMint(projectAddress, tokenUri, contentUri, signer) {
       const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
       return tx
