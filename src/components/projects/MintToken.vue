@@ -113,27 +113,31 @@ export default {
           })
         } else {
           let signer = null
-          let tx = null
           if (this.isMobile) {
             signer = await getWalletConnectSigner()
+          } else {
+            signer = await getPcSigner()
+          }
+
+          const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, signer)
+          let tx = null
+
+          if (this.isMobile) {
             this.$store.commit('TOGGLE_CONFIRM_MODAL')
             const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
             if (ok) {
               tx = await this.doMint(
-                this.postResult.project_address,
+                contract,
                 metadata.url,
-                metadataObject.data.image || '',
-                signer
+                metadataObject.data.image || ''
               )
             }
           } else {
-            signer = await getPcSigner()
             tx = await this.doMint(
-              this.postResult.project_address,
+              contract,
               metadata.url,
-              metadataObject.data.image || '',
-              signer
+              metadataObject.data.image || ''
             )
           }
 
@@ -168,8 +172,7 @@ export default {
         this.file = null
       }
     },
-    async doMint(projectAddress, tokenUri, contentUri, signer) {
-      const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
+    async doMint(contract, tokenUri, contentUri) {
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
       return tx
     },
