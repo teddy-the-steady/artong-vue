@@ -91,8 +91,6 @@ export default {
         return
       }
 
-      const lazyMint = this.policy === 1
-
       const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
@@ -104,13 +102,17 @@ export default {
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+
         if (ok) {
+          const lazyMint = this.policy == 1
+
           if (lazyMint) {
             const voucher = await this.makeLazyMintingVoucher(
               this.postResult.project_address,
               metadata.url,
               metadataObject.data.image || '',
             )
+
             await patchContent(this.postResult.id, {
               voucher: voucher,
               isRedeemed: false,
