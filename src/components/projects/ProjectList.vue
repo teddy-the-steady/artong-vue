@@ -47,7 +47,6 @@ export default {
       const projectArrayToPush = await this.makeProjectArray()
       if (projectArrayToPush.length > 0) {
         this.pushProjects(projectArrayToPush, this.projectList)
-        this.checkMoreDataToLoad()
       }
     },
     async makeProjectArray() {
@@ -72,7 +71,6 @@ export default {
               project_thumbnail_s3key: this.getImageUrl(results[i].project_thumbnail_s3key),
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,
-              total: results[i].total
             })
           }
         } else {
@@ -94,11 +92,6 @@ export default {
           projectArrayToPush[i].index = ++lastProjectCopy.index
         }
         projectList.push(projectArrayToPush[i])
-      }
-    },
-    checkMoreDataToLoad() {
-      if (this.projectList.length === this.projectList[0].total) {
-        this.noMoreDataToLoad = true
       }
     },
     getImageUrl(path) {
