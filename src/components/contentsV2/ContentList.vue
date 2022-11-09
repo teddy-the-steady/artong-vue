@@ -53,7 +53,6 @@ export default {
       const contentArrayToPush = await this.makeContentArray()
       if (contentArrayToPush.length > 0) {
         this.pushContents(contentArrayToPush, this.contentList)
-        this.checkMoreDataToLoad()
       }
     },
     async makeContentArray() {
@@ -77,7 +76,6 @@ export default {
               content_thumbnail_s3key: this.getImageUrl(results[i].content_thumbnail_s3key),
               createdAt: results[i].createdAt,
               updatedAt: results[i].updatedAt,
-              total: results[i].total
             })
           }
         } else {
@@ -99,11 +97,6 @@ export default {
           contentArrayToPush[i].index = ++lastContentCopy.index
         }
         contentList.push(contentArrayToPush[i])
-      }
-    },
-    checkMoreDataToLoad() {
-      if (this.contentList.length === this.contentList[0].total) {
-        this.noMoreDataToLoad = true
       }
     },
     getImageUrl(path) {
