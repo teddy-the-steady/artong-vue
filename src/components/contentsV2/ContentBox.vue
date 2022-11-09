@@ -1,6 +1,11 @@
 <template>
   <div class="box" @click="imageSelect()">
-    <img :src="image.content_s3key" alt="" ref="box"/>
+    <img
+      :src="image.content_thumbnail_s3key ||
+            image.content_s3key ||
+            this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')"
+      @error="replaceImage"
+    />
   </div>
 </template>
 
@@ -16,6 +21,14 @@ export default {
   methods: {
     imageSelect() {
       this.$emit('image-selected', this.image.index)
+    },
+    replaceImage(e) {
+      const imageUrl = e.target.currentSrc
+      if (imageUrl.indexOf('resized-') > -1) {
+        e.target.src = this.image.content_s3key
+      } else {
+        e.target.src = this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      }
     }
   }
 }
