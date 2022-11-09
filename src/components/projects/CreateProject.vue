@@ -62,14 +62,7 @@ export default {
       // if (!isAuthenticated()) {
       // }
 
-      // let signer = null
-      // if (this.isMobile) {
-      //   signer = getWalletConnectSigner()
-      // } else {
-      //   signer = await getPcSigner()
-      // }
-
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer) // TODO] ios 앱스토어 redirect.. web3로 바꾸면 될까?
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
 
       const postResult = await postProject({

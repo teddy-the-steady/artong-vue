@@ -35,7 +35,7 @@ import {
   postContent,
   patchContent,
   uploadToNftStorage,
-  getContent,
+  getContentVoucher,
   getIpfsMetadata,
 } from '../../api/contents'
 import { ethers } from 'ethers'
@@ -74,7 +74,8 @@ export default {
       postResult: {},
       S3_PRIVACY_LEVEL: 'public',
       redeemPrice: 0,
-      mintPrice: 0
+      mintPrice: 0,
+      signer: null
     }
   },
   methods: {
@@ -91,15 +92,15 @@ export default {
 
       const lazyMint = this.policy === 1
 
-      try {
-        const metadata = await uploadToNftStorage({
+      const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
 
-        const metadataObject = await getIpfsMetadata(metadata)
+      const metadataObject = await getIpfsMetadata(metadata)
 
+      try {
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
             this.postResult.project_address,
@@ -112,34 +113,13 @@ export default {
             ipfs_url: metadata.url
           })
         } else {
-          let signer = null
-          if (this.isMobile) {
-            signer = await getWalletConnectSigner()
-          } else {
-            signer = await getPcSigner()
-          }
+          const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, this.signer)
 
-          const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, signer)
-          let tx = null
-
-          if (this.isMobile) {
-            this.$store.commit('TOGGLE_CONFIRM_MODAL')
-            const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-
-            if (ok) {
-              tx = await this.doMint(
-                contract,
-                metadata.url,
-                metadataObject.data.image || ''
-              )
-            }
-          } else {
-            tx = await this.doMint(
-              contract,
-              metadata.url,
-              metadataObject.data.image || ''
-            )
-          }
+          const tx = await this.doMint(
+            contract,
+            metadata.url,
+            metadataObject.data.image || ''
+          )
 
           const approveReceipt = await tx.wait()
           const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
@@ -151,8 +131,6 @@ export default {
         }
       } catch (error) {
         this.message = error
-        this.image = null
-        this.file = null
       }
     },
     async uploadToS3(projectsAddress, memberId, fileName) {
@@ -177,16 +155,9 @@ export default {
       return tx
     },
     async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
       const lazyMinter = new LazyMinter({
-        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
-        signer: signer
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
+        signer: this.signer
       })
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
@@ -212,19 +183,12 @@ export default {
       )
     },
     async redeem() {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
+      const contentId = 197
 
-      const contentId = 113
-
-      const contentResult = await getContent(contentId)
+      const contentResult = await getContentVoucher(contentId)
       const voucher = contentResult.voucher
 
-      const contract = new ethers.Contract(this.$router.currentRoute.params.id, ERC721_ABI, signer)
+      const contract = new ethers.Contract(this.$router.currentRoute.params.id, ERC721_ABI, this.signer)
       const tx = await contract.redeem(this.currentUser.wallet_address, voucher, {value: this.redeemPrice})
       const approveReceipt = await tx.wait()
       const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
@@ -233,6 +197,13 @@ export default {
         tokenId: tokenId,
         isRedeemed: true
       })
+    }
+  },
+  async mounted() {
+    if (this.isMobile) {
+      this.signer = await getWalletConnectSigner()
+    } else {
+      this.signer = await getPcSigner()
     }
   }
  }
