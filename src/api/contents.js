@@ -13,8 +13,8 @@ const uploadToNftStorage = async function(body) {
   return await instance.post('/contents/storage', body)
 }
 
-const getContent = async function(pathParam) {
-  return await instance.get(`/contents/${pathParam}`)
+const getContentVoucher = async function(pathParam) {
+  return await instance.get(`/contents/${pathParam}/voucher`)
 }
 
 const getIpfsMetadata = async function(metadata) {
@@ -28,6 +28,6 @@ export {
   postContent,
   patchContent,
   uploadToNftStorage,
-  getContent,
+  getContentVoucher,
   getIpfsMetadata,
 }
