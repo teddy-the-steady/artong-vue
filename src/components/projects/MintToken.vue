@@ -19,6 +19,7 @@
       <label for="r1">Mint Now</label>
       <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
       <label for="r2">Lazy Mint</label>
+      {{policy}}
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
     <input v-model="mintPrice" placeholder="mintPrice">
@@ -99,7 +100,7 @@ export default {
         })
 
       const metadataObject = await getIpfsMetadata(metadata)
-
+      console.log(this.policy, lazyMint)
       try {
         if (lazyMint) {
           const voucher = await this.makeLazyMintingVoucher(
