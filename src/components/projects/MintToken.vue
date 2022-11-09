@@ -19,6 +19,7 @@
       <label for="r1">Mint Now</label>
       <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
       <label for="r2">Lazy Mint</label>
+      {{policy}}
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
     <input v-model="mintPrice" placeholder="mintPrice">
@@ -35,7 +36,7 @@ import {
   postContent,
   patchContent,
   uploadToNftStorage,
-  getContent,
+  getContentVoucher,
   getIpfsMetadata,
 } from '../../api/contents'
 import { ethers } from 'ethers'
@@ -51,7 +52,10 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
-    })
+    }),
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   props: {
     projectInfo: {
@@ -68,9 +72,11 @@ export default {
       policy: 1,
       message: '',
       s3Result: {},
+      postResult: {},
       S3_PRIVACY_LEVEL: 'public',
       redeemPrice: 0,
-      mintPrice: 0
+      mintPrice: 0,
+      signer: null
     }
   },
   methods: {
@@ -85,51 +91,53 @@ export default {
         return
       }
 
-      const lazyMint = this.policy === 1
-
-      try {
-        const postResult = await postContent({
-          project_address: this.$router.currentRoute.params.id,
-          content_s3key: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
-        })
-        const metadata = await uploadToNftStorage({
+      const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
           imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`
         })
-        const patchResult = await patchContent(postResult.id, {
-          ipfs_url: metadata.url
-        })
-        const metadataObject = await getIpfsMetadata(metadata)
-        if (metadataObject && metadataObject.data && metadataObject.data.image) {
-          patchResult.content_url = metadataObject.data.image
-        }
 
-        if (lazyMint) {
-          const voucher = await this.makeLazyMintingVoucher(
-            patchResult.project_address,
-            patchResult.ipfs_url,
-            patchResult.content_url,
-          )
-          await patchContent(postResult.id, {
-            voucher: voucher,
-            isRedeemed: false,
-          })
-        } else {
-          const tx = await this.doMint(
-            patchResult.project_address,
-            patchResult.ipfs_url,
-            patchResult.content_url
-          )
-          const approveReceipt = await tx.wait()
-          const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+      const metadataObject = await getIpfsMetadata(metadata)
 
-          await patchContent(postResult.id, { tokenId: tokenId })
+      try {
+        this.$store.commit('TOGGLE_CONFIRM_MODAL')
+        const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+
+        if (ok) {
+          const lazyMint = this.policy == 1
+
+          if (lazyMint) {
+            const voucher = await this.makeLazyMintingVoucher(
+              this.postResult.project_address,
+              metadata.url,
+              metadataObject.data.image || '',
+            )
+
+            await patchContent(this.postResult.id, {
+              voucher: voucher,
+              isRedeemed: false,
+              ipfs_url: metadata.url
+            })
+          } else {
+            const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, this.signer)
+
+            const tx = await this.doMint(
+              contract,
+              metadata.url,
+              metadataObject.data.image || ''
+            )
+
+            const approveReceipt = await tx.wait()
+            const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+
+            await patchContent(this.postResult.id, {
+              tokenId: tokenId,
+              ipfs_url: metadata.url
+            })
+          }
         }
       } catch (error) {
         this.message = error
-        this.image = null
-        this.file = null
       }
     },
     async uploadToS3(projectsAddress, memberId, fileName) {
@@ -149,29 +157,14 @@ export default {
         this.file = null
       }
     },
-    async doMint(projectAddress, tokenUri, contentUri) {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
-      const contract = new ethers.Contract(projectAddress, ERC721_ABI, signer)
+    async doMint(contract, tokenUri, contentUri) {
       const tx = await contract.mint(this.currentUser.wallet_address, tokenUri, contentUri)
       return tx
     },
     async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
       const lazyMinter = new LazyMinter({
-        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
-        signer: signer
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
+        signer: this.signer
       })
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
@@ -184,6 +177,12 @@ export default {
     async onFileChange(e) {
       this.file = e.target.files[0]
       this.image = URL.createObjectURL(this.file)
+
+      this.postResult = await postContent({
+        project_address: this.$router.currentRoute.params.id,
+        content_s3key: `${this.S3_PRIVACY_LEVEL}/nft/${this.$router.currentRoute.params.id}/${this.currentUser.id}/${this.file.name}`
+      })
+
       this.s3Result = await this.uploadToS3(
         this.$router.currentRoute.params.id,
         this.currentUser.id,
@@ -191,19 +190,12 @@ export default {
       )
     },
     async redeem() {
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
+      const contentId = 197
 
-      const contentId = 113
-
-      const contentResult = await getContent(contentId)
+      const contentResult = await getContentVoucher(contentId)
       const voucher = contentResult.voucher
 
-      const contract = new ethers.Contract(this.$router.currentRoute.params.id, ERC721_ABI, signer)
+      const contract = new ethers.Contract(this.$router.currentRoute.params.id, ERC721_ABI, this.signer)
       const tx = await contract.redeem(this.currentUser.wallet_address, voucher, {value: this.redeemPrice})
       const approveReceipt = await tx.wait()
       const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
@@ -213,6 +205,13 @@ export default {
         isRedeemed: true
       })
     }
+  },
+  async mounted() {
+    if (this.isMobile) {
+      this.signer = await getWalletConnectSigner()
+    } else {
+      this.signer = await getPcSigner()
+    }
   }
  }
 </script>
@@ -220,7 +219,7 @@ export default {
 <style lang="scss" scoped>
 .upload {
   img {
-    max-width: 500px;
+    max-width: 80%;
   }
 }
 

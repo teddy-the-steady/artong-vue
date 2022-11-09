@@ -48,10 +48,11 @@ const actions = {
         if (error) {
           throw error
         }
-        
-        const { accounts, chainId } = payload.params[0]
 
-        if (accounts.length > 0) {
+        const { accounts, chainId } = payload.params[0]
+        const currentUser = JSON.parse(localStorage.getItem('current-user'))
+
+        if (accounts.length > 0 && accounts[0].toLowerCase() !== currentUser.wallet_address) {
           commit(WALLET_ACCOUNT, accounts[0])
 
           let signature = null

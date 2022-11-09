@@ -2,19 +2,19 @@ import instance from './index';
 import axios from 'axios';
 
 const postContent = async function(body) {
-  return await instance.post('/nft', body)
+  return await instance.post('/contents', body)
 }
 
 const patchContent = async function(pathParam, body) {
-  return await instance.patch(`/nft/${pathParam}`, body)
+  return await instance.patch(`/contents/${pathParam}`, body)
 }
 
 const uploadToNftStorage = async function(body) {
-  return await instance.post('/nft/storage', body)
+  return await instance.post('/contents/storage', body)
 }
 
-const getContent = async function(pathParam) {
-  return await instance.get(`/nft/${pathParam}`)
+const getContentVoucher = async function(pathParam) {
+  return await instance.get(`/contents/${pathParam}/voucher`)
 }
 
 const getIpfsMetadata = async function(metadata) {
@@ -28,6 +28,6 @@ export {
   postContent,
   patchContent,
   uploadToNftStorage,
-  getContent,
+  getContentVoucher,
   getIpfsMetadata,
 }
