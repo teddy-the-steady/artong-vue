@@ -25,6 +25,8 @@
 import SkeletonBox from '../util/SkeletonBox'
 import { makeS3Path } from '../../util/commonFunc'
 
+//import internal from 'stream'
+
 export default {
   name: 'ContentsProfile',
   components: {
@@ -74,12 +76,12 @@ export default {
   cursor: pointer;
 
     .image {
-      width:30px;
+      width: 30px;
       height: 30px;
       object-fit:cover;
       border-radius: 50%;
       overflow:hidden;
-      background-color: white;
+      background-color: $artong-white;
 
       .profileImage { //?
         height:100%;
@@ -94,8 +96,8 @@ export default {
       margin-left:8px;
       height:32px;
       .username{
-        font-family: 'Pretendard';
-        font-style: normal;
+        font-family: $item-font;
+        font-style: $item-font-style;
         font-weight: 500;
         font-size: 14px;
         line-height: 32px;

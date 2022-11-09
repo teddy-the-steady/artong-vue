@@ -6,6 +6,8 @@ $lightgray: lightgray !default;
 $lightergray: #EEEEEE !default;
 $backdrop: rgba(0,0,0,.5) !default;
 $head-height: 50px !default;
+$profile-border-gray: #E5E5E5 !default;
+$profile-border-red: #F22E3E !default;
 
 // from vsm
 $primary-color: $artong-main !default;
@@ -38,3 +40,6 @@ $item-line-height: 30px !default;
 $item-padding: 10px !default;
 $icon-height: 20px !default;
 $icon-width: 30px !default;
+
+$item-font: 'Pretendard' !default;
+$item-font-style: normal !default;

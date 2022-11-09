@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       contentList: [],
-      noMoreDataToLoad: false
+      noMoreDataToLoad: false,
     }
   },
   methods: {

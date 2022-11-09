@@ -110,9 +110,7 @@
         <div class="curated-collections">Curated Collections</div>
         <div class="url" href="">View more</div>
       </div>
-      <div class="collection-card">
-        
-      </div>
+      <CuratedCollection></CuratedCollection>
     </div> <!--end of container4-->
     <ContentsProfileBundle></ContentsProfileBundle>
     
@@ -120,6 +118,7 @@
     <ProjectPageProfile></ProjectPageProfile>
     <ProjectPageProfile_small/>
     <ContentsProfile/>
+    <CuratedCollection></CuratedCollection>
     
   </div>
 </template>
@@ -131,6 +130,8 @@ import ProjectPageProfile from '../profile/ProjectPageProfile.vue';
 import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
+import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
+
 
 export default {
   name: 'Main',
@@ -140,12 +141,15 @@ export default {
     ProjectPageProfile,
     ProjectPageProfile_wrapped,
     ProjectPageProfile_small,
-    ContentsProfile
+    ContentsProfile,
+    CuratedCollection,
   },
 }
 </script>
 
 <style lang="scss" scoped>
+  @import '../../assets/scss/variables';
+
   //@media (max-width:1080px)
     // container0 빈 div
   .container1{
@@ -162,13 +166,13 @@ export default {
     height: 216px;
 
     font-family: 'Mustica Pro';
-    font-style: normal;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 52px;
     line-height: 72px;
     text-transform: capitalize;
 
-    color: #000000;
+    color: $artong-black;
 
     text-align:left;    
   }
@@ -176,13 +180,13 @@ export default {
     width: 91.1%;
     //height: 133px;
 
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
 
-    color: #4D4D4D;
+    color: #4D4D4D; //
     align-self:stretch;
 
     text-align:left;
@@ -192,7 +196,7 @@ export default {
     width: 161px;
     height: 48px;
 
-    background: #000000;
+    background: $artong-black;
     border-radius: 5px;
     text-transform: none;
     margin-bottom:48px;
@@ -212,14 +216,14 @@ export default {
     height: 44px;
 
     font-family: 'Mustica Pro';
-    font-style: normal;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 32px;
     line-height: 44px;
     margin: auto;
     margin-bottom: 48px;
 
-    color: #000000;
+    color: $artong-black;
   }
   .intro-img{
     width: 32px;
@@ -237,7 +241,7 @@ export default {
     font-size: 20px;
     line-height: 24px;
 
-    color: #000000;
+    color: $artong-black;
 
     margin: auto;
     margin-bottom: 16px;
@@ -271,8 +275,8 @@ export default {
     width: 91.1%;
     height: 160px;
 
-    background: #FFFFFF;
-    border: 1px solid #E5E5E5;
+    background: $artong-white;
+    border: 1px solid $profile-border-gray;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
     border-radius: 14px;
 
@@ -294,13 +298,13 @@ export default {
     width: 181px;
     height: 22px;
 
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
 
-    color: #000000;
+    color: $artong-black;
 
     margin:auto;
     margin-top: 10.4px;
@@ -311,8 +315,8 @@ export default {
     width: 248px;
     height: 48px; 
 
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
@@ -347,13 +351,13 @@ export default {
     height: 553px;
   }
   .nft-name{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 700;
     font-size: 24px;
     text-align: left;
 
-    color: #000000;
+    color: $artong-black;
 
     margin-bottom: 6px;
   }
@@ -361,7 +365,7 @@ export default {
     width: 400px;
     height: 400px;
     
-    background-color:black;
+    background-color:$artong-black;
 
     border-radius: 14px;
 
@@ -385,16 +389,16 @@ export default {
     flex-basis: 200px;
   }
   .container1-2-bottom-title{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 18px;
     
     margin-bottom:8px;
     text-align: left;
 
-    color: #000000;
-  }
+    color: $artong-black;
+  }/////////여기까지 _variable.scss 파일이랑 연결했음
   .container1-2-bottom-content{
     display: flex;
     flex-direction: row;
@@ -405,23 +409,23 @@ export default {
     height: 32px;
     border-radius: 4px;
 
-    background-color: black;
+    background-color: $artong-black;
   }
   .container1-2-bottom-right-content-img{
     width: 32px;
     height: 32px;
-    background-color: black;
+    background-color: $artong-black;
     border-radius: 999px;
   }
   .container1-2-bottom-content-name{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 500;
     font-size: 14px;
     text-align:left;
     margin-top:auto;
     margin-bottom:auto;
-    color: #000000;
+    color: $artong-black;
   }
   //show your creativity
   .container2{
@@ -493,13 +497,13 @@ export default {
     height: 553px;
   }
   .nft-name{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 700;
     font-size: 24px;
     text-align: left;
 
-    color: #000000;
+    color: $artong-black;
 
     margin-bottom: 6px;
   }
@@ -507,7 +511,7 @@ export default {
     width: 400px;
     height: 400px;
     
-    background-color:black;
+    background-color:$artong-black;
 
     border-radius: 14px;
 
@@ -531,15 +535,15 @@ export default {
     flex-basis: 200px;
   }
   .container1-2-bottom-title{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 18px;
     
     margin-bottom:8px;
     text-align: left;
 
-    color: #000000;
+    color: $artong-black;
   }
   .container1-2-bottom-content{
     display: flex;
@@ -551,23 +555,23 @@ export default {
     height: 32px;
     border-radius: 4px;
 
-    background-color: black;
+    background-color: $artong-black;
   }
   .container1-2-bottom-right-content-img{
     width: 32px;
     height: 32px;
-    background-color: black;
+    background-color: $artong-black;
     border-radius: 999px;
   }
   .container1-2-bottom-content-name{
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 500;
     font-size: 14px;
     text-align:left;
     margin-top:auto;
     margin-bottom:auto;
-    color: #000000;
+    color: $artong-black;
   }
   //show your creativity
   .container2{
@@ -620,7 +624,7 @@ export default {
     //width: 360px;
     height: 983px;
 
-    background: #000000;
+    background: $artong-black;
 
     padding-top: 48px;
   }
@@ -633,7 +637,7 @@ export default {
     height: 30px;
 
     font-family: 'Mustica Pro';
-    font-style: normal;
+    font-style: $item-font-style;
     font-weight: 600;
     font-size: 22px;
     line-height: 30px;
@@ -649,15 +653,21 @@ export default {
     margin-left: 54px;
     margin-top: 16px;
 
-    font-family: 'Pretendard';
-    font-style: normal;
+    font-family: $item-font;
+    font-style: $item-font-style;
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
     text-decoration-line: underline;
-    color: #F22E3E;
+    color: $profile-border-red;
   }
   .collection-card{
-    
+    width: 330px;
+    height: 453px;
+
+    border: 1px solid #333333;
+    border-radius: 15px;
+    margin-left: 16px;
+    margin-top: 24px;
   }
 </style>

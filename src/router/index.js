@@ -14,8 +14,11 @@ import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
 import Content from '@/components/menu/Content'
+import VueCarousel from 'vue-carousel'; // for 무한 슬라이드 swipe 배너
+
 
 Vue.use(Router)
+Vue.use(VueCarousel);
 
 const router = new Router({
   mode: 'history',

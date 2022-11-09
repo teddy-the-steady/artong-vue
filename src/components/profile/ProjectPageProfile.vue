@@ -51,8 +51,8 @@ export default {
 
 .project {
     display: flex;
-    margin-left: 15%;
-    transform: translateY(-40%);
+    //margin-left: 15%;
+    //transform: translateY(-40%);
 
     .image {
       display: inline-block;
@@ -72,14 +72,14 @@ export default {
         width: 100px;
         height: 100px;
         object-fit: cover;
-        border:1px solid #E5E5E5;
+        border:1px solid $profile-border-gray;
         border-radius: 15px;
     }
     .basicProfileImage {
         width: 100px;
         height: 100px;
         object-fit: fill;
-        border:1px solid #E5E5E5;
+        border:1px solid $profile-border-gray;
         border-radius: 15px;
         background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
     }
@@ -90,8 +90,8 @@ export default {
       height:38px;
 
       .username {
-        font-family: 'Pretendard';
-        font-style: normal;
+        font-family: $item-font;
+        font-style: $item-font-style;
         font-weight: 700;
         font-size: 32px;
         line-height: 100px;
@@ -106,29 +106,29 @@ export default {
     }
 }
 
-// @media only screen and (max-width: 599px) {
-//   .project {
-//     transform: translateY(-30%);
-//     align-items: center;
-//     flex-direction: column;
-//     margin-left: 0;
+@media only screen and (max-width: 599px) {
+  .project {
+    //transform: translateY(-30%);
+    align-items: center;
+    flex-direction: column;
+    margin-left: 0;
 
-//     .image {
-//       width: 100px;
-//       height: 100px;
-//       div {
-//         height: 100px;
-//       }
-//       input {
-//         display: none;
-//       }
-//     }
+    .image {
+      width: 100px;
+      height: 100px;
+      div {
+        height: 100px;
+      }
+      input {
+        display: none;
+      }
+    }
 
-//     .info {
-//       .username {
-//         position: inherit;
-//       }
-//     }
-//   }
-// }
+    .info {
+      .username {
+        position: inherit;
+      }
+    }
+  }
+}
 </style>
