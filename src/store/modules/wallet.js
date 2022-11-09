@@ -31,8 +31,7 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function({ state, commit, dispatch }) {
     try {
-      const enable = await Provider.provider.enable()
-      console.log('enable:', enable)
+      await Provider.provider.enable()
       const address = Provider.provider.wc.accounts[0]
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
@@ -49,7 +48,7 @@ const actions = {
         if (error) {
           throw error
         }
-        console.log('session_update:',payload.params[0].accounts)
+
         const { accounts, chainId } = payload.params[0]
         const currentUser = JSON.parse(localStorage.getItem('current-user'))
 
@@ -105,7 +104,6 @@ const actions = {
       }
       if (localStorage.getItem('walletconnect')) {
         (async () => {
-          console.log('AUTO_CONNECT_WALLET')
           await dispatch('SET_UP_WALLET_CONNECTION')
         })()
       }
