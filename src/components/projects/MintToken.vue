@@ -113,21 +113,25 @@ export default {
             ipfs_url: metadata.url
           })
         } else {
-          const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, this.signer)
+          this.$store.commit('TOGGLE_CONFIRM_MODAL')
+          const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+          if (ok) {
+            const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, this.signer)
 
-          const tx = await this.doMint(
-            contract,
-            metadata.url,
-            metadataObject.data.image || ''
-          )
+            const tx = await this.doMint(
+              contract,
+              metadata.url,
+              metadataObject.data.image || ''
+            )
 
-          const approveReceipt = await tx.wait()
-          const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+            const approveReceipt = await tx.wait()
+            const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
 
-          await patchContent(this.postResult.id, {
-            tokenId: tokenId,
-            ipfs_url: metadata.url
-          })
+            await patchContent(this.postResult.id, {
+              tokenId: tokenId,
+              ipfs_url: metadata.url
+            })
+          }
         }
       } catch (error) {
         this.message = error
