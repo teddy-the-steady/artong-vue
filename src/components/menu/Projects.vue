@@ -46,7 +46,7 @@ export default {
           }
         }
       `, variables: {
-          first: 1,
+          first: 5,
           skip: 0
         }
       }
