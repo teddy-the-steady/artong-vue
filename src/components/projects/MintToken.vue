@@ -19,6 +19,7 @@
       <label for="r1">Mint Now</label>
       <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
       <label for="r2">Lazy Mint</label>
+      {{policy}}
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
     <input v-model="mintPrice" placeholder="mintPrice">
@@ -101,21 +102,21 @@ export default {
       const metadataObject = await getIpfsMetadata(metadata)
 
       try {
-        if (lazyMint) {
-          const voucher = await this.makeLazyMintingVoucher(
-            this.postResult.project_address,
-            metadata.url,
-            metadataObject.data.image || '',
-          )
-          await patchContent(this.postResult.id, {
-            voucher: voucher,
-            isRedeemed: false,
-            ipfs_url: metadata.url
-          })
-        } else {
-          this.$store.commit('TOGGLE_CONFIRM_MODAL')
-          const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-          if (ok) {
+        this.$store.commit('TOGGLE_CONFIRM_MODAL')
+        const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+        if (ok) {
+          if (lazyMint) {
+            const voucher = await this.makeLazyMintingVoucher(
+              this.postResult.project_address,
+              metadata.url,
+              metadataObject.data.image || '',
+            )
+            await patchContent(this.postResult.id, {
+              voucher: voucher,
+              isRedeemed: false,
+              ipfs_url: metadata.url
+            })
+          } else {
             const contract = new ethers.Contract(this.postResult.project_address, ERC721_ABI, this.signer)
 
             const tx = await this.doMint(
