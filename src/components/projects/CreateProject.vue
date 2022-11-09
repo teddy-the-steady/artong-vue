@@ -53,7 +53,8 @@ export default {
       name: '',
       symbol: '',
       maxAmount: 0,
-      policy: 0
+      policy: 0,
+      signer: null
     }
   },
   methods: {
@@ -61,26 +62,15 @@ export default {
       // if (!isAuthenticated()) {
       // }
 
-      let signer = null
-      if (this.isMobile) {
-        signer = getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
-      let tx = null
-
+      // let signer = null
       // if (this.isMobile) {
-      //   this.$store.commit('TOGGLE_CONFIRM_MODAL')
-      //   const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-
-      //   if (ok) {
-      //     tx = await this._createNFTContract(contract)
-      //   }
+      //   signer = getWalletConnectSigner()
       // } else {
-        tx = await this._createNFTContract(contract)
+      //   signer = await getPcSigner()
       // }
+
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer) // TODO] ios 앱스토어 redirect.. web3로 바꾸면 될까?
+      const tx = await this._createNFTContract(contract)
 
       const postResult = await postProject({
         create_tx_hash: tx.hash,
@@ -101,6 +91,13 @@ export default {
         this.policy
       )
       return tx
+    }
+  },
+  async mounted() {
+    if (this.isMobile) {
+      this.signer = await getWalletConnectSigner()
+    } else {
+      this.signer = await getPcSigner()
     }
   }
 }
