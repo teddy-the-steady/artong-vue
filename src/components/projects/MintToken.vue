@@ -92,7 +92,7 @@ export default {
       }
 
       const lazyMint = this.policy === 1
-
+console.log(lazyMint, this.policy)
       const metadata = await uploadToNftStorage({
           name: this.name,
           description: this.description,
@@ -100,19 +100,23 @@ export default {
         })
 
       const metadataObject = await getIpfsMetadata(metadata)
-      console.log(this.policy, lazyMint)
+
       try {
         if (lazyMint) {
-          const voucher = await this.makeLazyMintingVoucher(
-            this.postResult.project_address,
-            metadata.url,
-            metadataObject.data.image || '',
-          )
-          await patchContent(this.postResult.id, {
-            voucher: voucher,
-            isRedeemed: false,
-            ipfs_url: metadata.url
-          })
+          this.$store.commit('TOGGLE_CONFIRM_MODAL')
+          const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+          if (ok) {
+            const voucher = await this.makeLazyMintingVoucher(
+              this.postResult.project_address,
+              metadata.url,
+              metadataObject.data.image || '',
+            )
+            await patchContent(this.postResult.id, {
+              voucher: voucher,
+              isRedeemed: false,
+              ipfs_url: metadata.url
+            })
+          }
         } else {
           this.$store.commit('TOGGLE_CONFIRM_MODAL')
           const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
