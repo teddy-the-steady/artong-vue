@@ -53,7 +53,8 @@ export default {
       name: '',
       symbol: '',
       maxAmount: 0,
-      policy: 0
+      policy: 0,
+      signer: null
     }
   },
   methods: {
@@ -61,26 +62,8 @@ export default {
       // if (!isAuthenticated()) {
       // }
 
-      let signer = null
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner() // TODO] tx 지갑에 넘어가고 session_update 이벤트 발생하는 버그. 재현이 잘 안됨..
-      } else {
-        signer = await getPcSigner()
-      }
-
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
-      let tx = null
-
-      if (this.isMobile) {
-        this.$store.commit('TOGGLE_CONFIRM_MODAL')
-        const ok = await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-
-        if (ok) {
-          tx = await this._createNFTContract(contract)
-        }
-      } else {
-        tx = await this._createNFTContract(contract)
-      }
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
+      const tx = await this._createNFTContract(contract)
 
       const postResult = await postProject({
         create_tx_hash: tx.hash,
@@ -101,6 +84,13 @@ export default {
         this.policy
       )
       return tx
+    }
+  },
+  async mounted() {
+    if (this.isMobile) {
+      this.signer = await getWalletConnectSigner()
+    } else {
+      this.signer = await getPcSigner()
     }
   }
 }

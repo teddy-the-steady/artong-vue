@@ -48,7 +48,7 @@ const actions = {
         if (error) {
           throw error
         }
-        
+
         const { accounts, chainId } = payload.params[0]
         const currentUser = JSON.parse(localStorage.getItem('current-user'))
 
