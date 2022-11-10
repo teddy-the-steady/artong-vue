@@ -8,59 +8,7 @@
         paginationColor="#B3B3B3"
         paginationActiveColor="#F22E3E"
     >
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
+        <slide v-for="i in testNumber" :key="i">
             <div class="wrapper">
                 <div class="top">
                     <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
@@ -85,6 +33,11 @@
             ProjectPageProfile_wrapped,
             ContentsProfileBundle
         },
+        data(){
+            return{
+                testNumber: 5 // for문을 돌리기 위해 임의로 collection card 수를 잡음
+            }
+        }
         // methods: {
         //     handleSlideClick(dataset)=>{
         //         console.log(dataset.index, dataset.name)
