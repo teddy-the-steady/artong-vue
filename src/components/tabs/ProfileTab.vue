@@ -10,7 +10,7 @@
     <div class="items">
       <section class="item" :key="currentId">
         <div v-show="current.type === 'CONTENTS'">
-          <content-list :contentsApi="current.api"></content-list>
+          <content-list :queryContents="current.api"></content-list>
         </div>
         <div v-show="current.type === 'PROJECTS'">
           <project-list :queryProjects="current.api"></project-list>
@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      currentId: parseInt(this.$router.currentRoute.query.tab) || 1
+      currentId: parseInt(this.$router.currentRoute.query.tab) || 0
     }
   },
   computed: {
@@ -60,7 +60,7 @@ export default {
   watch: {
     async $route(val) {
       if (val) {
-        this.currentId = parseInt(val.query.tab) || 1
+        this.currentId = parseInt(val.query.tab) || 0
       }
     }
   }

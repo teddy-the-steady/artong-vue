@@ -13,7 +13,6 @@
 import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
 import { graphql } from '../../api/graphql'
 
@@ -22,14 +21,6 @@ export default {
   components: {
     ArtistPageProfile, ProfileTab
   },
-  extends: baseLazyLoading((to, callback) => {
-    callback(function() {
-      this.tabs[0].api = {
-        url: '/uploads',
-        params: {id: this.$route.params.id}
-      }
-    })
-  }),
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -41,9 +32,9 @@ export default {
       member: {},
       username: '',
       tabs: [
-        { id: 1, label: 'Contributed', type: 'CONTENTS', api: {} },
-        { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 3, label: 'Owned', type: 'CONTENTS', api: {} }
+        { id: 0, label: 'Contributed', type: 'CONTENTS', api: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
+        { id: 2, label: 'Owned', type: 'CONTENTS', api: {} }
       ]
     }
   },
@@ -62,6 +53,34 @@ export default {
   async created() {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
+
+    this.tabs[0].api = {
+      func: graphql,
+      body: {query: `
+        query TokensByCreator($first: Int, $skip: Int, $creator: String) {
+          tokens(first: $first, skip: $skip, where: {creator: $creator}) {
+            id
+            tokenId
+            tokenURI
+            contentURI
+            creator
+            owner
+            createdAt
+            updatedAt
+            _db_voucher
+            _db_content_s3key
+            project {
+              id
+            }
+          }
+        }
+      `, variables: {
+          first: 10,
+          skip: 0,
+          creator: this.member.wallet_address
+        }
+      }
+    }
 
     this.tabs[1].api = {
       func: graphql,
@@ -85,7 +104,7 @@ export default {
           }
         }
       `, variables: {
-          first: 1,
+          first: 10,
           skip: 0,
           creator: this.member.wallet_address
         }
@@ -107,34 +126,69 @@ export default {
     )
   },
   watch: {
-    $route() {
-      this.tabs[1].api = {
-        func: graphql,
-        body: {query: `
-          query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-            projects(first: $first, skip: $skip, where: {creator: $creator}) {
-              id
-              creator
-              owner
-              name
-              symbol
-              maxAmount
-              policy
-              isDisabled
-              createdAt
-              updatedAt
-              _db_project_s3key
-              _db_project_thumbnail_s3key
-              _db_background_s3key
-              _db_background_thumbnail_s3key
+    $route(val) {
+      switch (val.query.tab) {
+        case '0':
+          this.tabs[0].api = {
+            func: graphql,
+            body: {query: `
+              query TokensByCreator($first: Int, $skip: Int, $creator: String) {
+                tokens(first: $first, skip: $skip, where: {creator: $creator}) {
+                  id
+                  tokenId
+                  tokenURI
+                  contentURI
+                  creator
+                  owner
+                  createdAt
+                  updatedAt
+                  _db_voucher
+                  _db_content_s3key
+                  project {
+                    id
+                  }
+                }
+              }
+            `, variables: {
+                first: 10,
+                skip: 0,
+                creator: this.member.wallet_address
+              }
             }
           }
-        `, variables: {
-            first: 1,
-            skip: 0,
-            creator: this.member.wallet_address
+          break;
+        case '1':
+          this.tabs[1].api = {
+            func: graphql,
+            body: {query: `
+              query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+                projects(first: $first, skip: $skip, where: {creator: $creator}) {
+                  id
+                  creator
+                  owner
+                  name
+                  symbol
+                  maxAmount
+                  policy
+                  isDisabled
+                  createdAt
+                  updatedAt
+                  _db_project_s3key
+                  _db_project_thumbnail_s3key
+                  _db_background_s3key
+                  _db_background_thumbnail_s3key
+                }
+              }
+            `, variables: {
+                first: 10,
+                skip: 0,
+                creator: this.member.wallet_address
+              }
+            }
           }
-        }
+          break;
+        default:
+          break;
       }
     }
   }
