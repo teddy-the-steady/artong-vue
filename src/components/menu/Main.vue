@@ -112,37 +112,24 @@
       </div>
       <CuratedCollection></CuratedCollection>
     </div> <!--end of container4-->
-    <ContentsProfileBundle></ContentsProfileBundle>
     
-    <ProjectPageProfile_wrapped/>
-    <ProjectPageProfile></ProjectPageProfile>
-    <ProjectPageProfile_small/>
-    <ContentsProfile/>
-    <CuratedCollection></CuratedCollection>
-    
+    <BuyAndSell></BuyAndSell>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
-import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
-import ProjectPageProfile from '../profile/ProjectPageProfile.vue';
-import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
-import ContentsProfile from '../profile/ContentsProfile.vue'
 import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
-
+import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
   components:{
-    ContentsProfileBundle,
-    ProjectPageProfile,
-    ProjectPageProfile_wrapped,
     ProjectPageProfile_small,
-    ContentsProfile,
     CuratedCollection,
+    BuyAndSell
   },
 }
 </script>
