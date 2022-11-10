@@ -1,68 +1,76 @@
 <template>
     <carousel 
-        :per-page="1.15" 
-        :navigate-to="someLocalProperty" 
-        :mouse-drag="false" 
-        :autoplay="true" 
+        :perPage="1.1"
+        :autoplay="true"
         :autoplayHoverPause="true"
         :loop="true"
-        :scrollPerPage="true"
+        :scrollPerPage="false"
         paginationColor="#B3B3B3"
         paginationActiveColor="#F22E3E"
     >
-        <slide class="component">
-            <div class="top">
-                <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                <div class="category">category</div>
-            </div>
-            <div class="description">NFT art name</div>
-            <div class="bottom">
-                <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                <div class="nickName">@nickName +4</div>
-            </div>
-        </slide>
-        <slide class="component">
-            <div class="top">
-                <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                <div class="category">category</div>
-            </div>
-            <div class="description">NFT art name</div>
-            <div class="bottom">
-                <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                <div class="nickName">@nickName +4</div>
+        <slide>
+            <div class="wrapper">
+                <div class="top">
+                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+                    <div class="category">category</div>
+                </div>
+                <div class="description">NFT art name</div>
+                <div class="bottom">
+                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
+                    <div class="nickName">@nickName +4</div>
+                </div>
             </div>
         </slide>
-        <slide class="component">
-            <div class="top">
-                <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                <div class="category">category</div>
-            </div>
-            <div class="description">NFT art name</div>
-            <div class="bottom">
-                <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                <div class="nickName">@nickName +4</div>
-            </div>
-        </slide>
-        <slide class="component">
-            <div class="top">
-                <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                <div class="category">category</div>
-            </div>
-            <div class="description">NFT art name</div>
-            <div class="bottom">
-                <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                <div class="nickName">@nickName +4</div>
+        <slide>
+            <div class="wrapper">
+                <div class="top">
+                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+                    <div class="category">category</div>
+                </div>
+                <div class="description">NFT art name</div>
+                <div class="bottom">
+                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
+                    <div class="nickName">@nickName +4</div>
+                </div>
             </div>
         </slide>
-        <slide class="component">
-            <div class="top">
-                <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                <div class="category">category</div>
+        <slide>
+            <div class="wrapper">
+                <div class="top">
+                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+                    <div class="category">category</div>
+                </div>
+                <div class="description">NFT art name</div>
+                <div class="bottom">
+                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
+                    <div class="nickName">@nickName +4</div>
+                </div>
             </div>
-            <div class="description">NFT art name</div>
-            <div class="bottom">
-                <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                <div class="nickName">@nickName +4</div>
+        </slide>
+        <slide>
+            <div class="wrapper">
+                <div class="top">
+                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+                    <div class="category">category</div>
+                </div>
+                <div class="description">NFT art name</div>
+                <div class="bottom">
+                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
+                    <div class="nickName">@nickName +4</div>
+                </div>
+            </div>
+        </slide>
+        <slide>
+            <div class="wrapper">
+                <div class="top">
+                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+                    <div class="category">category</div>
+                </div>
+                <div class="description">NFT art name</div>
+                <div class="bottom">
+                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
+                    <div class="nickName">@nickName +4</div>
+                </div>
             </div>
         </slide>
     </carousel>
@@ -88,19 +96,16 @@
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.component{
-    width: 330px;
-    height: 453px;
-
+.wrapper{
     border: 1px solid #333333;
     border-radius: 15px;
-    margin-left: 16px;
-    margin-top: 24px;
-    margin-right: 16px;
+    margin: 24px 16px;
+
     .top{
         display: flex;
         flex-direction: row;
         margin-top: 24px;
+
         .profile{
             margin-left:24px;
         }
@@ -131,7 +136,7 @@
     }
     .bottom{
         display: flex;
-        margin-top:16px;
+        margin: 16px 0;
         height: 32px;
         .bundle{
             margin-left:35px;
