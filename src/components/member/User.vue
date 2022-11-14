@@ -16,7 +16,7 @@ import MyPageProfile from '../profile/MyPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
 import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
-import { graphql } from '../../api/graphql'
+import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
 
 export default {
   name: 'User',
@@ -43,58 +43,23 @@ export default {
   created() {
     this.tabs[0].api = {
       func: graphql,
-      body: {query: `
-        query TokensByCreator($first: Int, $skip: Int, $creator: String) {
-          tokens(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            tokenId
-            tokenURI
-            contentURI
-            creator
-            owner
-            createdAt
-            updatedAt
-            _db_voucher
-            _db_content_s3key
-            project {
-              id
-            }
-          }
-        }
-      `, variables: {
+      body: queryTokensByCreator({
+        variables: {
           first: 10,
-          skip: 0,
-          creator: this.member.wallet_address
-        }
-      }
-    }
-    this.tabs[1].api = {
-      func: graphql,
-      body: {query: `
-        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-          projects(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
-        }
-      `, variables: {
-          first: 1,
           skip: 0,
           creator: this.currentUser.wallet_address
         }
-      }
+      })
+    }
+    this.tabs[1].api = {
+      func: graphql,
+      body: queryProjectsByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.currentUser.wallet_address
+        }
+      })
     }
   },
   watch: {
@@ -103,60 +68,25 @@ export default {
         case '0':
           this.tabs[0].api = {
             func: graphql,
-            body: {query: `
-              query TokensByCreator($first: Int, $skip: Int, $creator: String) {
-                tokens(first: $first, skip: $skip, where: {creator: $creator}) {
-                  id
-                  tokenId
-                  tokenURI
-                  contentURI
-                  creator
-                  owner
-                  createdAt
-                  updatedAt
-                  _db_voucher
-                  _db_content_s3key
-                  project {
-                    id
-                  }
-                }
-              }
-            `, variables: {
+            body: queryTokensByCreator({
+              variables: {
                 first: 10,
                 skip: 0,
                 creator: this.currentUser.wallet_address
               }
-            }
+            })
           }
           break;
         case '1':
           this.tabs[1].api = {
             func: graphql,
-            body: {query: `
-              query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-                projects(first: $first, skip: $skip, where: {creator: $creator}) {
-                  id
-                  creator
-                  owner
-                  name
-                  symbol
-                  maxAmount
-                  policy
-                  isDisabled
-                  createdAt
-                  updatedAt
-                  _db_project_s3key
-                  _db_project_thumbnail_s3key
-                  _db_background_s3key
-                  _db_background_thumbnail_s3key
-                }
-              }
-            `, variables: {
+            body: queryProjectsByCreator({
+              variables: {
                 first: 10,
                 skip: 0,
                 creator: this.currentUser.wallet_address
               }
-            }
+            })
           }
           break;
         default:
