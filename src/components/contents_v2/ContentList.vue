@@ -19,7 +19,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { makeS3Path, deepCopy } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 import ContentBox from './ContentBox.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 
@@ -52,7 +52,9 @@ export default {
     async pushData() {
       const contentArrayToPush = await this.makeContentArray()
       if (contentArrayToPush.length > 0) {
-        this.pushContents(contentArrayToPush, this.contentList)
+        for (let i in contentArrayToPush) {
+          this.contentList.push(contentArrayToPush[i])
+        }
       }
     },
     async makeContentArray() {
@@ -72,8 +74,8 @@ export default {
               contentURI: results[i].contentURI,
               creator: results[i].creator,
               owner: results[i].owner,
-              content_s3key: this.getImageUrl(results[i].content_s3key),
-              content_thumbnail_s3key: this.getImageUrl(results[i].content_thumbnail_s3key),
+              content_s3key: makeS3Path(results[i].content_s3key),
+              content_thumbnail_s3key: makeS3Path(results[i].content_thumbnail_s3key),
               createdAt: results[i].createdAt,
               updatedAt: results[i].updatedAt,
             })
@@ -88,19 +90,6 @@ export default {
     async getContents() {
       const results = await this.queryContents.func(this.queryContents.body)
       return results.tokens
-    },
-    pushContents(contentArrayToPush, contentList) {
-      const lastContent = contentList[contentList.length - 1]
-      for (let i in contentArrayToPush) {
-        if (lastContent) {
-          const lastContentCopy = deepCopy(lastContent)
-          contentArrayToPush[i].index = ++lastContentCopy.index
-        }
-        contentList.push(contentArrayToPush[i])
-      }
-    },
-    getImageUrl(path) {
-      return makeS3Path(path)
     }
   },
   watch: {
