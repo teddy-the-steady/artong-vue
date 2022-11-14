@@ -101,13 +101,13 @@ export default {
     })
   },
   watch: {
-    async $route(val) {
+    $route(val) {
       if (this.projectAddress !== val.params.id) {
         this.projectAddress = val.params.id
         this.backgroundColor = this.generateGradientBackground(val.params.id)
       }
 
-      switch (val.query.tab) {
+      switch (val.query.tab || '0') {
         case '0':
           this.tabs[0].api = {
             func: graphql,
