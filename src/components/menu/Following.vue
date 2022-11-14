@@ -6,8 +6,9 @@
 </template>
 
 <script>
-import ContentList from '../contents/ContentList'
 import { headerActivate } from '../../mixin'
+import ContentList from '../contents/ContentList.vue'
+
 export default {
   name: 'Following',
   mixins: [headerActivate],

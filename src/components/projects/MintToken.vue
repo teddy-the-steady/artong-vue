@@ -32,6 +32,7 @@
 <script>
 import Storage from '@aws-amplify/storage'
 import { mapState } from 'vuex'
+import { ethers } from 'ethers'
 import {
   postContent,
   patchContent,
@@ -39,7 +40,6 @@ import {
   getContentVoucher,
   getIpfsMetadata,
 } from '../../api/contents'
-import { ethers } from 'ethers'
 import {
   ERC721_ABI,
   getPcSigner,

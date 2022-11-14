@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ContentLayer from './ContentLayer'
+import ContentLayer from './ContentLayer.vue'
 
 export default {
   name: 'CenterContainer',

@@ -32,10 +32,10 @@
 </template>
 
 <script>
+import MetaMaskOnboarding from '@metamask/onboarding'
 import { mapState } from 'vuex'
 import { getMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
-import MetaMaskOnboarding from '@metamask/onboarding'
 
 export default {
   name: 'Login',
