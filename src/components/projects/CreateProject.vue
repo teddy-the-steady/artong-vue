@@ -25,6 +25,7 @@
 
 <script>
 import { ethers } from 'ethers'
+import { mapState } from 'vuex'
 import {
   FACTORY_ABI,
   FACTORY,
@@ -32,7 +33,6 @@ import {
   getWalletConnectSigner
 } from '../../contracts'
 import { postProject } from '../../api/projects'
-import { mapState } from 'vuex'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 // import { isAuthenticated } from '../../util/commonFunc'

@@ -23,9 +23,9 @@
 
 <script>
 import { mapState } from 'vuex'
-import ProfileTabItem from './ProfileTabItem'
-import ContentList from '../contentsV2/ContentList'
-import ProjectList from '../projects/ProjectList'
+import ProfileTabItem from './ProfileTabItem.vue'
+import ContentList from '../contents_v2/ContentList.vue'
+import ProjectList from '../projects/ProjectList.vue'
 
 export default {
   name: 'ProfileTab',
