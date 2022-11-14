@@ -8,7 +8,6 @@
       <div class="tab">
       </div>
     </div>
-    <!-- <content-list :queryContents="queryContents"></content-list> -->
     <mint-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
@@ -21,8 +20,8 @@
 import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
+import { getTobeApprovedContents } from '../../api/contents'
 import baseLazyLoading from '../../util/baseLazyLoading'
-// import ContentList from '../contents_v2/ContentList.vue'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintToken from '../projects/MintToken.vue'
@@ -54,7 +53,6 @@ export default {
       projectAddress: '',
       backgroundColor: null,
       projectInfo: {},
-      // queryContents: {},
       tabs: [
         { id: 0, label: 'Tokens', api: {} },
         { id: 1, label: 'Waiting For Approval', api: {} },
@@ -84,16 +82,11 @@ export default {
       })
     }
 
-    // this.queryContents = {
-    //   func: graphql,
-    //   body: queryTokensByProject({
-    //     variables: {
-    //       first: 10,
-    //       skip: 0,
-    //       project: this.$route.params.id,
-    //     }
-    //   })
-    // }
+    this.tabs[1].api = {
+      func: getTobeApprovedContents,
+      pathParams: { projectId: this.$route.params.id },
+      queryParams: { start_num: 0, count_num: 5 }
+    }
   },
   mounted() {
     this.$root.$on('contribute', () => {
@@ -118,6 +111,13 @@ export default {
                 project: val.params.id,
               }
             })
+          }
+          break;
+        case '1':
+          this.tabs[1].api = {
+            func: getTobeApprovedContents,
+            pathParams: { projectId: val.params.id },
+            queryParams: { start_num: 0, count_num: 5 }
           }
           break;
         default:
