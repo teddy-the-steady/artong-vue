@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import MyPageProfile from '../profile/MyPageProfile'
-import ProfileTab from '../tabs/ProfileTab'
-import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
+import { headerActivate } from '../../mixin'
 import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
+import MyPageProfile from '../profile/MyPageProfile.vue'
+import ProfileTab from '../tabs/ProfileTab.vue'
 
 export default {
   name: 'User',

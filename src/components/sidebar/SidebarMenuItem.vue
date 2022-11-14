@@ -74,9 +74,9 @@
 
 <script>
 import { itemMixin } from '../../mixin'
-import SidebarMenuLink from './SidebarMenuLink'
-import SidebarMenuIcon from './SidebarMenuIcon'
-import SidebarMenuBadge from './SidebarMenuBadge'
+import SidebarMenuLink from './SidebarMenuLink.vue'
+import SidebarMenuIcon from './SidebarMenuIcon.vue'
+import SidebarMenuBadge from './SidebarMenuBadge.vue'
 
 export default {
   name: 'SidebarMenuItem',

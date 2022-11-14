@@ -18,12 +18,12 @@
 </template>
 
 <script>
-import HeaderBar from './components/header/Header'
-import SideBar from './components/sidebar/SideBar'
-import ConfirmModal from './components/modal/ConfirmModal'
 import { mapState, mapGetters } from 'vuex'
-import { getMember } from './api/member'
 import { Auth } from '@aws-amplify/auth'
+import { getMember } from './api/member'
+import HeaderBar from './components/header/Header.vue'
+import SideBar from './components/sidebar/SideBar.vue'
+import ConfirmModal from './components/modal/ConfirmModal.vue'
 
 export default {
   name: 'App',
