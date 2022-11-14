@@ -54,11 +54,14 @@ export default {
 
       if (typeof this.queryContents.func === 'function') {
         if (this.queryContents.func.name === 'graphql') {
-          const results = await this.getContents(this.queryContents)
+          const results = await this.gqlContents()
           this.queryContents.body.variables.skip += this.queryContents.body.variables.first
           contentArrayToPush = await this.makeContentArray(results)
         } else {
-          // TODO] graphql 아닌 일반 api call
+          const results = await this.getContents()
+          // TODO] paging
+          this.queryContents.queryParams.start_num += this.queryContents.queryParams.start_num
+          contentArrayToPush = await this.makeContentArray(results)
         }
       } else if (this.queryContents.func.length > 1) {
         // TODO] graphql + 일반 api call
@@ -78,7 +81,7 @@ export default {
           contentArrayToPush.push({
             id: apiResults[i].id,
             tokenId: apiResults[i].tokenId,
-            projectAddress: apiResults[i].project.id,
+            projectAddress: apiResults[i].project?.id,
             tokenURI: apiResults[i].tokenURI,
             contentURI: apiResults[i].contentURI,
             creator: apiResults[i].creator,
@@ -95,9 +98,16 @@ export default {
 
       return contentArrayToPush
     },
-    async getContents() {
+    async gqlContents() {
       const results = await this.queryContents.func(this.queryContents.body)
       return results.tokens
+    },
+    async getContents() {
+      const results = await this.queryContents.func(
+        this.queryContents.pathParams,
+        this.queryContents.queryParams
+      )
+      return results
     }
   },
   watch: {
