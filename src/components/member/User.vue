@@ -15,7 +15,6 @@
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
-import { getTobeApprovedContents } from '../../api/contents'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 
@@ -38,7 +37,6 @@ export default {
         { id: 0, label: 'Contributed', type: 'CONTENTS', api: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
         { id: 2, label: 'Owned', type: 'CONTENTS', api: {} },
-        { id: 3, label: 'Approving', type: 'CONTENTS', api: {} }
       ]
     }
   },
@@ -62,10 +60,6 @@ export default {
           creator: this.currentUser.wallet_address
         }
       })
-    }
-    this.tabs[3].api = {
-      func: getTobeApprovedContents,
-      body: {}
     }
   },
   watch: {
@@ -93,12 +87,6 @@ export default {
                 creator: this.currentUser.wallet_address
               }
             })
-          }
-          break;
-        case '3':
-          this.tabs[3].api = {
-            func: getTobeApprovedContents,
-            body: {}
           }
           break;
         default:
