@@ -11,10 +11,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ProfileTab from '../tabs/ProfileTab'
 import { getMembers } from '../../api/member'
 import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
+import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
+import ProfileTab from '../tabs/ProfileTab.vue'
 
 export default {
   name: 'Artist',

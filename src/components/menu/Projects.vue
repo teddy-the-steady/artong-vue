@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
 import { graphql, queryProjects } from '../../api/graphql'
+import ProjectList from '../projects/ProjectList.vue'
 
 export default {
   name: 'Projects',

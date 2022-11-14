@@ -29,7 +29,7 @@
 <script>
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
-import SkeletonBox from '../util/SkeletonBox'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'ArtistPageProfile',

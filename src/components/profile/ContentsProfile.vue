@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import SkeletonBox from '../util/SkeletonBox'
 import { makeS3Path } from '../../util/commonFunc'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 //import internal from 'stream'
 

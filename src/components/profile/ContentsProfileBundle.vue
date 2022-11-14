@@ -8,19 +8,19 @@
     </ol>
 </template>
 <script>
-    import ContentsProfile from './ContentsProfile.vue';
+import ContentsProfile from './ContentsProfile.vue';
 
-    export default{
-        name: 'ContentsProfileBundle',
-        components:{
-            ContentsProfile
-        },
-        data(){
-            return{
-                needUserName: false,
-            }
-        }
+export default{
+  name: 'ContentsProfileBundle',
+  components:{
+    ContentsProfile
+  },
+  data(){
+    return{
+      needUserName: false,
     }
+  }
+}
 </script>
 
 <style lang="scss" scopde>

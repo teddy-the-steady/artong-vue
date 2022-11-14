@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import ProjectBox from './ProjectBox'
 import InfiniteLoading from 'vue-infinite-loading'
 import { makeS3Path, deepCopy } from '../../util/commonFunc'
+import ProjectBox from './ProjectBox.vue'
 
 export default {
   name: 'ProjectList',
