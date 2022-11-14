@@ -14,7 +14,7 @@ import { mapState } from 'vuex'
 import ArtistPageProfile from '../profile/ArtistPageProfile'
 import ProfileTab from '../tabs/ProfileTab'
 import { getMembers } from '../../api/member'
-import { graphql } from '../../api/graphql'
+import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
 
 export default {
   name: 'Artist',
@@ -56,59 +56,24 @@ export default {
 
     this.tabs[0].api = {
       func: graphql,
-      body: {query: `
-        query TokensByCreator($first: Int, $skip: Int, $creator: String) {
-          tokens(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            tokenId
-            tokenURI
-            contentURI
-            creator
-            owner
-            createdAt
-            updatedAt
-            _db_voucher
-            _db_content_s3key
-            project {
-              id
-            }
-          }
-        }
-      `, variables: {
+      body: queryTokensByCreator({
+        variables: {
           first: 10,
           skip: 0,
           creator: this.member.wallet_address
         }
-      }
+      })
     }
 
     this.tabs[1].api = {
       func: graphql,
-      body: {query: `
-        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-          projects(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
-        }
-      `, variables: {
+      body: queryProjectsByCreator({
+        variables: {
           first: 10,
           skip: 0,
           creator: this.member.wallet_address
         }
-      }
+      })
     }
 
     this.$watch(
@@ -131,60 +96,25 @@ export default {
         case '0':
           this.tabs[0].api = {
             func: graphql,
-            body: {query: `
-              query TokensByCreator($first: Int, $skip: Int, $creator: String) {
-                tokens(first: $first, skip: $skip, where: {creator: $creator}) {
-                  id
-                  tokenId
-                  tokenURI
-                  contentURI
-                  creator
-                  owner
-                  createdAt
-                  updatedAt
-                  _db_voucher
-                  _db_content_s3key
-                  project {
-                    id
-                  }
-                }
-              }
-            `, variables: {
+            body: queryTokensByCreator({
+              variables: {
                 first: 10,
                 skip: 0,
                 creator: this.member.wallet_address
               }
-            }
+            })
           }
           break;
         case '1':
           this.tabs[1].api = {
             func: graphql,
-            body: {query: `
-              query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-                projects(first: $first, skip: $skip, where: {creator: $creator}) {
-                  id
-                  creator
-                  owner
-                  name
-                  symbol
-                  maxAmount
-                  policy
-                  isDisabled
-                  createdAt
-                  updatedAt
-                  _db_project_s3key
-                  _db_project_thumbnail_s3key
-                  _db_background_s3key
-                  _db_background_thumbnail_s3key
-                }
-              }
-            `, variables: {
+            body: queryProjectsByCreator({
+              variables: {
                 first: 10,
                 skip: 0,
                 creator: this.member.wallet_address
               }
-            }
+            })
           }
           break;
         default:
