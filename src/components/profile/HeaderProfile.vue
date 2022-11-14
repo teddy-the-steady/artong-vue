@@ -16,8 +16,8 @@
 </template>
 
 <script>
+import SkeletonBox from '../util/SkeletonBox.vue'
 import { mapState } from 'vuex'
-import SkeletonBox from '../util/SkeletonBox'
 
 export default {
   name: 'HeaderProfile',

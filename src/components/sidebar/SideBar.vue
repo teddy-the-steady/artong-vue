@@ -17,9 +17,10 @@
 </template>
 
 <script>
-import menuItems from './menuItems'
-import SidebarMenu from './SidebarMenu'
 import { mapState } from 'vuex'
+import menuItems from './menuItems'
+import SidebarMenu from './SidebarMenu.vue'
+
 export default {
   name: 'Sidebar',
   components: {

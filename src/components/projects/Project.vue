@@ -17,14 +17,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
-import ContentList from '../contentsV2/ContentList'
-import ProjectPageProfile from '../profile/ProjectPageProfile'
-import MintModal from '../modal/MintModal'
-import MintToken from '../projects/MintToken'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import { mapState } from 'vuex'
+import ContentList from '../contents_v2/ContentList.vue'
+import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
+import MintModal from '../modal/MintModal.vue'
+import MintToken from '../projects/MintToken.vue'
 
 export default {
   name: 'Project',

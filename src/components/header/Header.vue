@@ -65,10 +65,11 @@
 </template>
 
 <script>
-import Burger from './Burger'
-import HeaderProfile from '../profile/HeaderProfile'
-import UserDialog from '../dialog/UserDialog'
 import { mapState } from 'vuex'
+import Burger from './Burger.vue'
+import HeaderProfile from '../profile/HeaderProfile.vue'
+import UserDialog from '../dialog/UserDialog.vue'
+
 export default {
   name: 'Header',
   components: {

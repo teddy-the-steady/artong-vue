@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import ContentBox from './ContentBox'
-import ContentsProfile from '../profile/ContentsProfile'
 import InfiniteLoading from 'vue-infinite-loading'
 import { makeS3Path, deepCopy } from '../../util/commonFunc'
+import ContentBox from './ContentBox.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
-  name: 'ContentListV2',
+  name: 'ContentList',
   components: {
     ContentBox, ContentsProfile, InfiniteLoading
   },
