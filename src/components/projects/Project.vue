@@ -22,7 +22,7 @@ import ContentList from '../contentsV2/ContentList'
 import ProjectPageProfile from '../profile/ProjectPageProfile'
 import MintModal from '../modal/MintModal'
 import MintToken from '../projects/MintToken'
-import { graphql } from '../../api/graphql'
+import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { mapState } from 'vuex'
 
@@ -38,27 +38,11 @@ export default {
     })
   },
   extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql({query: `
-      query Project($id: String) {
-        project(id: $id) {
-          id
-          creator
-          owner
-          name
-          symbol
-          maxAmount
-          policy
-          isDisabled
-          createdAt
-          updatedAt
-          _db_project_s3key
-          _db_project_thumbnail_s3key
-          _db_background_s3key
-          _db_background_thumbnail_s3key
-        }
+    const result = await graphql(queryProject({
+      variables: {
+        id: to.params.id
       }
-      `, variables: { id: to.params.id }
-    })
+    }))
     callback(function() {
       this.projectInfo = result.project
     })
@@ -85,32 +69,13 @@ export default {
 
     this.queryContents = {
       func: graphql,
-      body: {query: `
-        query TokensByProject($first: Int, $skip: Int, $project: String) {
-          tokens(first: $first, skip: $skip, where: {project: $project}) {
-            id
-            tokenId
-            tokenURI
-            contentURI
-            creator
-            owner
-            createdAt
-            updatedAt
-            _db_voucher
-            _db_content_s3key
-            _db_content_thumbnail_s3key
-            project {
-              id
-              policy
-            }
-          }
-        }
-      `, variables: {
+      body: queryTokensByProject({
+        variables: {
           first: 10,
           skip: 0,
-          project: this.$route.params.id
+          project: this.$route.params.id,
         }
-      }
+      })
     }
   },
   mounted() {
@@ -126,32 +91,13 @@ export default {
 
         this.queryContents = {
           func: graphql,
-          body: {query: `
-            query TokensByProject($first: Int, $skip: Int, $project: String) {
-              tokens(first: $first, skip: $skip, where: {project: $project}) {
-                id
-                tokenId
-                tokenURI
-                contentURI
-                creator
-                owner
-                createdAt
-                updatedAt
-                _db_voucher
-                _db_content_s3key
-                _db_content_thumbnail_s3key
-                project {
-                  id
-                  policy
-                }
-              }
-            }
-          `, variables: {
+          body: queryTokensByProject({
+            variables: {
               first: 10,
               skip: 0,
-              project: val.params.id
+              project: this.$route.params.id,
             }
-          }
+          })
         }
       }
     }
