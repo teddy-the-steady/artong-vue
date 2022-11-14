@@ -8,11 +8,12 @@
       <div class="tab">
       </div>
     </div>
-    <content-list :queryContents="queryContents"></content-list>
+    <!-- <content-list :queryContents="queryContents"></content-list> -->
     <mint-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
     </mint-modal>
+    <project-tab :tabs="tabs"/>
   </div>
 </template>
 
@@ -21,16 +22,17 @@ import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import ContentList from '../contents_v2/ContentList.vue'
+// import ContentList from '../contents_v2/ContentList.vue'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintToken from '../projects/MintToken.vue'
+import ProjectTab from '../tabs/ProjectTab.vue'
 
 export default {
   name: 'Project',
   mixins: [backgroundColor],
   components: {
-    ContentList, ProjectPageProfile, MintModal, MintToken
+    ProjectPageProfile, MintModal, MintToken, ProjectTab
   },
   computed: {
     ...mapState({
@@ -52,7 +54,11 @@ export default {
       projectAddress: '',
       backgroundColor: null,
       projectInfo: {},
-      queryContents: {}
+      // queryContents: {},
+      tabs: [
+        { id: 0, label: 'Tokens', api: {} },
+        { id: 1, label: 'Waiting For Approval', api: {} },
+      ]
     }
   },
   methods: {
@@ -67,7 +73,7 @@ export default {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
 
-    this.queryContents = {
+    this.tabs[0].api = {
       func: graphql,
       body: queryTokensByProject({
         variables: {
@@ -77,6 +83,17 @@ export default {
         }
       })
     }
+
+    // this.queryContents = {
+    //   func: graphql,
+    //   body: queryTokensByProject({
+    //     variables: {
+    //       first: 10,
+    //       skip: 0,
+    //       project: this.$route.params.id,
+    //     }
+    //   })
+    // }
   },
   mounted() {
     this.$root.$on('contribute', () => {
@@ -85,20 +102,26 @@ export default {
   },
   watch: {
     async $route(val) {
-      if (val.name === 'Project') {
+      if (this.projectAddress !== val.params.id) {
         this.projectAddress = val.params.id
         this.backgroundColor = this.generateGradientBackground(val.params.id)
+      }
 
-        this.queryContents = {
-          func: graphql,
-          body: queryTokensByProject({
-            variables: {
-              first: 10,
-              skip: 0,
-              project: this.$route.params.id,
-            }
-          })
-        }
+      switch (val.query.tab) {
+        case '0':
+          this.tabs[0].api = {
+            func: graphql,
+            body: queryTokensByProject({
+              variables: {
+                first: 10,
+                skip: 0,
+                project: val.params.id,
+              }
+            })
+          }
+          break;
+        default:
+          break;
       }
     }
   }

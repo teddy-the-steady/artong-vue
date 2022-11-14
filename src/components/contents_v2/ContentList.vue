@@ -50,39 +50,47 @@ export default {
       setTimeout(function() { $state.loaded() }, 1000)
     },
     async pushData() {
-      const contentArrayToPush = await this.makeContentArray()
+      let contentArrayToPush = []
+
+      if (typeof this.queryContents.func === 'function') {
+        if (this.queryContents.func.name === 'graphql') {
+          const results = await this.getContents(this.queryContents)
+          this.queryContents.body.variables.skip += this.queryContents.body.variables.first
+          contentArrayToPush = await this.makeContentArray(results)
+        } else {
+          // TODO] graphql 아닌 일반 api call
+        }
+      } else if (this.queryContents.func.length > 1) {
+        // TODO] graphql + 일반 api call
+      }
+
       if (contentArrayToPush.length > 0) {
         for (let i in contentArrayToPush) {
           this.contentList.push(contentArrayToPush[i])
         }
       }
     },
-    async makeContentArray() {
+    async makeContentArray(apiResults) {
       const contentArrayToPush = []
-      if (this.queryContents) {
-        let results = null
-        results = await this.getContents(this.queryContents)
-        this.queryContents.body.variables.skip += this.queryContents.body.variables.first
 
-        if (results.length > 0) {
-          for (let i = 0; i < results.length; i++) {
-            contentArrayToPush.push({
-              id: results[i].id,
-              tokenId: results[i].tokenId,
-              projectAddress: results[i].project.id,
-              tokenURI: results[i].tokenURI,
-              contentURI: results[i].contentURI,
-              creator: results[i].creator,
-              owner: results[i].owner,
-              content_s3key: makeS3Path(results[i].content_s3key),
-              content_thumbnail_s3key: makeS3Path(results[i].content_thumbnail_s3key),
-              createdAt: results[i].createdAt,
-              updatedAt: results[i].updatedAt,
-            })
-          }
-        } else {
-          this.noMoreDataToLoad = true
+      if (apiResults.length > 0) {
+        for (let i = 0; i < apiResults.length; i++) {
+          contentArrayToPush.push({
+            id: apiResults[i].id,
+            tokenId: apiResults[i].tokenId,
+            projectAddress: apiResults[i].project.id,
+            tokenURI: apiResults[i].tokenURI,
+            contentURI: apiResults[i].contentURI,
+            creator: apiResults[i].creator,
+            owner: apiResults[i].owner,
+            content_s3key: makeS3Path(apiResults[i].content_s3key),
+            content_thumbnail_s3key: makeS3Path(apiResults[i].content_thumbnail_s3key),
+            createdAt: apiResults[i].createdAt,
+            updatedAt: apiResults[i].updatedAt,
+          })
         }
+      } else {
+        this.noMoreDataToLoad = true
       }
 
       return contentArrayToPush
