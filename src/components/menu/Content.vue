@@ -7,7 +7,7 @@
 <script>
 import { headerActivate } from '../../mixin'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import { graphql } from '../../api/graphql'
+import { graphql, queryToken } from '../../api/graphql'
 
 export default {
   name: 'Content',
@@ -18,27 +18,15 @@ export default {
     }
   },
   extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql({query: `
-      query Token($id: String) {
-        token(id: $id) {
-          id
-          tokenId
-          tokenURI
-          contentURI
-          _db_voucher
-          _db_content_s3key
-          project {
-            id
-          }
-        }
-      }
-      `, variables: {
+    const result = await graphql(queryToken({
+      variables: {
         id: to.params.project_address + to.params.token_id
-      }, db: {
+      },
+      db: {
         project_address: to.params.project_address,
         token_id: to.params.token_id
       }
-    })
+    }))
     callback(function() {
       this.content = result.token
     })
