@@ -82,6 +82,7 @@ export default {
         if (to.path === from.path) {
           return
         }
+
         if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
           this.username = to.params.id
           this.forceRerender()
@@ -91,8 +92,8 @@ export default {
     )
   },
   watch: {
-    $route(val) {
-      switch (val.query.tab) {
+    $route(to) {
+      switch (to.query.tab || '0') {
         case '0':
           this.tabs[0].api = {
             func: graphql,
@@ -100,7 +101,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.member.wallet_address
+                creator: to.params.id
               }
             })
           }
@@ -112,7 +113,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.member.wallet_address
+                creator: to.params.id
               }
             })
           }
