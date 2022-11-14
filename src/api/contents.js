@@ -24,8 +24,16 @@ const getIpfsMetadata = async function(metadata) {
   })
 }
 
-const getTobeApprovedContents = async function(projectId) {
-  return await instance.get(`/projects/${projectId}/contents/tobe_approved`)
+const getTobeApprovedContents = async function(pathParams, queryParams) {
+  return await instance.get(
+    `/projects/${pathParams.projectId}/contents/tobe_approved`,
+    {
+      params: {
+        start_num: queryParams.start_num,
+        count_num: queryParams.count_num
+      }
+    }
+  )
 }
 
 export {
