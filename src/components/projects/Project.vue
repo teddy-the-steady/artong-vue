@@ -21,7 +21,6 @@ import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import { getTobeApprovedContents } from '../../api/contents'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintToken from '../projects/MintToken.vue'
@@ -38,24 +37,14 @@ export default {
       isModalOpen: state => state.menu.isModalOpen
     })
   },
-  extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql(queryProject({
-      variables: {
-        id: to.params.id
-      }
-    }))
-    callback(function() {
-      this.projectInfo = result.project
-    })
-  }),
   data() {
     return {
       projectAddress: '',
       backgroundColor: null,
       projectInfo: {},
       tabs: [
-        { id: 0, label: 'Tokens', api: {} },
-        { id: 1, label: 'Waiting For Approval', api: {} },
+        { id: 0, type:'CONTENTS', label: 'Tokens', api: {} },
+        { id: 1, type:'CONTENTS', label: 'Waiting For Approval', api: {} },
       ]
     }
   },
@@ -67,9 +56,14 @@ export default {
       this.$store.commit('TOGGLE_MODAL')
     },
   },
-  created() {
+  async created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
+    this.projectInfo = await graphql(queryProject({
+      variables: {
+        id: this.projectAddress
+      }
+    }))
 
     this.tabs[0].api = {
       func: graphql,
@@ -87,6 +81,19 @@ export default {
       pathParams: { projectId: this.$route.params.id },
       queryParams: { start_num: 0, count_num: 5 }
     }
+
+    this.$watch(
+      () => this.$route,
+      async () => {
+        if (this.projectAddress) {
+          this.projectInfo = await graphql(queryProject({
+            variables: {
+              id: this.projectAddress
+            }
+          }))
+        }
+      }
+    )
   },
   mounted() {
     this.$root.$on('contribute', () => {
