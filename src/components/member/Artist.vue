@@ -12,7 +12,12 @@
 <script>
 import { mapState } from 'vuex'
 import { getMembers } from '../../api/member'
-import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
+import {
+  graphql,
+  queryProjectsByCreator,
+  queryTokensByCreator,
+  queryTokensByOwner
+} from '../../api/graphql'
 import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 
@@ -32,9 +37,9 @@ export default {
       member: {},
       username: '',
       tabs: [
-        { id: 0, label: 'Contributed', type: 'CONTENTS', api: {} },
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 2, label: 'Owned', type: 'CONTENTS', api: {} }
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} }
       ]
     }
   },
@@ -56,7 +61,18 @@ export default {
 
     this.tabs[0].api = {
       func: graphql,
-      body: queryTokensByCreator({
+      body: queryTokensByOwner({
+        variables: {
+          first: 10,
+          skip: 0,
+          owner: this.member.wallet_address
+        }
+      })
+    }
+
+    this.tabs[1].api = {
+      func: graphql,
+      body: queryProjectsByCreator({
         variables: {
           first: 10,
           skip: 0,
@@ -65,9 +81,9 @@ export default {
       })
     }
 
-    this.tabs[1].api = {
+    this.tabs[2].api = {
       func: graphql,
-      body: queryProjectsByCreator({
+      body: queryTokensByCreator({
         variables: {
           first: 10,
           skip: 0,
@@ -97,11 +113,11 @@ export default {
         case '0':
           this.tabs[0].api = {
             func: graphql,
-            body: queryTokensByCreator({
+            body: queryTokensByOwner({
               variables: {
                 first: 10,
                 skip: 0,
-                creator: to.params.id
+                owner: to.params.id
               }
             })
           }
@@ -110,6 +126,18 @@ export default {
           this.tabs[1].api = {
             func: graphql,
             body: queryProjectsByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: to.params.id
+              }
+            })
+          }
+          break;
+        case '2':
+          this.tabs[2].api = {
+            func: graphql,
+            body: queryTokensByCreator({
               variables: {
                 first: 10,
                 skip: 0,

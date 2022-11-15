@@ -47,7 +47,7 @@ export default {
         return
       }
       await this.pushData()
-      setTimeout(function() { $state.loaded() }, 1000)
+      setTimeout(function() { $state.loaded() }, 1)
     },
     async pushData() {
       let contentArrayToPush = []
@@ -59,8 +59,7 @@ export default {
           contentArrayToPush = await this.makeContentArray(results)
         } else {
           const results = await this.getContents()
-          // TODO] paging
-          this.queryContents.queryParams.start_num += this.queryContents.queryParams.start_num
+          this.queryContents.queryParams.start_num += this.queryContents.queryParams.count_num
           contentArrayToPush = await this.makeContentArray(results)
         }
       } else if (this.queryContents.func.length > 1) {

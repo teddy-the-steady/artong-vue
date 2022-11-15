@@ -9,11 +9,14 @@
     </div>
     <div class="items">
       <section class="item" :key="currentId">
-        <div v-show="current.type === 'CONTENTS'">
+        <div v-show="current.label === 'Owned'">
           <content-list :queryContents="current.api"></content-list>
         </div>
-        <div v-show="current.type === 'PROJECTS'">
+        <div v-show="current.label === 'Created'">
           <project-list :queryProjects="current.api"></project-list>
+        </div>
+        <div v-show="current.label === 'Contributed'">
+          <content-list :queryContents="current.api"></content-list>
         </div>
         {{ current }}
       </section>

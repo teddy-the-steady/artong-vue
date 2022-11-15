@@ -155,6 +155,31 @@ const queryTokensByCreator = function(variables) {
   }
 }
 
+const queryTokensByOwner = function(variables) {
+  return {
+    query: `
+      query TokensByOwner($first: Int, $skip: Int, $owner: String) {
+        tokens(first: $first, skip: $skip, where: {owner: $owner}) {
+          id
+          tokenId
+          tokenURI
+          contentURI
+          creator
+          owner
+          createdAt
+          updatedAt
+          _db_voucher
+          _db_content_s3key
+          project {
+            id
+          }
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
 export {
   graphql,
   queryProject,
@@ -163,4 +188,5 @@ export {
   queryToken,
   queryTokensByProject,
   queryTokensByCreator,
+  queryTokensByOwner,
 }
