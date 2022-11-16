@@ -13,7 +13,12 @@
         </router-link>
       </div>
     </masonry>
-    <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <infinite-loading
+      :identifier="$route.params.id"
+      @infinite="infiniteHandler"
+      spinner="spiral"
+      force-use-infinite-wrapper="body"
+    ></infinite-loading>
   </div>
 </template>
 
@@ -47,10 +52,13 @@ export default {
         return
       }
       await this.pushData()
-      setTimeout(function() { $state.loaded() }, 1)
+      setTimeout(function() { $state.loaded() }, 500)
     },
     async pushData() {
       let contentArrayToPush = []
+      if (!this.queryContents.func) {
+        return
+      }
 
       if (typeof this.queryContents.func === 'function') {
         if (this.queryContents.func.name === 'graphql') {

@@ -9,10 +9,7 @@
     </div>
     <div class="items">
       <section class="item" :key="currentId">
-        <div v-show="current.label === 'Tokens'">
-          <content-list :queryContents="current.api"></content-list>
-        </div>
-        <div v-show="current.label === 'Waiting For Approval'">
+        <div v-show="current.type === 'CONTENTS'">
           <content-list :queryContents="current.api"></content-list>
         </div>
         {{ current }}
