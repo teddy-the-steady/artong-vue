@@ -44,9 +44,6 @@ export default {
     }
   },
   methods: {
-    forceRerender() {
-      this.componentKey += 1
-    },
     async getMember(username) {
       const member = await getMembers(username)
       if (member.length === 1) {
@@ -101,7 +98,6 @@ export default {
 
         if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
           this.username = to.params.id
-          this.forceRerender()
           this.member = await this.getMember(this.username)
         }
       }
