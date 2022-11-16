@@ -49,6 +49,14 @@ export default {
     }
   },
   methods: {
+    async getProject() {
+      const projectInfo = await graphql(queryProject({
+        variables: {
+          id: this.projectAddress
+        }
+      }))
+      return projectInfo
+    },
     close() {
       this.toggleModal()
     },
@@ -59,11 +67,7 @@ export default {
   async created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
-    this.projectInfo = await graphql(queryProject({
-      variables: {
-        id: this.projectAddress
-      }
-    }))
+    this.projectInfo = await this.getProject()
 
     this.tabs[0].api = {
       func: graphql,
@@ -86,11 +90,7 @@ export default {
       () => this.$route,
       async () => {
         if (this.projectAddress) {
-          this.projectInfo = await graphql(queryProject({
-            variables: {
-              id: this.projectAddress
-            }
-          }))
+          this.projectInfo = await this.getProject()
         }
       }
     )
@@ -101,13 +101,13 @@ export default {
     })
   },
   watch: {
-    $route(val) {
-      if (this.projectAddress !== val.params.id) {
-        this.projectAddress = val.params.id
-        this.backgroundColor = this.generateGradientBackground(val.params.id)
+    $route(to) {
+      if (this.projectAddress !== to.params.id) {
+        this.projectAddress = to.params.id
+        this.backgroundColor = this.generateGradientBackground(to.params.id)
       }
 
-      switch (val.query.tab || '0') {
+      switch (to.query.tab || '0') {
         case '0':
           this.tabs[0].api = {
             func: graphql,
@@ -115,7 +115,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                project: val.params.id,
+                project: to.params.id,
               }
             })
           }
@@ -123,7 +123,7 @@ export default {
         case '1':
           this.tabs[1].api = {
             func: getTobeApprovedContents,
-            pathParams: { projectId: val.params.id },
+            pathParams: { projectId: to.params.id },
             queryParams: { start_num: 0, count_num: 5 }
           }
           break;
