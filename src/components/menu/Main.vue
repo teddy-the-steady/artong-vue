@@ -138,6 +138,7 @@
           </tr>
           <tr v-for="i in 5" :key="i">
             <td><ContentsProfile></ContentsProfile></td>
+            <td class="record">3 contributions/week</td>
             <td class="recent">0.25</td>
           </tr>
         </table>
@@ -524,10 +525,13 @@ export default {
       }
     }
   }
-  // 화면이 작은 경우 recent 범주가 안 보이게
-  .recent-contribution-card > table > tr > td:nth-child(3){
-    display:none;
+  // 화면이 작은 경우 record 부분이 안 보이게
+  @media (max-width:360px) {
+    .recent-contribution-card > table > tr > td:nth-child(2){
+      display: none;
+    }
   }
+  
   .recent{
     font-family: $item-font;
     font-style: $item-font-style;
@@ -776,162 +780,162 @@ export default {
       margin-right: auto;
     }
     .container1{
-    flex-basis: 420px;
-  }
-  .container1-2{
-    display: flex;
-    flex-direction: column;
-    flex-basis: 420px;
-    gap: 10px;
-    //
-    height: 553px;
-  }
-  .nft-name{
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 700;
-    font-size: 24px;
-    text-align: left;
-
-    color: $artong-black;
-
-    margin-bottom: 6px;
-  }
-  .nft-name-img{
-    width: 400px;
-    height: 400px;
-    
-    background-color:$artong-black;
-
-    border-radius: 14px;
-
-    margin-bottom: 6px;
-  }
-  .container1-2-bottom{
-    display:flex;
-    flex-direction:row;
-
-  }
-  .container1-2-bottom-left{
-    display: flex;
-    flex-direction: column;
-    //gap: 8px;
-    flex-basis: 200px;
-  }  
-  .conatiner1-2-bottom-right{
-    display: flex;
-    flex-direction: column;
-    //gap: 8px;    
-    flex-basis: 200px;
-  }
-  .container1-2-bottom-title{
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 600;
-    font-size: 18px;
-    
-    margin-bottom:8px;
-    text-align: left;
-
-    color: $artong-black;
-  }
-  .container1-2-bottom-content{
-    display: flex;
-    flex-direction: row;
-    gap:8px;
-  }
-  .container1-2-bottom-left-content-img{
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-
-    background-color: $artong-black;
-  }
-  .container1-2-bottom-right-content-img{
-    width: 32px;
-    height: 32px;
-    background-color: $artong-black;
-    border-radius: 999px;
-  }
-  .container1-2-bottom-content-name{
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 500;
-    font-size: 14px;
-    text-align:left;
-    margin-top:auto;
-    margin-bottom:auto;
-    color: $artong-black;
-  }
-  //show your creativity
-  .container2{
-    margin-top: 192px;
-  }
-  .row{
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 80px;
-
-    width: 1200px;
-    height: 304px;// 필요없을수도
-
-    margin-left:auto;
-    margin-right:auto;
-  }
-  .container2-component{
-    display:flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 240px;
-  }
-  .intro-img{
-    margin-bottom:0px;
-  }
-  .subtitle{
-    margin-bottom: 0px;
-  }
-  .content{
-    margin-bottom:0px;
-  }
-  .container3{
-    display: flex;
-    flex-direction:row;
-    column-gap: 40px;
-    margin-top: 96px;
-    margin-bottom: 96px;
-    width: 696px;
-    margin-left:auto;
-    margin-right:auto;
-  }
-  .button-block{
-    width: 328px;
-  }
-  .container6{
-    padding-top:72px;
-    padding-bottom:72px;
-    .img{
-      margin-left:240px;
-      margin-right:240px;
+      flex-basis: 420px;
     }
-    .bottom-link{
+    .container1-2{
       display: flex;
-      flex-direction: row-reverse;
-      margin-left:240px;
-      margin-right:240px;
+      flex-direction: column;
+      flex-basis: 420px;
+      gap: 10px;
+      //
+      height: 553px;
+    }
+    .nft-name{
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 700;
+      font-size: 24px;
+      text-align: left;
+
+      color: $artong-black;
+
+      margin-bottom: 6px;
+    }
+    .nft-name-img{
+      width: 400px;
+      height: 400px;
       
-      .bottom-table{
-        margin-top:57px;
-        .third-column{
-          margin-right:61px;
+      background-color:$artong-black;
+
+      border-radius: 14px;
+
+      margin-bottom: 6px;
+    }
+    .container1-2-bottom{
+      display:flex;
+      flex-direction:row;
+
+    }
+    .container1-2-bottom-left{
+      display: flex;
+      flex-direction: column;
+      //gap: 8px;
+      flex-basis: 200px;
+    }  
+    .conatiner1-2-bottom-right{
+      display: flex;
+      flex-direction: column;
+      //gap: 8px;    
+      flex-basis: 200px;
+    }
+    .container1-2-bottom-title{
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 600;
+      font-size: 18px;
+      
+      margin-bottom:8px;
+      text-align: left;
+
+      color: $artong-black;
+    }
+    .container1-2-bottom-content{
+      display: flex;
+      flex-direction: row;
+      gap:8px;
+    }
+    .container1-2-bottom-left-content-img{
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+
+      background-color: $artong-black;
+    }
+    .container1-2-bottom-right-content-img{
+      width: 32px;
+      height: 32px;
+      background-color: $artong-black;
+      border-radius: 999px;
+    }
+    .container1-2-bottom-content-name{
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 500;
+      font-size: 14px;
+      text-align:left;
+      margin-top:auto;
+      margin-bottom:auto;
+      color: $artong-black;
+    }
+    //show your creativity
+    .container2{
+      margin-top: 192px;
+    }
+    .row{
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 80px;
+
+      width: 1200px;
+      height: 304px;// 필요없을수도
+
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .container2-component{
+      display:flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 240px;
+    }
+    .intro-img{
+      margin-bottom:0px;
+    }
+    .subtitle{
+      margin-bottom: 0px;
+    }
+    .content{
+      margin-bottom:0px;
+    }
+    .container3{
+      display: flex;
+      flex-direction:row;
+      column-gap: 40px;
+      margin-top: 96px;
+      margin-bottom: 96px;
+      width: 696px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .button-block{
+      width: 328px;
+    }
+    .container6{
+      padding-top:72px;
+      padding-bottom:72px;
+      .img{
+        margin-left:240px;
+        margin-right:240px;
+      }
+      .bottom-link{
+        display: flex;
+        flex-direction: row-reverse;
+        margin-left:240px;
+        margin-right:240px;
+        
+        .bottom-table{
+          margin-top:57px;
+          .third-column{
+            margin-right:61px;
+          }
+        }
+        .bottom-left{
+          margin-right:auto;
+          margin-top:124px;
         }
       }
-      .bottom-left{
-        margin-right:auto;
-        margin-top:124px;
-      }
     }
-  }
   }
 
 
