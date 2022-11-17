@@ -165,28 +165,32 @@
           <td>Connect</td>
         </tr>
       </table> -->
-      <div class="bottom-table">
-        <ol class="column first-column">
-          <li>Learn</li>
-          <li>Create</li>
-          <li>Collect</li>
-          <li>Sell</li>
-        </ol>
-        <ol class="column second-column">
-          <li>Company</li>
-          <li>About</li>
-          <li>Careers</li>
-          <li>Help Center</li>
-        </ol>
-        <ol class="column third-column">
-          <li>Connect</li>
-          <li>Twitter</li>
-          <li>Instagram</li>
-          <li>Discord</li>
-        </ol>
+      <div class="bottom-link">
+        <div class="bottom-table">
+          <ol class="column first-column">
+            <li>Learn</li>
+            <li>Create</li>
+            <li>Collect</li>
+            <li>Sell</li>
+          </ol>
+          <ol class="column second-column">
+            <li>Company</li>
+            <li>About</li>
+            <li>Careers</li>
+            <li>Help Center</li>
+          </ol>
+          <ol class="column third-column">
+            <li>Connect</li>
+            <li>Twitter</li>
+            <li>Instagram</li>
+            <li>Discord</li>
+          </ol>
+        </div>
+        <div class="bottom-left">
+          <div class="bottom-word">Privacy Info</div>  
+          <div class="bottom-word">Terms of Service</div>
+        </div>
       </div>
-      <div class="bottom-word">Privacy Info</div>  
-      <div class="bottom-word">Terms of Service</div>
     </div>
   </div>
 </template>
@@ -209,6 +213,12 @@ export default {
     FeaturedCreator,
     ContentsProfile
   },
+  data(){
+    return{
+    }
+  },
+  methods:{
+  }
 }
 </script>
 
@@ -596,7 +606,6 @@ export default {
       flex-direction: row;
       
       margin-top: 96px;
-      // 중앙정렬..??
       margin-left: 11.1%;
       margin-right: 11.1%;
     }
@@ -609,7 +618,6 @@ export default {
     flex-direction: column;
     flex-basis: 420px;
     gap: 10px;
-    //
     height: 553px;
   }
   .nft-name{
@@ -641,13 +649,11 @@ export default {
   .container1-2-bottom-left{
     display: flex;
     flex-direction: column;
-    //gap: 8px;
     flex-basis: 200px;
   }  
   .conatiner1-2-bottom-right{
     display: flex;
     flex-direction: column;
-    //gap: 8px;    
     flex-basis: 200px;
   }
   .container1-2-bottom-title{
@@ -700,7 +706,7 @@ export default {
     gap: 80px;
 
     width: 560px;
-    height: 688px;// 필요없을수도
+    height: 688px;
 
     margin-left:auto;
     margin-right:auto;
@@ -739,14 +745,33 @@ export default {
   .featured-creator{
     margin-top:60px;
   }
+  .container6{
+    padding-top:72px;
+    padding-bottom:72px;
+    .bottom-link{
+      display: flex;
+      flex-direction: row-reverse;
+      
+      .bottom-table{
+        margin-top:57px;
+        .third-column{
+          margin-right:61px;
+        }
+      }
+      .bottom-left{
+        margin-right:auto;
+        margin-top:124px;
+      }
+    }
+    }
   }
+  
   @media (min-width:1920px){
     .container0{
       display: flex;
       flex-direction: row;
       
       margin-top: 96px;
-      // 중앙정렬..??
       margin-left: auto;
       margin-right: auto;
     }
@@ -881,6 +906,31 @@ export default {
   }
   .button-block{
     width: 328px;
+  }
+  .container6{
+    padding-top:72px;
+    padding-bottom:72px;
+    .img{
+      margin-left:240px;
+      margin-right:240px;
+    }
+    .bottom-link{
+      display: flex;
+      flex-direction: row-reverse;
+      margin-left:240px;
+      margin-right:240px;
+      
+      .bottom-table{
+        margin-top:57px;
+        .third-column{
+          margin-right:61px;
+        }
+      }
+      .bottom-left{
+        margin-right:auto;
+        margin-top:124px;
+      }
+    }
   }
   }
 
