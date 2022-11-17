@@ -114,22 +114,26 @@
     </div> <!--end of container4-->
     
     <BuyAndSell></BuyAndSell>
+    <RecentContribution></RecentContribution>
+    <FeaturedCreator></FeaturedCreator>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
-import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
 import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
+import RecentContribution from '../CollectionCard/RecentContribution.vue'
+import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
   components:{
-    ProjectPageProfile_small,
     CuratedCollection,
-    BuyAndSell
+    BuyAndSell,
+    RecentContribution,
+    FeaturedCreator
   },
 }
 </script>

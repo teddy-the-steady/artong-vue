@@ -41,20 +41,25 @@ export default {
     return {
       profileImageUrl: '',
       isFirstLoading: true,
-      hasErrorGettingImage: false
+      hasErrorGettingImage: false,
+      userName: "@Creator Name", // 서버에서 받은 이름 데이터를 여기에 넣어주면 됨
+      collectionCount: "5"
     }
   },
   props: {
     member: {
       type: Object,
       default: () => {}
-    }
+    },
   },
   methods: {
     getProfileImageUrl(member) {
       return member.profile_thumbnail_s3key ?
         makeS3Path(member.profile_thumbnail_s3key) :
         makeS3Path(member.profile_s3key)
+    },
+    onEmit(){
+      this.$emit("setValue", this.userName, this.collectionCount);
     }
   },
   watch: {
@@ -67,6 +72,9 @@ export default {
         }
       }
     }
+  },
+  mounted(){
+    this.onEmit()
   }
 }
 </script>
@@ -123,7 +131,7 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .profile {
-    transform: translateY(-30%);
+    //transform: translateY(-30%);
     flex-direction: column;
     align-items: center;
     margin-left: 0;
