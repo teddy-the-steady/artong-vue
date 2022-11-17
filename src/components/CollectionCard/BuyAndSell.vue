@@ -1,12 +1,12 @@
 <template>
     <carousel 
         :perPage="1.1"
-        :Autoplay="true"
+        :autoplay="true"
         :autoplayHoverPause="true"
         :loop="true"
         :scrollPerPage="false"
         paginationColor="#B3B3B3"
-        paginationActiveColor="#F22E3E"
+        paginationActiveColor="#000000"
     >
         <slide v-for="i in testNumber" :key="i">
             <div class="wrapper">
