@@ -55,7 +55,8 @@
 .wrapper{
     border: 1px solid #333333;
     border-radius: 15px;
-    margin: 24px 16px;
+    margin-left: 16px;
+    margin-right:8px;
     height:214px;
     background-color: #333333;
  
