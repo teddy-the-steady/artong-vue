@@ -111,11 +111,58 @@
         <div class="url" href="">View more</div>
       </div>
       <CuratedCollection></CuratedCollection>
+      <div class="featured-creator">Featured Creators</div>
+      <FeaturedCreator class=""></FeaturedCreator>
     </div> <!--end of container4-->
-    
-    <BuyAndSell></BuyAndSell>
-    <RecentContribution></RecentContribution>
-    <FeaturedCreator></FeaturedCreator>
+    <div class="container5">
+      <div class="top-container">      
+        <div class="buy-and-sell">Buy And Sell</div>
+        <div class="url" href="">View more</div>
+      </div>
+      <BuyAndSell></BuyAndSell>
+      <div class="top-container2">      
+        <div class="recent-contribution">Recent Contributionl</div>
+        <div class="url" href="">View more</div>
+      </div>
+      <RecentContribution></RecentContribution>
+      <div class="top-container2">
+        <div class="recent-contribution">Recent Contributionll</div>
+        <div class="url" href="">View more</div>
+      </div>
+      <div class="recent-contribution-card">
+        <table>
+          <tr>
+            <td>User</td>
+            <td>Record</td>
+            <td>Recent</td>
+          </tr>
+          <tr v-for="i in 5" :key="i">
+            <td><ContentsProfile></ContentsProfile></td>
+            <td class="recent">0.25</td>
+          </tr>
+        </table>
+      </div>
+    </div> <!--end of container5-->
+    <div class="container6">
+      <div class="img">
+        <img src="../../assets/icons/artong-logo.svg"/>
+      </div>
+      <!-- <table class="bottom-table">
+        <tr>
+          <td>Learn</td>
+          <td>Company</td>
+          <td>Connect</td>
+        </tr>
+      </table> -->
+      <div class="bottom-table">
+        <ol class="first-row">
+          <li>Learn</li>
+          <li>Create</li>
+          <li>Collect</li>
+          <li>Sell</li>
+        </ol>
+      </div>  
+    </div>
   </div>
 </template>
 
@@ -125,6 +172,7 @@ import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
 import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
 import RecentContribution from '../CollectionCard/RecentContribution.vue'
 import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Main',
@@ -133,7 +181,8 @@ export default {
     CuratedCollection,
     BuyAndSell,
     RecentContribution,
-    FeaturedCreator
+    FeaturedCreator,
+    ContentsProfile
   },
 }
 </script>
@@ -317,6 +366,164 @@ export default {
     margin:auto;
     margin-bottom: 25px;
   }
+  // curated collections
+  .container4{
+    //width: 360px;
+    height: 983px;
+
+    background: $artong-black;
+
+    padding-top: 48px;
+  }
+  .top-container{
+    display:flex;
+    flex-direction: row;
+  }
+  .curated-collections{
+    width: 200px;
+    height: 30px;
+
+    font-family: 'Mustica Pro';
+    font-style: $item-font-style;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 30px;
+
+    color: #B3B3B3;
+    
+    margin-left: 16px;
+    text-align: left;
+  }
+  .url{
+    width: 58px;
+    height: 14px;
+
+    margin-right: 16px;
+    margin-left:auto;
+    margin-top: 16px;
+
+    font-family: $item-font;
+    font-style: $item-font-style;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration-line: underline;
+    color: $profile-border-red;
+  }
+  .featured-creator{
+    margin-top: 60px;
+    margin-left: 16px;
+    margin-bottom: 24px;
+    
+    font-family: 'Mustica Pro';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    color: #B3B3B3;
+    text-align: left;
+  }
+  .container5{
+    margin-top: 48px;
+    .top-container{
+      .buy-and-sell{
+        width: 200px;
+        height: 30px;
+
+        font-family: 'Mustica Pro';
+        font-style: $item-font-style;
+        font-weight: 600;
+        font-size: 22px;
+        line-height: 30px;
+
+        color: $artong-black;
+        
+        margin-left: 16px;
+        text-align: left;
+      }
+    }
+    .top-container2{
+      margin-top: 112px;
+      display:flex;
+      flex-direction: row;
+      .recent-contribution{
+        width: 200px;
+        height: 30px;
+
+        font-family: 'Mustica Pro';
+        font-style: $item-font-style;
+        font-weight: 600;
+        font-size: 22px;
+        line-height: 30px;
+
+        color: $artong-black;
+        
+        margin-left: 16px;
+        text-align: left;
+      }
+    }
+    .recent-contribution-card{
+      height:425px;
+      width: 90%;
+      border: 1px solid #F2F2F2;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+      border-radius: 24px;
+      margin-left:auto;
+      margin-right:auto;
+      margin-top:24px;
+      padding: 32px 24px 32px 24px;
+
+      table {
+        width: 100%;
+        //border-top: 1px solid #444444;
+        border-collapse: collapse;
+        th, td {
+          border-bottom: 1px solid #CCCCCC;
+          padding: 21px;
+          text-align:left;
+
+          font-family: $item-font;
+          font-style: $item-font-style;
+          font-weight: 500;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  // 화면이 작은 경우 recent 범주가 안 보이게
+  .recent-contribution-card > table > tr > td:nth-child(3){
+    display:none;
+  }
+  .recent{
+    font-family: $item-font;
+    font-style: $item-font-style;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+  }
+  .container6{
+    margin-top:48px;
+    background-color: $artong-black;
+    height:282px;
+    .img{
+      text-align:left; // artong 로고 왼쪽 정렬을 위해
+      img{
+        margin-top:24px;
+        margin-left:24px;
+      }
+    }
+    .bottom-table{
+     flex-direction: row;
+     .first-row{
+      li{
+        font-family: $item-font;
+        font-style: $item-font-style;
+        font-weight: 400;
+        font-size: 14px;
+        color: #CCCCCC;
+      }
+     } 
+    }
+  }
 
   // width over 1080px
   @media(min-width: 1080px)and(max-width:1920px){
@@ -389,7 +596,7 @@ export default {
     text-align: left;
 
     color: $artong-black;
-  }/////////여기까지 _variable.scss 파일이랑 연결했음
+  }
   .container1-2-bottom-content{
     display: flex;
     flex-direction: row;
@@ -464,6 +671,9 @@ export default {
   }
   .button-block{
     width: 328px;
+  }
+  .featured-creator{
+    margin-top:60px;
   }
   }
   @media (min-width:1920px){
@@ -610,55 +820,6 @@ export default {
   }
   }
 
-  // curated collections
-  .container4{
-    //width: 360px;
-    height: 983px;
 
-    background: $artong-black;
-
-    padding-top: 48px;
-  }
-  .top-container{
-    display:flex;
-    flex-direction: row;
-  }
-  .curated-collections{
-    width: 200px;
-    height: 30px;
-
-    font-family: 'Mustica Pro';
-    font-style: $item-font-style;
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 30px;
-
-    color: #B3B3B3;
-    
-    margin-left: 24px;
-  }
-  .url{
-    width: 58px;
-    height: 14px;
-
-    margin-left: 54px;
-    margin-top: 16px;
-
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 14px;
-    text-decoration-line: underline;
-    color: $profile-border-red;
-  }
-  .collection-card{
-    width: 330px;
-    height: 453px;
-
-    border: 1px solid #333333;
-    border-radius: 15px;
-    margin-left: 16px;
-    margin-top: 24px;
-  }
+  
 </style>
