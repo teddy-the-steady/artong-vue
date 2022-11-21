@@ -17,7 +17,7 @@
       :identifier="$route.params.id"
       @infinite="infiniteHandler"
       spinner="spiral"
-      force-use-infinite-wrapper="body"
+      force-use-infinite-wrapper=".contents"
     ></infinite-loading>
   </div>
 </template>
