@@ -79,7 +79,7 @@ export default {
   },
   watch: {
     $route(val) {
-      switch (val.query.tab) {
+      switch (val.query.tab || '0') {
         case '0':
           this.tabs[0].api = {
             func: graphql,
