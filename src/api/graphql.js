@@ -91,11 +91,20 @@ const queryToken = function(variables) {
           tokenId
           tokenURI
           contentURI
-          _db_voucher
-          _db_content_s3key
+          creator
+          owner
+          createdAt
+          updatedAt
           project {
             id
           }
+          _db_id
+          _db_member_id
+          _db_voucher
+          _db_name
+          _db_description
+          _db_content_thumbnail_s3key
+          _db_content_s3key
         }
       }
     `,

@@ -2,7 +2,7 @@
   <div class="contents">
     <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
       <div class="content" v-for="(val, i) in contentList" :key="i">
-        <router-link :to="{ name: 'Content', params: {
+        <router-link :to="{ name: 'ContentDetail', params: {
           project_address: val.projectAddress,
           token_id: val.tokenId
         }}">
