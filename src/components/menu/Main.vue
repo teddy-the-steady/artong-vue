@@ -114,8 +114,14 @@
           <div class="url" href="">View more</div>
         </div>
         <div class="test">{{width}}</div>
-        <CuratedCollection v-if="1" class="curated-collection" :width=getWidth()></CuratedCollection>
+        <CuratedCollection v-if="width<1080" class="curated-collection"></CuratedCollection>
+        <div v-else-if="width<1440">
+          <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide1"></CuratedCollectionWide>
+        </div>
         <CuratedCollectionWide v-else-if="width<1440"></CuratedCollectionWide>
+        <div v-else>
+          <CuratedCollectionWide></CuratedCollectionWide>
+        </div>
         <div class="featured-creator">Featured Creators</div>
         <FeaturedCreator></FeaturedCreator>
       </div>
@@ -229,10 +235,18 @@ export default {
       width:"0",
     }
   },
-  methods:{
-    getWidth(){
-      this.width=window.innerWidth;
-      return this.width;
+  mounted(){
+    window.addEventListener("resize", function(event){
+      console.log(this.width)
+      this.width=event.target.innerWidth;
+      console.log(event.target.innerWidth);
+    })
+  },
+  watch: {
+    width: {
+      handler(val) {
+        console.log('watch width:',val)
+      }
     }
   }
 }
@@ -243,6 +257,7 @@ export default {
 
   //@media (max-width:1080px)
     // container0 빈 div
+
   .test{
     color:white;
   }
@@ -463,6 +478,11 @@ export default {
     line-height: 14px;
     text-decoration-line: underline;
     color: $profile-border-red;
+  }
+  .curated-collection-wide1{
+    margin-bottom: 24px;
+    margin-left:auto;
+    margin-right:auto;
   }
   .featured-creator{
     margin-top: 60px;
