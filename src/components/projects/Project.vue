@@ -8,10 +8,10 @@
       <div class="tab">
       </div>
     </div>
-    <mint-modal v-if="isModalOpen">
+    <basic-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
-    </mint-modal>
+    </basic-modal>
     <project-tab :tabs="tabs"/>
   </div>
 </template>
@@ -22,7 +22,7 @@ import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
-import MintModal from '../modal/MintModal.vue'
+import BasicModal from '../modal/BasicModal.vue'
 import MintToken from '../projects/MintToken.vue'
 import ProjectTab from '../tabs/ProjectTab.vue'
 
@@ -30,7 +30,7 @@ export default {
   name: 'Project',
   mixins: [backgroundColor],
   components: {
-    ProjectPageProfile, MintModal, MintToken, ProjectTab
+    ProjectPageProfile, BasicModal, MintToken, ProjectTab
   },
   computed: {
     ...mapState({
