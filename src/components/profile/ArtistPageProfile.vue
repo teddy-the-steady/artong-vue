@@ -17,7 +17,7 @@
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member? member.display_name : '' }}  <!--이게 뭐임? 안 쓰는 거임-->
+        {{ member? member.display_name : '' }}  
       </div>
       <div class="intro">
         {{ member? member.introduction : '' }}
@@ -84,13 +84,13 @@ export default {
 
 .profile {
     display: flex;
-    margin-left: 15%;
+    //margin-left: 15%;
 
     .image {
         display: inline-block;
         background-color: $artong-white;
-        width: 150px;
-        height: 150px;
+        width: 111px;
+        height: 111px;
         border-radius: 50%;
         border: 2px solid $artong-white;
 
@@ -129,23 +129,18 @@ export default {
     }
 }
 
-@media only screen and (max-width: 599px) {
-  .profile {
-    //transform: translateY(-30%);
-    flex-direction: column;
-    align-items: center;
-    margin-left: 0;
+// ArtistPageProfile의 크기는 항상 동일
+// @media only screen and (min-width: 599px) {
+//   .profile {
+//     //transform: translateY(-30%);
+//     flex-direction: column;
+//     align-items: center;
+//     margin-left: 0;
     
-    .image {
-      width: 100px;
-      height: 100px;
-      div {
-        height: 100px;
-      }
-      input {
-        display: none;
-      }
-    }
-  }
-}
+//     .image {
+//       width: 150px;
+//       height: 150px;
+//     }
+//   }
+// }
 </style>
