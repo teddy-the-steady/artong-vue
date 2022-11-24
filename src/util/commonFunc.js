@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import store from '../store'
 
 const makeS3Path = function(path) {
@@ -27,9 +28,14 @@ const deepCopy = function(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
+const etherToWei = function(ether) {
+  return ethers.utils.parseUnits(ether, "ether")
+}
+
 export {
   makeS3Path,
   isAuthenticated,
   getRandomString,
   deepCopy,
+  etherToWei,
 }

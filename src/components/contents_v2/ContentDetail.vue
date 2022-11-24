@@ -9,7 +9,7 @@
     {{content}}
     <div v-if="content.owner === currentUser.wallet_address">
       <button v-if="!isListed" @click="action('sell')">Sell</button>
-      <button v-else @click="action('updated')">Cancel/Updated Listing</button>
+      <button v-else @click="action('update')">Cancel/Update Listing</button>
     </div>
     <div v-else>
       <button v-if="isListed" @click="action('buy')">Buy</button>
@@ -25,7 +25,7 @@ import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { graphql, queryToken } from '../../api/graphql'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, etherToWei } from '../../util/commonFunc'
 import {
   MARKETPLACE_ABI,
   MARKETPLACE,
@@ -47,7 +47,8 @@ export default {
       currentUser: state => state.user.currentUser
     }),
     isListed() {
-      return this.content?.listings[0]?.eventType === 'LISTED'
+      const eventType = this.content?.listings[0]?.eventType
+      return eventType === 'LISTED' || eventType === 'UPDATED'
     },
     isMobile() {
       return this.$isMobile()
@@ -83,7 +84,7 @@ export default {
           const tx = await contract.listItem(
             this.content.project.id,
             this.content.tokenId,
-            this.price
+            etherToWei(this.price)
           )
           await tx.wait()
           alert('listed!')
@@ -94,10 +95,29 @@ export default {
             this.content.project.id,
             this.content.tokenId,
             this.content.owner,
-            {value: this.price}
+            {value: etherToWei(this.price)}
           )
           await tx.wait()
           alert('purchased!')
+          break;
+        }
+        case 'cancel': {
+          const tx = await contract.cancelListing(
+            this.content.project.id,
+            this.content.tokenId,
+          )
+          await tx.wait()
+          alert('canceled!')
+          break;
+        }
+        case 'update': {
+          const tx = await contract.updateListing(
+            this.content.project.id,
+            this.content.tokenId,
+            etherToWei(this.price),
+          )
+          await tx.wait()
+          alert('updated!')
           break;
         }
         default:
