@@ -105,6 +105,18 @@ const queryToken = function(variables) {
             eventType
             createdAt
           }
+          offers {
+            id
+            from
+            price
+            deadline
+            isAccepted
+            createdAt
+            updatedAt
+            sale {
+              id
+            }
+          }
           _db_id
           _db_member_id
           _db_voucher
