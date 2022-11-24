@@ -113,7 +113,9 @@
           <div class="curated-collections">Curated Collections</div>
           <div class="url" href="">View more</div>
         </div>
-        <CuratedCollection class="curated-collection"></CuratedCollection>
+        <div class="test">{{width}}</div>
+        <CuratedCollection v-if="1" class="curated-collection" :width=getWidth()></CuratedCollection>
+        <CuratedCollectionWide v-else-if="width<1440"></CuratedCollectionWide>
         <div class="featured-creator">Featured Creators</div>
         <FeaturedCreator></FeaturedCreator>
       </div>
@@ -197,6 +199,7 @@
         </div>
       </div>
     </div>
+    <div></div>
     <CuratedCollectionWide></CuratedCollectionWide>
   </div>
 </template>
@@ -223,9 +226,14 @@ export default {
   },
   data(){
     return{
+      width:"0",
     }
   },
   methods:{
+    getWidth(){
+      this.width=window.innerWidth;
+      return this.width;
+    }
   }
 }
 </script>
@@ -235,6 +243,9 @@ export default {
 
   //@media (max-width:1080px)
     // container0 빈 div
+  .test{
+    color:white;
+  }
   .container1{
     display: flex;
     flex-direction: column;
