@@ -1,10 +1,10 @@
 <template>
     <carousel 
-        :perPage="1.1"
+        :perPageCustom=[[360,1],[400,1.2],[500,1.5],[600,1.8],[700,2],[840,2.2],[1080,2.9],[1440,3.9],[1920,4]]
         :autoplay="true"
         :autoplayHoverPause="true"
         :loop="true"
-        :scrollPerPage="false"
+        :scrollPerPage="true"
         paginationColor="#B3B3B3"
         paginationActiveColor="#000000"
     >
