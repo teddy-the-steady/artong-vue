@@ -98,6 +98,13 @@ const queryToken = function(variables) {
           project {
             id
           }
+          listings (orderBy: createdAt, orderDirection: desc, first: 1) {
+            id
+            from
+            price
+            eventType
+            createdAt
+          }
           _db_id
           _db_member_id
           _db_voucher
