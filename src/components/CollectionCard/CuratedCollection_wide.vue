@@ -33,7 +33,7 @@
 .wrapper{
     border: 1px solid #333333;
     border-radius: 15px;
-    width: 1032px; 
+    width: 95%; 
     .top{
         margin-top:24px;
         margin-left:24px;
