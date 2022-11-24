@@ -1,34 +1,36 @@
 <template>
   <div class="info">
-    <div class="container0">
-      <div class="container1">
-        <div class="intro-title">
-          Open
-          Art NFT
-          Marketplace
-        </div>
-        <div class="intro-content">
-          Lorem ipsum dolor sit amet, consectetur Arcu fames nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla facilisis eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum dolor sit amet,     
-        </div>
-        <button class="start-btn">Start contributing</button>
-      </div>
-      <div class="container1-2">
-        <img class="category-img" src="../../assets/icons/category.svg" width="67px" height="22px"/>
-        <div class="nft-name">NFT Name</div>
-        <div class="nft-name-img"></div>
-        <div class="container1-2-bottom">
-          <div class="container1-2-bottom-left">
-            <div class="container1-2-bottom-title">Collection</div>
-            <div class="container1-2-bottom-content">
-              <div class="container1-2-bottom-left-content-img"></div>
-              <div class="container1-2-bottom-content-name">Collection Name</div>
-            </div>
+    <div class="container0-box">
+      <div class="container0">
+        <div class="container1">
+          <div class="intro-title">
+            Open
+            Art NFT
+            Marketplace
           </div>
-          <div class="container1-2-bottom-right">
-            <div class="container1-2-bottom-title">Created by</div>
-            <div class="container1-2-bottom-content">
-              <div class="container1-2-bottom-right-content-img"></div>
-              <div class="container1-2-bottom-content-name">@Nickname</div>
+          <div class="intro-content">
+            Lorem ipsum dolor sit amet, consectetur Arcu fames nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla facilisis eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum dolor sit amet,     
+          </div>
+          <button class="start-btn">Start contributing</button>
+        </div>
+        <div class="container1-2">
+          <img class="category-img" src="../../assets/icons/category.svg" width="67px" height="22px"/>
+          <div class="nft-name">NFT Name</div>
+          <div class="nft-name-img"></div>
+          <div class="container1-2-bottom">
+            <div class="container1-2-bottom-left">
+              <div class="container1-2-bottom-title">Collection</div>
+              <div class="container1-2-bottom-content">
+                <div class="container1-2-bottom-left-content-img"></div>
+                <div class="container1-2-bottom-content-name">Collection Name</div>
+              </div>
+            </div>
+            <div class="container1-2-bottom-right">
+              <div class="container1-2-bottom-title">Created by</div>
+              <div class="container1-2-bottom-content">
+                <div class="container1-2-bottom-right-content-img"></div>
+                <div class="container1-2-bottom-content-name">@Nickname</div>
+              </div>
             </div>
           </div>
         </div>
@@ -106,13 +108,15 @@
       </div>
     </div> <!--end of container3-->
     <div class="container4">
-      <div class="top-container">      
-        <div class="curated-collections">Curated Collections</div>
-        <div class="url" href="">View more</div>
+      <div class="container4-box">
+        <div class="top-container">      
+          <div class="curated-collections">Curated Collections</div>
+          <div class="url" href="">View more</div>
+        </div>
+        <CuratedCollection class="curated-collection"></CuratedCollection>
+        <div class="featured-creator">Featured Creators</div>
+        <FeaturedCreator></FeaturedCreator>
       </div>
-      <CuratedCollection></CuratedCollection>
-      <div class="featured-creator">Featured Creators</div>
-      <FeaturedCreator class=""></FeaturedCreator>
     </div> <!--end of container4-->
     <div class="container5">
       <div class="top-container">      
@@ -193,6 +197,7 @@
         </div>
       </div>
     </div>
+    <CuratedCollectionWide></CuratedCollectionWide>
   </div>
 </template>
 
@@ -203,6 +208,7 @@ import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
 import RecentContribution from '../CollectionCard/RecentContribution.vue'
 import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
+import CuratedCollectionWide from '../CollectionCard/CuratedCollection_wide.vue'
 
 export default {
   name: 'Main',
@@ -212,7 +218,8 @@ export default {
     BuyAndSell,
     RecentContribution,
     FeaturedCreator,
-    ContentsProfile
+    ContentsProfile,
+    CuratedCollectionWide
   },
   data(){
     return{
@@ -499,7 +506,7 @@ export default {
     }
     .recent-contribution-card{
       height:425px;
-      width: 79%;
+      width: 94%;
       border: 1px solid #F2F2F2;
       box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
       border-radius: 24px;
@@ -600,22 +607,21 @@ export default {
     color: #808080;
     margin-bottom:16px;
   }
-  
 
 
   // width over 1080px
   @media(min-width: 1080px)and(max-width:1920px){
+    .container0-box{
+      text-align: center;
+    }
     .container0{
-      display: flex;
       flex-direction: row;
-      
       margin-top: 96px;
-      margin-left: 11.1%;
-      margin-right: 11.1%;
+      display: inline-flex;
     }
     .container1{
-    flex-basis: 420px;
-  }
+      width: 420px;
+    }
 
   .container1-2{
     display: flex;
@@ -771,16 +777,17 @@ export default {
   }
   
   @media (min-width:1920px){
+    .container0-box{
+      text-align: center;
+    }
     .container0{
-      display: flex;
+      display: inline-flex;
       flex-direction: row;
       
       margin-top: 96px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .container1{
-      flex-basis: 420px;
+      width: 420px;
     }
     .container1-2{
       display: flex;
@@ -910,6 +917,14 @@ export default {
     }
     .button-block{
       width: 328px;
+    }
+    .container4-box{
+      margin-right:240px;
+      margin-left:240px;
+    }
+    .container5{
+      margin-left:240px;
+      margin-right:240px;
     }
     .container6{
       padding-top:72px;

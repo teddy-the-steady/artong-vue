@@ -1,10 +1,10 @@
 <template>
     <carousel 
-        :perPage="1.1"
+        :perPageCustom=[[360,1],[400,1.2],[500,1.5],[600,1.8],[700,2],[840,2.2]]
         :autoplay="true"
         :autoplayHoverPause="true"
         :loop="true"
-        :scrollPerPage="false"
+        :scrollPerPage="true"
         paginationColor="#B3B3B3"
         paginationActiveColor="#F22E3E"
     >
@@ -35,7 +35,12 @@
         },
         data(){
             return{
-                testNumber: 5 // for문을 돌리기 위해 임의로 collection card 수를 잡음
+                testNumber: 10 // slide의 개수
+            }
+        },
+        methods:{
+            getTestNumber(){
+
             }
         }
         // methods: {
@@ -58,12 +63,14 @@
         display: flex;
         flex-direction: row;
         margin-top: 24px;
+        position:relative;
 
         .profile{
             margin-left:24px;
         }
         .category{
-            margin-left:90px;
+            position:absolute;
+            right:24px;
             width:92px;
             height:25px;
 
