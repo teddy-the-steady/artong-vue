@@ -120,6 +120,17 @@ export default {
           alert('updated!')
           break;
         }
+        case 'offer': {
+          const tx = await contract.createOffer(
+            this.content.project.id,
+            this.content.tokenId,
+            1,
+            {value: etherToWei(this.price)}
+          )
+          await tx.wait()
+          alert('offered!')
+          break;
+        }
         default:
           break;
       }
