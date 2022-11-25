@@ -54,7 +54,7 @@ export default {
     //transform: translateY(-40%);
 
     .image {
-      display: inline-block;
+      //display: inline-block;
       background-color: $artong-white;
       width: 32px;
       height: 32px;
@@ -62,10 +62,6 @@ export default {
       min-height: 32px;
       border-radius: 4px;
       overflow:hidden;
-
-      // input {
-      //   display: none;
-      // }
     }
     .realImage{
         width: 32px;
@@ -86,17 +82,16 @@ export default {
     .info {
       word-break: break-all;
       margin-left:8px;
-      height: 32px;
+      height: 17px;
 
       .username {
         font-family: $item-font;
         font-style: $item-font-style;
         font-weight: 500;
         font-size: 14px;
-        line-height: 32px;
+        line-height: 17px;
       }
       .username_box{
-        margin-top:7px;
         width:105px;
         height:17px;
         border-radius: 4px;
@@ -109,21 +104,16 @@ export default {
   .project {
     //transform: translateY(-30%);
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     margin-left: 0;
 
     .image {
-      width: 100px;
-      height: 100px;
-      div {
-        height: 100px;
-      }
-      input {
-        display: none;
-      }
+      width: 32px;
+      height: 32px;
     }
 
     .info {
+      margin-left:8px;
       .username {
         position: inherit;
       }

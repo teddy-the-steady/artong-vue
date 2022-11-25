@@ -1,66 +1,14 @@
 <template>
     <carousel 
-        :perPage="1.1"
+        :perPageCustom=[[360,1],[400,1.2],[500,1.5],[600,1.8],[700,2],[840,2.2]]
         :autoplay="true"
         :autoplayHoverPause="true"
         :loop="true"
-        :scrollPerPage="false"
+        :scrollPerPage="true"
         paginationColor="#B3B3B3"
         paginationActiveColor="#F22E3E"
     >
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
-            <div class="wrapper">
-                <div class="top">
-                    <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-                    <div class="category">category</div>
-                </div>
-                <div class="description">NFT art name</div>
-                <div class="bottom">
-                    <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-                    <div class="nickName">@nickName +4</div>
-                </div>
-            </div>
-        </slide>
-        <slide>
+        <slide v-for="i in testNumber" :key="i">
             <div class="wrapper">
                 <div class="top">
                     <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
@@ -85,6 +33,16 @@
             ProjectPageProfile_wrapped,
             ContentsProfileBundle
         },
+        data(){
+            return{
+                testNumber: 10 // slide의 개수
+            }
+        },
+        methods:{
+            getTestNumber(){
+
+            }
+        }
         // methods: {
         //     handleSlideClick(dataset)=>{
         //         console.log(dataset.index, dataset.name)
@@ -105,12 +63,14 @@
         display: flex;
         flex-direction: row;
         margin-top: 24px;
+        position:relative;
 
         .profile{
             margin-left:24px;
         }
         .category{
-            margin-left:90px;
+            position:absolute;
+            right:24px;
             width:92px;
             height:25px;
 
