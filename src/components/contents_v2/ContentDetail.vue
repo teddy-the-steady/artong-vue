@@ -23,7 +23,7 @@
       OFFER LIST
       <ul v-for="(val, i) in content.offers" :key="i">
         CREATED: {{new Date(val.createdAt * 1000)}} / Offeror: {{val.from}} / Price: {{weiToEther(val.price)}} ETH / isAccepted: {{val.isAccepted}} / Deadline: {{new Date(val.deadline * 1000)}}
-        <button v-if="!val.isAccepted && new Date(val.deadline * 1000) > new Date()">Accept Offer</button>
+        <button v-if="!val.isAccepted && new Date(val.deadline * 1000) > new Date()" @click="action('accept', val.from)">Accept Offer</button>
         <button v-if="val.isAccepted">Accepted</button>
         <button v-if="new Date(val.deadline * 1000) <= new Date()">Expired</button>
       </ul>
@@ -81,7 +81,7 @@ export default {
     })
   }),
   methods: {
-    async action(which) { // TODO] 모달로 바꾸기
+    async action(which, acceptParam) { // TODO] 모달로 바꾸기
       let signer = null
 
       if (this.isMobile) {
@@ -141,6 +141,16 @@ export default {
           )
           await tx.wait()
           alert('offered!')
+          break;
+        }
+        case 'accept': {
+          const tx = await contract.acceptOffer(
+            this.content.project.id,
+            this.content.tokenId,
+            acceptParam
+          )
+          await tx.wait()
+          alert('accepted!')
           break;
         }
         default:
