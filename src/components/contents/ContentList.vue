@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import InfiniteLoading from 'vue-infinite-loading'
-import CenterContainer from './CenterContainer'
-import TopContainer from './TopContainer'
-import BottomContainer from './BottomContainer'
 import axios from 'axios'
 import { mapState } from 'vuex'
 import { makeS3Path, deepCopy } from '../../util/commonFunc'
+import InfiniteLoading from 'vue-infinite-loading'
+import CenterContainer from './CenterContainer.vue'
+import TopContainer from './TopContainer.vue'
+import BottomContainer from './BottomContainer.vue'
 
 export default {
   name: 'ContentList',

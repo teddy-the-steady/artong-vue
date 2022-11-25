@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: 'MintModal'
+  name: 'BasicModal'
 }
 </script>
 

@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import ProjectBox from './ProjectBox'
 import InfiniteLoading from 'vue-infinite-loading'
-import { makeS3Path, deepCopy } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
+import ProjectBox from './ProjectBox.vue'
 
 export default {
   name: 'ProjectList',
@@ -46,7 +46,9 @@ export default {
     async pushData() {
       const projectArrayToPush = await this.makeProjectArray()
       if (projectArrayToPush.length > 0) {
-        this.pushProjects(projectArrayToPush, this.projectList)
+        for (let i in projectArrayToPush) {
+          this.projectList.push(projectArrayToPush[i])
+        }
       }
     },
     async makeProjectArray() {
@@ -65,10 +67,10 @@ export default {
               // status: results[i].status,
               policy: results[i].policy,
               max_amount: results[i].maxAmount,
-              background_s3key: this.getImageUrl(results[i].background_s3key),
-              background_thumbnail_s3key: this.getImageUrl(results[i].background_thumbnail_s3key),
-              project_s3key: this.getImageUrl(results[i].thumbnail_s3key),
-              project_thumbnail_s3key: this.getImageUrl(results[i].project_thumbnail_s3key),
+              background_s3key: makeS3Path(results[i].background_s3key),
+              background_thumbnail_s3key: makeS3Path(results[i].background_thumbnail_s3key),
+              project_s3key: makeS3Path(results[i].thumbnail_s3key),
+              project_thumbnail_s3key: makeS3Path(results[i].project_thumbnail_s3key),
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,
             })
@@ -83,19 +85,6 @@ export default {
     async getProjects() {
       const results = await this.queryProjects.func(this.queryProjects.body)
       return results.projects
-    },
-    pushProjects(projectArrayToPush, projectList) {
-      const lastProject = projectList[projectList.length - 1]
-      for (let i in projectArrayToPush) {
-        if (lastProject) {
-          const lastProjectCopy = deepCopy(lastProject)
-          projectArrayToPush[i].index = ++lastProjectCopy.index
-        }
-        projectList.push(projectArrayToPush[i])
-      }
-    },
-    getImageUrl(path) {
-      return makeS3Path(path)
     }
   }
 }

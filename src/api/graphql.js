@@ -4,6 +4,217 @@ const graphql = async function(body) {
   return await instance.post('/graphql', body)
 }
 
+const queryProject = function(variables) {
+  return {
+    query: `
+      query Project($id: String) {
+        project(id: $id) {
+          id
+          creator
+          owner
+          name
+          symbol
+          maxAmount
+          policy
+          isDisabled
+          createdAt
+          updatedAt
+          _db_project_s3key
+          _db_project_thumbnail_s3key
+          _db_background_s3key
+          _db_background_thumbnail_s3key
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryProjects = function(variables) {
+  return {
+    query: `
+      query Projects($first: Int, $skip: Int) {
+        projects(first: $first, skip: $skip) {
+          id
+          creator
+          owner
+          name
+          symbol
+          maxAmount
+          policy
+          isDisabled
+          createdAt
+          updatedAt
+          _db_project_s3key
+          _db_project_thumbnail_s3key
+          _db_background_s3key
+          _db_background_thumbnail_s3key
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryProjectsByCreator = function(variables) {
+  return {
+    query: `
+      query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
+        projects(first: $first, skip: $skip, where: {creator: $creator}) {
+          id
+          creator
+          owner
+          name
+          symbol
+          maxAmount
+          policy
+          isDisabled
+          createdAt
+          updatedAt
+          _db_project_s3key
+          _db_project_thumbnail_s3key
+          _db_background_s3key
+          _db_background_thumbnail_s3key
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryToken = function(variables) {
+  return {
+    query: `
+      query Token($id: String) {
+        token(id: $id) {
+          id
+          tokenId
+          tokenURI
+          contentURI
+          creator
+          owner
+          createdAt
+          updatedAt
+          project {
+            id
+          }
+          listings (orderBy: createdAt, orderDirection: desc, first: 1) {
+            id
+            from
+            price
+            eventType
+            createdAt
+          }
+          offers {
+            id
+            from
+            price
+            deadline
+            isAccepted
+            createdAt
+            updatedAt
+            sale {
+              id
+            }
+          }
+          _db_id
+          _db_member_id
+          _db_voucher
+          _db_name
+          _db_description
+          _db_content_thumbnail_s3key
+          _db_content_s3key
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryTokensByProject = function(variables) {
+  return {
+    query: `
+      query TokensByProject($first: Int, $skip: Int, $project: String) {
+        tokens(first: $first, skip: $skip, where: {project: $project}) {
+          id
+          tokenId
+          tokenURI
+          contentURI
+          creator
+          owner
+          createdAt
+          updatedAt
+          _db_voucher
+          _db_content_s3key
+          _db_content_thumbnail_s3key
+          project {
+            id
+            policy
+          }
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryTokensByCreator = function(variables) {
+  return {
+    query: `
+      query TokensByCreator($first: Int, $skip: Int, $creator: String) {
+        tokens(first: $first, skip: $skip, where: {creator: $creator}) {
+          id
+          tokenId
+          tokenURI
+          contentURI
+          creator
+          owner
+          createdAt
+          updatedAt
+          _db_voucher
+          _db_content_s3key
+          project {
+            id
+          }
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
+const queryTokensByOwner = function(variables) {
+  return {
+    query: `
+      query TokensByOwner($first: Int, $skip: Int, $owner: String) {
+        tokens(first: $first, skip: $skip, where: {owner: $owner}) {
+          id
+          tokenId
+          tokenURI
+          contentURI
+          creator
+          owner
+          createdAt
+          updatedAt
+          _db_voucher
+          _db_content_s3key
+          project {
+            id
+          }
+        }
+      }
+    `,
+    ...variables
+  }
+}
+
 export {
   graphql,
+  queryProject,
+  queryProjects,
+  queryProjectsByCreator,
+  queryToken,
+  queryTokensByProject,
+  queryTokensByCreator,
+  queryTokensByOwner,
 }

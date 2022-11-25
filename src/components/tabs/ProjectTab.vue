@@ -12,9 +12,6 @@
         <div v-show="current.type === 'CONTENTS'">
           <content-list :queryContents="current.api"></content-list>
         </div>
-        <div v-show="current.type === 'PROJECTS'">
-          <project-list :queryProjects="current.api"></project-list>
-        </div>
         {{ current }}
       </section>
     </div>
@@ -25,12 +22,11 @@
 import { mapState } from 'vuex'
 import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
-import ProjectList from '../projects/ProjectList.vue'
 
 export default {
-  name: 'ProfileTab',
+  name: 'ProjectTab',
   components: {
-    TabItem, ContentList, ProjectList
+    TabItem, ContentList
   },
   props: {
     tabs: {

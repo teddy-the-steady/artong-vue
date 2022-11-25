@@ -23,7 +23,7 @@
 
 <script>
 import { headerActivate } from '../../mixin'
-import SkeletonBox from '../util/SkeletonBox'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'ProjectPageProfile',
