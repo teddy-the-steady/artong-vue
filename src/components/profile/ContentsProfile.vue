@@ -4,7 +4,7 @@
       <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading=true" class="image">
-      <img v-if="member" :src="getImageUrl(member.profile_thumbnail_s3key)" @error="hasErrorGettingImage = true" class="profileImage"
+      <img v-if="member" :src="makeS3Path(member.profile_thumbnail_s3key)" @error="hasErrorGettingImage = true" class="profileImage"
           :class="{error: hasErrorGettingImage}"/>
       <img v-else src="../../assets/images/profile.svg"/>
     </div>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import SkeletonBox from '../util/SkeletonBox'
 import { makeS3Path } from '../../util/commonFunc'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 //import internal from 'stream'
 
@@ -49,7 +49,7 @@ export default {
     }
   },
   methods: {
-    getImageUrl(path) {
+    makeS3Path(path) {
       return makeS3Path(path)
     }
   },

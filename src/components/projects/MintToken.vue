@@ -15,9 +15,9 @@
     </div>
     <div>
       <span>WHEN?</span>
-      <input type="radio" id="r1" v-model="policy" value="0" :disabled="projectInfo.policy === 1">
+      <input type="radio" id="r1" v-model="policy" value="0" :disabled="projectInfo.project.policy === 1">
       <label for="r1">Mint Now</label>
-      <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.policy === 1">
+      <input type="radio" id="r2" v-model="policy" value="1" :disabled="projectInfo.project.policy === 1">
       <label for="r2">Lazy Mint</label>
       {{policy}}
     </div>
@@ -32,6 +32,7 @@
 <script>
 import Storage from '@aws-amplify/storage'
 import { mapState } from 'vuex'
+import { ethers } from 'ethers'
 import {
   postContent,
   patchContent,
@@ -39,7 +40,6 @@ import {
   getContentVoucher,
   getIpfsMetadata,
 } from '../../api/contents'
-import { ethers } from 'ethers'
 import {
   ERC721_ABI,
   getPcSigner,

@@ -142,6 +142,43 @@ export const MARKETPLACE_ABI = [
       {
         "indexed": true,
         "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "nft",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      }
+    ],
+    "name": "ListedItemSold",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "offerId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "nft",
         "type": "address"
       },
@@ -164,6 +201,12 @@ export const MARKETPLACE_ABI = [
   {
     "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "offerId",
+        "type": "uint256"
+      },
       {
         "indexed": true,
         "internalType": "address",
@@ -527,6 +570,19 @@ export const MARKETPLACE_ABI = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "offerId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -546,6 +602,11 @@ export const MARKETPLACE_ABI = [
     ],
     "name": "offers",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "offerId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "price",
@@ -737,6 +798,11 @@ export const MARKETPLACE_ABI = [
     ],
     "name": "userOffers",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "offerId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "price",
