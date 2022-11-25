@@ -7,6 +7,7 @@
       @error="replaceImage"
     />
     {{content}}
+
     <div v-if="content.owner === currentUser.wallet_address">
       <button v-if="!isListed" @click="action('sell')">Sell</button>
       <button v-else @click="action('update')">Cancel/Update Listing</button>
@@ -15,7 +16,18 @@
       <button v-if="isListed" @click="action('buy')">Buy</button>
       <button @click="action('offer')">Make offer</button>
     </div>
-    <input v-model="price" placeholder="price">
+
+    <input v-model="price" placeholder="price in ETH">
+
+    <div>
+      OFFER LIST
+      <ul v-for="(val, i) in content.offers" :key="i">
+        CREATED: {{new Date(val.createdAt * 1000)}} / Offeror: {{val.from}} / Price: {{weiToEther(val.price)}} ETH / isAccepted: {{val.isAccepted}} / Deadline: {{new Date(val.deadline * 1000)}}
+        <button v-if="!val.isAccepted && new Date(val.deadline * 1000) > new Date()">Accept Offer</button>
+        <button v-if="val.isAccepted">Accepted</button>
+        <button v-if="new Date(val.deadline * 1000) <= new Date()">Expired</button>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -25,7 +37,7 @@ import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import baseLazyLoading from '../../util/baseLazyLoading'
 import { graphql, queryToken } from '../../api/graphql'
-import { makeS3Path, etherToWei } from '../../util/commonFunc'
+import { makeS3Path, etherToWei, weiToEther } from '../../util/commonFunc'
 import {
   MARKETPLACE_ABI,
   MARKETPLACE,
@@ -145,6 +157,9 @@ export default {
     },
     makeS3Path(path) {
       return makeS3Path(path)
+    },
+    weiToEther(wei) {
+      return weiToEther(wei)
     }
   }
 }
