@@ -35,7 +35,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .SkeletonBox {
-  display: inline-block;
+  display: block; // past: inline-block
   position: relative;
   //vertical-align: middle;
   overflow: hidden;

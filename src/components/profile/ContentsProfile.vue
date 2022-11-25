@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      isFirstLoading: true,
+      isFirstLoading: false,
       hasErrorGettingImage: false
     }
   },
@@ -83,7 +83,8 @@ export default {
       overflow:hidden;
       background-color: $artong-white;
 
-      .profileImage { //?
+      .profileImage { 
+        width: 100%;
         height:100%;
         &.error {
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
