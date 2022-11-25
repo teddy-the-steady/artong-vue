@@ -105,7 +105,7 @@ const queryToken = function(variables) {
             eventType
             createdAt
           }
-          offers {
+          offers (orderBy: createdAt, orderDirection: desc) {
             id
             from
             price

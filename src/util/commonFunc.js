@@ -32,10 +32,15 @@ const etherToWei = function(ether) {
   return ethers.utils.parseUnits(ether, "ether")
 }
 
+const weiToEther = function(wei) {
+  return ethers.utils.formatEther(wei)
+}
+
 export {
   makeS3Path,
   isAuthenticated,
   getRandomString,
   deepCopy,
   etherToWei,
+  weiToEther,
 }
