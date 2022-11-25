@@ -13,7 +13,7 @@ import Artist from '@/components/member/Artist'
 import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
-import Content from '@/components/menu/Content'
+import ContentDetail from '@/components/contents_v2/ContentDetail'
 import VueCarousel from 'vue-carousel'; // for 무한 슬라이드 swipe 배너
 
 
@@ -52,8 +52,8 @@ const router = new Router({
     },
     {
       path: '/projects/:project_address/contents/:token_id',
-      name: 'Content',
-      component: Content
+      name: 'ContentDetail',
+      component: ContentDetail
     },
     {
       path: '/contents',

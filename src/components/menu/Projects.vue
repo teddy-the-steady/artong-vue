@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import ProjectList from '../projects/ProjectList'
 import { headerActivate } from '../../mixin'
-import { graphql } from '../../api/graphql'
+import { graphql, queryProjects } from '../../api/graphql'
+import ProjectList from '../projects/ProjectList.vue'
 
 export default {
   name: 'Projects',
@@ -26,30 +26,12 @@ export default {
   mounted() {
     this.queryProjects = {
       func: graphql,
-      body: {query: `
-        query Projects($first: Int, $skip: Int) {
-          projects(first: $first, skip: $skip) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
-        }
-      `, variables: {
+      body: queryProjects({
+        variables: {
           first: 5,
-          skip: 0
+          skip: 0,
         }
-      }
+      })
     }
   }
 }

@@ -11,25 +11,21 @@
 
 <script>
 import { mapState } from 'vuex'
-import ArtistPageProfile from '../profile/ArtistPageProfile'
-import ProfileTab from '../tabs/ProfileTab'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import { getMembers } from '../../api/member'
-import { graphql } from '../../api/graphql'
+import {
+  graphql,
+  queryProjectsByCreator,
+  queryTokensByCreator,
+  queryTokensByOwner
+} from '../../api/graphql'
+import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
+import ProfileTab from '../tabs/ProfileTab.vue'
 
 export default {
   name: 'Artist',
   components: {
     ArtistPageProfile, ProfileTab
   },
-  extends: baseLazyLoading((to, callback) => {
-    callback(function() {
-      this.tabs[0].api = {
-        url: '/uploads',
-        params: {id: this.$route.params.id}
-      }
-    })
-  }),
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser
@@ -41,16 +37,13 @@ export default {
       member: {},
       username: '',
       tabs: [
-        { id: 1, label: 'Contributed', type: 'CONTENTS', api: {} },
-        { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 3, label: 'Owned', type: 'CONTENTS', api: {} }
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} }
       ]
     }
   },
   methods: {
-    forceRerender() {
-      this.componentKey += 1
-    },
     async getMember(username) {
       const member = await getMembers(username)
       if (member.length === 1) {
@@ -63,33 +56,37 @@ export default {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
 
+    this.tabs[0].api = {
+      func: graphql,
+      body: queryTokensByOwner({
+        variables: {
+          first: 10,
+          skip: 0,
+          owner: this.member.wallet_address
+        }
+      })
+    }
+
     this.tabs[1].api = {
       func: graphql,
-      body: {query: `
-        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-          projects(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
-        }
-      `, variables: {
-          first: 1,
+      body: queryProjectsByCreator({
+        variables: {
+          first: 10,
           skip: 0,
           creator: this.member.wallet_address
         }
-      }
+      })
+    }
+
+    this.tabs[2].api = {
+      func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.member.wallet_address
+        }
+      })
     }
 
     this.$watch(
@@ -98,43 +95,55 @@ export default {
         if (to.path === from.path) {
           return
         }
+
         if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
           this.username = to.params.id
-          this.forceRerender()
           this.member = await this.getMember(this.username)
         }
       }
     )
   },
   watch: {
-    $route() {
-      this.tabs[1].api = {
-        func: graphql,
-        body: {query: `
-          query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-            projects(first: $first, skip: $skip, where: {creator: $creator}) {
-              id
-              creator
-              owner
-              name
-              symbol
-              maxAmount
-              policy
-              isDisabled
-              createdAt
-              updatedAt
-              _db_project_s3key
-              _db_project_thumbnail_s3key
-              _db_background_s3key
-              _db_background_thumbnail_s3key
-            }
+    $route(to) {
+      switch (to.query.tab || '0') {
+        case '0':
+          this.tabs[0].api = {
+            func: graphql,
+            body: queryTokensByOwner({
+              variables: {
+                first: 10,
+                skip: 0,
+                owner: to.params.id
+              }
+            })
           }
-        `, variables: {
-            first: 1,
-            skip: 0,
-            creator: this.member.wallet_address
+          break;
+        case '1':
+          this.tabs[1].api = {
+            func: graphql,
+            body: queryProjectsByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: to.params.id
+              }
+            })
           }
-        }
+          break;
+        case '2':
+          this.tabs[2].api = {
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: to.params.id
+              }
+            })
+          }
+          break;
+        default:
+          break;
       }
     }
   }

@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import SidebarMenuItem from './SidebarMenuItem'
-import LightDarkSwitch from '../util/LightDarkSwitch'
+import SidebarMenuItem from './SidebarMenuItem.vue'
+import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 
 export default {
   name: 'SidebarMenu',

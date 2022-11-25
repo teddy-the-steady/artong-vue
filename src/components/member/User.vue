@@ -12,11 +12,16 @@
 </template>
 
 <script>
-import MyPageProfile from '../profile/MyPageProfile'
-import ProfileTab from '../tabs/ProfileTab'
-import { headerActivate } from '../../mixin'
 import { mapState } from 'vuex'
-import { graphql } from '../../api/graphql'
+import { headerActivate } from '../../mixin'
+import {
+  graphql,
+  queryProjectsByCreator,
+  queryTokensByCreator,
+  queryTokensByOwner
+} from '../../api/graphql'
+import MyPageProfile from '../profile/MyPageProfile.vue'
+import ProfileTab from '../tabs/ProfileTab.vue'
 
 export default {
   name: 'User',
@@ -34,71 +39,85 @@ export default {
     return {
       username: '',
       tabs: [
-        { id: 1, label: 'Contributed', type: 'CONTENTS', api: {} },
-        { id: 2, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 3, label: 'Owned', type: 'CONTENTS', api: {} }
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} },
       ]
     }
   },
   created() {
+    this.tabs[0].api = {
+      func: graphql,
+      body: queryTokensByOwner({
+        variables: {
+          first: 10,
+          skip: 0,
+          owner: this.currentUser.wallet_address
+        }
+      })
+    }
     this.tabs[1].api = {
       func: graphql,
-      body: {query: `
-        query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-          projects(first: $first, skip: $skip, where: {creator: $creator}) {
-            id
-            creator
-            owner
-            name
-            symbol
-            maxAmount
-            policy
-            isDisabled
-            createdAt
-            updatedAt
-            _db_project_s3key
-            _db_project_thumbnail_s3key
-            _db_background_s3key
-            _db_background_thumbnail_s3key
-          }
-        }
-      `, variables: {
-          first: 1,
+      body: queryProjectsByCreator({
+        variables: {
+          first: 10,
           skip: 0,
           creator: this.currentUser.wallet_address
         }
-      }
+      })
+    }
+    this.tabs[2].api = {
+      func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.currentUser.wallet_address
+        }
+      })
     }
   },
   watch: {
-    $route() {
-      this.tabs[1].api = {
-        func: graphql,
-        body: {query: `
-          query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-            projects(first: $first, skip: $skip, where: {creator: $creator}) {
-              id
-              creator
-              owner
-              name
-              symbol
-              maxAmount
-              policy
-              isDisabled
-              createdAt
-              updatedAt
-              _db_project_s3key
-              _db_project_thumbnail_s3key
-              _db_background_s3key
-              _db_background_thumbnail_s3key
-            }
+    $route(val) {
+      switch (val.query.tab || '0') {
+        case '0':
+          this.tabs[0].api = {
+            func: graphql,
+            body: queryTokensByOwner({
+              variables: {
+                first: 10,
+                skip: 0,
+                owner: this.currentUser.wallet_address
+              }
+            })
           }
-        `, variables: {
-            first: 1,
-            skip: 0,
-            creator: this.currentUser.wallet_address
+          break;
+        case '1':
+          this.tabs[1].api = {
+            func: graphql,
+            body: queryProjectsByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: this.currentUser.wallet_address
+              }
+            })
           }
-        }
+          break;
+        case '2':
+          this.tabs[2].api = {
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: this.currentUser.wallet_address
+              }
+            })
+          }
+          break;
+        default:
+          break;
       }
     }
   }

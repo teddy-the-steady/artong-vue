@@ -1,5 +1,5 @@
 <template>
-  <div class="box" @click="imageSelect()">
+  <div class="box">
     <img
       :src="image.content_thumbnail_s3key ||
             image.content_s3key ||
@@ -19,9 +19,6 @@ export default {
     }
   },
   methods: {
-    imageSelect() {
-      this.$emit('image-selected', this.image.index)
-    },
     replaceImage(e) {
       const imageUrl = e.target.currentSrc
       if (imageUrl.indexOf('resized-') > -1) {

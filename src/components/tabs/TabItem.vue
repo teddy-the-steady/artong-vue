@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'ProfileTabItem',
+  name: 'TabItem',
   props: {
     id: Number,
     label: String,

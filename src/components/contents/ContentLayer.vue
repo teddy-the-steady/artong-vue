@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import InContentsProfile from '../profile/InContentsProfile'
-import ReactionList from '../contents/ReactionList'
+import InContentsProfile from '../profile/InContentsProfile.vue'
+import ReactionList from '../contents/ReactionList.vue'
 
 export default {
   name: 'ContentLayer',

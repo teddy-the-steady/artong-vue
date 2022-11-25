@@ -8,70 +8,55 @@
       <div class="tab">
       </div>
     </div>
-    <content-list :queryContents="queryContents"></content-list>
-    <mint-modal v-if="isModalOpen">
+    <basic-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
-    </mint-modal>
+    </basic-modal>
+    <project-tab :tabs="tabs"/>
   </div>
 </template>
 
 <script>
-import { backgroundColor } from '../../mixin'
-import ContentList from '../contentsV2/ContentList'
-import ProjectPageProfile from '../profile/ProjectPageProfile'
-import MintModal from '../modal/MintModal'
-import MintToken from '../projects/MintToken'
-import { graphql } from '../../api/graphql'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import { mapState } from 'vuex'
+import { backgroundColor } from '../../mixin'
+import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
+import { getTobeApprovedContents } from '../../api/contents'
+import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
+import BasicModal from '../modal/BasicModal.vue'
+import MintToken from '../projects/MintToken.vue'
+import ProjectTab from '../tabs/ProjectTab.vue'
 
 export default {
   name: 'Project',
   mixins: [backgroundColor],
   components: {
-    ContentList, ProjectPageProfile, MintModal, MintToken
+    ProjectPageProfile, BasicModal, MintToken, ProjectTab
   },
   computed: {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen
     })
   },
-  extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql({query: `
-      query Project($id: String) {
-        project(id: $id) {
-          id
-          creator
-          owner
-          name
-          symbol
-          maxAmount
-          policy
-          isDisabled
-          createdAt
-          updatedAt
-          _db_project_s3key
-          _db_project_thumbnail_s3key
-          _db_background_s3key
-          _db_background_thumbnail_s3key
-        }
-      }
-      `, variables: { id: to.params.id }
-    })
-    callback(function() {
-      this.projectInfo = result.project
-    })
-  }),
   data() {
     return {
       projectAddress: '',
       backgroundColor: null,
       projectInfo: {},
-      queryContents: {}
+      tabs: [
+        { id: 0, type:'CONTENTS', label: 'Tokens', api: {} },
+        { id: 1, type:'CONTENTS', label: 'Waiting For Approval', api: {} },
+      ]
     }
   },
   methods: {
+    async getProject() {
+      const projectInfo = await graphql(queryProject({
+        variables: {
+          id: this.projectAddress
+        }
+      }))
+      return projectInfo
+    },
     close() {
       this.toggleModal()
     },
@@ -79,39 +64,36 @@ export default {
       this.$store.commit('TOGGLE_MODAL')
     },
   },
-  created() {
+  async created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
+    this.projectInfo = await this.getProject()
 
-    this.queryContents = {
+    this.tabs[0].api = {
       func: graphql,
-      body: {query: `
-        query TokensByProject($first: Int, $skip: Int, $project: String) {
-          tokens(first: $first, skip: $skip, where: {project: $project}) {
-            id
-            tokenId
-            tokenURI
-            contentURI
-            creator
-            owner
-            createdAt
-            updatedAt
-            _db_voucher
-            _db_content_s3key
-            _db_content_thumbnail_s3key
-            project {
-              id
-              policy
-            }
-          }
-        }
-      `, variables: {
+      body: queryTokensByProject({
+        variables: {
           first: 10,
           skip: 0,
-          project: this.$route.params.id
+          project: this.$route.params.id,
+        }
+      })
+    }
+
+    this.tabs[1].api = {
+      func: getTobeApprovedContents,
+      pathParams: { projectId: this.$route.params.id },
+      queryParams: { start_num: 0, count_num: 5 }
+    }
+
+    this.$watch(
+      () => this.$route,
+      async () => {
+        if (this.projectAddress) {
+          this.projectInfo = await this.getProject()
         }
       }
-    }
+    )
   },
   mounted() {
     this.$root.$on('contribute', () => {
@@ -119,40 +101,34 @@ export default {
     })
   },
   watch: {
-    async $route(val) {
-      if (val.name === 'Project') {
-        this.projectAddress = val.params.id
-        this.backgroundColor = this.generateGradientBackground(val.params.id)
+    $route(to) {
+      if (this.projectAddress !== to.params.id) {
+        this.projectAddress = to.params.id
+        this.backgroundColor = this.generateGradientBackground(to.params.id)
+      }
 
-        this.queryContents = {
-          func: graphql,
-          body: {query: `
-            query TokensByProject($first: Int, $skip: Int, $project: String) {
-              tokens(first: $first, skip: $skip, where: {project: $project}) {
-                id
-                tokenId
-                tokenURI
-                contentURI
-                creator
-                owner
-                createdAt
-                updatedAt
-                _db_voucher
-                _db_content_s3key
-                _db_content_thumbnail_s3key
-                project {
-                  id
-                  policy
-                }
+      switch (to.query.tab || '0') {
+        case '0':
+          this.tabs[0].api = {
+            func: graphql,
+            body: queryTokensByProject({
+              variables: {
+                first: 10,
+                skip: 0,
+                project: to.params.id,
               }
-            }
-          `, variables: {
-              first: 10,
-              skip: 0,
-              project: val.params.id
-            }
+            })
           }
-        }
+          break;
+        case '1':
+          this.tabs[1].api = {
+            func: getTobeApprovedContents,
+            pathParams: { projectId: to.params.id },
+            queryParams: { start_num: 0, count_num: 5 }
+          }
+          break;
+        default:
+          break;
       }
     }
   }

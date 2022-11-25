@@ -29,8 +29,8 @@
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
 import { makeS3Path } from '../../util/commonFunc'
-import SkeletonBox from '../util/SkeletonBox'
 import { patchMemberProfileS3key } from '../../api/member'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'MyPageProfile',
