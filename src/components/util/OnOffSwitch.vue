@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <input type="checkbox" id="switch">
+    <input type="checkbox" id="switch" />
     <label for="switch" class="switch_label">
       <span class="onf_btn"></span>
     </label>
@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'OnOffSwitch'
+  name: 'OnOffSwitch',
 }
 </script>
 
@@ -27,13 +27,13 @@ export default {
   }
 
   /* checking style */
-  #switch:checked+.switch_label {
+  #switch:checked + .switch_label {
     background: black;
     border: 2px solid black;
   }
 
   /* move */
-  #switch:checked+.switch_label .onf_btn {
+  #switch:checked + .switch_label .onf_btn {
     left: 32px;
     background: #fff;
     box-shadow: 1px 2px 3px #00000020;

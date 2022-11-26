@@ -1,12 +1,7 @@
 <template>
-  <div
-    class="dialog-mask"
-    @focusout="handleFocusOut"
-    tabindex="0"
-  >
+  <div class="dialog-mask" @focusout="handleFocusOut" tabindex="0">
     <div class="dialog-wrapper">
       <div class="dialog-container">
-
         <div class="dialog-header">
           <slot name="header"></slot>
         </div>
@@ -30,14 +25,14 @@ export default {
   name: 'UserDialog',
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
-    })
+      currentUser: (state) => state.user.currentUser,
+    }),
   },
   methods: {
     handleFocusOut() {
       this.$emit('dialog-focus-out')
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -58,8 +53,8 @@ export default {
     .dialog-container {
       width: 150px;
       background-color: $artong-white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-      transition: all .3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+      transition: all 0.3s ease;
 
       .dialog-header {
         float: right;

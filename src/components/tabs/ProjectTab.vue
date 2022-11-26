@@ -3,9 +3,11 @@
     <div class="tabs">
       <tab-item
         v-for="tab in tabs"
-        v-bind="tab" :key="tab.id"
+        v-bind="tab"
+        :key="tab.id"
         v-model="currentId"
-        @tabClick="tabClick"/>
+        @tabClick="tabClick"
+      />
     </div>
     <div class="items">
       <section class="item" :key="currentId">
@@ -26,42 +28,42 @@ import ContentList from '../contents_v2/ContentList.vue'
 export default {
   name: 'ProjectTab',
   components: {
-    TabItem, ContentList
+    TabItem,
+    ContentList,
   },
   props: {
     tabs: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      currentId: parseInt(this.$router.currentRoute.query.tab) || 0
+      currentId: parseInt(this.$router.currentRoute.query.tab) || 0,
     }
   },
   computed: {
     current() {
-      return this.tabs.find(el => el.id === this.currentId) || {}
+      return this.tabs.find((el) => el.id === this.currentId) || {}
     },
     ...mapState({
-      currentUser: state => state.user.currentUser
-    })
+      currentUser: (state) => state.user.currentUser,
+    }),
   },
   methods: {
     tabClick(id) {
       this.currentId = id
       this.$router.push({ query: { tab: id } })
-    }
+    },
   },
   watch: {
     async $route(val) {
       if (val) {
         this.currentId = parseInt(val.query.tab) || 0
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

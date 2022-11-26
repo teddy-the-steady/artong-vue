@@ -4,7 +4,7 @@
       <div class="user-info">
         <artist-page-profile :member="member"></artist-page-profile>
       </div>
-      <profile-tab v-if="member.id" :tabs="tabs"/>
+      <profile-tab v-if="member.id" :tabs="tabs" />
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ import {
   graphql,
   queryProjectsByCreator,
   queryTokensByCreator,
-  queryTokensByOwner
+  queryTokensByOwner,
 } from '../../api/graphql'
 import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
@@ -24,12 +24,13 @@ import ProfileTab from '../tabs/ProfileTab.vue'
 export default {
   name: 'Artist',
   components: {
-    ArtistPageProfile, ProfileTab
+    ArtistPageProfile,
+    ProfileTab,
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
-    })
+      currentUser: (state) => state.user.currentUser,
+    }),
   },
   data() {
     return {
@@ -39,8 +40,8 @@ export default {
       tabs: [
         { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} }
-      ]
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} },
+      ],
     }
   },
   methods: {
@@ -50,7 +51,7 @@ export default {
         return member[0]
       }
       return null
-    }
+    },
   },
   async created() {
     this.username = this.$route.params.id
@@ -62,9 +63,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          owner: this.member.wallet_address
-        }
-      })
+          owner: this.member.wallet_address,
+        },
+      }),
     }
 
     this.tabs[1].api = {
@@ -73,9 +74,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          creator: this.member.wallet_address
-        }
-      })
+          creator: this.member.wallet_address,
+        },
+      }),
     }
 
     this.tabs[2].api = {
@@ -84,9 +85,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          creator: this.member.wallet_address
-        }
-      })
+          creator: this.member.wallet_address,
+        },
+      }),
     }
 
     this.$watch(
@@ -96,11 +97,14 @@ export default {
           return
         }
 
-        if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
+        if (
+          to.name === 'UserOrArtist' &&
+          to.params.id !== this.currentUser.username
+        ) {
           this.username = to.params.id
           this.member = await this.getMember(this.username)
         }
-      }
+      },
     )
   },
   watch: {
@@ -113,11 +117,11 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                owner: to.params.id
-              }
-            })
+                owner: to.params.id,
+              },
+            }),
           }
-          break;
+          break
         case '1':
           this.tabs[1].api = {
             func: graphql,
@@ -125,11 +129,11 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: to.params.id
-              }
-            })
+                creator: to.params.id,
+              },
+            }),
           }
-          break;
+          break
         case '2':
           this.tabs[2].api = {
             func: graphql,
@@ -137,16 +141,16 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: to.params.id
-              }
-            })
+                creator: to.params.id,
+              },
+            }),
           }
-          break;
+          break
         default:
-          break;
+          break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -177,7 +181,6 @@ export default {
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
-
       button {
         border-radius: 10px;
       }

@@ -2,7 +2,9 @@
   <component
     :is="tag"
     :to="tag === 'router-link' && href"
-    v-bind="tag !== 'router-link' && { href: href && !disabled ? href : undefined }"
+    v-bind="
+      tag !== 'router-link' && { href: href && !disabled ? href : undefined }
+    "
     :tabindex="disabled ? -1 : 0"
     role="link"
   >
@@ -16,16 +18,16 @@ export default {
   props: {
     tag: {
       type: String,
-      default: 'a'
+      default: 'a',
     },
     href: {
       type: [String, Object],
-      default: ''
+      default: '',
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 }
 </script>

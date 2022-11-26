@@ -14,11 +14,10 @@ import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
 import ContentDetail from '@/components/contents_v2/ContentDetail'
-import VueCarousel from 'vue-carousel'; // for 무한 슬라이드 swipe 배너
-
+import VueCarousel from 'vue-carousel' // for 무한 슬라이드 swipe 배너
 
 Vue.use(Router)
-Vue.use(VueCarousel);
+Vue.use(VueCarousel)
 
 const router = new Router({
   mode: 'history',
@@ -38,7 +37,7 @@ const router = new Router({
           to.matched[0].components.default = Home
         }
         next()
-      }
+      },
     },
     {
       path: '/projects/:id',
@@ -48,23 +47,23 @@ const router = new Router({
     {
       path: '/projects',
       name: 'Projects',
-      component: Projects
+      component: Projects,
     },
     {
       path: '/projects/:project_address/contents/:token_id',
       name: 'ContentDetail',
-      component: ContentDetail
+      component: ContentDetail,
     },
     {
       path: '/contents',
       name: 'Contents',
-      component: Contents
+      component: Contents,
     },
     {
       path: '/following',
       name: 'Following',
       component: Following,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: '/@:id',
@@ -77,12 +76,12 @@ const router = new Router({
           to.matched[0].components.default = Artist
           next()
         }
-      }
+      },
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
     },
     {
       path: '/create/project',
@@ -95,18 +94,18 @@ const router = new Router({
           next()
         }
       },
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: '/create/project',
       name: 'CreatingProject',
-      component: CreatingProject
+      component: CreatingProject,
     },
-  ]
+  ],
 })
 
-router.beforeEach(async function(to, from, next) {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+router.beforeEach(async function (to, from, next) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     let user = null
     try {
       const data = await Auth.currentAuthenticatedUser()
@@ -120,8 +119,8 @@ router.beforeEach(async function(to, from, next) {
         next({
           path: '/login',
           query: {
-            redirect: to.fullPath
-          }
+            redirect: to.fullPath,
+          },
         })
       }
     }

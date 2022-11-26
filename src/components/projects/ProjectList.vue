@@ -3,12 +3,15 @@
     <div class="projects">
       <div class="info">explore projects</div>
       <div class="project" v-for="(val, i) in projectList" :key="i">
-        <router-link :to="{ name: 'Project', params: { id: val.address }}">
+        <router-link :to="{ name: 'Project', params: { id: val.address } }">
           <project-box :project="val"></project-box>
         </router-link>
       </div>
     </div>
-    <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <infinite-loading
+      @infinite="infiniteHandler"
+      spinner="spiral"
+    ></infinite-loading>
   </div>
 </template>
 
@@ -20,18 +23,19 @@ import ProjectBox from './ProjectBox.vue'
 export default {
   name: 'ProjectList',
   components: {
-    ProjectBox, InfiniteLoading
+    ProjectBox,
+    InfiniteLoading,
   },
   props: {
     queryProjects: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       projectList: [],
-      noMoreDataToLoad: false
+      noMoreDataToLoad: false,
     }
   },
   methods: {
@@ -41,7 +45,9 @@ export default {
         return
       }
       await this.pushData()
-      setTimeout(function() { $state.loaded() }, 1000)
+      setTimeout(function () {
+        $state.loaded()
+      }, 1000)
     },
     async pushData() {
       const projectArrayToPush = await this.makeProjectArray()
@@ -55,7 +61,8 @@ export default {
       const projectArrayToPush = []
       if (this.queryProjects) {
         const results = await this.getProjects(this.queryProjects)
-        this.queryProjects.body.variables.skip += this.queryProjects.body.variables.first
+        this.queryProjects.body.variables.skip +=
+          this.queryProjects.body.variables.first
 
         if (results.length > 0) {
           for (let i = 0; i < results.length; i++) {
@@ -68,9 +75,13 @@ export default {
               policy: results[i].policy,
               max_amount: results[i].maxAmount,
               background_s3key: makeS3Path(results[i].background_s3key),
-              background_thumbnail_s3key: makeS3Path(results[i].background_thumbnail_s3key),
+              background_thumbnail_s3key: makeS3Path(
+                results[i].background_thumbnail_s3key,
+              ),
               project_s3key: makeS3Path(results[i].thumbnail_s3key),
-              project_thumbnail_s3key: makeS3Path(results[i].project_thumbnail_s3key),
+              project_thumbnail_s3key: makeS3Path(
+                results[i].project_thumbnail_s3key,
+              ),
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,
             })
@@ -85,8 +96,8 @@ export default {
     async getProjects() {
       const results = await this.queryProjects.func(this.queryProjects.body)
       return results.projects
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -161,5 +172,4 @@ export default {
     }
   }
 }
-
 </style>

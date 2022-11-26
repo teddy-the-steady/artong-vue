@@ -1,10 +1,10 @@
-import instance from './index';
+import instance from './index'
 
-const graphql = async function(body) {
+const graphql = async function (body) {
   return await instance.post('/graphql', body)
 }
 
-const queryProject = function(variables) {
+const queryProject = function (variables) {
   return {
     query: `
       query Project($id: String) {
@@ -26,11 +26,11 @@ const queryProject = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryProjects = function(variables) {
+const queryProjects = function (variables) {
   return {
     query: `
       query Projects($first: Int, $skip: Int) {
@@ -52,11 +52,11 @@ const queryProjects = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryProjectsByCreator = function(variables) {
+const queryProjectsByCreator = function (variables) {
   return {
     query: `
       query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
@@ -78,11 +78,11 @@ const queryProjectsByCreator = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryToken = function(variables) {
+const queryToken = function (variables) {
   return {
     query: `
       query Token($id: String) {
@@ -127,11 +127,11 @@ const queryToken = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryTokensByProject = function(variables) {
+const queryTokensByProject = function (variables) {
   return {
     query: `
       query TokensByProject($first: Int, $skip: Int, $project: String) {
@@ -154,11 +154,11 @@ const queryTokensByProject = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryTokensByCreator = function(variables) {
+const queryTokensByCreator = function (variables) {
   return {
     query: `
       query TokensByCreator($first: Int, $skip: Int, $creator: String) {
@@ -179,11 +179,11 @@ const queryTokensByCreator = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
-const queryTokensByOwner = function(variables) {
+const queryTokensByOwner = function (variables) {
   return {
     query: `
       query TokensByOwner($first: Int, $skip: Int, $owner: String) {
@@ -204,7 +204,7 @@ const queryTokensByOwner = function(variables) {
         }
       }
     `,
-    ...variables
+    ...variables,
   }
 }
 
