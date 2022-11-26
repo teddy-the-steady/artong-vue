@@ -120,26 +120,29 @@
         <div v-else class="curated-collection-wide-box">
           <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide2"></CuratedCollectionWide>
         </div>
-        <div class="featured-creator-title">Featured Creators</div>
+        <div class="top-container top-container3">       
+          <div class="featured-creator-title">Featured Creators</div>
+          <div class="url" href="">View more</div>
+        </div>
         <FeaturedCreator class="featured-creator"></FeaturedCreator>
       </div>
     </div> <!--end of container4-->
     <div class="container5">
-      <div class="top-container">      
+      <div class="top-container top-container3">      
         <div class="buy-and-sell">Buy And Sell</div>
         <div class="url" href="">View more</div>
       </div>
-      <BuyAndSell></BuyAndSell>
-      <div class="top-container2">      
+      <BuyAndSell class="container5-component-margin"></BuyAndSell>
+      <div class="top-container top-container3">      
         <div class="recent-contribution">Recent Contributionl</div>
         <div class="url" href="">View more</div>
       </div>
-      <RecentContribution></RecentContribution>
-      <div class="top-container2">
+      <RecentContribution class="container5-component-margin"></RecentContribution>
+      <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contributionll</div>
         <div class="url" href="">View more</div>
       </div>
-      <div class="recent-contribution2-bottom">
+      <div class="recent-contribution2-bottom container5-component-margin">
         <div class="recent-contribution-card">
           <table>
             <tr>
@@ -432,12 +435,15 @@ export default {
     background: $artong-black;
 
     padding-top: 48px;
-    padding-bottom: 96px;
+    padding-bottom: 48px;
   }
   .top-container{
     display:flex;
     flex-direction: row;
     margin-bottom: 24px;
+  }
+  .top-container3{
+    margin-top:48px;
   }
   .curated-collection-title{
     width: 200px;
@@ -481,16 +487,14 @@ export default {
     flex-direction:row;
     justify-content: center;
     flex-wrap:wrap;
-    transform: translate(24px, 0px);
+    transform: translate(12px, 0px);
   }
   .curated-collection-wide2{
     margin-right:24px;
     margin-bottom:24px;
   }
   .featured-creator-title{
-    margin-top: 72px;
     margin-left: 16px;
-    margin-bottom: 24px;
     
     font-family: 'Mustica Pro';
     font-style: normal;
@@ -498,6 +502,9 @@ export default {
     font-size: 22px;
     color: #B3B3B3;
     text-align: left;
+  }
+  .container5-component-margin{
+    margin-bottom:96px;
   }
   .container5{
     margin-top: 48px;
@@ -518,10 +525,7 @@ export default {
         text-align: left;
       }
     }
-    .top-container2{
-      margin-top: 112px;
-      display:flex;
-      flex-direction: row;
+    .top-container{
       .recent-contribution{
         width: 200px;
         height: 30px;
@@ -575,12 +579,6 @@ export default {
       display: none;
     }
   }
-  // recent-contribution-card 표의 너비가 1440px 이상으로 커지지 않게
-  @media (min-width:1520px){
-    .recent-contribution-card{
-      width:1440px;
-    }
-  }
   
   .recent{
     font-family: $item-font;
@@ -589,6 +587,19 @@ export default {
     font-size: 14px;
     color: #333333;
   }
+  // container4,5의 내용물의 너비가 1440px을 넘어가지 않게하는 용도
+  // @media(min-width:1472px){
+  //   .container4-box{
+  //     width:1440px;
+  //     margin-left:auto;
+  //     margin-right:auto;
+  //   }
+  //   .container5{
+  //     width:1440px;
+  //     margin-left:auto;
+  //     margin-right:auto;
+  //   }
+  // }
   .container6{
     margin-top:48px;
     background-color: $artong-black;
@@ -792,6 +803,16 @@ export default {
     margin-left:auto;
     margin-right:auto;
   }
+  .container4{
+    padding-top:96px;
+    padding-bottom:96px;
+  }
+  .top-container3{
+    margin-top:96px;
+  }
+  .container5-component-margin{
+    margin-bottom:192px;
+  }
   .button-block{
     width: 328px;
   }
@@ -958,13 +979,29 @@ export default {
     .button-block{
       width: 328px;
     }
-    .container4-box{
-      margin-right:240px;
-      margin-left:240px;
+    .container4{
+      padding-top:96px;
+      padding-bottom:96px;
+      .container4-box{
+        width:1440px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    .url{
+      margin-right:16px;
+    }
+    // top-container3 : 화면 너비 1080 이상일 때 margin-bottom 더 주는 용도
+    .top-container3{
+      margin-top:96px;
     }
     .container5{
-      margin-left:240px;
-      margin-right:240px;
+      width:1440px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .container5-component-margin{
+      margin-bottom:192px;
     }
     .container6{
       padding-top:72px;
