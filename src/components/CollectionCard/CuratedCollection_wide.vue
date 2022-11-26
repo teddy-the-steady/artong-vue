@@ -44,7 +44,7 @@
             font-style: $item-font-style;
             font-weight: 700;
             font-size: 32px;
-            color: #000000;
+            color: $artong-white;
             margin-left:16px;
             line-height: 100px;
         }
@@ -61,7 +61,7 @@
             font-style: $item-font-style;
             font-weight: 500;
             font-size: 14px;
-            color:#000000;
+            color:$artong-white;
         }
         .category{
             position:absolute;
@@ -85,6 +85,7 @@
         margin-left:24px;
         margin-bottom:24px;
         text-align: left;
+        color:$artong-white
     }
 }
 @media (min-width:1440px){
