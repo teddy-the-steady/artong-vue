@@ -139,19 +139,21 @@
         <div class="recent-contribution">Recent Contributionll</div>
         <div class="url" href="">View more</div>
       </div>
-      <div class="recent-contribution-card">
-        <table>
-          <tr>
-            <td>User</td>
-            <td>Record</td>
-            <td>Recent</td>
-          </tr>
-          <tr v-for="i in 5" :key="i">
-            <td><ContentsProfile></ContentsProfile></td>
-            <td class="record">3 contributions/week</td>
-            <td class="recent">0.25</td>
-          </tr>
-        </table>
+      <div class="recent-contribution2-bottom">
+        <div class="recent-contribution-card">
+          <table>
+            <tr>
+              <td>User</td>
+              <td>Record</td>
+              <td>Recent</td>
+            </tr>
+            <tr v-for="i in 5" :key="i">
+              <td><ContentsProfile></ContentsProfile></td>
+              <td class="record">3 contributions/week</td>
+              <td class="recent">0.25</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div> <!--end of container5-->
     <div class="container6">
@@ -169,13 +171,6 @@
           </g>
       </svg>
       </div>
-      <!-- <table class="bottom-table">
-        <tr>
-          <td>Learn</td>
-          <td>Company</td>
-          <td>Connect</td>
-        </tr>
-      </table> -->
       <div class="bottom-link">
         <div class="bottom-table">
           <ol class="column first-column">
@@ -204,7 +199,6 @@
       </div>
     </div>
     <div></div>
-    <CuratedCollectionWide></CuratedCollectionWide>
   </div>
 </template>
 
@@ -544,30 +538,33 @@ export default {
         text-align: left;
       }
     }
-    .recent-contribution-card{
-      height:425px;
-      width: 94%;
-      border: 1px solid #F2F2F2;
-      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-      border-radius: 24px;
-      margin-left:auto;
-      margin-right:auto;
-      margin-top:24px;
-      padding: 32px 24px 32px 24px;
+    .recent-contribution2-bottom{
+      padding-left: 16px;
+      padding-right:16px;
+      .recent-contribution-card{
+        height:425px;
+        border: 1px solid #F2F2F2;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+        border-radius: 24px;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:24px;
+        padding: 32px 24px 32px 24px;
 
-      table {
-        width: 100%;
-        //border-top: 1px solid #444444;
-        border-collapse: collapse;
-        th, td {
-          border-bottom: 1px solid #CCCCCC;
-          padding: 21px;
-          text-align:left;
+        table {
+          width: 100%;
+          //border-top: 1px solid #444444;
+          border-collapse: collapse;
+          th, td {
+            border-bottom: 1px solid #CCCCCC;
+            padding: 21px;
+            text-align:left;
 
-          font-family: $item-font;
-          font-style: $item-font-style;
-          font-weight: 500;
-          font-size: 14px;
+            font-family: $item-font;
+            font-style: $item-font-style;
+            font-weight: 500;
+            font-size: 14px;
+          }
         }
       }
     }
@@ -576,6 +573,12 @@ export default {
   @media (max-width:360px) {
     .recent-contribution-card > table > tr > td:nth-child(2){
       display: none;
+    }
+  }
+  // recent-contribution-card 표의 너비가 1440px 이상으로 커지지 않게
+  @media (min-width:1520px){
+    .recent-contribution-card{
+      width:1440px;
     }
   }
   
