@@ -110,50 +110,53 @@
     <div class="container4">
       <div class="container4-box">
         <div class="top-container">      
-          <div class="curated-collections">Curated Collections</div>
+          <div class="curated-collection-title">Curated Collections</div>
           <div class="url" href="">View more</div>
         </div>
-        <div class="test">{{width}}</div>
-        <CuratedCollection v-if="width<1080" class="curated-collection"></CuratedCollection>
+        <CuratedCollection v-if="this.width<1080" class="curated-collection"></CuratedCollection>
         <div v-else-if="width<1440">
           <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide1"></CuratedCollectionWide>
         </div>
-        <CuratedCollectionWide v-else-if="width<1440"></CuratedCollectionWide>
-        <div v-else>
-          <CuratedCollectionWide></CuratedCollectionWide>
+        <div v-else class="curated-collection-wide-box">
+          <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide2"></CuratedCollectionWide>
         </div>
-        <div class="featured-creator">Featured Creators</div>
-        <FeaturedCreator></FeaturedCreator>
+        <div class="top-container top-container3">       
+          <div class="featured-creator-title">Featured Creators</div>
+          <div class="url" href="">View more</div>
+        </div>
+        <FeaturedCreator class="featured-creator"></FeaturedCreator>
       </div>
     </div> <!--end of container4-->
     <div class="container5">
-      <div class="top-container">      
+      <div class="top-container top-container3">      
         <div class="buy-and-sell">Buy And Sell</div>
         <div class="url" href="">View more</div>
       </div>
-      <BuyAndSell></BuyAndSell>
-      <div class="top-container2">      
+      <BuyAndSell class="container5-component-margin"></BuyAndSell>
+      <div class="top-container top-container3">      
         <div class="recent-contribution">Recent Contributionl</div>
         <div class="url" href="">View more</div>
       </div>
-      <RecentContribution></RecentContribution>
-      <div class="top-container2">
+      <RecentContribution class="container5-component-margin"></RecentContribution>
+      <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contributionll</div>
         <div class="url" href="">View more</div>
       </div>
-      <div class="recent-contribution-card">
-        <table>
-          <tr>
-            <td>User</td>
-            <td>Record</td>
-            <td>Recent</td>
-          </tr>
-          <tr v-for="i in 5" :key="i">
-            <td><ContentsProfile></ContentsProfile></td>
-            <td class="record">3 contributions/week</td>
-            <td class="recent">0.25</td>
-          </tr>
-        </table>
+      <div class="recent-contribution2-bottom container5-component-margin">
+        <div class="recent-contribution-card">
+          <table>
+            <tr>
+              <td>User</td>
+              <td>Record</td>
+              <td>Recent</td>
+            </tr>
+            <tr v-for="i in 5" :key="i">
+              <td><ContentsProfile></ContentsProfile></td>
+              <td class="record">3 contributions/week</td>
+              <td class="recent">0.25</td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div> <!--end of container5-->
     <div class="container6">
@@ -171,13 +174,6 @@
           </g>
       </svg>
       </div>
-      <!-- <table class="bottom-table">
-        <tr>
-          <td>Learn</td>
-          <td>Company</td>
-          <td>Connect</td>
-        </tr>
-      </table> -->
       <div class="bottom-link">
         <div class="bottom-table">
           <ol class="column first-column">
@@ -206,7 +202,6 @@
       </div>
     </div>
     <div></div>
-    <CuratedCollectionWide></CuratedCollectionWide>
   </div>
 </template>
 
@@ -232,15 +227,16 @@ export default {
   },
   data(){
     return{
-      width:"0",
+      width:window.innerWidth,
+    }
+  },
+  methods: {
+    setWidth() {
+      this.width=window.innerWidth
     }
   },
   mounted(){
-    window.addEventListener("resize", function(event){
-      console.log(this.width)
-      this.width=event.target.innerWidth;
-      console.log(event.target.innerWidth);
-    })
+    window.addEventListener("resize", this.setWidth)
   },
   watch: {
     width: {
@@ -257,10 +253,6 @@ export default {
 
   //@media (max-width:1080px)
     // container0 빈 div
-
-  .test{
-    color:white;
-  }
   .container1{
     display: flex;
     flex-direction: column;
@@ -438,17 +430,22 @@ export default {
   // curated collections
   .container4{
     //width: 360px;
-    height: 983px;
+    height: auto;
 
     background: $artong-black;
 
     padding-top: 48px;
+    padding-bottom: 48px;
   }
   .top-container{
     display:flex;
     flex-direction: row;
+    margin-bottom: 24px;
   }
-  .curated-collections{
+  .top-container3{
+    margin-top:48px;
+  }
+  .curated-collection-title{
     width: 200px;
     height: 30px;
 
@@ -484,10 +481,20 @@ export default {
     margin-left:auto;
     margin-right:auto;
   }
-  .featured-creator{
-    margin-top: 60px;
+  .curated-collection-wide-box{
+    margin: 0 auto;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    flex-wrap:wrap;
+    transform: translate(12px, 0px);
+  }
+  .curated-collection-wide2{
+    margin-right:24px;
+    margin-bottom:24px;
+  }
+  .featured-creator-title{
     margin-left: 16px;
-    margin-bottom: 24px;
     
     font-family: 'Mustica Pro';
     font-style: normal;
@@ -495,6 +502,9 @@ export default {
     font-size: 22px;
     color: #B3B3B3;
     text-align: left;
+  }
+  .container5-component-margin{
+    margin-bottom:96px;
   }
   .container5{
     margin-top: 48px;
@@ -515,10 +525,7 @@ export default {
         text-align: left;
       }
     }
-    .top-container2{
-      margin-top: 112px;
-      display:flex;
-      flex-direction: row;
+    .top-container{
       .recent-contribution{
         width: 200px;
         height: 30px;
@@ -535,30 +542,33 @@ export default {
         text-align: left;
       }
     }
-    .recent-contribution-card{
-      height:425px;
-      width: 94%;
-      border: 1px solid #F2F2F2;
-      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-      border-radius: 24px;
-      margin-left:auto;
-      margin-right:auto;
-      margin-top:24px;
-      padding: 32px 24px 32px 24px;
+    .recent-contribution2-bottom{
+      padding-left: 16px;
+      padding-right:16px;
+      .recent-contribution-card{
+        height:425px;
+        border: 1px solid #F2F2F2;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+        border-radius: 24px;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:24px;
+        padding: 32px 24px 32px 24px;
 
-      table {
-        width: 100%;
-        //border-top: 1px solid #444444;
-        border-collapse: collapse;
-        th, td {
-          border-bottom: 1px solid #CCCCCC;
-          padding: 21px;
-          text-align:left;
+        table {
+          width: 100%;
+          //border-top: 1px solid #444444;
+          border-collapse: collapse;
+          th, td {
+            border-bottom: 1px solid #CCCCCC;
+            padding: 21px;
+            text-align:left;
 
-          font-family: $item-font;
-          font-style: $item-font-style;
-          font-weight: 500;
-          font-size: 14px;
+            font-family: $item-font;
+            font-style: $item-font-style;
+            font-weight: 500;
+            font-size: 14px;
+          }
         }
       }
     }
@@ -577,6 +587,19 @@ export default {
     font-size: 14px;
     color: #333333;
   }
+  // container4,5의 내용물의 너비가 1440px을 넘어가지 않게하는 용도
+  // @media(min-width:1472px){
+  //   .container4-box{
+  //     width:1440px;
+  //     margin-left:auto;
+  //     margin-right:auto;
+  //   }
+  //   .container5{
+  //     width:1440px;
+  //     margin-left:auto;
+  //     margin-right:auto;
+  //   }
+  // }
   .container6{
     margin-top:48px;
     background-color: $artong-black;
@@ -780,11 +803,18 @@ export default {
     margin-left:auto;
     margin-right:auto;
   }
+  .container4{
+    padding-top:96px;
+    padding-bottom:96px;
+  }
+  .top-container3{
+    margin-top:96px;
+  }
+  .container5-component-margin{
+    margin-bottom:192px;
+  }
   .button-block{
     width: 328px;
-  }
-  .featured-creator{
-    margin-top:60px;
   }
   .container6{
     padding-top:72px;
@@ -949,13 +979,29 @@ export default {
     .button-block{
       width: 328px;
     }
-    .container4-box{
-      margin-right:240px;
-      margin-left:240px;
+    .container4{
+      padding-top:96px;
+      padding-bottom:96px;
+      .container4-box{
+        width:1440px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    .url{
+      margin-right:16px;
+    }
+    // top-container3 : 화면 너비 1080 이상일 때 margin-bottom 더 주는 용도
+    .top-container3{
+      margin-top:96px;
     }
     .container5{
-      margin-left:240px;
-      margin-right:240px;
+      width:1440px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .container5-component-margin{
+      margin-bottom:192px;
     }
     .container6{
       padding-top:72px;
