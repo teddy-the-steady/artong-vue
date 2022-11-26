@@ -78,7 +78,6 @@ export default {
     .image {
       width: 30px;
       height: 30px;
-      object-fit:cover;
       border-radius: 50%;
       overflow:hidden;
       background-color: $artong-white;
@@ -86,6 +85,7 @@ export default {
       .profileImage { 
         width: 100%;
         height:100%;
+        object-fit:cover;
         &.error {
           background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
           text-indent: -10000px;
