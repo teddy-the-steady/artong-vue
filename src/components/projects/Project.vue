@@ -1,18 +1,17 @@
 <template>
   <div>
     <div class="header">
-      <div class="background" :style="{'background': backgroundColor}"></div>
+      <div class="background" :style="{ background: backgroundColor }"></div>
       <div class="user-info">
         <project-page-profile></project-page-profile>
       </div>
-      <div class="tab">
-      </div>
+      <div class="tab"></div>
     </div>
     <basic-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
     </basic-modal>
-    <project-tab :tabs="tabs"/>
+    <project-tab :tabs="tabs" />
   </div>
 </template>
 
@@ -30,12 +29,15 @@ export default {
   name: 'Project',
   mixins: [backgroundColor],
   components: {
-    ProjectPageProfile, BasicModal, MintToken, ProjectTab
+    ProjectPageProfile,
+    BasicModal,
+    MintToken,
+    ProjectTab,
   },
   computed: {
     ...mapState({
-      isModalOpen: state => state.menu.isModalOpen
-    })
+      isModalOpen: (state) => state.menu.isModalOpen,
+    }),
   },
   data() {
     return {
@@ -43,18 +45,20 @@ export default {
       backgroundColor: null,
       projectInfo: {},
       tabs: [
-        { id: 0, type:'CONTENTS', label: 'Tokens', api: {} },
-        { id: 1, type:'CONTENTS', label: 'Waiting For Approval', api: {} },
-      ]
+        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
+        { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
+      ],
     }
   },
   methods: {
     async getProject() {
-      const projectInfo = await graphql(queryProject({
-        variables: {
-          id: this.projectAddress
-        }
-      }))
+      const projectInfo = await graphql(
+        queryProject({
+          variables: {
+            id: this.projectAddress,
+          },
+        }),
+      )
       return projectInfo
     },
     close() {
@@ -66,7 +70,9 @@ export default {
   },
   async created() {
     this.projectAddress = this.$route.params.id
-    this.backgroundColor = this.generateGradientBackground(this.$route.params.id)
+    this.backgroundColor = this.generateGradientBackground(
+      this.$route.params.id,
+    )
     this.projectInfo = await this.getProject()
 
     this.tabs[0].api = {
@@ -76,14 +82,14 @@ export default {
           first: 10,
           skip: 0,
           project: this.$route.params.id,
-        }
-      })
+        },
+      }),
     }
 
     this.tabs[1].api = {
       func: getTobeApprovedContents,
       pathParams: { projectId: this.$route.params.id },
-      queryParams: { start_num: 0, count_num: 5 }
+      queryParams: { start_num: 0, count_num: 5 },
     }
 
     this.$watch(
@@ -92,7 +98,7 @@ export default {
         if (this.projectAddress) {
           this.projectInfo = await this.getProject()
         }
-      }
+      },
     )
   },
   mounted() {
@@ -116,22 +122,22 @@ export default {
                 first: 10,
                 skip: 0,
                 project: to.params.id,
-              }
-            })
+              },
+            }),
           }
-          break;
+          break
         case '1':
           this.tabs[1].api = {
             func: getTobeApprovedContents,
             pathParams: { projectId: to.params.id },
-            queryParams: { start_num: 0, count_num: 5 }
+            queryParams: { start_num: 0, count_num: 5 },
           }
-          break;
+          break
         default:
-          break;
+          break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

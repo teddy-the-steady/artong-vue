@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
-    <img v-if="profileImageUrl" :src="profileImageUrl" alt="">
-    <img v-else src="../../assets/images/profile.svg" alt="">
+    <img v-if="profileImageUrl" :src="profileImageUrl" alt="" />
+    <img v-else src="../../assets/images/profile.svg" alt="" />
   </div>
 </template>
 
@@ -11,9 +11,9 @@ export default {
   props: {
     profileImageUrl: {
       type: String,
-      default: null
-    }
-  }
+      default: null,
+    },
+  },
 }
 </script>
 
@@ -21,17 +21,17 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    background-color: $artong-white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
+  background-color: $artong-white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
 
-    img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 }
 </style>

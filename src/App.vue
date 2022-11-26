@@ -4,7 +4,7 @@
     <side-bar id="side-bar"></side-bar>
     <div class="contents">
       <keep-alive>
-        <router-view class="contents__body"/>
+        <router-view class="contents__body" />
       </keep-alive>
     </div>
     <confirm-modal
@@ -30,27 +30,32 @@ export default {
   components: {
     HeaderBar,
     SideBar,
-    ConfirmModal
+    ConfirmModal,
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: state => state.menu.isSideMenuOpen,
-      isModalOpen: state => state.menu.isModalOpen,
-      authError: state => state.auth.status,
-      walletConnectState: state => state.wallet,
-      isConfirmModalOpen: state => state.menu.isConfirmModalOpen
+      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
+      isModalOpen: (state) => state.menu.isModalOpen,
+      authError: (state) => state.auth.status,
+      walletConnectState: (state) => state.wallet,
+      isConfirmModalOpen: (state) => state.menu.isConfirmModalOpen,
     }),
     ...mapGetters({
-      getDefaultWalletConnectState: 'getDefaultWalletConnectState'
-    })
+      getDefaultWalletConnectState: 'getDefaultWalletConnectState',
+    }),
   },
   methods: {
     async getPcWalletOnFirstLoad() {
       if (window.ethereum && localStorage.getItem('userWalletConnectState')) {
-        const metamaskSignedInAccount = await window.ethereum.request({ method: 'eth_accounts' })
+        const metamaskSignedInAccount = await window.ethereum.request({
+          method: 'eth_accounts',
+        })
         if (metamaskSignedInAccount.length > 0) {
           this.$store.commit('WALLET_ACCOUNT', metamaskSignedInAccount[0])
-          this.$store.commit('WALLET_CHAIN', parseInt(window.ethereum.networkVersion))
+          this.$store.commit(
+            'WALLET_CHAIN',
+            parseInt(window.ethereum.networkVersion),
+          )
         }
       }
     },
@@ -63,15 +68,23 @@ export default {
               const ok = await this.$refs.confirmModal.waitForAnswer()
               if (ok) {
                 await Auth.signOut()
-                const cognitoUser = await this.$store.dispatch('AUTH_SIGN_IN_AND_UP', {
-                  address: accounts[0]
-                })
+                const cognitoUser = await this.$store.dispatch(
+                  'AUTH_SIGN_IN_AND_UP',
+                  {
+                    address: accounts[0],
+                  },
+                )
                 const signature = await window.ethereum.request({
                   method: 'personal_sign',
                   params: [accounts[0], cognitoUser.challengeParam.message],
                 })
-                await this.$store.dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-                const authenticatedUser = await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+                await this.$store.dispatch('AUTH_VERIFY_USER', {
+                  cognitoUser,
+                  signature,
+                })
+                const authenticatedUser = await this.$store.dispatch(
+                  'AUTH_CHECK_CURRENT_USER',
+                )
                 const member = await getMember(authenticatedUser.username)
                 await this.$store.dispatch('CURRENT_USER', member)
                 this.$store.commit('WALLET_ACCOUNT', accounts[0])
@@ -87,12 +100,16 @@ export default {
     },
     toggleConfirmModal() {
       this.$store.commit('TOGGLE_CONFIRM_MODAL')
-    }
+    },
   },
   async created() {
     try {
-      const currentSession = await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
-      const member = await getMember(currentSession.getAccessToken().payload.username)
+      const currentSession = await this.$store.dispatch(
+        'AUTH_CHECK_CURRENT_SESSION',
+      )
+      const member = await getMember(
+        currentSession.getAccessToken().payload.username,
+      )
       await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
       if (this.authError === 'error') {
@@ -105,8 +122,14 @@ export default {
   async mounted() {
     this.addPcWalletEventHandler()
     await this.getPcWalletOnFirstLoad()
-    await this.$store.dispatch('AUTO_CONNECT_WALLET', this.getDefaultWalletConnectState)
-    this.$store.commit('CONFIRM_MODAL_WAIT_FOR_ANSWER', this.$refs.confirmModal.waitForAnswer)
+    await this.$store.dispatch(
+      'AUTO_CONNECT_WALLET',
+      this.getDefaultWalletConnectState,
+    )
+    this.$store.commit(
+      'CONFIRM_MODAL_WAIT_FOR_ANSWER',
+      this.$refs.confirmModal.waitForAnswer,
+    )
   },
   watch: {
     isSideMenuOpen() {
@@ -119,9 +142,9 @@ export default {
       deep: true,
       handler(state) {
         localStorage.setItem('userWalletConnectState', JSON.stringify(state))
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 
@@ -129,49 +152,49 @@ export default {
 @import './assets/scss/variables';
 
 html {
-    font-size: 14px;
+  font-size: 14px;
+  height: 100%;
+
+  .prevent-scroll {
+    overflow: hidden;
+  }
+
+  body {
+    margin: 0;
     height: 100%;
+    overflow-y: scroll;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
 
-    .prevent-scroll {
-      overflow: hidden;
+    a {
+      color: $artong-black;
+      text-decoration: none;
     }
 
-    body {
-        margin: 0;
-        height: 100%;
-        overflow-y: scroll;
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-
-        a {
-            color: $artong-black;
-            text-decoration: none;
-        }
-
-        button {
-            font-size: 12px;
-            touch-action: manipulation;
-            cursor: pointer;
-            color: $artong-white;
-            background-color: $artong-black;
-            text-transform: uppercase;
-            padding: 14px 0;
-            letter-spacing: 1.1px;
-            border: none;
-        }
-
-        #header-bar {
-          z-index: 2020;
-        }
-
-        .contents__body {
-            position: relative;
-            background: $artong-white;
-            height: 100%;
-            padding-top: 50px;
-        }
+    button {
+      font-size: 12px;
+      touch-action: manipulation;
+      cursor: pointer;
+      color: $artong-white;
+      background-color: $artong-black;
+      text-transform: uppercase;
+      padding: 14px 0;
+      letter-spacing: 1.1px;
+      border: none;
     }
+
+    #header-bar {
+      z-index: 2020;
+    }
+
+    .contents__body {
+      position: relative;
+      background: $artong-white;
+      height: 100%;
+      padding-top: 50px;
+    }
+  }
 }
 </style>

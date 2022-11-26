@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    {{project}}
+    {{ project }}
   </div>
 </template>
 
@@ -10,8 +10,8 @@ export default {
   props: {
     project: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
 }
 </script>

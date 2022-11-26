@@ -13,8 +13,8 @@ export default {
   name: 'Following',
   mixins: [headerActivate],
   components: {
-    ContentList
-  }
+    ContentList,
+  },
 }
 </script>
 

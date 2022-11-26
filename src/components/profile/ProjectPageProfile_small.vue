@@ -1,20 +1,21 @@
 <template>
   <div class="project">
     <div v-if="isFirstLoading" class="image">
-      <SkeletonBox style="width:100%;height:100%;"></SkeletonBox>
+      <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
     </div>
-    <div v-else @error="isFirstLoading = true"> <!--class="image" 뺌-->
-      <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage"/>
+    <div v-else @error="isFirstLoading = true">
+      <!--class="image" 뺌-->
+      <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage" />
       <div v-else class="basicProfileImage"></div>
     </div>
-    <div class="info" v-if="needProjectName&&!isFirstLoading">
+    <div class="info" v-if="needProjectName && !isFirstLoading">
       <div class="username">
         {{ $route.params.id }}
       </div>
     </div>
-    <div class="info" v-else-if="needProjectName&&isFirstLoading">
+    <div class="info" v-else-if="needProjectName && isFirstLoading">
       <div class="username_box">
-        <SkeletonBox style="width:100%;height:100%"></SkeletonBox>
+        <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
       </div>
     </div>
   </div>
@@ -27,21 +28,21 @@ import SkeletonBox from '../util/SkeletonBox.vue'
 export default {
   name: 'ProjectPageProfile',
   components: {
-    SkeletonBox
+    SkeletonBox,
   },
   mixins: [headerActivate],
-  props:{
-    needProjectName:{
-      type:Boolean,
-      default:true,
-    }
+  props: {
+    needProjectName: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       projectImageUrl: '',
-      isFirstLoading: true
+      isFirstLoading: true,
     }
-  }
+  },
 }
 </script>
 
@@ -49,55 +50,55 @@ export default {
 @import '../../assets/scss/variables';
 
 .project {
-    display: flex;
-    //margin-left: 15%;
-    //transform: translateY(-40%);
+  display: flex;
+  //margin-left: 15%;
+  //transform: translateY(-40%);
 
-    .image {
-      //display: inline-block;
-      background-color: $artong-white;
-      width: 32px;
-      height: 32px;
-      min-width: 32px;
-      min-height: 32px;
-      border-radius: 4px;
-      overflow:hidden;
-    }
-    .realImage{
-        width: 32px;
-        height: 32px;
-        object-fit: cover;
-        border:1px solid $profile-border-gray;
-        border-radius: 4px;
-    }
-    .basicProfileImage {
-        width: 32px;
-        height: 32px;
-        object-fit: fill;
-        border:1px solid $profile-border-gray;
-        border-radius: 4px;
-        background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-    }
+  .image {
+    //display: inline-block;
+    background-color: $artong-white;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .realImage {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border: 1px solid $profile-border-gray;
+    border-radius: 4px;
+  }
+  .basicProfileImage {
+    width: 32px;
+    height: 32px;
+    object-fit: fill;
+    border: 1px solid $profile-border-gray;
+    border-radius: 4px;
+    background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+  }
 
-    .info {
-      word-break: break-all;
-      margin-left:8px;
+  .info {
+    word-break: break-all;
+    margin-left: 8px;
+    height: 17px;
+
+    .username {
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+    }
+    .username_box {
+      width: 105px;
       height: 17px;
-
-      .username {
-        font-family: $item-font;
-        font-style: $item-font-style;
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 17px;
-      }
-      .username_box{
-        width:105px;
-        height:17px;
-        border-radius: 4px;
-        overflow:hidden;
-      }
+      border-radius: 4px;
+      overflow: hidden;
     }
+  }
 }
 
 @media only screen and (max-width: 599px) {
@@ -113,7 +114,7 @@ export default {
     }
 
     .info {
-      margin-left:8px;
+      margin-left: 8px;
       .username {
         position: inherit;
       }

@@ -1,14 +1,24 @@
 <template>
   <div class="contents">
-    <masonry :cols="{default: 7, 1500:6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1}">
+    <masonry
+      :cols="{ default: 7, 1500: 6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1 }"
+    >
       <div class="content" v-for="(val, i) in contentList" :key="i">
-        <router-link :to="{ name: 'ContentDetail', params: {
-          project_address: val.projectAddress,
-          token_id: val.tokenId
-        }}">
+        <router-link
+          :to="{
+            name: 'ContentDetail',
+            params: {
+              project_address: val.projectAddress,
+              token_id: val.tokenId,
+            },
+          }"
+        >
           <content-box :image="val"></content-box>
         </router-link>
-        <router-link class="profileBox" :to="{ name: 'UserOrArtist', params: { id: val.owner.username }}">
+        <router-link
+          class="profileBox"
+          :to="{ name: 'UserOrArtist', params: { id: val.owner.username } }"
+        >
           <contents-profile :member="val.owner"></contents-profile>
         </router-link>
       </div>
@@ -31,13 +41,15 @@ import ContentsProfile from '../profile/ContentsProfile.vue'
 export default {
   name: 'ContentList',
   components: {
-    ContentBox, ContentsProfile, InfiniteLoading
+    ContentBox,
+    ContentsProfile,
+    InfiniteLoading,
   },
   props: {
     queryContents: {
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -52,7 +64,9 @@ export default {
         return
       }
       await this.pushData()
-      setTimeout(function() { $state.loaded() }, 500)
+      setTimeout(function () {
+        $state.loaded()
+      }, 500)
     },
     async pushData() {
       let contentArrayToPush = []
@@ -63,11 +77,13 @@ export default {
       if (typeof this.queryContents.func === 'function') {
         if (this.queryContents.func.name === 'graphql') {
           const results = await this.gqlContents()
-          this.queryContents.body.variables.skip += this.queryContents.body.variables.first
+          this.queryContents.body.variables.skip +=
+            this.queryContents.body.variables.first
           contentArrayToPush = await this.makeContentArray(results)
         } else {
           const results = await this.getContents()
-          this.queryContents.queryParams.start_num += this.queryContents.queryParams.count_num
+          this.queryContents.queryParams.start_num +=
+            this.queryContents.queryParams.count_num
           contentArrayToPush = await this.makeContentArray(results)
         }
       } else if (this.queryContents.func.length > 1) {
@@ -94,7 +110,9 @@ export default {
             creator: apiResults[i].creator,
             owner: apiResults[i].owner,
             content_s3key: makeS3Path(apiResults[i].content_s3key),
-            content_thumbnail_s3key: makeS3Path(apiResults[i].content_thumbnail_s3key),
+            content_thumbnail_s3key: makeS3Path(
+              apiResults[i].content_thumbnail_s3key,
+            ),
             createdAt: apiResults[i].createdAt,
             updatedAt: apiResults[i].updatedAt,
           })
@@ -112,10 +130,10 @@ export default {
     async getContents() {
       const results = await this.queryContents.func(
         this.queryContents.pathParams,
-        this.queryContents.queryParams
+        this.queryContents.queryParams,
       )
       return results
-    }
+    },
   },
   watch: {
     queryContents: {
@@ -123,9 +141,9 @@ export default {
         this.noMoreDataToLoad = false
         this.contentList = []
         this.queryContents = val
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 

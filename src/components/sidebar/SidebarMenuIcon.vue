@@ -1,7 +1,9 @@
 <template>
   <component
     class="art--icon"
-    :class="typeof icon === 'string' || (icon instanceof String) ? icon : icon.class"
+    :class="
+      typeof icon === 'string' || icon instanceof String ? icon : icon.class
+    "
     :is="icon.element ? icon.element : 'i'"
     v-bind="icon.attributes"
   >
@@ -15,8 +17,8 @@ export default {
   props: {
     icon: {
       type: [String, Object],
-      default: ''
-    }
-  }
+      default: '',
+    },
+  },
 }
 </script>

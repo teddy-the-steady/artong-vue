@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {
   AUTH_SIGN_IN_AND_UP,
   AUTH_VERIFY_USER,
@@ -13,19 +14,18 @@ import { Auth } from '@aws-amplify/auth'
 import { getRandomString } from '../../util/commonFunc'
 import { postMember } from '../../api/member'
 
-const state = JSON.parse(localStorage.getItem('current-user'))?
-{
-  status: 'success',
-  justSignedUp: false
-}
-  :
-{
-  status: '',
-  justSignedUp: false
-}
+const state = JSON.parse(localStorage.getItem('current-user'))
+  ? {
+      status: 'success',
+      justSignedUp: false,
+    }
+  : {
+      status: '',
+      justSignedUp: false,
+    }
 
 const actions = {
-  [AUTH_SIGN_IN_AND_UP]: async function({ commit, dispatch }, payload) {
+  [AUTH_SIGN_IN_AND_UP]: async function ({ commit, dispatch }, payload) {
     try {
       commit(AUTH_SIGN_IN_AND_UP)
       const cognitoUser = await Auth.signIn(payload.address)
@@ -45,14 +45,14 @@ const actions = {
         commit(AUTH_JUST_SIGNED_UP)
         return await dispatch('AUTH_SIGN_IN_AND_UP', {
           address: payload.address,
-          principalId: signUpUser.userSub
+          principalId: signUpUser.userSub,
         })
       } else {
         throw error
       }
     }
   },
-  [AUTH_VERIFY_USER]: async function({ commit }, { cognitoUser, signature }) {
+  [AUTH_VERIFY_USER]: async function ({ commit }, { cognitoUser, signature }) {
     try {
       commit(AUTH_VERIFY_USER)
       await Auth.sendCustomChallengeAnswer(cognitoUser, signature)
@@ -62,7 +62,7 @@ const actions = {
       throw error
     }
   },
-  [AUTH_LOGOUT]: async function({ commit, dispatch }) {
+  [AUTH_LOGOUT]: async function ({ commit, dispatch }) {
     try {
       await Auth.signOut()
       if (localStorage.getItem('walletconnect')) {
@@ -78,7 +78,7 @@ const actions = {
   },
   // INFO] currentAuthenicatedUser vs currentSession
   // https://stackoverflow.com/questions/55739848/what-is-the-difference-between-auth-currentauthenticateduser-and-auth-currents
-  [AUTH_CHECK_CURRENT_USER]: async function({ commit }) {
+  [AUTH_CHECK_CURRENT_USER]: async function ({ commit }) {
     try {
       const authenticatedUser = await Auth.currentAuthenticatedUser()
       return authenticatedUser
@@ -87,7 +87,7 @@ const actions = {
       throw error
     }
   },
-  [AUTH_CHECK_CURRENT_SESSION]: async function({ commit }) {
+  [AUTH_CHECK_CURRENT_SESSION]: async function ({ commit }) {
     try {
       const currentSssion = await Auth.currentSession()
       return currentSssion
@@ -98,14 +98,14 @@ const actions = {
       commit(AUTH_ERROR, error)
       throw error
     }
-  }
+  },
 }
 
 const mutations = {
-  [AUTH_SIGN_IN_AND_UP]: state => {
+  [AUTH_SIGN_IN_AND_UP]: (state) => {
     state.status = 'signing in and up'
   },
-  [AUTH_VERIFY_USER]: state => {
+  [AUTH_VERIFY_USER]: (state) => {
     state.status = 'verifying user'
   },
   [AUTH_SUCCESS]: (state) => {
@@ -115,18 +115,18 @@ const mutations = {
   [AUTH_JUST_SIGNED_UP]: (state) => {
     state.justSignedUp = true
   },
-  [AUTH_ERROR]: state => {
+  [AUTH_ERROR]: (state) => {
     state.status = 'error'
     state.justSignedUp = false
   },
-  [AUTH_LOGOUT]: state => {
+  [AUTH_LOGOUT]: (state) => {
     state.status = 'signedOut'
     state.justSignedUp = false
-  }
+  },
 }
 
 export default {
   state,
   actions,
-  mutations
+  mutations,
 }

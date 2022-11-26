@@ -12,8 +12,8 @@ export default {
   name: 'Contents',
   mixins: [headerActivate],
   components: {
-    ContentList
-  }
+    ContentList,
+  },
 }
 </script>
 

@@ -4,10 +4,10 @@
       <div class="user-info">
         <my-page-profile></my-page-profile>
       </div>
-      <div>address: {{walletConnectState.address}}</div>
-      <div>chainId: {{walletConnectState.chainId}}</div>
+      <div>address: {{ walletConnectState.address }}</div>
+      <div>chainId: {{ walletConnectState.chainId }}</div>
     </div>
-    <profile-tab :tabs="tabs"/>
+    <profile-tab :tabs="tabs" />
   </div>
 </template>
 
@@ -18,7 +18,7 @@ import {
   graphql,
   queryProjectsByCreator,
   queryTokensByCreator,
-  queryTokensByOwner
+  queryTokensByOwner,
 } from '../../api/graphql'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
@@ -27,13 +27,14 @@ export default {
   name: 'User',
   mixins: [headerActivate],
   components: {
-    MyPageProfile, ProfileTab
+    MyPageProfile,
+    ProfileTab,
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser,
-      walletConnectState: state => state.wallet
-    })
+      currentUser: (state) => state.user.currentUser,
+      walletConnectState: (state) => state.wallet,
+    }),
   },
   data() {
     return {
@@ -42,7 +43,7 @@ export default {
         { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
         { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} },
-      ]
+      ],
     }
   },
   created() {
@@ -52,9 +53,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          owner: this.currentUser.wallet_address
-        }
-      })
+          owner: this.currentUser.wallet_address,
+        },
+      }),
     }
     this.tabs[1].api = {
       func: graphql,
@@ -62,9 +63,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          creator: this.currentUser.wallet_address
-        }
-      })
+          creator: this.currentUser.wallet_address,
+        },
+      }),
     }
     this.tabs[2].api = {
       func: graphql,
@@ -72,9 +73,9 @@ export default {
         variables: {
           first: 10,
           skip: 0,
-          creator: this.currentUser.wallet_address
-        }
-      })
+          creator: this.currentUser.wallet_address,
+        },
+      }),
     }
   },
   watch: {
@@ -87,11 +88,11 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                owner: this.currentUser.wallet_address
-              }
-            })
+                owner: this.currentUser.wallet_address,
+              },
+            }),
           }
-          break;
+          break
         case '1':
           this.tabs[1].api = {
             func: graphql,
@@ -99,11 +100,11 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.currentUser.wallet_address
-              }
-            })
+                creator: this.currentUser.wallet_address,
+              },
+            }),
           }
-          break;
+          break
         case '2':
           this.tabs[2].api = {
             func: graphql,
@@ -111,16 +112,16 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.currentUser.wallet_address
-              }
-            })
+                creator: this.currentUser.wallet_address,
+              },
+            }),
           }
-          break;
+          break
         default:
-          break;
+          break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

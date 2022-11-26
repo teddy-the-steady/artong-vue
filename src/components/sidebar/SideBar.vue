@@ -1,19 +1,23 @@
 <template>
-    <nav class="sidebar">
-        <transition name="backdrop">
-            <div class="sidebar-backdrop" @click="closeSidebarPanel" v-if="isSideMenuOpen"></div>
-        </transition>
-        <transition name="slide">
-            <div class="sidebar-panel" v-if="isSideMenuOpen">
-                <sidebar-menu
-                    :menu="menu"
-                    :theme="selectedTheme"
-                    :show-one-child="true"
-                    @item-click="onItemClick"
-                />
-            </div>
-        </transition>
-    </nav>
+  <nav class="sidebar">
+    <transition name="backdrop">
+      <div
+        class="sidebar-backdrop"
+        @click="closeSidebarPanel"
+        v-if="isSideMenuOpen"
+      ></div>
+    </transition>
+    <transition name="slide">
+      <div class="sidebar-panel" v-if="isSideMenuOpen">
+        <sidebar-menu
+          :menu="menu"
+          :theme="selectedTheme"
+          :show-one-child="true"
+          @item-click="onItemClick"
+        />
+      </div>
+    </transition>
+  </nav>
 </template>
 
 <script>
@@ -24,18 +28,19 @@ import SidebarMenu from './SidebarMenu.vue'
 export default {
   name: 'Sidebar',
   components: {
-    SidebarMenu
+    SidebarMenu,
   },
   data() {
     return {
-      menu: menuItems
+      menu: menuItems,
     }
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: state => state.menu.isSideMenuOpen,
-      selectedTheme: state => state.menu.isDark? 'default-theme' : 'white-theme'
-    })
+      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
+      selectedTheme: (state) =>
+        state.menu.isDark ? 'default-theme' : 'white-theme',
+    }),
   },
   methods: {
     closeSidebarPanel() {
@@ -45,8 +50,8 @@ export default {
       console.log('onItemClick')
       console.log(event)
       console.log(item)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -54,45 +59,45 @@ export default {
 @import '../../assets/scss/variables';
 
 .slide-enter-active,
-.slide-leave-active{
-    transition: transform 0.2s ease;
+.slide-leave-active {
+  transition: transform 0.2s ease;
 }
 
 .slide-enter,
 .slide-leave-to {
-    transform: translateX(-100%);
-    transition: all 150ms ease-in 0s
+  transform: translateX(-100%);
+  transition: all 150ms ease-in 0s;
 }
 
 .backdrop-enter-active,
-.backdrop-leave-active{
-    transition: opacity .3s;
+.backdrop-leave-active {
+  transition: opacity 0.3s;
 }
 
 .backdrop-enter,
 .backdrop-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 .sidebar-backdrop {
-    background-color: $backdrop;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    cursor: pointer;
-    z-index: 998;
+  background-color: $backdrop;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 998;
 }
 
 .sidebar-panel {
-    overflow-y: auto;
-    background-color: $artong-white;
-    position: fixed;
-    left: 0;
-    top: $head-height;
-    height: 100%;
-    z-index: 999;
-    width: 300px;
+  overflow-y: auto;
+  background-color: $artong-white;
+  position: fixed;
+  left: 0;
+  top: $head-height;
+  height: 100%;
+  z-index: 999;
+  width: 300px;
 }
 </style>

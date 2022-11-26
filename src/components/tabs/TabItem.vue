@@ -1,5 +1,9 @@
 <template>
-  <span @click="$emit('tabClick', id)" class='tab' :class="{active: isTabActive}">
+  <span
+    @click="$emit('tabClick', id)"
+    class="tab"
+    :class="{ active: isTabActive }"
+  >
     {{ label }}
   </span>
 </template>
@@ -10,13 +14,13 @@ export default {
   props: {
     id: Number,
     label: String,
-    value: Number
+    value: Number,
   },
   computed: {
     isTabActive() {
       return this.value === this.id ? true : false
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -32,5 +36,4 @@ export default {
     background: #f7c9c9;
   }
 }
-
 </style>

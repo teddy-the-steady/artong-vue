@@ -1,18 +1,25 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
+      <skeleton-box
+        style="width: 100%; height: 100%; border-radius: 50%"
+      ></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profileImageUrl"
+      <img
+        v-if="profileImageUrl"
         :src="profileImageUrl"
         @click="$refs.fileInput.click()"
         @error="hasErrorGettingImage = true"
         class="profileImage"
-        :class="{error: hasErrorGettingImage}"
+        :class="{ error: hasErrorGettingImage }"
       />
-      <div v-else class="basicProfileImage" @click="$refs.fileInput.click()"></div>
-      <input ref="fileInput" type="file" @change="onFileChange">
+      <div
+        v-else
+        class="basicProfileImage"
+        @click="$refs.fileInput.click()"
+      ></div>
+      <input ref="fileInput" type="file" @change="onFileChange" />
     </div>
     <div class="info">
       <div class="username">
@@ -35,19 +42,20 @@ import SkeletonBox from '../util/SkeletonBox.vue'
 export default {
   name: 'MyPageProfile',
   components: {
-    SkeletonBox
+    SkeletonBox,
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser,
-      profileImageUrl: state => state.user.currentUser.profile.profile_image_url
-    })
+      currentUser: (state) => state.user.currentUser,
+      profileImageUrl: (state) =>
+        state.user.currentUser.profile.profile_image_url,
+    }),
   },
   data() {
     return {
       isFirstLoading: true,
       S3_PRIVACY_LEVEL: 'public',
-      hasErrorGettingImage: false
+      hasErrorGettingImage: false,
     }
   },
   methods: {
@@ -56,19 +64,26 @@ export default {
       await this.uploadProfileImage(file)
     },
     async uploadProfileImage(file) {
-      const result = await Storage.put(`profile/${this.currentUser.id}/${file.name}`, file, {
-        level: this.S3_PRIVACY_LEVEL,
-        contentType: file.type
-      })
+      const result = await Storage.put(
+        `profile/${this.currentUser.id}/${file.name}`,
+        file,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: file.type,
+        },
+      )
       if (result) {
         await patchMemberProfileS3key(`${this.S3_PRIVACY_LEVEL}/${result.key}`)
-        this.$store.commit('CURRENT_USER_PROFILE_IMAGE_URL', makeS3Path(`${this.S3_PRIVACY_LEVEL}/${result.key}`))
+        this.$store.commit(
+          'CURRENT_USER_PROFILE_IMAGE_URL',
+          makeS3Path(`${this.S3_PRIVACY_LEVEL}/${result.key}`),
+        )
       }
-    }
+    },
   },
   mounted() {
     this.isFirstLoading = false
-  }
+  },
 }
 </script>
 
@@ -76,51 +91,51 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    display: flex;
-    margin-left: 15%;
+  display: flex;
+  margin-left: 15%;
 
-    .image {
-        display: inline-block;
-        background-color: $artong-white;
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        border: 2px solid $artong-white;
-        cursor: pointer;
+  .image {
+    display: inline-block;
+    background-color: $artong-white;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid $artong-white;
+    cursor: pointer;
 
-        .profileImage {
-          &.error {
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-            text-indent: -10000px;
-          }
-        }
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-
-        .basicProfileImage {
-          height: 100%;
-          border-radius: 50%;
-          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-        }
-
-        input {
-          display: none;
-        }
-    }
-
-    .info {
-      text-align: center;
-      word-break: break-all;
-
-      .username {
-        font-size: 1.5em;
+    .profileImage {
+      &.error {
+        background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+        text-indent: -10000px;
       }
     }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .basicProfileImage {
+      height: 100%;
+      border-radius: 50%;
+      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  .info {
+    text-align: center;
+    word-break: break-all;
+
+    .username {
+      font-size: 1.5em;
+    }
+  }
 }
 
 @media only screen and (max-width: 599px) {
