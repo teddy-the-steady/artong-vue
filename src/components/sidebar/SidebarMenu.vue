@@ -2,8 +2,8 @@
   <div
     class="v-sidebar-menu"
     :class="[theme ? `art_${theme}` : '']"
-    :style="{'max-width': sidebarWidth}"
-    >
+    :style="{ 'max-width': sidebarWidth }"
+  >
     <slot name="header" />
     <div class="art--scroll-wrapper">
       <div class="art--list">
@@ -15,16 +15,13 @@
           :show-one-child="showOneChild"
           :show-child="showChild"
         >
-          <slot
-            slot="dropdown-icon"
-            name="dropdown-icon"
-          />
+          <slot slot="dropdown-icon" name="dropdown-icon" />
         </sidebar-menu-item>
       </div>
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <light-dark-switch ></light-dark-switch>
+      <light-dark-switch></light-dark-switch>
     </div>
   </div>
 </template>
@@ -36,47 +33,48 @@ import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 export default {
   name: 'SidebarMenu',
   components: {
-    SidebarMenuItem, LightDarkSwitch
+    SidebarMenuItem,
+    LightDarkSwitch,
   },
   props: {
     menu: {
       type: Array,
-      required: true
+      required: true,
     },
     width: {
       type: String,
-      default: '300px'
+      default: '300px',
     },
     showChild: {
       type: Boolean,
-      default: false
+      default: false,
     },
     theme: {
       type: String,
-      default: ''
+      default: '',
     },
     showOneChild: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hideToggle: {
       type: Boolean,
-      default: false
+      default: false,
     },
     relative: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      activeShow: null
+      activeShow: null,
     }
   },
   computed: {
     sidebarWidth() {
       return this.width
-    }
+    },
   },
   methods: {
     onActiveShow(item) {
@@ -89,15 +87,15 @@ export default {
       if (item === this.activeShow) {
         this.activeShow = newItem
       }
-    }
+    },
   },
   provide() {
     return {
       emitActiveShow: this.onActiveShow,
       emitItemClick: this.onItemClick,
-      emitItemUpdate: this.onItemUpdate
+      emitItemUpdate: this.onItemUpdate,
     }
-  }
+  },
 }
 </script>
 

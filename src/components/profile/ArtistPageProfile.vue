@@ -1,26 +1,30 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;border-radius:50%;"></skeleton-box>
+      <skeleton-box
+        style="width: 100%; height: 100%; border-radius: 50%"
+      ></skeleton-box>
     </div>
     <div v-else class="image">
-      <img v-if="profileImageUrl"
+      <img
+        v-if="profileImageUrl"
         :src="profileImageUrl"
         @error="hasErrorGettingImage = true"
         class="profileImage"
-        :class="{error: hasErrorGettingImage}"
+        :class="{ error: hasErrorGettingImage }"
       />
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info">
-      <div class="username"> <!--userName이 필요할 때만 표시-->
+      <div class="username">
+        <!--userName이 필요할 때만 표시-->
         {{ $route.params.id }}
       </div>
       <div class="display-name">
-        {{ member? member.display_name : '' }}  
+        {{ member ? member.display_name : '' }}
       </div>
       <div class="intro">
-        {{ member? member.introduction : '' }}
+        {{ member ? member.introduction : '' }}
       </div>
     </div>
   </div>
@@ -34,7 +38,7 @@ import SkeletonBox from '../util/SkeletonBox.vue'
 export default {
   name: 'ArtistPageProfile',
   components: {
-    SkeletonBox
+    SkeletonBox,
   },
   mixins: [headerActivate],
   data() {
@@ -42,25 +46,25 @@ export default {
       profileImageUrl: '',
       isFirstLoading: true,
       hasErrorGettingImage: false,
-      userName: "@Creator Name", // 서버에서 받은 이름 데이터를 여기에 넣어주면 됨
-      collectionCount: "5"
+      userName: '@Creator Name', // 서버에서 받은 이름 데이터를 여기에 넣어주면 됨
+      collectionCount: '5',
     }
   },
   props: {
     member: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
   },
   methods: {
     getProfileImageUrl(member) {
-      return member.profile_thumbnail_s3key ?
-        makeS3Path(member.profile_thumbnail_s3key) :
-        makeS3Path(member.profile_s3key)
+      return member.profile_thumbnail_s3key
+        ? makeS3Path(member.profile_thumbnail_s3key)
+        : makeS3Path(member.profile_s3key)
     },
-    onEmit(){
-      this.$emit("setValue", this.userName, this.collectionCount);
-    }
+    onEmit() {
+      this.$emit('setValue', this.userName, this.collectionCount)
+    },
   },
   watch: {
     member: {
@@ -70,12 +74,12 @@ export default {
           this.profileImageUrl = this.getProfileImageUrl(this.member)
           this.isFirstLoading = false
         }
-      }
-    }
+      },
+    },
   },
-  mounted(){
+  mounted() {
     this.onEmit()
-  }
+  },
 }
 </script>
 
@@ -83,50 +87,50 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    display: flex;
-    //margin-left: 15%;
+  display: flex;
+  //margin-left: 15%;
 
-    .image {
-        display: inline-block;
-        background-color: $artong-white;
-        width: 111px;
-        height: 111px;
-        border-radius: 50%;
-        border: 2px solid $artong-white;
+  .image {
+    display: inline-block;
+    background-color: $artong-white;
+    width: 111px;
+    height: 111px;
+    border-radius: 50%;
+    border: 2px solid $artong-white;
 
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-
-        .profileImage {
-          &.error {
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-            text-indent: -10000px;
-          }
-        }
-
-        .basicProfileImage {
-          height: 100%;
-          border-radius: 50%;
-          background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-        }
-
-        input {
-          display: none;
-        }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
 
-    .info {
-      text-align: center;
-      word-break: break-all;
-
-      .username {
-        font-size: 1.5em;
+    .profileImage {
+      &.error {
+        background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+        text-indent: -10000px;
       }
     }
+
+    .basicProfileImage {
+      height: 100%;
+      border-radius: 50%;
+      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  .info {
+    text-align: center;
+    word-break: break-all;
+
+    .username {
+      font-size: 1.5em;
+    }
+  }
 }
 
 // ArtistPageProfile의 크기는 항상 동일
@@ -136,7 +140,7 @@ export default {
 //     flex-direction: column;
 //     align-items: center;
 //     margin-left: 0;
-    
+
 //     .image {
 //       width: 150px;
 //       height: 150px;

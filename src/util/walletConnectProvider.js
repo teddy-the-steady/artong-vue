@@ -5,11 +5,8 @@ class Provider {
     this.provider = new WalletConnectProvider({
       infuraId: process.env.VUE_APP_INFURA_ID,
       qrcodeModalOptions: {
-        mobileLinks: [
-          'metamask',
-          'rainbow'
-        ]
-      }
+        mobileLinks: ['metamask', 'rainbow'],
+      },
     })
   }
 
@@ -17,11 +14,8 @@ class Provider {
     this.provider = new WalletConnectProvider({
       infuraId: process.env.VUE_APP_INFURA_ID,
       qrcodeModalOptions: {
-        mobileLinks: [
-          'metamask',
-          'rainbow'
-        ]
-      }
+        mobileLinks: ['metamask', 'rainbow'],
+      },
     })
   }
 }

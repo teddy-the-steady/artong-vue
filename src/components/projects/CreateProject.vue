@@ -2,21 +2,21 @@
   <div>
     <div>
       <span>Name</span>
-      <input v-model="name" placeholder="name">
+      <input v-model="name" placeholder="name" />
     </div>
     <div>
       <span>Symbol</span>
-      <input v-model="symbol" placeholder="symbol">
+      <input v-model="symbol" placeholder="symbol" />
     </div>
     <div>
       <span>Max amount</span>
-      <input v-model="maxAmount" placeholder="maxAmount">
+      <input v-model="maxAmount" placeholder="maxAmount" />
     </div>
     <div>
       <span>Policy</span>
-      <input type="radio" id="r1" v-model="policy" value="0">
+      <input type="radio" id="r1" v-model="policy" value="0" />
       <label for="r1">Immediate</label>
-      <input type="radio" id="r2" v-model="policy" value="1">
+      <input type="radio" id="r2" v-model="policy" value="1" />
       <label for="r2">Approved</label>
     </div>
     <button @click="createProject">CREATE PROJECT</button>
@@ -30,7 +30,7 @@ import {
   FACTORY_ABI,
   FACTORY,
   getPcSigner,
-  getWalletConnectSigner
+  getWalletConnectSigner,
 } from '../../contracts'
 import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
@@ -42,11 +42,11 @@ export default {
   mixins: [headerActivate],
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      currentUser: (state) => state.user.currentUser,
     }),
     isMobile() {
       return this.$isMobile()
-    }
+    },
   },
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
       symbol: '',
       maxAmount: 0,
       policy: 0,
-      signer: null
+      signer: null,
     }
   },
   methods: {
@@ -69,11 +69,14 @@ export default {
         create_tx_hash: tx.hash,
         name: this.name,
         symbol: this.symbol,
-        status: PENDING
+        status: PENDING,
       })
 
       if (postResult) {
-        this.$router.push({ name: 'CreatingProject', query: { txHash: tx.hash } })
+        this.$router.push({
+          name: 'CreatingProject',
+          query: { txHash: tx.hash },
+        })
       }
     },
     async _createNFTContract(contract) {
@@ -81,10 +84,10 @@ export default {
         this.name,
         this.symbol,
         this.maxAmount,
-        this.policy
+        this.policy,
       )
       return tx
-    }
+    },
   },
   async mounted() {
     if (this.isMobile) {
@@ -92,9 +95,8 @@ export default {
     } else {
       this.signer = await getPcSigner()
     }
-  }
+  },
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

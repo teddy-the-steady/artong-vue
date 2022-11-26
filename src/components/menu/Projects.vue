@@ -13,14 +13,14 @@ export default {
   name: 'Projects',
   mixins: [headerActivate],
   components: {
-    ProjectList
+    ProjectList,
   },
   data() {
     return {
       queryProjects: {
         func: null,
-        body: {}
-      }
+        body: {},
+      },
     }
   },
   mounted() {
@@ -30,10 +30,10 @@ export default {
         variables: {
           first: 5,
           skip: 0,
-        }
-      })
+        },
+      }),
     }
-  }
+  },
 }
 </script>
 

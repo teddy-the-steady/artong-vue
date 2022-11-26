@@ -1,12 +1,14 @@
 <template>
   <div>
     <img
-      :src="makeS3Path(content.content_thumbnail_s3key) ||
-            makeS3Path(content.content_s3key) ||
-            this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')"
+      :src="
+        makeS3Path(content.content_thumbnail_s3key) ||
+        makeS3Path(content.content_s3key) ||
+        this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      "
       @error="replaceImage"
     />
-    {{content}}
+    {{ content }}
 
     <div v-if="content.owner === currentUser.wallet_address">
       <button v-if="!isListed" @click="action('sell')">Sell</button>
@@ -17,15 +19,52 @@
       <button @click="action('offer')">Make offer</button>
     </div>
 
-    <input v-model="price" placeholder="price in ETH">
+    <input v-model="price" placeholder="price in ETH" />
 
     <div>
       OFFER LIST
       <ul v-for="(val, i) in content.offers" :key="i">
-        CREATED: {{new Date(val.createdAt * 1000)}} / Offeror: {{val.from}} / Price: {{weiToEther(val.price)}} ETH / isAccepted: {{val.isAccepted}} / Deadline: {{new Date(val.deadline * 1000)}}
-        <button v-if="isCurrentUserTokenOwner && !val.isAccepted && new Date(val.deadline * 1000) > new Date()" @click="action('accept', val.from)">Accept Offer</button>
-        <button v-if="isCurrentUserTokenOwner && val.isAccepted">Accepted</button>
-        <button v-if="isCurrentUserTokenOwner && new Date(val.deadline * 1000) <= new Date()">Expired</button>
+        CREATED:
+        {{
+          new Date(val.createdAt * 1000)
+        }}
+        / Offeror:
+        {{
+          val.from
+        }}
+        / Price:
+        {{
+          weiToEther(val.price)
+        }}
+        ETH / isAccepted:
+        {{
+          val.isAccepted
+        }}
+        / Deadline:
+        {{
+          new Date(val.deadline * 1000)
+        }}
+        <button
+          v-if="
+            isCurrentUserTokenOwner &&
+            !val.isAccepted &&
+            new Date(val.deadline * 1000) > new Date()
+          "
+          @click="action('accept', val.from)"
+        >
+          Accept Offer
+        </button>
+        <button v-if="isCurrentUserTokenOwner && val.isAccepted">
+          Accepted
+        </button>
+        <button
+          v-if="
+            isCurrentUserTokenOwner &&
+            new Date(val.deadline * 1000) <= new Date()
+          "
+        >
+          Expired
+        </button>
       </ul>
     </div>
   </div>
@@ -42,7 +81,7 @@ import {
   MARKETPLACE_ABI,
   MARKETPLACE,
   getPcSigner,
-  getWalletConnectSigner
+  getWalletConnectSigner,
 } from '../../contracts'
 
 export default {
@@ -51,12 +90,12 @@ export default {
   data() {
     return {
       content: null,
-      price: null
+      price: null,
     }
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
+      currentUser: (state) => state.user.currentUser,
     }),
     isListed() {
       const eventType = this.content?.listings[0]?.eventType
@@ -67,24 +106,27 @@ export default {
     },
     isCurrentUserTokenOwner() {
       return this.currentUser.wallet_address === this.content.owner
-    }
+    },
   },
   extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql(queryToken({
-      variables: {
-        id: to.params.project_address + to.params.token_id
-      },
-      db: {
-        project_address: to.params.project_address,
-        token_id: to.params.token_id
-      }
-    }))
-    callback(function() {
+    const result = await graphql(
+      queryToken({
+        variables: {
+          id: to.params.project_address + to.params.token_id,
+        },
+        db: {
+          project_address: to.params.project_address,
+          token_id: to.params.token_id,
+        },
+      }),
+    )
+    callback(function () {
       this.content = result.token
     })
   }),
   methods: {
-    async action(which, acceptParam) { // TODO] 모달로 바꾸기
+    async action(which, acceptParam) {
+      // TODO] 모달로 바꾸기
       let signer = null
 
       if (this.isMobile) {
@@ -99,22 +141,22 @@ export default {
           const tx = await contract.listItem(
             this.content.project.id,
             this.content.tokenId,
-            etherToWei(this.price)
+            etherToWei(this.price),
           )
           await tx.wait()
           alert('listed!')
-          break;
+          break
         }
         case 'buy': {
           const tx = await contract.buyItem(
             this.content.project.id,
             this.content.tokenId,
             this.content.owner,
-            {value: etherToWei(this.price)}
+            { value: etherToWei(this.price) },
           )
           await tx.wait()
           alert('purchased!')
-          break;
+          break
         }
         case 'cancel': {
           const tx = await contract.cancelListing(
@@ -123,7 +165,7 @@ export default {
           )
           await tx.wait()
           alert('canceled!')
-          break;
+          break
         }
         case 'update': {
           const tx = await contract.updateListing(
@@ -133,31 +175,31 @@ export default {
           )
           await tx.wait()
           alert('updated!')
-          break;
+          break
         }
         case 'offer': {
           const tx = await contract.createOffer(
             this.content.project.id,
             this.content.tokenId,
             1,
-            {value: etherToWei(this.price)}
+            { value: etherToWei(this.price) },
           )
           await tx.wait()
           alert('offered!')
-          break;
+          break
         }
         case 'accept': {
           const tx = await contract.acceptOffer(
             this.content.project.id,
             this.content.tokenId,
-            acceptParam
+            acceptParam,
           )
           await tx.wait()
           alert('accepted!')
-          break;
+          break
         }
         default:
-          break;
+          break
       }
     },
     replaceImage(e) {
@@ -165,7 +207,10 @@ export default {
       if (imageUrl.indexOf('resized-') > -1) {
         e.target.src = this.content.content_s3key
       } else {
-        e.target.src = this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+        e.target.src = this.content.contentURI.replace(
+          'ipfs://',
+          'https://ipfs.io/ipfs/',
+        )
       }
     },
     makeS3Path(path) {
@@ -173,8 +218,8 @@ export default {
     },
     weiToEther(wei) {
       return weiToEther(wei)
-    }
-  }
+    },
+  },
 }
 </script>
 
