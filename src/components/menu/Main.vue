@@ -110,20 +110,18 @@
     <div class="container4">
       <div class="container4-box">
         <div class="top-container">      
-          <div class="curated-collections">Curated Collections</div>
+          <div class="curated-collection-title">Curated Collections</div>
           <div class="url" href="">View more</div>
         </div>
-        <div class="test">{{width}}</div>
-        <CuratedCollection v-if="width<1080" class="curated-collection"></CuratedCollection>
+        <CuratedCollection v-if="this.width<1080" class="curated-collection"></CuratedCollection>
         <div v-else-if="width<1440">
           <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide1"></CuratedCollectionWide>
         </div>
-        <CuratedCollectionWide v-else-if="width<1440"></CuratedCollectionWide>
-        <div v-else>
-          <CuratedCollectionWide></CuratedCollectionWide>
+        <div v-else class="curated-collection-wide-box">
+          <CuratedCollectionWide v-for="i in 8" :key="i" class="curated-collection-wide2"></CuratedCollectionWide>
         </div>
-        <div class="featured-creator">Featured Creators</div>
-        <FeaturedCreator></FeaturedCreator>
+        <div class="featured-creator-title">Featured Creators</div>
+        <FeaturedCreator class="featured-creator"></FeaturedCreator>
       </div>
     </div> <!--end of container4-->
     <div class="container5">
@@ -232,15 +230,16 @@ export default {
   },
   data(){
     return{
-      width:"0",
+      width:window.innerWidth,
+    }
+  },
+  methods: {
+    setWidth() {
+      this.width=window.innerWidth
     }
   },
   mounted(){
-    window.addEventListener("resize", function(event){
-      console.log(this.width)
-      this.width=event.target.innerWidth;
-      console.log(event.target.innerWidth);
-    })
+    window.addEventListener("resize", this.setWidth)
   },
   watch: {
     width: {
@@ -257,10 +256,6 @@ export default {
 
   //@media (max-width:1080px)
     // container0 빈 div
-
-  .test{
-    color:white;
-  }
   .container1{
     display: flex;
     flex-direction: column;
@@ -438,17 +433,19 @@ export default {
   // curated collections
   .container4{
     //width: 360px;
-    height: 983px;
+    height: auto;
 
     background: $artong-black;
 
     padding-top: 48px;
+    padding-bottom: 96px;
   }
   .top-container{
     display:flex;
     flex-direction: row;
+    margin-bottom: 24px;
   }
-  .curated-collections{
+  .curated-collection-title{
     width: 200px;
     height: 30px;
 
@@ -484,8 +481,20 @@ export default {
     margin-left:auto;
     margin-right:auto;
   }
-  .featured-creator{
-    margin-top: 60px;
+  .curated-collection-wide-box{
+    margin: 0 auto;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    flex-wrap:wrap;
+    transform: translate(24px, 0px);
+  }
+  .curated-collection-wide2{
+    margin-right:24px;
+    margin-bottom:24px;
+  }
+  .featured-creator-title{
+    margin-top: 72px;
     margin-left: 16px;
     margin-bottom: 24px;
     
@@ -782,9 +791,6 @@ export default {
   }
   .button-block{
     width: 328px;
-  }
-  .featured-creator{
-    margin-top:60px;
   }
   .container6{
     padding-top:72px;
