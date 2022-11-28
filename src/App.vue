@@ -39,6 +39,7 @@ export default {
       authError: (state) => state.auth.status,
       walletConnectState: (state) => state.wallet,
       isConfirmModalOpen: (state) => state.menu.isConfirmModalOpen,
+      currentUser: (state) => state.user.currentUser,
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
@@ -63,7 +64,7 @@ export default {
       window.addEventListener('load', () => {
         if (window.ethereum) {
           window.ethereum.on('accountsChanged', async (accounts) => {
-            if (accounts.length > 0) {
+            if (this.currentUser.id && accounts.length > 0) {
               this.toggleConfirmModal()
               const ok = await this.$refs.confirmModal.waitForAnswer()
               if (ok) {
