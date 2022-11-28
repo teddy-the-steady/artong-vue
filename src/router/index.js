@@ -14,6 +14,7 @@ import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
 import ContentDetail from '@/components/contents_v2/ContentDetail'
+import EditUser from '@/components/member/EditUser'
 import VueCarousel from 'vue-carousel' // for 무한 슬라이드 swipe 배너
 
 Vue.use(Router)
@@ -100,6 +101,11 @@ const router = new Router({
       path: '/create/project',
       name: 'CreatingProject',
       component: CreatingProject,
+    },
+    {
+      path: '/edit',
+      name: 'EditUser',
+      component: EditUser,
     },
   ],
 })
