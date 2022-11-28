@@ -4,6 +4,7 @@
       <div class="user-info">
         <my-page-profile></my-page-profile>
       </div>
+      <user-profile-buttons></user-profile-buttons>
       <div>address: {{ walletConnectState.address }}</div>
       <div>chainId: {{ walletConnectState.chainId }}</div>
     </div>
@@ -22,6 +23,7 @@ import {
 } from '../../api/graphql'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
+import UserProfileButtons from '../buttonGroup/UserProfileButtons.vue'
 
 export default {
   name: 'User',
@@ -29,6 +31,7 @@ export default {
   components: {
     MyPageProfile,
     ProfileTab,
+    UserProfileButtons,
   },
   computed: {
     ...mapState({
