@@ -1,6 +1,7 @@
 <template>
   <div>
-    Username: <input v-model="member.username" />
+    Username: <input v-model="member.username" /><br />
+    Intro: <input v-model="member.introduction" /><br />
     <div>
       <button @click="save">SAVE</button>
     </div>
@@ -22,6 +23,7 @@ export default {
     return {
       member: {
         username: '',
+        introduction: '',
       },
     }
   },
