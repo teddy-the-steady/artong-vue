@@ -1,21 +1,14 @@
 <template>
   <div>
-    <router-link :to="{ name: 'EditUser' }">
+    <router-link :to="{ name: 'ProfileSetting' }">
       <button>EDIT</button>
     </router-link>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'UserProfileButtons',
-  computed: {
-    ...mapState({
-      currentUser: (state) => state.user.currentUser,
-    }),
-  },
 }
 </script>
 

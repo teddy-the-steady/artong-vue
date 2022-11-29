@@ -17,14 +17,13 @@
     </div>
     <div class="info">
       <div class="username">
-        <!--userName이 필요할 때만 표시-->
-        {{ $route.params.id }}
-      </div>
-      <div class="display-name">
-        {{ member ? member.display_name : '' }}
+        {{ member ? member.username : '' }}
       </div>
       <div class="intro">
         {{ member ? member.introduction : '' }}
+      </div>
+      <div class="address">
+        {{ member ? member.wallet_address : '' }}
       </div>
     </div>
   </div>
