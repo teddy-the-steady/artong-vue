@@ -94,8 +94,8 @@ export default {
 
     this.$watch(
       () => this.$route,
-      async () => {
-        if (this.projectAddress) {
+      async (to) => {
+        if (to.name === 'Project' && this.projectAddress) {
           this.projectInfo = await this.getProject()
         }
       },
