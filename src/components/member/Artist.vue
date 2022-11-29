@@ -117,7 +117,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                owner: this.member.wallet_address,
+                owner: to.params.wallet_address,
               },
             }),
           }
@@ -129,7 +129,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.member.wallet_address,
+                creator: to.params.wallet_address,
               },
             }),
           }
@@ -141,7 +141,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.member.wallet_address,
+                creator: to.params.wallet_address,
               },
             }),
           }
