@@ -17,7 +17,13 @@
         </router-link>
         <router-link
           class="profileBox"
-          :to="{ name: 'UserOrArtist', params: { id: val.owner.username } }"
+          :to="{
+            name: 'UserOrArtist',
+            params: {
+              id: val.owner.username,
+              wallet_address: val.owner.wallet_address,
+            },
+          }"
         >
           <contents-profile :member="val.owner"></contents-profile>
         </router-link>
