@@ -25,4 +25,17 @@ const patchMemberProfileS3key = async function (s3key) {
   })
 }
 
-export { getMembers, getMember, postMember, patchMemberProfileS3key }
+const patchMember = async function (member_id, { username, introduction }) {
+  return await instance.patch(`/members/${member_id}`, {
+    username: username,
+    introduction: introduction,
+  })
+}
+
+export {
+  getMembers,
+  getMember,
+  postMember,
+  patchMemberProfileS3key,
+  patchMember,
+}

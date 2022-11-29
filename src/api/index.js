@@ -29,9 +29,14 @@ const requestInterceptor = function (axiosInstance) {
 }
 
 const responseInterceptor = function (axiosInstance) {
-  axiosInstance.interceptors.response.use(function (response) {
-    return response.data.data
-  })
+  axiosInstance.interceptors.response.use(
+    (response) => {
+      return response.data.data
+    },
+    (error) => {
+      return Promise.reject(error.response.data.message)
+    },
+  )
 }
 
 export default createInstance()
