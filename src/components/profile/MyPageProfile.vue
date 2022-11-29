@@ -28,6 +28,9 @@
       <div class="intro">
         {{ currentUser.email }}
       </div>
+      <div class="address">
+        {{ currentUser.wallet_address }}
+      </div>
     </div>
   </div>
 </template>
