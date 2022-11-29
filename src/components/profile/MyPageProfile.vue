@@ -25,8 +25,8 @@
       <div class="username">
         {{ currentUser.username }}
       </div>
-      <div class="intro">
-        {{ currentUser.email }}
+      <div class="introduction">
+        {{ currentUser.profile.introduction }}
       </div>
       <div class="address">
         {{ currentUser.wallet_address }}
