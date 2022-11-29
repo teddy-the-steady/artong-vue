@@ -5,12 +5,13 @@
     <div>
       <button @click="save">SAVE</button>
     </div>
+    {{ errorMessage }}
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { getMember } from '../../api/member'
+import { getMember, patchMember } from '../../api/member'
 
 export default {
   name: 'ProfileSetting',
@@ -25,10 +26,20 @@ export default {
         username: '',
         introduction: '',
       },
+      errorMessage: '',
     }
   },
   methods: {
-    save() {},
+    async save() {
+      try {
+        await patchMember(this.member.id, {
+          username: this.member.username,
+          introduction: this.member.introduction,
+        })
+      } catch (error) {
+        this.errorMessage = error
+      }
+    },
     async getMember() {
       return await getMember(this.currentUser.wallet_address)
     },
