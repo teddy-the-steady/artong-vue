@@ -19,7 +19,7 @@
       <div class="username">
         {{ member ? member.username : '' }}
       </div>
-      <div class="intro">
+      <div class="introduction">
         {{ member ? member.introduction : '' }}
       </div>
       <div class="address">
