@@ -23,7 +23,7 @@
 
     <div>
       OFFER LIST
-      <ul v-for="(val, i) in content.offers" :key="i">
+      <ul v-for="(val, i) in offers" :key="i">
         CREATED:
         {{
           new Date(val.createdAt * 1000)
@@ -75,7 +75,7 @@ import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import { graphql, queryToken } from '../../api/graphql'
+import { graphql, queryToken, queryOffersByToken } from '../../api/graphql'
 import { makeS3Path, etherToWei, weiToEther } from '../../util/commonFunc'
 import {
   MARKETPLACE_ABI,
@@ -91,6 +91,7 @@ export default {
     return {
       content: null,
       price: null,
+      offers: [],
     }
   },
   computed: {
@@ -109,19 +110,29 @@ export default {
     },
   },
   extends: baseLazyLoading(async (to, callback) => {
-    const result = await graphql(
-      queryToken({
-        variables: {
-          id: to.params.project_address + to.params.token_id,
-        },
-        db: {
-          project_address: to.params.project_address,
-          token_id: to.params.token_id,
-        },
-      }),
-    )
+    const [result1, result2] = await Promise.all([
+      await graphql(
+        queryToken({
+          variables: {
+            id: to.params.project_address + to.params.token_id,
+          },
+          db: {
+            project_address: to.params.project_address,
+            token_id: to.params.token_id,
+          },
+        }),
+      ),
+      await graphql(
+        queryOffersByToken({
+          variables: {
+            id: to.params.project_address + to.params.token_id,
+          },
+        }),
+      ),
+    ])
     callback(function () {
-      this.content = result.token
+      this.content = result1.token
+      this.offers = result2.offers
     })
   }),
   methods: {
