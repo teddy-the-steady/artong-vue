@@ -105,18 +105,6 @@ const queryToken = function (variables) {
             eventType
             createdAt
           }
-          offers (orderBy: createdAt, orderDirection: desc) {
-            id
-            from
-            price
-            deadline
-            isAccepted
-            createdAt
-            updatedAt
-            sale {
-              id
-            }
-          }
           _db_id
           _db_member_id
           _db_voucher
@@ -208,6 +196,29 @@ const queryTokensByOwner = function (variables) {
   }
 }
 
+const queryOffersByToken = function (variables) {
+  return {
+    query: `
+      query OffersByToken($id: String) {
+        offers (orderBy: createdAt, orderDirection: desc, where: {token: $id}) {
+          id
+          from
+          price
+          deadline
+          isAccepted
+          createdAt
+          updatedAt
+          sale {
+              id
+          }
+          _db_dummy
+        }
+      }
+    `,
+    ...variables,
+  }
+}
+
 export {
   graphql,
   queryProject,
@@ -217,4 +228,5 @@ export {
   queryTokensByProject,
   queryTokensByCreator,
   queryTokensByOwner,
+  queryOffersByToken,
 }
