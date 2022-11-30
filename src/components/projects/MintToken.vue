@@ -130,6 +130,8 @@ export default {
               voucher: voucher,
               isRedeemed: false,
               ipfs_url: metadata.url,
+              name: this.name,
+              description: this.description,
             })
           } else {
             const contract = new ethers.Contract(
@@ -150,6 +152,8 @@ export default {
             await patchContent(this.postResult.id, {
               tokenId: tokenId,
               ipfs_url: metadata.url,
+              name: this.name,
+              description: this.description,
             })
           }
         }
