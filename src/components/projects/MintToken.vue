@@ -14,6 +14,10 @@
       <input v-model="description" placeholder="description" />
     </div>
     <div>
+      <span>Token royalty</span>
+      <input v-model="tokenRoyalty" placeholder="token royalty 1% = 100" />
+    </div>
+    <div>
       <span>WHEN?</span>
       <input
         type="radio"
@@ -89,6 +93,7 @@ export default {
       redeemPrice: 0,
       mintPrice: 0,
       signer: null,
+      tokenRoyalty: 0,
     }
   },
   methods: {
@@ -144,6 +149,7 @@ export default {
               contract,
               metadata.url,
               metadataObject.data.image || '',
+              this.tokenRoyalty,
             )
 
             const approveReceipt = await tx.wait()
@@ -178,11 +184,12 @@ export default {
         this.file = null
       }
     },
-    async doMint(contract, tokenUri, contentUri) {
+    async doMint(contract, tokenUri, contentUri, tokenRoyalty) {
       const tx = await contract.mint(
         this.currentUser.wallet_address,
         tokenUri,
         contentUri,
+        tokenRoyalty || 0,
       )
       return tx
     },
