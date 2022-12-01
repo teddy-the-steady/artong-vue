@@ -15,6 +15,7 @@ module.exports = {
     "keyword-spacing": ["error", { "before": true }],
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
+    "arrow-parens": ["error", "always"],
     "prettier/prettier": [
 			"error",
 			{
