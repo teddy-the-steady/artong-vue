@@ -15,7 +15,7 @@ module.exports = {
     "keyword-spacing": ["error", { "before": true }],
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
-    "arrow-parens": ["error", "always"],
+    "arrow-parens": [2, "as-needed", { "requireForBlockBody": true }],
     "prettier/prettier": [
 			"error",
 			{
@@ -24,6 +24,7 @@ module.exports = {
 				tabWidth: 2,
 				trailingComma: 'all',
 				printWidth: 80,
+        arrowParens: 'avoid',
 			},
 		],
   },
