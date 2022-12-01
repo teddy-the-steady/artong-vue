@@ -153,7 +153,7 @@ export default {
             )
 
             const approveReceipt = await tx.wait()
-            const tokenId = parseInt(approveReceipt.events[0].args.tokenId._hex)
+            const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
 
             await patchContent(this.postResult.id, {
               tokenId: tokenId,
