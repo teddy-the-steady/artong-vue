@@ -64,10 +64,6 @@ export default {
     min-height: 100px;
     border-radius: 15px;
     overflow: hidden;
-
-    // input {
-    //   display: none;
-    // }
   }
   .realImage {
     width: 100px;
