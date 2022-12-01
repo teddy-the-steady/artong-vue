@@ -59,10 +59,10 @@ const mutations = {
     currentUser.profile.profile_image_url = path
     localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
-  [USER_ERROR]: (state) => {
+  [USER_ERROR]: state => {
     state.status = 'error'
   },
-  [USER_LOGOUT]: (state) => {
+  [USER_LOGOUT]: state => {
     state.status = 'signedOut'
     state.currentUser = {
       id: '',

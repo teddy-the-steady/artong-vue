@@ -250,6 +250,7 @@
         </div>
       </div>
     </div>
+    <Table></Table>
   </div>
 </template>
 
@@ -259,7 +260,7 @@ import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
 import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
 import RecentContribution from '../CollectionCard/RecentContribution.vue'
 import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
-import ContentsProfile from '../profile/ContentsProfile.vue'
+import Table from '../Table.vue'
 import CuratedCollectionWide from '../CollectionCard/CuratedCollection_wide.vue'
 
 export default {
@@ -270,7 +271,7 @@ export default {
     BuyAndSell,
     RecentContribution,
     FeaturedCreator,
-    ContentsProfile,
+    Table,
     CuratedCollectionWide,
   },
   data() {
@@ -640,19 +641,6 @@ export default {
   font-size: 14px;
   color: #333333;
 }
-// container4,5의 내용물의 너비가 1440px을 넘어가지 않게하는 용도
-// @media(min-width:1472px){
-//   .container4-box{
-//     width:1440px;
-//     margin-left:auto;
-//     margin-right:auto;
-//   }
-//   .container5{
-//     width:1440px;
-//     margin-left:auto;
-//     margin-right:auto;
-//   }
-// }
 .container6 {
   margin-top: 48px;
   background-color: $artong-black;

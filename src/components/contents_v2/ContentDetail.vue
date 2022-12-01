@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
     isListed() {
       const eventType = this.content?.listings[0]?.eventType

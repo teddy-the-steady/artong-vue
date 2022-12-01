@@ -25,7 +25,7 @@ export default {
   name: 'UserDialog',
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
   },
   methods: {

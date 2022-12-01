@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     wait(timeToDelay) {
-      return new Promise((resolve) => setTimeout(resolve, timeToDelay))
+      return new Promise(resolve => setTimeout(resolve, timeToDelay))
     },
     async getProject() {
       for (;;) {

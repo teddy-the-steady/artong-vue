@@ -44,10 +44,10 @@ export default {
   },
   computed: {
     current() {
-      return this.tabs.find((el) => el.id === this.currentId) || {}
+      return this.tabs.find(el => el.id === this.currentId) || {}
     },
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
   },
   methods: {
