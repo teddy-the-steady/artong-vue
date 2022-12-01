@@ -37,8 +37,8 @@ export default {
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
-      selectedTheme: (state) =>
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      selectedTheme: state =>
         state.menu.isDark ? 'default-theme' : 'white-theme',
     }),
   },

@@ -71,7 +71,7 @@ export default {
       return this.$isMobile()
     },
     ...mapState({
-      justSignedUp: (state) => state.auth.justSignedUp,
+      justSignedUp: state => state.auth.justSignedUp,
     }),
   },
   beforeRouteEnter(to, from, next) {

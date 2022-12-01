@@ -49,8 +49,8 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
-      profileImageUrl: (state) =>
+      currentUser: state => state.user.currentUser,
+      profileImageUrl: state =>
         state.user.currentUser.profile.profile_image_url,
     }),
   },

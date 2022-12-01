@@ -17,7 +17,7 @@ export default {
   name: 'Burger',
   computed: {
     ...mapState({
-      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
     }),
   },
   methods: {
