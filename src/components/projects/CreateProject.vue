@@ -42,7 +42,7 @@ export default {
   mixins: [headerActivate],
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
     isMobile() {
       return this.$isMobile()

@@ -21,7 +21,7 @@ export default {
   name: 'LightDarkSwitch',
   computed: {
     ...mapState({
-      isDark: (state) => state.menu.isDark,
+      isDark: state => state.menu.isDark,
     }),
   },
   methods: {

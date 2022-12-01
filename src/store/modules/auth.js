@@ -102,24 +102,24 @@ const actions = {
 }
 
 const mutations = {
-  [AUTH_SIGN_IN_AND_UP]: (state) => {
+  [AUTH_SIGN_IN_AND_UP]: state => {
     state.status = 'signing in and up'
   },
-  [AUTH_VERIFY_USER]: (state) => {
+  [AUTH_VERIFY_USER]: state => {
     state.status = 'verifying user'
   },
-  [AUTH_SUCCESS]: (state) => {
+  [AUTH_SUCCESS]: state => {
     state.status = 'success'
     state.justSignedUp = false
   },
-  [AUTH_JUST_SIGNED_UP]: (state) => {
+  [AUTH_JUST_SIGNED_UP]: state => {
     state.justSignedUp = true
   },
-  [AUTH_ERROR]: (state) => {
+  [AUTH_ERROR]: state => {
     state.status = 'error'
     state.justSignedUp = false
   },
-  [AUTH_LOGOUT]: (state) => {
+  [AUTH_LOGOUT]: state => {
     state.status = 'signedOut'
     state.justSignedUp = false
   },

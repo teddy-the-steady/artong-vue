@@ -34,12 +34,12 @@ export default {
   },
   computed: {
     ...mapState({
-      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
-      isModalOpen: (state) => state.menu.isModalOpen,
-      authError: (state) => state.auth.status,
-      walletConnectState: (state) => state.wallet,
-      isConfirmModalOpen: (state) => state.menu.isConfirmModalOpen,
-      currentUser: (state) => state.user.currentUser,
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      isModalOpen: state => state.menu.isModalOpen,
+      authError: state => state.auth.status,
+      walletConnectState: state => state.wallet,
+      isConfirmModalOpen: state => state.menu.isConfirmModalOpen,
+      currentUser: state => state.user.currentUser,
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
@@ -63,7 +63,7 @@ export default {
     addPcWalletEventHandler() {
       window.addEventListener('load', () => {
         if (window.ethereum) {
-          window.ethereum.on('accountsChanged', async (accounts) => {
+          window.ethereum.on('accountsChanged', async accounts => {
             if (this.currentUser.id && accounts.length > 0) {
               this.toggleConfirmModal()
               const ok = await this.$refs.confirmModal.waitForAnswer()
@@ -93,7 +93,7 @@ export default {
             }
           })
 
-          window.ethereum.on('chainChanged', (networkId) => {
+          window.ethereum.on('chainChanged', networkId => {
             this.$store.commit('WALLET_CHAIN', parseInt(networkId, 16))
           })
         }

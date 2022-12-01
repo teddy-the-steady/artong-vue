@@ -29,7 +29,7 @@ export const itemMixin = {
     },
     isChildActive(child) {
       if (!child) return false
-      return child.some((item) => {
+      return child.some(item => {
         return this.isLinkActive(item)
       })
     },
