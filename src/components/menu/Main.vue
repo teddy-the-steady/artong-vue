@@ -171,20 +171,7 @@
         <div class="url" href="">View more</div>
       </div>
       <div class="recent-contribution2-bottom container5-component-margin">
-        <div class="recent-contribution-card">
-          <table>
-            <tr>
-              <td>User</td>
-              <td>Record</td>
-              <td>Recent</td>
-            </tr>
-            <tr v-for="i in 5" :key="i">
-              <td><ContentsProfile></ContentsProfile></td>
-              <td class="record">3 contributions/week</td>
-              <td class="recent">0.25</td>
-            </tr>
-          </table>
-        </div>
+        <Table></Table>
       </div>
     </div>
     <!--end of container5-->
@@ -250,7 +237,6 @@
         </div>
       </div>
     </div>
-    <Table></Table>
   </div>
 </template>
 
@@ -557,7 +543,7 @@ export default {
   text-align: left;
 }
 .container5-component-margin {
-  margin-bottom: 96px;
+  margin-bottom: 48px;
 }
 .container5 {
   margin-top: 48px;
@@ -598,48 +584,7 @@ export default {
   .recent-contribution2-bottom {
     padding-left: 16px;
     padding-right: 16px;
-    .recent-contribution-card {
-      height: 425px;
-      border: 1px solid #f2f2f2;
-      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-      border-radius: 24px;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 24px;
-      padding: 32px 24px 32px 24px;
-
-      table {
-        width: 100%;
-        //border-top: 1px solid #444444;
-        border-collapse: collapse;
-        th,
-        td {
-          border-bottom: 1px solid #cccccc;
-          padding: 21px;
-          text-align: left;
-
-          font-family: $item-font;
-          font-style: $item-font-style;
-          font-weight: 500;
-          font-size: 14px;
-        }
-      }
-    }
   }
-}
-// 화면이 작은 경우 record 부분이 안 보이게
-@media (max-width: 360px) {
-  .recent-contribution-card > table > tr > td:nth-child(2) {
-    display: none;
-  }
-}
-
-.recent {
-  font-family: $item-font;
-  font-style: $item-font-style;
-  font-weight: 400;
-  font-size: 14px;
-  color: #333333;
 }
 .container6 {
   margin-top: 48px;
@@ -850,7 +795,7 @@ export default {
     margin-top: 96px;
   }
   .container5-component-margin {
-    margin-bottom: 192px;
+    margin-bottom: 96px;
   }
   .button-block {
     width: 328px;
