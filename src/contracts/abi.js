@@ -3,6 +3,31 @@ export const MARKETPLACE_ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'int256',
+        name: 'amount',
+        type: 'int256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'balance',
+        type: 'uint256',
+      },
+    ],
+    name: 'ArtongBalanceUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: 'uint8',
         name: 'version',
@@ -336,8 +361,20 @@ export const MARKETPLACE_ABI = [
       {
         indexed: true,
         internalType: 'address',
-        name: 'tokenOwner',
+        name: 'minter',
         type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'nft',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
       },
       {
         indexed: false,
@@ -773,6 +810,21 @@ export const MARKETPLACE_ABI = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: '_minter',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_nftAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+      {
         internalType: 'uint16',
         name: '_royalty',
         type: 'uint16',
@@ -973,6 +1025,11 @@ export const FACTORY_ABI = [
         internalType: 'enum Policy',
         name: '_policy',
         type: 'uint8',
+      },
+      {
+        internalType: 'uint16',
+        name: '_collectionRoyalty',
+        type: 'uint16',
       },
     ],
     name: 'createNFTContract',
@@ -1543,6 +1600,11 @@ export const ERC721_ABI = [
         internalType: 'string',
         name: '_contentUri',
         type: 'string',
+      },
+      {
+        internalType: 'uint16',
+        name: '_tokenRoyalty',
+        type: 'uint16',
       },
     ],
     name: 'mint',

@@ -93,6 +93,7 @@ export default {
       line-height: 17px;
     }
     .username_box {
+      margin-top: 7.5px;
       width: 105px;
       height: 17px;
       border-radius: 4px;

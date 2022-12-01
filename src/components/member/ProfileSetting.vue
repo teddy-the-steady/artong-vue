@@ -17,7 +17,7 @@ export default {
   name: 'ProfileSetting',
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
   },
   data() {

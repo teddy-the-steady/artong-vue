@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
-      currentUser: (state) => state.user.currentUser,
+      currentUser: state => state.user.currentUser,
     }),
   },
   props: {

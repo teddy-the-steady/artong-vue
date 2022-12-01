@@ -136,9 +136,9 @@ export default {
   },
   computed: {
     ...mapState({
-      isHeadNavOpen: (state) => state.menu.isHeadNavOpen,
-      isSideMenuOpen: (state) => state.menu.isSideMenuOpen,
-      currentUser: (state) => state.user.currentUser,
+      isHeadNavOpen: state => state.menu.isHeadNavOpen,
+      isSideMenuOpen: state => state.menu.isSideMenuOpen,
+      currentUser: state => state.user.currentUser,
     }),
     randomDelayTime() {
       return {

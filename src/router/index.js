@@ -111,7 +111,7 @@ const router = new Router({
 })
 
 router.beforeEach(async function (to, from, next) {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     let user = null
     try {
       const data = await Auth.currentAuthenticatedUser()

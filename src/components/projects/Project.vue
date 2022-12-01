@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapState({
-      isModalOpen: (state) => state.menu.isModalOpen,
+      isModalOpen: state => state.menu.isModalOpen,
     }),
   },
   data() {
@@ -94,7 +94,7 @@ export default {
 
     this.$watch(
       () => this.$route,
-      async (to) => {
+      async to => {
         if (to.name === 'Project' && this.projectAddress) {
           this.projectInfo = await this.getProject()
         }
