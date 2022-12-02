@@ -15,8 +15,8 @@
   </div>
 </template>
 <script>
-import { headerActivate } from '../mixin'
-import ContentsProfile from '../components/profile/ContentsProfile.vue'
+import { headerActivate } from '../../mixin'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Table',
@@ -31,7 +31,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '../assets/scss/variables';
+@import '../../assets/scss/variables';
 .recent-contribution-card {
   height: 425px;
   border: 1px solid #f2f2f2;
