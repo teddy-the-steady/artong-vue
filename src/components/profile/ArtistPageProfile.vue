@@ -1,20 +1,9 @@
 <template>
   <div class="profile">
-    <div v-if="isFirstLoading" class="image">
-      <skeleton-box
-        style="width: 100%; height: 100%; border-radius: 50%"
-      ></skeleton-box>
-    </div>
-    <div v-else class="image">
-      <img
-        v-if="profileImageUrl"
-        :src="profileImageUrl"
-        @error="hasErrorGettingImage = true"
-        class="profileImage"
-        :class="{ error: hasErrorGettingImage }"
-      />
-      <div v-else class="basicProfileImage"></div>
-    </div>
+    <ProfileImageBig
+      :profileImageUrl="profileImageUrl"
+      :isFirstLoading="isFirstLoading"
+    ></ProfileImageBig>
     <div class="info">
       <div class="username">
         {{ member ? member.username : '' }}
@@ -32,12 +21,12 @@
 <script>
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
-import SkeletonBox from '../util/SkeletonBox.vue'
+import ProfileImageBig from './ProfileImageBig.vue'
 
 export default {
   name: 'ArtistPageProfile',
   components: {
-    SkeletonBox,
+    ProfileImageBig,
   },
   mixins: [headerActivate],
   data() {
@@ -45,8 +34,6 @@ export default {
       profileImageUrl: '',
       isFirstLoading: true,
       hasErrorGettingImage: false,
-      userName: '@Creator Name', // 서버에서 받은 이름 데이터를 여기에 넣어주면 됨
-      collectionCount: '5',
     }
   },
   props: {
@@ -61,9 +48,6 @@ export default {
         ? makeS3Path(member.profile_thumbnail_s3key)
         : makeS3Path(member.profile_s3key)
     },
-    onEmit() {
-      this.$emit('setValue', this.userName, this.collectionCount)
-    },
   },
   watch: {
     member: {
@@ -76,9 +60,6 @@ export default {
       },
     },
   },
-  mounted() {
-    this.onEmit()
-  },
 }
 </script>
 
@@ -87,40 +68,7 @@ export default {
 
 .profile {
   display: flex;
-  //margin-left: 15%;
-
-  .image {
-    display: inline-block;
-    background-color: $artong-white;
-    width: 111px;
-    height: 111px;
-    border-radius: 50%;
-    border: 2px solid $artong-white;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .profileImage {
-      &.error {
-        background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-        text-indent: -10000px;
-      }
-    }
-
-    .basicProfileImage {
-      height: 100%;
-      border-radius: 50%;
-      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-    }
-
-    input {
-      display: none;
-    }
-  }
+  margin-left: 15%;
 
   .info {
     text-align: center;
@@ -132,18 +80,12 @@ export default {
   }
 }
 
-// ArtistPageProfile의 크기는 항상 동일
-// @media only screen and (min-width: 599px) {
-//   .profile {
-//     //transform: translateY(-30%);
-//     flex-direction: column;
-//     align-items: center;
-//     margin-left: 0;
-
-//     .image {
-//       width: 150px;
-//       height: 150px;
-//     }
-//   }
-// }
+@media only screen and (max-width: 599px) {
+  .profile {
+    transform: translateY(-30%);
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0;
+  }
+}
 </style>

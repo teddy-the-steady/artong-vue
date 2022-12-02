@@ -18,50 +18,23 @@
     :paginationEnabled="false"
   >
     <slide v-for="i in testNumber" :key="i" class="slide">
-      <div class="wrapper">
-        <div class="top">
-          <div>{{ userName }}</div>
-          <ArtistPageProfile
-            :userName="userName"
-            :collectionCount="collectionCount"
-            @setValue="setValue"
-            class="artist-page-profile"
-          ></ArtistPageProfile>
-        </div>
-        <div class="bottom">
-          <div>{{ collectionCount }} Collections</div>
-        </div>
-      </div>
+      <ProfileCard></ProfileCard>
     </slide>
   </carousel>
 </template>
 <script>
-import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
+import ProfileCard from '../profile/ProfileCard.vue'
 
 export default {
   name: 'CuratedCollection',
   components: {
-    ArtistPageProfile,
+    ProfileCard,
   },
   data() {
     return {
-      needprojectname: true,
       testNumber: 10, // slide 개수
-      userName: '',
-      collectionCount: '',
     }
   },
-  methods: {
-    setValue(username, collectionCount) {
-      this.userName = username
-      this.collectionCount = collectionCount
-    },
-  },
-  // methods: {
-  //     handleSlideClick(dataset)=>{
-  //         console.log(dataset.index, dataset.name)
-  //     }
-  // }
 }
 </script>
 
