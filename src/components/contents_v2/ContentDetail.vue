@@ -50,7 +50,7 @@
             !val.isAccepted &&
             new Date(val.deadline * 1000) > new Date()
           "
-          @click="action('accept', val.from)"
+          @click="action('accept', val.from.wallet_address)"
         >
           Accept Offer
         </button>
