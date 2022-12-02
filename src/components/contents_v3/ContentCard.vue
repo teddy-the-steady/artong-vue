@@ -1,47 +1,29 @@
 <template>
-  <carousel
-    :perPageCustom="[
-      [360, 1],
-      [400, 1.2],
-      [500, 1.5],
-      [600, 1.8],
-      [700, 2],
-      [840, 2.2],
-      [1080, 2.9],
-      [1440, 3.9],
-      [1920, 4],
-    ]"
-    :autoplay="true"
-    :autoplayHoverPause="true"
-    :loop="true"
-    :scrollPerPage="true"
-    paginationColor="#B3B3B3"
-    paginationActiveColor="#000000"
-  >
-    <slide v-for="i in testNumber" :key="i">
-      <ContentCard></ContentCard>
-    </slide>
-  </carousel>
+  <div class="wrapper">
+    <div class="top">
+      <ProjectPageProfile_small
+        class="project-profile"
+      ></ProjectPageProfile_small>
+      <div class="description">NFT name</div>
+    </div>
+    <div class="bottom">
+      <ContentsProfile class="content-profile"></ContentsProfile>
+      <div class="price-title">현재 입찰가</div>
+      <div class="price">0.25 ETH</div>
+    </div>
+  </div>
 </template>
+
 <script>
-import ContentCard from '../contents_v3/ContentCard.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
-  name: 'CuratedCollection',
+  name: 'ContentCard',
   components: {
-    ContentCard,
+    ProjectPageProfile_small,
+    ContentsProfile,
   },
-  data() {
-    return {
-      needprojectname: true,
-      testNumber: 5, // for문을 돌리기 위해 임의로 collection card 수를 잡음
-    }
-  },
-  // methods: {
-  //     handleSlideClick(dataset)=>{
-  //         console.log(dataset.index, dataset.name)
-  //     }
-  // }
 }
 </script>
 
@@ -55,10 +37,28 @@ export default {
   height: 453px;
 
   .top {
+    display: flex;
+    flex-direction: row;
     background-image: url(../../assets/images/art11.jpg);
     height: 330px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+
+    .project-profile {
+      position: absolute;
+      margin-top: 24px;
+      margin-left: 16px;
+    }
+    .description {
+      margin-top: 292px;
+      margin-left: 16px;
+
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 700;
+      font-size: 18px;
+      color: $artong-white;
+    }
   }
 
   .bottom {
