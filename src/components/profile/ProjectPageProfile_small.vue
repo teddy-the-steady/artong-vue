@@ -8,12 +8,12 @@
       <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage" />
       <div v-else class="basicProfileImage"></div>
     </div>
-    <div class="info" v-if="needProjectName && !isFirstLoading">
+    <div class="info" v-if="!isFirstLoading">
       <div class="username">
         {{ $route.params.id }}
       </div>
     </div>
-    <div class="info" v-else-if="needProjectName && isFirstLoading">
+    <div class="info" v-else-if="isFirstLoading">
       <div class="username_box">
         <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
       </div>
@@ -31,12 +31,6 @@ export default {
     SkeletonBox,
   },
   mixins: [headerActivate],
-  props: {
-    needProjectName: {
-      type: Boolean,
-      default: true,
-    },
-  },
   data() {
     return {
       projectImageUrl: '',
