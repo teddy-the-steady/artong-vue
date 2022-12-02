@@ -246,7 +246,7 @@ import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
 import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
 import RecentContribution from '../CollectionCard/RecentContribution.vue'
 import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
-import Table from '../Table.vue'
+import Table from '../table/Table.vue'
 import CuratedCollectionWide from '../CollectionCard/CuratedCollection_wide.vue'
 
 export default {
@@ -272,13 +272,6 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.setWidth)
-  },
-  watch: {
-    width: {
-      handler(val) {
-        console.log('watch width:', val)
-      },
-    },
   },
 }
 </script>
