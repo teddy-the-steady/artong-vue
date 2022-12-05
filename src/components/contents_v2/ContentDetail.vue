@@ -12,7 +12,7 @@
 
     <div v-if="content.owner === currentUser.wallet_address">
       <button v-if="!isListed" @click="action('sell')">Sell</button>
-      <button v-else @click="action('update')">Cancel/Update Listing</button>
+      <button v-else @click="action('cancel')">Cancel/Update Listing</button>
     </div>
     <div v-else>
       <button v-if="isListed" @click="action('buy')">Buy</button>
