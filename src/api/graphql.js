@@ -199,8 +199,8 @@ const queryTokensByOwner = function (variables) {
 const queryOffersByToken = function (variables) {
   return {
     query: `
-      query OffersByToken($id: String) {
-        offers (orderBy: createdAt, orderDirection: desc, where: {token: $id}) {
+      query OffersByToken($first: Int, $skip: Int, $id: String) {
+        offers (first: $first, skip: $skip, orderBy: createdAt, orderDirection: desc, where: {token: $id}) {
           id
           from
           price
@@ -211,7 +211,57 @@ const queryOffersByToken = function (variables) {
           sale {
               id
           }
-          _db_dummy
+          _db_merge
+        }
+      }
+    `,
+    ...variables,
+  }
+}
+
+const queryTokenHistory = function (variables) {
+  return {
+    query: `
+      query TokenHistory($id: String) {
+        token (id: $id) {
+          txHash
+          tokenId
+          creator
+          createdAt
+          project {
+              id
+          }
+          transfers (orderBy: createdAt, orderDirection: desc) {
+            id
+            from
+            to
+            createdAt
+          }
+          offers (orderBy: createdAt, orderDirection: desc) {
+            id
+            txHash
+            from
+            price
+            deadline
+            isAccepted
+            createdAt
+            updatedAt
+          }
+          sales (orderBy: createdAt, orderDirection: desc) {
+            id
+            from
+            to
+            price
+            createdAt
+          }
+          listings (orderBy: createdAt, orderDirection: desc) {
+            id
+            from
+            price
+            eventType
+            createdAt
+          }
+          _db_merge
         }
       }
     `,
@@ -229,4 +279,5 @@ export {
   queryTokensByCreator,
   queryTokensByOwner,
   queryOffersByToken,
+  queryTokenHistory,
 }
