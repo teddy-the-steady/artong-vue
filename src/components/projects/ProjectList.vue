@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="projects">
-      <div class="info">explore projects</div>
       <div class="project" v-for="(val, i) in projectList" :key="i">
         <router-link :to="{ name: 'Project', params: { id: val.address } }">
-          <project-box :project="val"></project-box>
+          <ProjectCard :project="val"></ProjectCard>
         </router-link>
       </div>
     </div>
@@ -18,12 +17,12 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import { makeS3Path } from '../../util/commonFunc'
-import ProjectBox from './ProjectBox.vue'
+import ProjectCard from '../projects_v2/ProjectCard.vue'
 
 export default {
   name: 'ProjectList',
   components: {
-    ProjectBox,
+    ProjectCard,
     InfiniteLoading,
   },
   props: {
@@ -108,14 +107,8 @@ export default {
   display: flex;
   flex-flow: row wrap;
 
-  .info {
-    display: none;
-  }
-
   .project {
     flex: 1;
-    height: 400px;
-    margin: 10px;
   }
 }
 
@@ -128,7 +121,15 @@ export default {
 @media screen {
   .projects {
     .project {
-      flex-basis: 10%;
+      flex-basis: 15%;
+    }
+  }
+}
+
+@include max-width(2500px) {
+  .projects {
+    .project {
+      flex-basis: 20%;
     }
   }
 }
@@ -136,20 +137,12 @@ export default {
 @include max-width(2200px) {
   .projects {
     .project {
-      flex-basis: 15%;
-    }
-  }
-}
-
-@include max-width(1500px) {
-  .projects {
-    .project {
       flex-basis: 25%;
     }
   }
 }
 
-@include max-width(1200px) {
+@include max-width(1400px) {
   .projects {
     .project {
       flex-basis: 30%;
@@ -157,7 +150,7 @@ export default {
   }
 }
 
-@include max-width(830px) {
+@include max-width(1150px) {
   .projects {
     .project {
       flex-basis: 50%;
