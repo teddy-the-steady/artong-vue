@@ -75,12 +75,7 @@ import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import baseLazyLoading from '../../util/baseLazyLoading'
-import {
-  graphql,
-  queryToken,
-  queryOffersByToken,
-  queryTokenHistory,
-} from '../../api/graphql'
+import { graphql, queryToken, queryOffersByToken } from '../../api/graphql'
 import { makeS3Path, etherToWei, weiToEther } from '../../util/commonFunc'
 import {
   MARKETPLACE_ABI,
