@@ -54,7 +54,6 @@ import {
   patchContent,
   uploadToNftStorage,
   getContentVoucher,
-  getIpfsMetadata,
 } from '../../api/contents'
 import {
   ERC721_ABI,
@@ -62,6 +61,7 @@ import {
   getWalletConnectSigner,
   LazyMinter,
 } from '../../contracts'
+import { etherToWei } from '../../util/commonFunc'
 
 export default {
   name: 'MintToken',
@@ -114,8 +114,6 @@ export default {
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.s3Result.key}`,
       })
 
-      const metadataObject = await getIpfsMetadata(metadata)
-
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok =
@@ -128,7 +126,7 @@ export default {
             const voucher = await this.makeLazyMintingVoucher(
               this.postResult.project_address,
               metadata.url,
-              metadataObject.data.image || '',
+              '',
             )
 
             await patchContent(this.postResult.id, {
@@ -148,7 +146,7 @@ export default {
             const tx = await this.doMint(
               contract,
               metadata.url,
-              metadataObject.data.image || '',
+              '',
               this.tokenRoyalty,
             )
 
@@ -202,7 +200,7 @@ export default {
         this.currentUser.wallet_address,
         tokenUri,
         contentUri,
-        this.mintPrice,
+        etherToWei(this.mintPrice),
       )
       return voucher
     },
