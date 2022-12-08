@@ -278,7 +278,7 @@ export default {
         &.active {
           display: block;
           position: relative;
-          height: 2px;
+          height: 4px;
           width: 2px;
           margin: 0px auto;
           animation: rotation 0.6s infinite linear;

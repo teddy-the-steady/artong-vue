@@ -1,7 +1,7 @@
 <template>
   <div>
-    Username: <input v-model="member.username" /><br />
-    Intro: <input v-model="member.introduction" /><br />
+    Username: <input type="text" v-model="member.username" /><br />
+    Intro: <input type="text" v-model="member.introduction" /><br />
     <div>
       <button @click="save">SAVE</button>
     </div>
