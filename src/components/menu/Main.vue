@@ -11,7 +11,7 @@
             eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum
             dolor sit amet,
           </div>
-          <button class="start-btn">Start contributing</button>
+          <button class="start-btn" v-ripple>Start contributing</button>
         </div>
         <div class="container1-2">
           <img
@@ -248,6 +248,7 @@ import RecentContribution from '../CollectionCard/RecentContribution.vue'
 import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
 import Table from '../table/Table.vue'
 import CuratedCollectionWide from '../CollectionCard/CuratedCollection_wide.vue'
+import Ripple from '../../directives/ripple/Ripple'
 
 export default {
   name: 'Main',
@@ -272,6 +273,9 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.setWidth)
+  },
+  directives: {
+    ripple: Ripple,
   },
 }
 </script>
@@ -321,14 +325,7 @@ export default {
   text-align: left;
 }
 .start-btn {
-  padding: 15px 24px 16px;
   width: 161px;
-  height: 48px;
-
-  background: $artong-black;
-  border-radius: 5px;
-  text-transform: none;
-  margin-bottom: 48px;
 }
 .container1-2 {
   display: none;

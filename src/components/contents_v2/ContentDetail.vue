@@ -19,7 +19,7 @@
       <button @click="action('offer')">Make offer</button>
     </div>
 
-    <input v-model="price" placeholder="price in ETH" />
+    <input type="text" v-model="price" placeholder="price in ETH" />
 
     <div>
       OFFER LIST

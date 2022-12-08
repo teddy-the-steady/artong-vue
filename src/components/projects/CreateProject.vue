@@ -2,15 +2,15 @@
   <div>
     <div>
       <span>Name</span>
-      <input v-model="name" placeholder="name" />
+      <input type="text" v-model="name" placeholder="name" />
     </div>
     <div>
       <span>Symbol</span>
-      <input v-model="symbol" placeholder="symbol" />
+      <input type="text" v-model="symbol" placeholder="symbol" />
     </div>
     <div>
       <span>Max amount</span>
-      <input v-model="maxAmount" placeholder="maxAmount" />
+      <input type="text" v-model="maxAmount" placeholder="maxAmount" />
     </div>
     <div>
       <span>Policy</span>
@@ -19,7 +19,7 @@
       <input type="radio" id="r2" v-model="policy" value="1" />
       <label for="r2">Approved</label>
     </div>
-    <button @click="createProject">CREATE PROJECT</button>
+    <button @click="createProject" v-ripple>CREATE PROJECT</button>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ import {
 import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
+import Ripple from '../../directives/ripple/Ripple'
 // import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
@@ -47,6 +48,9 @@ export default {
     isMobile() {
       return this.$isMobile()
     },
+  },
+  directives: {
+    ripple: Ripple,
   },
   data() {
     return {

@@ -7,15 +7,19 @@
     {{ message }}
     <div>
       <span>Name</span>
-      <input v-model="name" placeholder="name" />
+      <input type="text" v-model="name" placeholder="name" />
     </div>
     <div>
       <span>Description</span>
-      <input v-model="description" placeholder="description" />
+      <input type="text" v-model="description" placeholder="description" />
     </div>
     <div>
       <span>Token royalty</span>
-      <input v-model="tokenRoyalty" placeholder="token royalty 1% = 100" />
+      <input
+        type="text"
+        v-model="tokenRoyalty"
+        placeholder="token royalty 1% = 100"
+      />
     </div>
     <div>
       <span>WHEN?</span>
@@ -38,9 +42,9 @@
       {{ policy }}
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
-    <input v-model="mintPrice" placeholder="mintPrice" />
+    <input type="text" v-model="mintPrice" placeholder="mintPrice" />
     <button @click="redeem">REDEEM(test)</button>
-    <input v-model="redeemPrice" placeholder="redeemPrice" />
+    <input type="text" v-model="redeemPrice" placeholder="redeemPrice" />
     {{ projectInfo }}
   </div>
 </template>
