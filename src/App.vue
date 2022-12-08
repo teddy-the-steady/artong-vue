@@ -151,6 +151,7 @@ export default {
 
 <style lang="scss">
 @import './assets/scss/variables';
+@import './directives/ripple/ripple';
 
 html {
   font-size: 14px;
@@ -175,15 +176,16 @@ html {
     }
 
     button {
-      font-size: 12px;
-      touch-action: manipulation;
-      cursor: pointer;
       color: $artong-white;
       background-color: $artong-black;
-      text-transform: uppercase;
-      padding: 14px 0;
-      letter-spacing: 1.1px;
-      border: none;
+      border: 1px solid $artong-black;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+        box-shadow 0.2s;
+      border-radius: 6px;
     }
 
     #header-bar {
@@ -195,6 +197,21 @@ html {
       background: $artong-white;
       height: 100%;
       padding-top: 50px;
+    }
+
+    input[type='text'] {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol';
+      font-size: 1rem;
+      color: #495057;
+      background: #ffffff;
+      padding: 0.75rem 0.75rem;
+      border: 1px solid #ced4da;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+        box-shadow 0.2s;
+      appearance: none;
+      border-radius: 6px;
     }
   }
 }
