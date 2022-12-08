@@ -100,5 +100,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/vue-sidebar-menu';
+@import './vue-sidebar-menu';
 </style>
