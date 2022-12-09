@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getMembers } from '../../api/member'
+import { getMemberByUsername } from '../../api/member'
 import {
   graphql,
   queryProjectsByCreator,
@@ -46,11 +46,7 @@ export default {
   },
   methods: {
     async getMember(username) {
-      const member = await getMembers(username)
-      if (member.length === 1) {
-        return member[0]
-      }
-      return null
+      return await getMemberByUsername(username)
     },
   },
   async created() {
