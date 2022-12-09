@@ -1,11 +1,7 @@
 import instance from './index'
 
-const getMembers = async function (username) {
-  return await instance.get('/members', {
-    params: {
-      username: username,
-    },
-  })
+const getMemberByUsername = async function (username) {
+  return await instance.get(`/members/${username}`)
 }
 
 const getCurrentMember = async function () {
@@ -33,7 +29,7 @@ const patchMember = async function (member_id, { username, introduction }) {
 }
 
 export {
-  getMembers,
+  getMemberByUsername,
   getCurrentMember,
   postMember,
   patchMemberProfileS3key,
