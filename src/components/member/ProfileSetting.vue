@@ -11,7 +11,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getMember, patchMember } from '../../api/member'
+import { getCurrentMember, patchMember } from '../../api/member'
 
 export default {
   name: 'ProfileSetting',
@@ -40,17 +40,14 @@ export default {
         this.errorMessage = error
       }
     },
-    async getMember() {
-      return await getMember(this.currentUser.wallet_address)
-    },
   },
   async mounted() {
-    this.member = await this.getMember()
+    this.member = await getCurrentMember()
   },
   watch: {
     async $route(val) {
       if (val.name === 'ProfileSetting') {
-        this.member = await this.getMember()
+        this.member = await getCurrentMember()
       }
     },
   },

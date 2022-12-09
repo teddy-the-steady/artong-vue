@@ -20,7 +20,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { Auth } from '@aws-amplify/auth'
-import { getMember } from './api/member'
+import { getCurrentMember } from './api/member'
 import HeaderBar from './components/header/Header.vue'
 import SideBar from './components/sidebar/SideBar.vue'
 import ConfirmModal from './components/modal/ConfirmModal.vue'
@@ -83,10 +83,8 @@ export default {
                   cognitoUser,
                   signature,
                 })
-                const authenticatedUser = await this.$store.dispatch(
-                  'AUTH_CHECK_CURRENT_USER',
-                )
-                const member = await getMember(authenticatedUser.username)
+                await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+                const member = await getCurrentMember()
                 await this.$store.dispatch('CURRENT_USER', member)
                 this.$store.commit('WALLET_ACCOUNT', accounts[0])
               }
@@ -105,12 +103,8 @@ export default {
   },
   async created() {
     try {
-      const currentSession = await this.$store.dispatch(
-        'AUTH_CHECK_CURRENT_SESSION',
-      )
-      const member = await getMember(
-        currentSession.getAccessToken().payload.username,
-      )
+      await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
+      const member = await getCurrentMember()
       await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
       if (this.authError === 'error') {
