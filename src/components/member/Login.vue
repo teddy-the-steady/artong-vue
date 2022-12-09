@@ -54,7 +54,7 @@
 <script>
 import MetaMaskOnboarding from '@metamask/onboarding'
 import { mapState } from 'vuex'
-import { getMember } from '../../api/member'
+import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 
 export default {
@@ -109,10 +109,8 @@ export default {
               cognitoUser,
               signature,
             })
-            const authenticatedUser = await this.$store.dispatch(
-              'AUTH_CHECK_CURRENT_USER',
-            )
-            const member = await getMember(authenticatedUser.username)
+            await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+            const member = await getCurrentMember()
             await this.$store.dispatch('CURRENT_USER', member)
             this.$store.commit(
               'WALLET_CHAIN',
@@ -181,10 +179,8 @@ export default {
               cognitoUser,
               signature,
             })
-            const authenticatedUser = await this.$store.dispatch(
-              'AUTH_CHECK_CURRENT_USER',
-            )
-            const member = await getMember(authenticatedUser.username)
+            await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+            const member = await getCurrentMember()
             await this.$store.dispatch('CURRENT_USER', member)
 
             this.redirectAfterLogin()
