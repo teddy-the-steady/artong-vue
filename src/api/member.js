@@ -8,12 +8,12 @@ const getMembers = async function (username) {
   })
 }
 
-const getMember = async function (walletAddress) {
-  return await instance.get(`/members/${walletAddress}`)
+const getCurrentMember = async function () {
+  return await instance.get('/current_member')
 }
 
 const postMember = async function (walletAddress, principalId) {
-  return await instance.post('/members', {
+  return await instance.post('/member', {
     wallet_address: walletAddress,
     principal_id: principalId,
   })
@@ -34,7 +34,7 @@ const patchMember = async function (member_id, { username, introduction }) {
 
 export {
   getMembers,
-  getMember,
+  getCurrentMember,
   postMember,
   patchMemberProfileS3key,
   patchMember,

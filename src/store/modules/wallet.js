@@ -8,7 +8,7 @@ import {
   CONFIRM_MODAL_WAIT_FOR_ANSWER,
 } from '../actions/wallet'
 import Provider from '../../util/walletConnectProvider'
-import { getMember } from '../../api/member'
+import { getCurrentMember } from '../../api/member'
 import { Auth } from '@aws-amplify/auth'
 
 const defaultState = {
@@ -82,10 +82,8 @@ const actions = {
 
             if (signature) {
               await dispatch('AUTH_VERIFY_USER', { cognitoUser, signature })
-              const authenticatedUser = await dispatch(
-                'AUTH_CHECK_CURRENT_USER',
-              )
-              const member = await getMember(authenticatedUser.username)
+              await dispatch('AUTH_CHECK_CURRENT_USER')
+              const member = await getCurrentMember()
               await dispatch('CURRENT_USER', member)
             }
           }
