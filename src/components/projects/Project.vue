@@ -21,8 +21,20 @@
           </div>
         </div>
       </div>
-      <div class="tab"></div>
     </div>
+    <div class="tab" v-if="this.width < 1440">
+      <div class="red-button">Art</div>
+      <div class="collection-name">Collection name</div>
+      <ContentsProfile class="contents-profile" />
+      <div class="info">Information</div>
+      <div class="desc">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit lorem
+        vel magna id. Enim feugiat felis at ultrices a dolor amet, tincidunt in.
+        Cursus volutpat convallis turpis elementum. Fusce morbi sit diam arcu.
+      </div>
+      <div class="project-info">Project info</div>
+    </div>
+    <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
     <basic-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
@@ -41,6 +53,8 @@ import BasicModal from '../modal/BasicModal.vue'
 import MintToken from '../projects/MintToken.vue'
 import ProjectTab from '../tabs/ProjectTab.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
+import LeftProjectTab from '../tabs/LeftProjectTab.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Project',
@@ -51,6 +65,8 @@ export default {
     MintToken,
     ProjectTab,
     ContentsProfileBundle,
+    LeftProjectTab,
+    ContentsProfile,
   },
   computed: {
     ...mapState({
@@ -235,10 +251,72 @@ export default {
       }
     }
   }
-
-  .tab {
-    height: 50px;
+}
+.tab {
+  padding-left: 24px;
+  padding-right: 24px;
+  .red-button {
+    width: 52px;
+    height: 25px;
+    border: 1px solid #f22e3e;
+    border-radius: 999px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #f22e3e;
+    line-height: 25px;
   }
+  .collection-name {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000000;
+    text-align: left;
+    margin-top: 8px;
+  }
+  .contents-profile {
+    margin-top: 8px;
+  }
+  .info {
+    margin-top: 8px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+    color: #000000;
+  }
+  .desc {
+    text-align: left;
+    margin-top: 8px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #4d4d4d;
+  }
+  .project-info {
+    width: 100%;
+    height: 48px;
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 5px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #000000;
+    text-align: center;
+    line-height: 48px;
+
+    margin-top: 8px;
+  }
+}
+.left-tab {
+  margin-left: 185px;
 }
 
 .contents {
