@@ -2,7 +2,9 @@
   <div class="wrapper">
     <div class="top">
       <div>username</div>
-      <ProfileImageBig></ProfileImageBig>
+      <div class="profileImg">
+        <ProfileImageBig></ProfileImageBig>
+      </div>
     </div>
     <div class="bottom">
       <div>?? Collections</div>
@@ -17,3 +19,11 @@ export default {
   components: { ProfileImageBig },
 }
 </script>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
+// .profileImg {
+//   height: 120px;
+//   width: 120px;
+// }
+</style>
