@@ -3,7 +3,23 @@
     <div class="header">
       <div class="background" :style="{ background: backgroundColor }"></div>
       <div class="user-info">
-        <project-page-profile></project-page-profile>
+        <project-page-profile class="profile"></project-page-profile>
+        <div class="buttons">
+          <div class="round-button">
+            <img src="../../assets/icons/share.svg" />
+          </div>
+          <div class="round-button">
+            <img src="../../assets/icons/launch.svg" />
+          </div>
+          <div class="round-button">
+            <img src="../../assets/icons/more.svg" />
+          </div>
+          <div v-if="this.width >= 1080" class="creators-button">
+            <div class="creator">Creator</div>
+            <ContentsProfileBundle class="profile-bundle" />
+            <div class="viewAll">View all</div>
+          </div>
+        </div>
       </div>
       <div class="tab"></div>
     </div>
@@ -24,6 +40,7 @@ import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import BasicModal from '../modal/BasicModal.vue'
 import MintToken from '../projects/MintToken.vue'
 import ProjectTab from '../tabs/ProjectTab.vue'
+import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 
 export default {
   name: 'Project',
@@ -33,6 +50,7 @@ export default {
     BasicModal,
     MintToken,
     ProjectTab,
+    ContentsProfileBundle,
   },
   computed: {
     ...mapState({
@@ -48,6 +66,7 @@ export default {
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
         { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
       ],
+      width: 0,
     }
   },
   methods: {
@@ -66,6 +85,9 @@ export default {
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
+    },
+    setWidth() {
+      this.width = window.innerWidth
     },
   },
   async created() {
@@ -102,6 +124,7 @@ export default {
     )
   },
   mounted() {
+    window.addEventListener('resize', this.setWidth)
     this.$root.$on('contribute', () => {
       this.toggleModal()
     })
@@ -146,13 +169,70 @@ export default {
 
 .header {
   .background {
-    height: 15em;
+    height: 330px;
   }
   .user-info {
     height: 30%;
-    button {
-      padding: 10px;
-      border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .profile {
+      transform: translateY(-60px);
+      margin-left: 16px;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      transform: translateY(-24px);
+      margin-right: 16px;
+      width: 160px;
+      .round-button {
+        width: 48px;
+        height: 48px;
+        background: #ffffff;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        // img 중앙정렬
+        display: flex;
+        justify-content: center;
+        img {
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+      }
+      .creators-button {
+        width: 258px;
+        height: 48px;
+        background: #ffffff;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+        border-radius: 999px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .creator {
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          color: #000000;
+        }
+        .profile-bundle {
+          margin-bottom: 0px;
+          margin-left: 6px;
+          transform: translateX(5px);
+        }
+        .viewAll {
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          color: #808080;
+        }
+      }
     }
   }
 
@@ -172,17 +252,36 @@ export default {
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
-      display: flex;
-      justify-content: center;
-
-      button {
-        border-radius: 10px;
-      }
     }
   }
 
   .contents {
     padding: 0;
+  }
+}
+@media only screen and (min-width: 1080px) {
+  .header {
+    .user-info {
+      .profile {
+      }
+      .buttons {
+        width: 426px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .header {
+    .user-info {
+      .profile {
+        margin-left: 240px;
+      }
+      .buttons {
+        margin-right: 24px;
+        width: 426px;
+      }
+    }
   }
 }
 </style>
