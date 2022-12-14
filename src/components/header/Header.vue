@@ -81,7 +81,7 @@
           </div>
           <div class="after_login" v-else>
             <div class="contribute">
-              <a @click="contribute">Contribute</a>
+              <button @click="contribute" v-ripple>Contribute</button>
             </div>
             <div
               class="header-profile"
@@ -118,6 +118,7 @@ import { mapState } from 'vuex'
 import Burger from './Burger.vue'
 import HeaderProfile from '../profile/HeaderProfile.vue'
 import UserDialog from '../dialog/UserDialog.vue'
+import Ripple from '../../directives/ripple/Ripple'
 
 export default {
   name: 'Header',
@@ -203,6 +204,9 @@ export default {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     },
+  },
+  directives: {
+    ripple: Ripple,
   },
 }
 </script>
@@ -381,10 +385,7 @@ export default {
 
       .contribute {
         margin-right: 10px;
-        height: 2rem;
         border-radius: 2rem;
-        width: 90px;
-        background-color: $artong-black;
         cursor: pointer;
 
         a {
