@@ -1,25 +1,42 @@
 <template>
   <div>
-    <div>
-      <span>Name</span>
-      <input type="text" v-model="name" placeholder="name" />
+    <h1>Create Your Project</h1>
+    <div class="create-project">
+      <div class="card">
+        <ProjectPrototypeCard
+          :name="name"
+          :symbol="symbol"
+        ></ProjectPrototypeCard>
+      </div>
+      <div class="info">
+        <div>
+          <span>Name</span>
+          <input type="text" v-model="name" />
+        </div>
+        <div>
+          <span>Symbol</span>
+          <input type="text" class="symbol" v-model="symbol" />
+        </div>
+        <div>
+          <span>Max Token amount</span>
+          <input
+            type="text"
+            v-model="maxAmount"
+            placeholder="positive number"
+          />
+        </div>
+        <div>
+          <span>Contribution Policy</span>
+          <div class="input-group">
+            <input type="radio" id="r1" v-model="policy" value="0" />
+            <label for="r1">Immediate</label>
+            <input type="radio" id="r2" v-model="policy" value="1" />
+            <label for="r2">Approved</label>
+          </div>
+        </div>
+        <button @click="createProject" v-ripple>CREATE PROJECT</button>
+      </div>
     </div>
-    <div>
-      <span>Symbol</span>
-      <input type="text" v-model="symbol" placeholder="symbol" />
-    </div>
-    <div>
-      <span>Max amount</span>
-      <input type="text" v-model="maxAmount" placeholder="maxAmount" />
-    </div>
-    <div>
-      <span>Policy</span>
-      <input type="radio" id="r1" v-model="policy" value="0" />
-      <label for="r1">Immediate</label>
-      <input type="radio" id="r2" v-model="policy" value="1" />
-      <label for="r2">Approved</label>
-    </div>
-    <button @click="createProject" v-ripple>CREATE PROJECT</button>
   </div>
 </template>
 
@@ -36,10 +53,11 @@ import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 import Ripple from '../../directives/ripple/Ripple'
-// import { isAuthenticated } from '../../util/commonFunc'
+import ProjectPrototypeCard from '../projects_v2/ProjectPrototypeCard.vue'
 
 export default {
   name: 'CreateProject',
+  components: { ProjectPrototypeCard },
   mixins: [headerActivate],
   computed: {
     ...mapState({
@@ -56,15 +74,20 @@ export default {
     return {
       name: '',
       symbol: '',
-      maxAmount: 0,
+      maxAmount: null,
       policy: 0,
       signer: null,
     }
   },
   methods: {
     async createProject() {
-      // if (!isAuthenticated()) {
-      // }
+      if (!this.signer) {
+        if (this.isMobile) {
+          this.signer = await getWalletConnectSigner()
+        } else {
+          this.signer = await getPcSigner()
+        }
+      }
 
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
@@ -93,14 +116,54 @@ export default {
       return tx
     },
   },
-  async mounted() {
-    if (this.isMobile) {
-      this.signer = await getWalletConnectSigner()
-    } else {
-      this.signer = await getPcSigner()
-    }
-  },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
+.create-project {
+  display: flex;
+  justify-content: center;
+
+  .info {
+    border: 1px solid $lightgray;
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+
+      span {
+        margin-bottom: 10px;
+      }
+
+      .symbol {
+        text-transform: uppercase;
+      }
+
+      .input-group {
+        display: block;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .create-project {
+    display: block;
+
+    .info {
+      border: none;
+      div {
+        padding-bottom: 10px;
+      }
+    }
+  }
+}
+</style>
