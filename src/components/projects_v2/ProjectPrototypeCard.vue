@@ -1,7 +1,12 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" @click="backgroundClick()">
+    <div class="background">
+      <img ref="backgroundImage" />
+    </div>
     <div class="top">
-      <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
+      <div class="profile" @click.stop="profileClick()">
+        <img ref="projectProfileImage" />
+      </div>
       <div class="symbol">{{ symbol.toUpperCase() }}</div>
     </div>
     <div class="name">{{ name }}</div>
@@ -13,11 +18,11 @@
 </template>
 
 <script>
-import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
+
 export default {
   name: 'ProjectPrototypeCard',
-  components: { ProjectPageProfile_wrapped, ContentsProfileBundle },
+  components: { ContentsProfileBundle },
   props: {
     name: {
       type: String,
@@ -28,6 +33,14 @@ export default {
       default: 'SYMBOL',
     },
   },
+  methods: {
+    backgroundClick() {
+      this.$emit('project-background-click')
+    },
+    profileClick() {
+      this.$emit('project-profile-click')
+    },
+  },
 }
 </script>
 
@@ -35,10 +48,28 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
+  position: relative;
   border: 1px solid $lightgray;
   border-radius: 15px;
   margin: 24px 16px;
   background: linear-gradient(45deg, $darkgray, transparent);
+  cursor: pointer;
+  overflow: hidden;
+
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      height: 120%;
+      opacity: 0.5;
+      filter: blur(3px);
+    }
+  }
 
   .top {
     display: flex;
@@ -49,6 +80,18 @@ export default {
     .profile {
       margin-left: 24px;
       cursor: pointer;
+      display: inline-block;
+      background-color: $lightergray;
+      width: 100px;
+      height: 100px;
+      border-radius: 15px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
     }
     .symbol {
       position: absolute;
@@ -71,6 +114,7 @@ export default {
     }
   }
   .name {
+    position: relative;
     margin-top: 213px;
     margin-left: 30px;
     font-family: 'Mustica Pro';

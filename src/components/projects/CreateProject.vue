@@ -6,7 +6,11 @@
         <ProjectPrototypeCard
           :name="name"
           :symbol="symbol"
+          @project-background-click="projectBackgroundClick"
+          @project-profile-click="projectProfileClick"
         ></ProjectPrototypeCard>
+        <input ref="profileInput" type="file" @change="onProfileChange" />
+        <input ref="backgroundInput" type="file" @change="onBackgroundChange" />
       </div>
       <div class="info">
         <div>
@@ -41,6 +45,7 @@
 </template>
 
 <script>
+import Storage from '@aws-amplify/storage'
 import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import {
@@ -77,6 +82,9 @@ export default {
       maxAmount: null,
       policy: 0,
       signer: null,
+      profileImageFile: null,
+      backgroundImageFile: null,
+      S3_PRIVACY_LEVEL: 'public',
     }
   },
   methods: {
@@ -92,11 +100,18 @@ export default {
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
 
+      const [result1, result2] = await Promise.all([
+        await this.uploadProjectProfileImage(tx.hash),
+        await this.uploadProjectBackgroundImage(tx.hash),
+      ])
+
       const postResult = await postProject({
         create_tx_hash: tx.hash,
         name: this.name,
         symbol: this.symbol,
         status: PENDING,
+        project_s3key: `${this.S3_PRIVACY_LEVEL}/${result1.key}`,
+        background_s3key: `${this.S3_PRIVACY_LEVEL}/${result2.key}`,
       })
 
       if (postResult) {
@@ -115,6 +130,48 @@ export default {
       )
       return tx
     },
+    async uploadProjectProfileImage(txHash) {
+      const result = await Storage.put(
+        `project/${txHash}/profile/${this.profileImageFile.name}`,
+        this.profileImageFile,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: this.profileImageFile.type,
+        },
+      )
+      return result
+    },
+    async uploadProjectBackgroundImage(txHash) {
+      const result = await Storage.put(
+        `project/${txHash}/background/${this.backgroundImageFile.name}`,
+        this.backgroundImageFile,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: this.backgroundImageFile.type,
+        },
+      )
+      return result
+    },
+    projectBackgroundClick() {
+      this.$refs.backgroundInput.click()
+    },
+    projectProfileClick() {
+      this.$refs.profileInput.click()
+    },
+    onProfileChange(e) {
+      this.profileImageFile = e.target.files[0]
+      this.$children[0].$refs.projectProfileImage.src = URL.createObjectURL(
+        this.profileImageFile,
+      )
+      URL.revokeObjectURL(this.profileImageFile)
+    },
+    onBackgroundChange(e) {
+      this.backgroundImageFile = e.target.files[0]
+      this.$children[0].$refs.backgroundImage.src = URL.createObjectURL(
+        this.backgroundImageFile,
+      )
+      URL.revokeObjectURL(this.backgroundImageFile)
+    },
   },
 }
 </script>
@@ -125,6 +182,12 @@ export default {
 .create-project {
   display: flex;
   justify-content: center;
+
+  .card {
+    input {
+      display: none;
+    }
+  }
 
   .info {
     border: 1px solid $lightgray;
