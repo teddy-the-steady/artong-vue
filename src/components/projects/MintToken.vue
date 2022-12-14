@@ -112,6 +112,14 @@ export default {
         return
       }
 
+      if (!this.signer) {
+        if (this.isMobile) {
+          this.signer = await getWalletConnectSigner()
+        } else {
+          this.signer = await getPcSigner()
+        }
+      }
+
       const metadata = await uploadToNftStorage({
         name: this.name,
         description: this.description,
@@ -247,13 +255,6 @@ export default {
         isRedeemed: true,
       })
     },
-  },
-  async mounted() {
-    if (this.isMobile) {
-      this.signer = await getWalletConnectSigner()
-    } else {
-      this.signer = await getPcSigner()
-    }
   },
 }
 </script>
