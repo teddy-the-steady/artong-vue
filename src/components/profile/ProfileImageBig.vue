@@ -49,8 +49,8 @@ export default {
 .image {
   display: inline-block;
   background-color: $artong-white;
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 2px solid $artong-white;
   cursor: pointer;
