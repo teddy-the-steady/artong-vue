@@ -71,4 +71,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '../../assets/scss/variables';
+
+.tabs {
+  border-bottom: 1px solid #b3b3b3;
+  margin: 0px 24px 0px 24px;
+  display: flex;
+}
+</style>
