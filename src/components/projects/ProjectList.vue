@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="projects">
-      <div class="project" v-for="(val, i) in projectList" :key="i">
+      <div v-for="(val, i) in projectList" :key="i">
         <router-link :to="{ name: 'Project', params: { id: val.address } }">
           <ProjectCard :project="val"></ProjectCard>
         </router-link>
@@ -77,7 +77,7 @@ export default {
               background_thumbnail_s3key: makeS3Path(
                 results[i].background_thumbnail_s3key,
               ),
-              project_s3key: makeS3Path(results[i].thumbnail_s3key),
+              project_s3key: makeS3Path(results[i].project_s3key),
               project_thumbnail_s3key: makeS3Path(
                 results[i].project_thumbnail_s3key,
               ),
@@ -104,65 +104,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .projects {
-  display: flex;
-  flex-flow: row wrap;
-
-  .project {
-    flex: 1;
-  }
-}
-
-@mixin max-width($width) {
-  @media screen and (max-width: $width) {
-    @content;
-  }
-}
-
-@media screen {
-  .projects {
-    .project {
-      flex-basis: 15%;
-    }
-  }
-}
-
-@include max-width(2500px) {
-  .projects {
-    .project {
-      flex-basis: 20%;
-    }
-  }
-}
-
-@include max-width(2200px) {
-  .projects {
-    .project {
-      flex-basis: 25%;
-    }
-  }
-}
-
-@include max-width(1400px) {
-  .projects {
-    .project {
-      flex-basis: 30%;
-    }
-  }
-}
-
-@include max-width(1150px) {
-  .projects {
-    .project {
-      flex-basis: 50%;
-    }
-  }
-}
-
-@include max-width(600px) {
-  .projects {
-    .project {
-      flex-basis: 100%;
-    }
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 400px));
+  justify-content: center;
+  padding: initial;
 }
 </style>
