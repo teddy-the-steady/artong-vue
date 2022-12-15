@@ -1,8 +1,6 @@
 <template>
   <div class="contents">
-    <masonry
-      :cols="{ default: 7, 1500: 6, 1300: 5, 1100: 4, 850: 3, 570: 2, 310: 1 }"
-    >
+    <masonry :cols="windowWidth ? colsWide : cols">
       <div class="content" v-for="(val, i) in contentList" :key="i">
         <router-link
           :to="{
@@ -56,11 +54,32 @@ export default {
       type: Object,
       default: () => {},
     },
+    windowWide: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
       contentList: [],
       noMoreDataToLoad: false,
+      colsWide: {
+        default: 7,
+        1500: 6,
+        1300: 5,
+        1100: 4,
+        850: 3,
+        570: 2,
+        310: 1,
+      },
+      cols: {
+        default: 6,
+        2000: 5,
+        1700: 4,
+        1000: 3,
+        570: 2,
+        310: 1,
+      },
     }
   },
   methods: {
@@ -158,6 +177,8 @@ export default {
 
 .contents {
   margin-top: 10px;
+  margin-left: 14px;
+  margin-right: 14px;
 }
 
 .profileBox {

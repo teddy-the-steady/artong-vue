@@ -24,12 +24,12 @@
       <div class="nickName">
         @{{
           project.contributors && project.contributors.length > 0
-            ? `${project.contributors[0].username} +`
+            ? project.contributors[0].username
             : 'nickName'
         }}
         {{
-          project.contributors && project.contributors.length > 0
-            ? project.contributors.length - 1
+          project.contributors && project.contributors.length > 1
+            ? `+${project.contributors.length - 1}`
             : ''
         }}
       </div>

@@ -22,24 +22,30 @@
         </div>
       </div>
     </div>
-    <div class="tab" v-if="this.width < 1440">
-      <div class="red-button">Art</div>
-      <div class="collection-name">Collection name</div>
-      <ContentsProfile class="contents-profile" />
-      <div class="info">Information</div>
-      <div class="desc">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit lorem
-        vel magna id. Enim feugiat felis at ultrices a dolor amet, tincidunt in.
-        Cursus volutpat convallis turpis elementum. Fusce morbi sit diam arcu.
+    <div class="tab-n-content">
+      <div class="bottom">
+        <div class="tab" v-if="this.width < 1440">
+          <div class="red-button">Art</div>
+          <div class="collection-name">Collection name</div>
+          <ContentsProfile class="contents-profile" />
+          <div class="info">Information</div>
+          <div class="desc">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
+            lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
+            tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
+            morbi sit diam arcu.
+          </div>
+          <div class="project-info">Project info</div>
+        </div>
+        <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
       </div>
-      <div class="project-info">Project info</div>
+      <project-tab-sort :tabs="tabs" class="project-tab-sort" />
     </div>
-    <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
+    <!-- data -->
     <basic-modal v-if="isModalOpen">
       <span slot="header" class="modal_header" @click="close">X</span>
       <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
     </basic-modal>
-    <project-tab :tabs="tabs" />
   </div>
 </template>
 
@@ -51,7 +57,7 @@ import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import BasicModal from '../modal/BasicModal.vue'
 import MintToken from '../projects/MintToken.vue'
-import ProjectTab from '../tabs/ProjectTab.vue'
+import ProjectTabSort from '../tabs/ProjectTabSort.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
@@ -63,7 +69,7 @@ export default {
     ProjectPageProfile,
     BasicModal,
     MintToken,
-    ProjectTab,
+    ProjectTabSort,
     ContentsProfileBundle,
     LeftProjectTab,
     ContentsProfile,
@@ -82,7 +88,7 @@ export default {
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
         { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
       ],
-      width: 0,
+      width: window.innerWidth,
     }
   },
   methods: {
@@ -252,75 +258,80 @@ export default {
     }
   }
 }
-.tab {
-  padding-left: 24px;
-  padding-right: 24px;
-  .red-button {
-    width: 52px;
-    height: 25px;
-    border: 1px solid #f22e3e;
-    border-radius: 999px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    color: #f22e3e;
-    line-height: 25px;
-  }
-  .collection-name {
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    color: #000000;
-    text-align: left;
-    margin-top: 8px;
-  }
-  .contents-profile {
-    margin-top: 8px;
-  }
-  .info {
-    margin-top: 8px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-    text-align: left;
-    color: #000000;
-  }
-  .desc {
-    text-align: left;
-    margin-top: 8px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: #4d4d4d;
-  }
-  .project-info {
-    width: 100%;
-    height: 48px;
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 5px;
+.tab-n-content {
+  .bottom {
+    .tab {
+      padding-left: 24px;
+      padding-right: 24px;
+      .red-button {
+        width: 52px;
+        height: 25px;
+        border: 1px solid #f22e3e;
+        border-radius: 999px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #f22e3e;
+        line-height: 25px;
+      }
+      .collection-name {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 24px;
+        color: #000000;
+        text-align: left;
+        margin-top: 8px;
+      }
+      .contents-profile {
+        margin-top: 8px;
+      }
+      .info {
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        text-align: left;
+        color: #000000;
+      }
+      .desc {
+        text-align: left;
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #4d4d4d;
+        line-height: 150%;
+      }
+      .project-info {
+        width: 100%;
+        height: 48px;
+        background: #ffffff;
+        border: 1px solid #000000;
+        border-radius: 5px;
 
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    color: #000000;
-    text-align: center;
-    line-height: 48px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #000000;
+        text-align: center;
+        line-height: 48px;
 
-    margin-top: 8px;
+        margin-top: 8px;
+        margin-bottom: 24px;
+      }
+    }
+    .left-tab {
+      margin-left: 185px;
+    }
+    .contents {
+      padding: 0 10%;
+    }
   }
-}
-.left-tab {
-  margin-left: 185px;
-}
-
-.contents {
-  padding: 0 10%;
 }
 
 .modal_header {
@@ -348,7 +359,20 @@ export default {
     }
   }
 }
-
+// if width is larger than 1440 then change the display
+@media only screen and (min-width: 1440px) {
+  .tab-n-content {
+    display: flex;
+    margin-right: 185px;
+    .bottom {
+      display: flex;
+      flex-direction: row;
+      .left-tab {
+        margin-left: 185px;
+      }
+    }
+  }
+}
 @media only screen and (min-width: 1920px) {
   .header {
     .user-info {
@@ -358,6 +382,14 @@ export default {
       .buttons {
         margin-right: 24px;
         width: 426px;
+      }
+    }
+  }
+  .tab-n-content {
+    margin-right: 240px;
+    .bottom {
+      .left-tab {
+        margin-left: 240px;
       }
     }
   }
