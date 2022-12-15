@@ -158,6 +158,8 @@ export default {
 
 .contents {
   margin-top: 10px;
+  margin-left: 14px;
+  margin-right: 14px;
 }
 
 .profileBox {
