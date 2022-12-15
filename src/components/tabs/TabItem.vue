@@ -1,11 +1,11 @@
 <template>
-  <span
+  <div
     @click="$emit('tabClick', id)"
     class="tab"
     :class="{ active: isTabActive }"
   >
     {{ label }}
-  </span>
+  </div>
 </template>
 
 <script>
@@ -30,10 +30,25 @@ export default {
 .tab {
   cursor: pointer;
   &:hover {
-    background: $lightgray;
+    //background: $lightgray;
   }
   &.active {
-    background: #f7c9c9;
+    //background: #f7c9c9;
   }
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: #808080;
+  height: 54px;
+  padding: 16px;
+  box-sizing: border-box;
+  //vertical center alignment
+  display: flex;
+  align-items: center;
+}
+.active {
+  border-bottom: 2px solid #000000;
+  color: #000000;
 }
 </style>
