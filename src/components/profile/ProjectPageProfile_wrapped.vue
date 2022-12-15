@@ -7,26 +7,18 @@
       ></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading = true" class="image2">
-      <!--class="image" 뺌-->
-      <img v-if="projectImageUrl" :src="projectImageUrl" />
+      <img
+        v-if="projectImageUrl"
+        :src="projectImageUrl"
+        @error="hasErrorGettingImage = true"
+        :class="{ error: hasErrorGettingImage }"
+      />
       <div v-else class="basicProfileImage"></div>
-    </div>
-    <div class="info" v-if="needProjectName && !isFirstLoading">
-      <div class="username">
-        hello
-        {{ $route.params.id }}
-      </div>
-    </div>
-    <div class="info" v-else-if="needProjectName && isFirstLoading">
-      <div class="username_box">
-        <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { headerActivate } from '../../mixin'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
@@ -34,18 +26,27 @@ export default {
   components: {
     SkeletonBox,
   },
-  mixins: [headerActivate],
   props: {
-    needProjectName: {
-      type: Boolean,
-      default: false,
+    projectImageUrl: {
+      type: String,
+      default: '',
     },
   },
   data() {
     return {
-      projectImageUrl: '',
       isFirstLoading: true,
+      hasErrorGettingImage: false,
     }
+  },
+  watch: {
+    projectImageUrl: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.isFirstLoading = false
+        }
+      },
+    },
   },
 }
 </script>
@@ -96,6 +97,10 @@ export default {
       object-fit: cover;
       border-radius: 15px;
       margin: 8px;
+      &.error {
+        background: $lightgray;
+        text-indent: -10000px;
+      }
     }
     .basicProfileImage {
       width: 84px;

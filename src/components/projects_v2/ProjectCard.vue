@@ -1,10 +1,16 @@
 <template>
   <div class="wrapper">
-    <div class="top">
-      <ProjectPageProfile_wrapped class="profile"></ProjectPageProfile_wrapped>
-      <div class="category">category</div>
+    <div class="background">
+      <img ref="backgroundImage" :src="project.background_s3key" />
     </div>
-    <div class="description">NFT art name</div>
+    <div class="top">
+      <ProjectPageProfile_wrapped
+        class="profile"
+        :projectImageUrl="project.project_s3key"
+      ></ProjectPageProfile_wrapped>
+      <div class="symbol">symbol</div>
+    </div>
+    <div class="name">NFT art name</div>
     <div class="bottom">
       <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
       <div class="nickName">@nickName +4</div>
@@ -18,6 +24,12 @@ import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 export default {
   name: 'ProjectCard',
   components: { ProjectPageProfile_wrapped, ContentsProfileBundle },
+  props: {
+    project: {
+      type: Object,
+      default: () => {},
+    },
+  },
 }
 </script>
 
@@ -25,9 +37,26 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
+  position: relative;
+  overflow: hidden;
   border: 1px solid #333333;
   border-radius: 15px;
   margin: 24px 16px;
+
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      height: 120%;
+      opacity: 0.5;
+      filter: blur(3px);
+    }
+  }
 
   .top {
     display: flex;
@@ -38,7 +67,7 @@ export default {
     .profile {
       margin-left: 24px;
     }
-    .category {
+    .symbol {
       position: absolute;
       right: 24px;
       width: 92px;
@@ -55,7 +84,7 @@ export default {
       color: $profile-border-red;
     }
   }
-  .description {
+  .name {
     margin-top: 213px;
     font-family: 'Mustica Pro';
     font-style: normal;
