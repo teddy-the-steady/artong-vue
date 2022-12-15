@@ -99,12 +99,12 @@ export default {
       width: 92px;
       height: 25px;
 
-      border: 1px solid $profile-border-red;
+      border: 2px solid $profile-border-red;
       border-radius: 999px;
 
       font-family: $item-font;
       font-style: $item-font-style;
-      font-weight: 500;
+      font-weight: 800;
       font-size: 14px;
       line-height: 25px;
       color: $profile-border-red;
@@ -122,7 +122,6 @@ export default {
     font-weight: 600;
     font-size: 32px;
     line-height: 44px;
-    color: $artong-white;
     width: 300px;
     overflow: hidden !important;
     text-overflow: ellipsis;
