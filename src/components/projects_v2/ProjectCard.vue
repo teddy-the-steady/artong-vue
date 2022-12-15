@@ -1,16 +1,21 @@
 <template>
   <div class="wrapper">
     <div class="background">
-      <img ref="backgroundImage" :src="project.background_s3key" />
+      <img
+        ref="backgroundImage"
+        :src="project.background_thumbnail_s3key || project.background_s3key"
+      />
     </div>
     <div class="top">
       <ProjectPageProfile_wrapped
         class="profile"
-        :projectImageUrl="project.project_s3key"
+        :projectImageUrl="
+          project.project_thumbnail_s3key || project.project_s3key
+        "
       ></ProjectPageProfile_wrapped>
-      <div class="symbol">symbol</div>
+      <div class="symbol">{{ project.symbol.toUpperCase() }}</div>
     </div>
-    <div class="name">NFT art name</div>
+    <div class="name">{{ project.name }}</div>
     <div class="bottom">
       <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
       <div class="nickName">@nickName +4</div>
@@ -73,25 +78,31 @@ export default {
       width: 92px;
       height: 25px;
 
-      border: 1px solid $profile-border-red;
+      border: 2px solid $profile-border-red;
       border-radius: 999px;
 
       font-family: $item-font;
       font-style: $item-font-style;
-      font-weight: 500;
+      font-weight: 800;
       font-size: 14px;
       line-height: 25px;
       color: $profile-border-red;
+
+      overflow: hidden !important;
+      text-overflow: ellipsis;
     }
   }
   .name {
+    position: relative;
     margin-top: 213px;
     font-family: 'Mustica Pro';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
     line-height: 44px;
-    color: $artong-white;
+    width: 300px;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
   }
   .bottom {
     display: flex;
