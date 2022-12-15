@@ -17,8 +17,22 @@
     </div>
     <div class="name">{{ project.name }}</div>
     <div class="bottom">
-      <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
-      <div class="nickName">@nickName +4</div>
+      <ContentsProfileBundle
+        class="bundle"
+        :members="project.contributors"
+      ></ContentsProfileBundle>
+      <div class="nickName">
+        @{{
+          project.contributors && project.contributors.length > 0
+            ? `${project.contributors[0].username} +`
+            : 'nickName'
+        }}
+        {{
+          project.contributors && project.contributors.length > 0
+            ? project.contributors.length - 1
+            : ''
+        }}
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +46,13 @@ export default {
   props: {
     project: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {
+          background_s3key: '',
+          background_thumbnail_s3key: '',
+          symbol: '',
+        }
+      },
     },
   },
 }
@@ -47,6 +67,7 @@ export default {
   border: 1px solid #333333;
   border-radius: 15px;
   margin: 24px 16px;
+  background: linear-gradient(45deg, $darkgray, transparent);
 
   .background {
     position: absolute;

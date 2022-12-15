@@ -81,6 +81,7 @@ export default {
               project_thumbnail_s3key: makeS3Path(
                 results[i].project_thumbnail_s3key,
               ),
+              contributors: results[i].contributors,
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,
             })

@@ -30,8 +30,6 @@
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
-//import internal from 'stream'
-
 export default {
   name: 'ContentsProfile',
   components: {
