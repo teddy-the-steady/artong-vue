@@ -1,6 +1,14 @@
 <template>
   <div class="wrapper">
-    <div class="background">
+    <div
+      class="background"
+      :style="{
+        background:
+          project.background_thumbnail_s3key || project.background_s3key
+            ? 'transparent'
+            : project.backgroundColor,
+      }"
+    >
       <img
         ref="backgroundImage"
         :src="project.background_thumbnail_s3key || project.background_s3key"
@@ -71,7 +79,6 @@ export default {
   border: 1px solid #333333;
   border-radius: 15px;
   margin: 24px 16px;
-  background: linear-gradient(45deg, $darkgray, transparent);
 
   .background {
     position: absolute;
