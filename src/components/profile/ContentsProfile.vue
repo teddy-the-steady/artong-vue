@@ -13,12 +13,12 @@
       />
       <img v-else src="../../assets/images/profile.svg" />
     </div>
-    <div class="info" v-if="needUserName && !isFirstLoading">
+    <div class="info" v-if="member && needUserName && !isFirstLoading">
       <a class="username">
-        <!-- {{member.username}} -->
+        {{ member.username }}
       </a>
     </div>
-    <div class="info" v-else-if="needUserName && isFirstLoading">
+    <div class="info" v-else-if="member && needUserName && isFirstLoading">
       <div class="username_box">
         <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
       </div>
