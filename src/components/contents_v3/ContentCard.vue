@@ -1,13 +1,21 @@
 <template>
   <div class="wrapper">
-    <div class="top">
+    <div
+      class="top"
+      :style="{ 'background-image': 'url(' + background(content) + ')' }"
+    >
       <ProjectPageProfile_small
+        v-if="needContentName"
         class="project-profile"
       ></ProjectPageProfile_small>
-      <div class="description">NFT name</div>
+      <!-- token 이름은 없는듯? -->
+      <!--<div class="description">NFT name</div>-->
     </div>
     <div class="bottom">
-      <ContentsProfile class="content-profile"></ContentsProfile>
+      <ContentsProfile
+        :member="content ? content.owner : null"
+        class="content-profile"
+      ></ContentsProfile>
       <div class="price-title">현재 입찰가</div>
       <div class="price">0.25 ETH</div>
     </div>
@@ -17,12 +25,38 @@
 <script>
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
-
+import { makeS3Path } from '../../util/commonFunc'
 export default {
   name: 'ContentCard',
   components: {
     ProjectPageProfile_small,
     ContentsProfile,
+  },
+  props: {
+    content: {
+      type: Object,
+      default: null,
+    },
+    needContentName: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  methods: {
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    background(content) {
+      if (content) {
+        return (
+          this.makeS3Path(content.content_thumbnail_s3key) ||
+          this.makeS3Path(content.content_s3key) ||
+          this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+        )
+      } else {
+        return require('@/assets/images/art11.jpg')
+      }
+    },
   },
 }
 </script>
@@ -39,7 +73,7 @@ export default {
   .top {
     display: flex;
     flex-direction: row;
-    background-image: url(../../assets/images/art11.jpg);
+    //background-image: url(../../assets/images/art11.jpg);
     height: 330px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
