@@ -16,7 +16,10 @@
     <div class="items">
       <section class="item" :key="currentId">
         <div v-show="current.type === 'CONTENTS'">
-          <content-list :queryContents="current.api"></content-list>
+          <content-list
+            :queryContents="current.api"
+            :windowWide="false"
+          ></content-list>
         </div>
         {{ current }}
       </section>
