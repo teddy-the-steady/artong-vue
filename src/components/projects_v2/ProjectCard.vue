@@ -5,7 +5,7 @@
       :style="{
         background:
           project.background_thumbnail_s3key || project.background_s3key
-            ? 'transparent'
+            ? 'ghostwhite'
             : project.backgroundColor,
       }"
     >
@@ -76,7 +76,6 @@ export default {
 .wrapper {
   position: relative;
   overflow: hidden;
-  border: 1px solid #333333;
   border-radius: 15px;
   margin: 24px 16px;
 
