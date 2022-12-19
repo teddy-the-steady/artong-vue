@@ -28,7 +28,7 @@
         id="r1"
         v-model="policy"
         value="0"
-        :disabled="projectInfo.project.policy === 1"
+        :disabled="project.project.policy === 1"
       />
       <label for="r1">Mint Now</label>
       <input
@@ -36,16 +36,15 @@
         id="r2"
         v-model="policy"
         value="1"
-        :disabled="projectInfo.project.policy === 1"
+        :disabled="project.project.policy === 1"
       />
       <label for="r2">Lazy Mint</label>
       {{ policy }}
     </div>
     <button class="btn_mint" @click="mint">MINT</button>
     <input type="text" v-model="mintPrice" placeholder="mintPrice" />
-    <button @click="redeem">REDEEM(test)</button>
-    <input type="text" v-model="redeemPrice" placeholder="redeemPrice" />
-    {{ projectInfo }}
+    <!-- <button @click="redeem">REDEEM(test)</button>
+    <input type="text" v-model="redeemPrice" placeholder="redeemPrice" /> -->
   </div>
 </template>
 
@@ -78,9 +77,9 @@ export default {
     },
   },
   props: {
-    projectInfo: {
+    project: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
   data() {
@@ -219,6 +218,7 @@ export default {
     async onFileChange(e) {
       this.file = e.target.files[0]
       this.image = URL.createObjectURL(this.file)
+      URL.revokeObjectURL(this.file)
 
       this.postResult = await postContent({
         project_address: this.$router.currentRoute.params.id,

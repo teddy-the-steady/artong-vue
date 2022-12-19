@@ -5,9 +5,11 @@
 <script>
 import { getProjectWhileUpdatingPendingToCreated } from '../../api/projects'
 import { CREATED } from '../../constants'
+import { headerActivate } from '../../mixin'
 
 export default {
   name: 'CreatingProject',
+  mixins: [headerActivate],
   data() {
     return {
       txHash: this.$router.currentRoute.query.txHash,

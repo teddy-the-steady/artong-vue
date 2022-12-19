@@ -1,6 +1,6 @@
 <template>
   <div class="contents">
-    <masonry :cols="windowWidth ? colsWide : cols">
+    <masonry :cols="windowWide ? colsWide : cols">
       <div class="content" v-for="(val, i) in contentList" :key="i">
         <router-link
           :to="{
