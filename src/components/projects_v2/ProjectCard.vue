@@ -63,6 +63,7 @@ export default {
           background_s3key: '',
           background_thumbnail_s3key: '',
           symbol: '',
+          backgroundColor: '#454545',
         }
       },
     },
@@ -151,6 +152,8 @@ export default {
       line-height: 32px;
       color: $artong-white;
       display: flex;
+      position: relative;
+      margin-left: 10px;
       .nickName {
         display: inline-block;
         max-width: 80px;
