@@ -41,11 +41,30 @@
       </div>
       <project-tab-sort :tabs="tabs" class="project-tab-sort" />
     </div>
-    <!-- data -->
-    <basic-modal v-if="isModalOpen">
-      <span slot="header" class="modal_header" @click="close">X</span>
-      <mint-token slot="body" :projectInfo="projectInfo"></mint-token>
-    </basic-modal>
+    <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
+      <span slot="header" @click="close">X</span>
+      <MintStep0
+        slot="body_step_0"
+        @data-from-step0="setSlotData"
+        :project="project"
+      ></MintStep0>
+      <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
+      <MintStep2 slot="body_step_2" @data-from-step2="setSlotData"></MintStep2>
+      <MintStep3
+        slot="body_step_3"
+        @data-from-step3="setSlotData"
+        :project="project"
+        :slotData="slotData"
+        slot-scope="slotData"
+      ></MintStep3>
+      <MintStepFinal
+        slot="body_step_4"
+        :project="project"
+        :slotData="slotData"
+        slot-scope="slotData"
+      ></MintStepFinal>
+      <MintStepMinting slot="body_step_5"></MintStepMinting>
+    </MintModal>
   </div>
 </template>
 
@@ -55,8 +74,13 @@ import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
-import BasicModal from '../modal/BasicModal.vue'
-import MintToken from '../projects/MintToken.vue'
+import MintModal from '../modal/MintModal.vue'
+import MintStep0 from '../modal/mint_steps/MintStep0.vue'
+import MintStep1 from '../modal/mint_steps/MintStep1.vue'
+import MintStep2 from '../modal/mint_steps/MintStep2.vue'
+import MintStep3 from '../modal/mint_steps/MintStep3.vue'
+import MintStepFinal from '../modal/mint_steps/MintStepFinal.vue'
+import MintStepMinting from '../modal/mint_steps/MintStepMinting.vue'
 import ProjectTabSort from '../tabs/ProjectTabSort.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
@@ -67,8 +91,13 @@ export default {
   mixins: [backgroundColor],
   components: {
     ProjectPageProfile,
-    BasicModal,
-    MintToken,
+    MintModal,
+    MintStep0,
+    MintStep1,
+    MintStep2,
+    MintStep3,
+    MintStepFinal,
+    MintStepMinting,
     ProjectTabSort,
     ContentsProfileBundle,
     LeftProjectTab,
@@ -83,26 +112,36 @@ export default {
     return {
       projectAddress: '',
       backgroundColor: null,
-      projectInfo: {},
+      project: {},
       tabs: [
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
         { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
       ],
       width: window.innerWidth,
+      steps: [
+        { id: 0, title: 'stepModal0' },
+        { id: 1, title: 'stepModal1' },
+        { id: 2, title: 'stepModal2' },
+        { id: 3, title: 'stepModal3' },
+        { id: 4, title: 'stepModalFinal' },
+        { id: 5, title: 'stepModalMinting' },
+      ],
+      slotData: { lazyMint: 1 },
     }
   },
   methods: {
     async getProject() {
-      const projectInfo = await graphql(
+      const result = await graphql(
         queryProject({
           variables: {
             id: this.projectAddress,
           },
         }),
       )
-      return projectInfo
+      return result.project
     },
     close() {
+      this.slotData = { lazyMint: 1 }
       this.toggleModal()
     },
     toggleModal() {
@@ -111,13 +150,16 @@ export default {
     setWidth() {
       this.width = window.innerWidth
     },
+    setSlotData(key, val) {
+      this.slotData[key] = val
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
     this.backgroundColor = this.generateGradientBackground(
       this.$route.params.id,
     )
-    this.projectInfo = await this.getProject()
+    this.project = await this.getProject()
 
     this.tabs[0].api = {
       func: graphql,
@@ -140,7 +182,7 @@ export default {
       () => this.$route,
       async to => {
         if (to.name === 'Project' && this.projectAddress) {
-          this.projectInfo = await this.getProject()
+          this.project = await this.getProject()
         }
       },
     )
@@ -332,10 +374,6 @@ export default {
       padding: 0 10%;
     }
   }
-}
-
-.modal_header {
-  cursor: pointer;
 }
 
 @media only screen and (max-width: 599px) {
