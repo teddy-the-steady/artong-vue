@@ -105,6 +105,11 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 32px;
+      display: inline-block;
+      max-width: 80px;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
     }
     .username_box {
       margin-top: 7.5px;
