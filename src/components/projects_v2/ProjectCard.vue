@@ -21,17 +21,21 @@
         class="bundle"
         :members="project.contributors"
       ></ContentsProfileBundle>
-      <div class="nickName">
-        @{{
-          project.contributors && project.contributors.length > 0
-            ? project.contributors[0].username
-            : 'nickName'
-        }}
-        {{
-          project.contributors && project.contributors.length > 1
-            ? `+${project.contributors.length - 1}`
-            : ''
-        }}
+      <div class="contributors">
+        <span class="nickName">
+          @{{
+            project.contributors && project.contributors.length > 0
+              ? project.contributors[0].username
+              : 'nickName'
+          }}
+        </span>
+        <span class="count">
+          {{
+            project.contributors && project.contributors.length > 1
+              ? `+${project.contributors.length - 1}`
+              : ''
+          }}
+        </span>
       </div>
     </div>
   </div>
@@ -132,13 +136,23 @@ export default {
     .bundle {
       margin-left: 35px;
     }
-    .nickName {
+
+    .contributors {
       font-family: $item-font;
       font-style: $item-font-style;
       font-weight: 500;
       font-size: 14px;
       line-height: 32px;
       color: $artong-white;
+      display: flex;
+      .nickName {
+        display: inline-block;
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+        margin-right: 5px;
+      }
     }
   }
 }
