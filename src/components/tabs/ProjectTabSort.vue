@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tabs">
-      <tab-item
+      <TabItem
         v-for="tab in tabs"
         v-bind="tab"
         :key="tab.id"
@@ -16,10 +16,10 @@
     <div class="items">
       <section class="item" :key="currentId">
         <div v-show="current.type === 'CONTENTS'">
-          <content-list
+          <ContentList
             :queryContents="current.api"
             :windowWide="false"
-          ></content-list>
+          ></ContentList>
         </div>
         {{ current }}
       </section>
@@ -33,7 +33,7 @@ import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
 
 export default {
-  name: 'ProjectTab',
+  name: 'ProjectTabSort',
   components: {
     TabItem,
     ContentList,

@@ -1,6 +1,14 @@
 <template>
   <div class="wrapper">
-    <div class="background">
+    <div
+      class="background"
+      :style="{
+        background:
+          project.background_thumbnail_s3key || project.background_s3key
+            ? 'ghostwhite'
+            : project.backgroundColor,
+      }"
+    >
       <img
         ref="backgroundImage"
         :src="project.background_thumbnail_s3key || project.background_s3key"
@@ -55,6 +63,7 @@ export default {
           background_s3key: '',
           background_thumbnail_s3key: '',
           symbol: '',
+          backgroundColor: '#454545',
         }
       },
     },
@@ -68,10 +77,8 @@ export default {
 .wrapper {
   position: relative;
   overflow: hidden;
-  border: 1px solid #333333;
   border-radius: 15px;
   margin: 24px 16px;
-  background: linear-gradient(45deg, $darkgray, transparent);
 
   .background {
     position: absolute;
@@ -145,6 +152,8 @@ export default {
       line-height: 32px;
       color: $artong-white;
       display: flex;
+      position: relative;
+      margin-left: 10px;
       .nickName {
         display: inline-block;
         max-width: 80px;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <project-list :queryProjects="queryProjects"></project-list>
+    <ProjectList :queryProjects="queryProjects"></ProjectList>
     <div>hello</div>
   </div>
 </template>
