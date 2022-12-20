@@ -21,7 +21,7 @@
   </carousel>
 </template>
 <script>
-import ProjectCard from '../projects_v2/ProjectCard.vue'
+import ProjectCard from '../projects/ProjectCard.vue'
 
 export default {
   name: 'CuratedCollection',
