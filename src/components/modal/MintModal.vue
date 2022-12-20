@@ -77,6 +77,7 @@ export default {
     },
     ...mapState({
       currentUser: state => state.user.currentUser,
+      walletStatus: state => state.wallet.status,
     }),
   },
   data() {
@@ -124,6 +125,9 @@ export default {
     async mint() {
       if (!this.signer) {
         if (this.isMobile) {
+          if (!this.walletStatus) {
+            await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+          }
           this.signer = await getWalletConnectSigner()
         } else {
           this.signer = await getPcSigner()
