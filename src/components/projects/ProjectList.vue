@@ -7,10 +7,10 @@
         </router-link>
       </div>
     </div>
-    <infinite-loading
+    <InfiniteLoading
       @infinite="infiniteHandler"
       spinner="spiral"
-    ></infinite-loading>
+    ></InfiniteLoading>
   </div>
 </template>
 

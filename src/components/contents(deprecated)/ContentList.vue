@@ -1,26 +1,26 @@
 <template>
   <div>
-    <top-container
+    <TopContainer
       :topImages="topContents"
       :selectedImage="selectedImage"
       @image-selected="onTopImageSelect"
-    ></top-container>
-    <center-container
+    ></TopContainer>
+    <CenterContainer
       class="center-container"
       v-show="selectedImage"
       :image="selectedImage"
       ref="center"
-    ></center-container>
-    <bottom-container
+    ></CenterContainer>
+    <BottomContainer
       v-if="bottomContents"
       :bottomImages="bottomContents"
       @image-selected="onBottomImageSelect"
-    ></bottom-container>
-    <infinite-loading
+    ></BottomContainer>
+    <InfiniteLoading
       :identifier="$route.params.id"
       @infinite="infiniteHandler"
       spinner="spiral"
-    ></infinite-loading>
+    ></InfiniteLoading>
   </div>
 </template>
 

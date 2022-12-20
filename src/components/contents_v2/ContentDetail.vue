@@ -295,7 +295,7 @@ import {
 } from '../../api/graphql'
 import { makeS3Path, etherToWei, weiToEther } from '../../util/commonFunc'
 import ContentsProfile from '../profile/ContentsProfile.vue'
-import TokensByCollection from '../CollectionCard/TokensByCollection.vue'
+import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import {
   MARKETPLACE_ABI,
   MARKETPLACE,
