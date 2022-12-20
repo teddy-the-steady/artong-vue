@@ -17,12 +17,10 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import { makeS3Path } from '../../util/commonFunc'
-import { backgroundColor } from '../../mixin'
 import ProjectCard from '../projects/ProjectCard.vue'
 
 export default {
   name: 'ProjectList',
-  mixins: [backgroundColor],
   components: {
     ProjectCard,
     InfiniteLoading,
@@ -86,7 +84,6 @@ export default {
               contributors: results[i].contributors,
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,
-              backgroundColor: this.generateGradientBackground(results[i].id),
             })
           }
         } else {
