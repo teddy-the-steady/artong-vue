@@ -14,9 +14,9 @@
         <router-link
           :to="{ name: 'UserOrArtist', params: { id: image.username } }"
         >
-          <in-contents-profile
+          <InContentsProfile
             :profileImageUrl="image.profileImageUrl"
-          ></in-contents-profile>
+          ></InContentsProfile>
         </router-link>
       </div>
     </transition>
@@ -26,12 +26,12 @@
         v-if="isLayerActive"
         :class="{ active: isLayerActive }"
       >
-        <reaction-list
+        <ReactionList
           :isPropCommentActive="isPropCommentActive"
           :image="image"
           @handle-comment-click="handleCommentClick"
         >
-        </reaction-list>
+        </ReactionList>
       </div>
     </transition>
   </div>
@@ -39,7 +39,7 @@
 
 <script>
 import InContentsProfile from '../profile/InContentsProfile.vue'
-import ReactionList from '../contents/ReactionList.vue'
+import ReactionList from '../contents(deprecated)/ReactionList.vue'
 
 export default {
   name: 'ContentLayer',

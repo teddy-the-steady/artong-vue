@@ -11,7 +11,7 @@
             },
           }"
         >
-          <content-box :image="val"></content-box>
+          <ContentBox :image="val"></ContentBox>
         </router-link>
         <router-link
           class="profileBox"
@@ -23,16 +23,16 @@
             },
           }"
         >
-          <contents-profile :member="val.owner"></contents-profile>
+          <ContentsProfile :member="val.owner"></ContentsProfile>
         </router-link>
       </div>
     </masonry>
-    <infinite-loading
+    <InfiniteLoading
       :identifier="$route.params.id"
       @infinite="infiniteHandler"
       spinner="spiral"
       force-use-infinite-wrapper=".contents"
-    ></infinite-loading>
+    ></InfiniteLoading>
   </div>
 </template>
 

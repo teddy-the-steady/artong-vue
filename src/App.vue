@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <header-bar id="header-bar"></header-bar>
-    <side-bar id="side-bar"></side-bar>
+    <HeaderBar id="header-bar"></HeaderBar>
+    <SideBar id="side-bar"></SideBar>
     <div class="contents">
       <keep-alive>
         <router-view class="contents__body" />
       </keep-alive>
     </div>
-    <confirm-modal
+    <ConfirmModal
       v-show="isConfirmModalOpen"
       @close-modal="toggleConfirmModal"
       ref="confirmModal"
     >
       <span slot="body">Continue with your wallet</span>
-    </confirm-modal>
+    </ConfirmModal>
   </div>
 </template>
 

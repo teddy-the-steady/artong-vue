@@ -242,12 +242,12 @@
 
 <script>
 import { headerActivate } from '../../mixin'
-import CuratedCollection from '../CollectionCard/CuratedCollection.vue'
-import BuyAndSell from '../CollectionCard/BuyAndSell.vue'
-import RecentContribution from '../CollectionCard/RecentContribution.vue'
-import FeaturedCreator from '../CollectionCard/FeaturedCreator.vue'
+import CuratedCollection from '../collection_card/CuratedCollection.vue'
+import BuyAndSell from '../collection_card/BuyAndSell.vue'
+import RecentContribution from '../collection_card/RecentContribution.vue'
+import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import Table from '../table/Table.vue'
-import CuratedCollectionWide from '../CollectionCard/CuratedCollection_wide.vue'
+import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
 
 export default {

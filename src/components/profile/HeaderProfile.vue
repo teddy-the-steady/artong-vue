@@ -1,9 +1,9 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box
+      <SkeletonBox
         style="width: 100%; height: 100%; border-radius: 50%"
-      ></skeleton-box>
+      ></SkeletonBox>
     </div>
     <div v-else class="image">
       <img

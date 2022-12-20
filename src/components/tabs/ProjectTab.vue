@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="tabs">
-      <tab-item
+      <TabItem
         v-for="tab in tabs"
         v-bind="tab"
         :key="tab.id"
@@ -12,7 +12,7 @@
     <div class="items">
       <section class="item" :key="currentId">
         <div v-show="current.type === 'CONTENTS'">
-          <content-list :queryContents="current.api"></content-list>
+          <ContentList :queryContents="current.api"></ContentList>
         </div>
         {{ current }}
       </section>
