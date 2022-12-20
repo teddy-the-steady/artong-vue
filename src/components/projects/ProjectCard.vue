@@ -1,14 +1,6 @@
 <template>
   <div class="wrapper">
-    <div
-      class="background"
-      :style="{
-        background:
-          project.background_thumbnail_s3key || project.background_s3key
-            ? 'ghostwhite'
-            : project.backgroundColor,
-      }"
-    >
+    <div class="background">
       <img
         ref="backgroundImage"
         :src="project.background_thumbnail_s3key || project.background_s3key"
@@ -63,7 +55,6 @@ export default {
           background_s3key: '',
           background_thumbnail_s3key: '',
           symbol: '',
-          backgroundColor: '#454545',
         }
       },
     },
@@ -87,7 +78,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-
+    background: linear-gradient(45deg, #454545, transparent);
     img {
       height: 120%;
       opacity: 0.5;
