@@ -140,6 +140,7 @@ export default {
         name: this.slotData.name,
         description: this.slotData.description,
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
+        content_id: this.slotData.postResult.id,
       })
 
       try {
@@ -151,15 +152,12 @@ export default {
           const lazyMint = this.slotData.lazyMint == 1
 
           if (lazyMint) {
-            console.log(this.slotData.postResult.project_address)
-            console.log(metadata)
             const voucher = await this.makeLazyMintingVoucher(
               this.slotData.postResult.project_address,
               metadata.url,
               '',
             )
 
-            console.log(voucher)
             await patchContent(this.slotData.postResult.id, {
               voucher: voucher,
               isRedeemed: false,
@@ -186,9 +184,6 @@ export default {
 
             await patchContent(this.slotData.postResult.id, {
               tokenId: tokenId,
-              ipfs_url: metadata.url,
-              name: this.slotData.name,
-              description: this.slotData.description,
             })
           }
         }
