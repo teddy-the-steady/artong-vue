@@ -58,7 +58,7 @@ import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 import Ripple from '../../directives/ripple/Ripple'
-import ProjectPrototypeCard from '../projects_v2/ProjectPrototypeCard.vue'
+import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 
 export default {
   name: 'CreateProject',
