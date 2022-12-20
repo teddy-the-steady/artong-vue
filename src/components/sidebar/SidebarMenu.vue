@@ -7,7 +7,7 @@
     <slot name="header" />
     <div class="art--scroll-wrapper">
       <div class="art--list">
-        <sidebar-menu-item
+        <SidebarMenuItem
           v-for="(item, index) in menu"
           :key="index"
           :item="item"
@@ -16,12 +16,12 @@
           :show-child="showChild"
         >
           <slot slot="dropdown-icon" name="dropdown-icon" />
-        </sidebar-menu-item>
+        </SidebarMenuItem>
       </div>
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <light-dark-switch></light-dark-switch>
+      <LightDarkSwitch></LightDarkSwitch>
     </div>
   </div>
 </template>

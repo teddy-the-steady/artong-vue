@@ -14,7 +14,7 @@
     v-else
     @mouseout="mouseLeaveEvent"
   >
-    <sidebar-menu-link
+    <SidebarMenuLink
       :class="itemLinkClass"
       :tag="
         item.disabled || !itemLinkHref
@@ -28,9 +28,9 @@
       v-bind="item.attributes"
       @click.native="clickEvent"
     >
-      <sidebar-menu-icon v-if="item.icon" :icon="item.icon" />
+      <SidebarMenuIcon v-if="item.icon" :icon="item.icon" />
       <template>
-        <sidebar-menu-badge
+        <SidebarMenuBadge
           v-if="item.badge"
           :badge="item.badge"
           :style="[item.child ? { 'margin-right': '30px' } : '']"
@@ -47,7 +47,7 @@
           <slot name="dropdown-icon" />
         </div>
       </template>
-    </sidebar-menu-link>
+    </SidebarMenuLink>
     <template v-if="item.child">
       <template>
         <div class="art--dropdown" v-if="show">

@@ -3,7 +3,7 @@
     <div class="header">
       <div class="background" :style="{ background: backgroundColor }"></div>
       <div class="user-info">
-        <project-page-profile class="profile"></project-page-profile>
+        <ProjectPageProfile class="profile"></ProjectPageProfile>
         <div class="buttons">
           <div class="round-button">
             <img src="../../assets/icons/share.svg" />
@@ -39,7 +39,7 @@
         </div>
         <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
       </div>
-      <project-tab-sort :tabs="tabs" class="project-tab-sort" />
+      <ProjectTabSort :tabs="tabs" class="project-tab-sort" />
     </div>
     <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
       <span slot="header" @click="close">X</span>
