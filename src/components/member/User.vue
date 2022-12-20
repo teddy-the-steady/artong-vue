@@ -2,13 +2,13 @@
   <div>
     <div class="header">
       <div class="user-info">
-        <my-page-profile></my-page-profile>
+        <MyPageProfile></MyPageProfile>
       </div>
-      <user-profile-buttons></user-profile-buttons>
+      <UserProfileButtons></UserProfileButtons>
       <div>address: {{ walletConnectState.address }}</div>
       <div>chainId: {{ walletConnectState.chainId }}</div>
     </div>
-    <profile-tab :tabs="tabs" />
+    <ProfileTab :tabs="tabs" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import {
 } from '../../api/graphql'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
-import UserProfileButtons from '../buttonGroup/UserProfileButtons.vue'
+import UserProfileButtons from '../button_group/UserProfileButtons.vue'
 
 export default {
   name: 'User',

@@ -2,9 +2,9 @@
   <div :key="componentKey">
     <div class="header">
       <div class="user-info">
-        <artist-page-profile :member="member"></artist-page-profile>
+        <ArtistPageProfile :member="member"></ArtistPageProfile>
       </div>
-      <profile-tab v-if="member.id" :tabs="tabs" />
+      <ProfileTab v-if="member.id" :tabs="tabs" />
     </div>
   </div>
 </template>

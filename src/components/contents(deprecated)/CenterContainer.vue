@@ -9,12 +9,12 @@
           :src="require(`../../assets/images/art${image.url}.jpg`)"
           alt=""
         />
-        <content-layer
+        <ContentLayer
           :image="image"
           class="content-layer"
           :isPropCommentActive="isCommentActive"
           @handle-comment-click="handleCommentClick"
-        ></content-layer>
+        ></ContentLayer>
       </div>
     </div>
     <div class="comment" v-if="isCommentActive">

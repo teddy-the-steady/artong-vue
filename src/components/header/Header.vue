@@ -7,7 +7,7 @@
     >
       <div class="navbar__side">
         <div class="navbar__menu">
-          <burger></burger>
+          <Burger></Burger>
           <router-link
             to="/"
             class="logo-box"
@@ -88,12 +88,12 @@
               @mousedown="profileMouseDown"
               @mouseup="profileMouseUp"
             >
-              <header-profile></header-profile>
+              <HeaderProfile></HeaderProfile>
             </div>
           </div>
         </div>
       </div>
-      <user-dialog
+      <UserDialog
         class="user_dialog"
         :class="{ active: isDialogActive }"
         @dialog-focus-out="closeDialog"
@@ -108,7 +108,7 @@
         </router-link>
         <div slot="body">Settings</div>
         <div slot="body" @click="signOut">Disconnect</div>
-      </user-dialog>
+      </UserDialog>
     </nav>
   </transition>
 </template>
