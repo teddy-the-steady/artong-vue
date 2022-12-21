@@ -125,6 +125,7 @@ export default {
     async mint() {
       if (!this.signer) {
         if (this.isMobile) {
+          console.log(this.walletStatus)
           if (!this.walletStatus) {
             await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
           }
