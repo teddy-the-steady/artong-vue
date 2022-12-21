@@ -98,7 +98,10 @@ export default {
       switch (this.currentStep.id) {
         case 0:
           if (!this.slotData.s3Result) {
-            alert('please add image')
+            alert('Please add image')
+            return
+          } else if (!this.slotData.postResult) {
+            alert('Oops, something went wrong! Please try again')
             return
           }
           break
@@ -109,8 +112,8 @@ export default {
           }
           break
         case 3:
-          if (this.slotData.price < 0.001) {
-            alert('price must be bigger than 0.001 ETH')
+          if (!this.slotData.price || this.slotData.price < 0.001) {
+            alert('Price must be bigger than 0.001 ETH')
             return
           }
           break
