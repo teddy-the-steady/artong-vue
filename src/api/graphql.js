@@ -62,6 +62,7 @@ const queryProjectsByCreator = function (variables) {
       query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
         projects(first: $first, skip: $skip, where: {creator: $creator}) {
           id
+          txHash
           creator
           owner
           name
