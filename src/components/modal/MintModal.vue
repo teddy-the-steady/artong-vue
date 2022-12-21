@@ -112,9 +112,11 @@ export default {
           }
           break
         case 3:
-          if (!this.slotData.price || this.slotData.price < 0.001) {
-            alert('Price must be bigger than 0.001 ETH')
-            return
+          if (this.slotData.lazyMint == 1) {
+            if (!this.slotData.price || this.slotData.price < 0.001) {
+              alert('Least price is 0.001 ETH')
+              return
+            }
           }
           break
         default:
