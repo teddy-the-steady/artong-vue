@@ -67,6 +67,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
+      walletStatus: state => state.wallet.status,
     }),
     isMobile() {
       return this.$isMobile()
@@ -91,6 +92,7 @@ export default {
     async createProject() {
       if (!this.signer) {
         if (this.isMobile) {
+          console.log(this.walletStatus)
           this.signer = await getWalletConnectSigner()
         } else {
           this.signer = await getPcSigner()
