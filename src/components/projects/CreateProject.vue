@@ -98,14 +98,9 @@ export default {
   },
   methods: {
     async createProject() {
-      // TODO] 문제가 발생하는 상황은? 연결이 훼손 됐는데 this.signer가 남아있을때 발생.
-      // disconnect 되면 this.signer도 날려줘야. signer를 지역변수로 선언하자
-      // 오랜만에(리프레시 토큰 만료 전?) 모바일웹 켰을때 앱스토어로 redirect하는 이슈.
       let signer = null
       if (this.isMobile) {
-        console.log('this.isMobile')
         if (!this.walletStatus) {
-          console.log('!this.walletStatus')
           if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
             signer = getWalletConnectSigner()
           } else {
@@ -117,7 +112,6 @@ export default {
       } else {
         signer = await getPcSigner()
       }
-      console.log('signer:', signer)
 
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
       const tx = await this._createNFTContract(contract)
