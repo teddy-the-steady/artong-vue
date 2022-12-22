@@ -99,10 +99,13 @@ export default {
   },
   methods: {
     async createProject() {
-      console.log('this.signer:', this.signer)
+      console.log('this.signer1:', this.signer)
       if (!this.signer) {
+        console.log('!this.signer')
         if (this.isMobile) {
+          console.log('this.isMobile')
           if (!this.walletStatus) {
+            console.log('!this.walletStatus')
             if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
               this.signer = getWalletConnectSigner()
             } else {
@@ -113,6 +116,7 @@ export default {
           this.signer = await getPcSigner()
         }
       }
+      console.log('this.signer2:', this.signer)
 
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
