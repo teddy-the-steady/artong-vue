@@ -38,6 +38,9 @@
             <label for="r2">Approved</label>
           </div>
         </div>
+        walletStatus: {{ walletStatus }}<br /><br />
+        walletConnect: {{ walletConnect }}<br /><br />
+        getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
         <button @click="createProject" v-ripple>CREATE PROJECT</button>
       </div>
     </div>
@@ -47,7 +50,7 @@
 <script>
 import Storage from '@aws-amplify/storage'
 import { ethers } from 'ethers'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import {
   FACTORY_ABI,
   FACTORY,
@@ -72,6 +75,12 @@ export default {
     isMobile() {
       return this.$isMobile()
     },
+    walletConnect() {
+      return localStorage.getItem('walletconnect')
+    },
+    ...mapGetters({
+      getDefaultWalletConnectState: 'getDefaultWalletConnectState',
+    }),
   },
   directives: {
     ripple: Ripple,
