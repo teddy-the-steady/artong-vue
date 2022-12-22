@@ -37,7 +37,7 @@
               Mint
             </button>
             walletStatus: {{ walletStatus }}<br /><br />
-            walletConnect: {{ walletConnect.connected }}<br /><br />
+            walletConnect: {{ walletConnect }}<br /><br />
             getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
           </div>
         </div>
@@ -83,7 +83,7 @@ export default {
       walletStatus: state => state.wallet.status,
     }),
     walletConnect() {
-      return JSON.parse(localStorage.getItem('walletconnect'))
+      return JSON.parse(localStorage.getItem('walletconnect'))?.connected
     },
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
