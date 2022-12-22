@@ -139,11 +139,13 @@ export default {
     async mint() {
       if (!this.signer) {
         if (this.isMobile) {
-          console.log(this.walletStatus)
           if (!this.walletStatus) {
-            await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+            if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
+              this.signer = getWalletConnectSigner()
+            } else {
+              return
+            }
           }
-          this.signer = await getWalletConnectSigner()
         } else {
           this.signer = await getPcSigner()
         }
