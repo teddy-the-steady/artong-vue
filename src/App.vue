@@ -110,11 +110,7 @@ export default {
       const member = await getCurrentMember()
       await this.$store.dispatch('CURRENT_USER', member)
     } catch (error) {
-      if (this.authError === 'error') {
-        await this.$store.dispatch('AUTH_LOGOUT')
-      } else if (error === 'No current user') {
-        console.log('No current user')
-      }
+      await this.$store.dispatch('AUTH_LOGOUT')
     }
   },
   async mounted() {
