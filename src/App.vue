@@ -44,6 +44,9 @@ export default {
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
     }),
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   methods: {
     async getPcWalletOnFirstLoad() {
@@ -115,12 +118,15 @@ export default {
     }
   },
   async mounted() {
-    this.addPcWalletEventHandler()
-    await this.getPcWalletOnFirstLoad()
-    await this.$store.dispatch(
-      'AUTO_CONNECT_WALLET',
-      this.getDefaultWalletConnectState,
-    )
+    if (this.isMobile) {
+      await this.$store.dispatch(
+        'AUTO_CONNECT_WALLET',
+        this.getDefaultWalletConnectState,
+      )
+    } else {
+      this.addPcWalletEventHandler()
+      await this.getPcWalletOnFirstLoad()
+    }
     this.$store.commit(
       'CONFIRM_MODAL_WAIT_FOR_ANSWER',
       this.$refs.confirmModal.waitForAnswer,
