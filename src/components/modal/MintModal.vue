@@ -36,6 +36,9 @@
             >
               Mint
             </button>
+            walletStatus: {{ walletStatus }}<br /><br />
+            walletConnect: {{ walletConnect.connected }}<br /><br />
+            getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
           </div>
         </div>
       </div>
@@ -45,7 +48,7 @@
 
 <script>
 import { ethers } from 'ethers'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import Ripple from '../../directives/ripple/Ripple'
 import {
   ERC721_ABI,
@@ -78,6 +81,12 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser,
       walletStatus: state => state.wallet.status,
+    }),
+    walletConnect() {
+      return JSON.parse(localStorage.getItem('walletconnect'))
+    },
+    ...mapGetters({
+      getDefaultWalletConnectState: 'getDefaultWalletConnectState',
     }),
   },
   data() {
