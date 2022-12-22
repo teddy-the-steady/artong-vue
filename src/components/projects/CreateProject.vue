@@ -111,6 +111,8 @@ export default {
             } else {
               return
             }
+          } else {
+            this.signer = getWalletConnectSigner()
           }
         } else {
           this.signer = await getPcSigner()
