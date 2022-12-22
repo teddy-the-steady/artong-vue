@@ -107,17 +107,16 @@ const actions = {
     }
   },
   [AUTO_CONNECT_WALLET]: async function ({ commit, dispatch }, state) {
-    if (state.status) {
-      if (localStorage.getItem('walletconnect') == null) {
-        commit(WALLET_STATUS, false)
-        commit(WALLET_ACCOUNT, '')
-        localStorage.removeItem('userWalletConnectState')
-      }
-      if (localStorage.getItem('walletconnect')) {
-        ;(async () => {
-          await dispatch('SET_UP_WALLET_CONNECTION')
-        })()
-      }
+    console.log(state)
+    if (localStorage.getItem('walletconnect') == null) {
+      commit(WALLET_STATUS, false)
+      commit(WALLET_ACCOUNT, '')
+      localStorage.removeItem('userWalletConnectState')
+    }
+    if (localStorage.getItem('walletconnect')) {
+      ;(async () => {
+        await dispatch('SET_UP_WALLET_CONNECTION')
+      })()
     }
   },
   [DISCONNECT_WALLET]: async function ({ commit }) {

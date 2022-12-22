@@ -101,8 +101,13 @@ export default {
     async createProject() {
       if (!this.signer) {
         if (this.isMobile) {
-          console.log(this.walletStatus)
-          this.signer = await getWalletConnectSigner()
+          if (!this.walletStatus) {
+            if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
+              this.signer = getWalletConnectSigner()
+            } else {
+              return
+            }
+          }
         } else {
           this.signer = await getPcSigner()
         }
@@ -111,18 +116,30 @@ export default {
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
 
-      const [result1, result2] = await Promise.all([
-        await this.uploadProjectProfileImage(tx.hash),
-        await this.uploadProjectBackgroundImage(tx.hash),
-      ])
+      let result1 = null
+      let result2 = null
+      if (this.profileImageFile && this.backgroundImageFile) {
+        ;[result1, result2] = await Promise.all([
+          await this.uploadProjectProfileImage(tx.hash),
+          await this.uploadProjectBackgroundImage(tx.hash),
+        ])
+      } else if (this.profileImageFile && !this.backgroundImageFile) {
+        result1 = await this.uploadProjectProfileImage(tx.hash)
+      } else if (!this.profileImageFile && this.backgroundImageFile) {
+        result2 = await this.uploadProjectBackgroundImage(tx.hash)
+      }
 
       const postResult = await postProject({
         create_tx_hash: tx.hash,
         name: this.name,
         symbol: this.symbol,
         status: PENDING,
-        project_s3key: `${this.S3_PRIVACY_LEVEL}/${result1.key}`,
-        background_s3key: `${this.S3_PRIVACY_LEVEL}/${result2.key}`,
+        project_s3key: result1
+          ? `${this.S3_PRIVACY_LEVEL}/${result1.key}`
+          : null,
+        background_s3key: result2
+          ? `${this.S3_PRIVACY_LEVEL}/${result2.key}`
+          : null,
       })
 
       if (postResult) {
