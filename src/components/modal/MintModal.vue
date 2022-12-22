@@ -95,7 +95,6 @@ export default {
         id: this.steps[0].id,
         title: this.steps[0].title,
       },
-      signer: null,
       S3_PRIVACY_LEVEL: 'public',
     }
   },
@@ -137,18 +136,19 @@ export default {
       this.currentStep.id--
     },
     async mint() {
-      if (!this.signer) {
-        if (this.isMobile) {
-          if (!this.walletStatus) {
-            if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-              this.signer = getWalletConnectSigner()
-            } else {
-              return
-            }
+      let signer = null
+      if (this.isMobile) {
+        if (!this.walletStatus) {
+          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
+            signer = getWalletConnectSigner()
+          } else {
+            return
           }
         } else {
-          this.signer = await getPcSigner()
+          signer = getWalletConnectSigner()
         }
+      } else {
+        signer = await getPcSigner()
       }
 
       this.currentStep.id++
@@ -173,6 +173,7 @@ export default {
               this.slotData.postResult.project_address,
               metadata.url,
               '',
+              signer,
             )
 
             await patchContent(this.slotData.postResult.id, {
@@ -186,7 +187,7 @@ export default {
             const contract = new ethers.Contract(
               this.slotData.postResult.project_address,
               ERC721_ABI,
-              this.signer,
+              signer,
             )
 
             const tx = await this.doMint(
@@ -209,10 +210,10 @@ export default {
         alert('Oops, something went wrong! Please try again')
       }
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
+    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri, signer) {
       const lazyMinter = new LazyMinter({
-        contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
-        signer: this.signer,
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
+        signer: signer,
       })
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
