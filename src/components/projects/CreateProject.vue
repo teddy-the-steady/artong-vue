@@ -99,6 +99,7 @@ export default {
   },
   methods: {
     async createProject() {
+      console.log('this.signer:', this.signer)
       if (!this.signer) {
         if (this.isMobile) {
           if (!this.walletStatus) {
