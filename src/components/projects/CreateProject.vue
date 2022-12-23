@@ -98,6 +98,14 @@ export default {
   },
   methods: {
     async createProject() {
+      if (!(await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION'))) {
+        this.$router.push({
+          name: 'Login',
+          query: { redirect: this.$router.currentRoute.fullPath },
+        })
+        return
+      }
+
       let signer = null
       if (this.isMobile) {
         if (!this.walletStatus) {
