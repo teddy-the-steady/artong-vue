@@ -156,50 +156,50 @@ export default {
       })
 
       try {
-        // this.$store.commit('TOGGLE_CONFIRM_MODAL')
-        // const ok =
-        //   await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+        this.$store.commit('TOGGLE_CONFIRM_MODAL')
+        const ok =
+          await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
-        // if (ok) {
-        const lazyMint = this.slotData.lazyMint == 1
+        if (ok) {
+          const lazyMint = this.slotData.lazyMint == 1
 
-        if (lazyMint) {
-          const voucher = await this.makeLazyMintingVoucher(
-            this.slotData.postResult.project_address,
-            metadata.url,
-            '',
-          )
+          if (lazyMint) {
+            const voucher = await this.makeLazyMintingVoucher(
+              this.slotData.postResult.project_address,
+              metadata.url,
+              '',
+            )
 
-          await patchContent(this.slotData.postResult.id, {
-            voucher: voucher,
-            isRedeemed: false,
-            ipfs_url: metadata.url,
-            name: this.slotData.name,
-            description: this.slotData.description,
-          })
-        } else {
-          const contract = new ethers.Contract(
-            this.slotData.postResult.project_address,
-            ERC721_ABI,
-            this.signer,
-          )
+            await patchContent(this.slotData.postResult.id, {
+              voucher: voucher,
+              isRedeemed: false,
+              ipfs_url: metadata.url,
+              name: this.slotData.name,
+              description: this.slotData.description,
+            })
+          } else {
+            const contract = new ethers.Contract(
+              this.slotData.postResult.project_address,
+              ERC721_ABI,
+              this.signer,
+            )
 
-          const tx = await this.doMint(
-            contract,
-            metadata.url,
-            '',
-            this.slotData.tokenRoyalty || 0,
-          )
-          const txHash = await this.signer.sendUncheckedTransaction(tx)
+            const tx = await this.doMint(
+              contract,
+              metadata.url,
+              '',
+              this.slotData.tokenRoyalty || 0,
+            )
+            const txHash = await this.signer.sendUncheckedTransaction(tx)
 
-          const approveReceipt = await this.wait(txHash)
-          const tokenId = parseInt(approveReceipt.logs[1].topics[3])
+            const approveReceipt = await this.wait(txHash)
+            const tokenId = parseInt(approveReceipt.logs[1].topics[3])
 
-          await patchContent(this.slotData.postResult.id, {
-            tokenId: tokenId,
-          })
+            await patchContent(this.slotData.postResult.id, {
+              tokenId: tokenId,
+            })
+          }
         }
-        // }
       } catch (error) {
         console.log(error)
         alert('Oops, something went wrong! Please try again')
