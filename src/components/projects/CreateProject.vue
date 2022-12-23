@@ -127,13 +127,7 @@ export default {
 
       if (ok) {
         const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
-        // const tx = await this._createNFTContract(contract)
-        const tx = await contract.createNFTContract(
-          this.name,
-          this.symbol,
-          this.maxAmount,
-          this.policy,
-        )
+        const tx = await this._createNFTContract(contract)
 
         let result1 = null
         let result2 = null
