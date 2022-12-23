@@ -41,7 +41,7 @@
         walletStatus: {{ walletStatus }}<br /><br />
         walletConnect: {{ walletConnect }}<br /><br />
         getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
-        <button @click="createProject" v-ripple>CREATE PROJECT</button>
+        <button @click="createProject">CREATE PROJECT</button>
       </div>
     </div>
   </div>
@@ -119,22 +119,23 @@ export default {
 
       const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
 
       let result1 = null
       let result2 = null
       if (this.profileImageFile && this.backgroundImageFile) {
         ;[result1, result2] = await Promise.all([
-          await this.uploadProjectProfileImage(tx.hash),
-          await this.uploadProjectBackgroundImage(tx.hash),
+          await this.uploadProjectProfileImage(txHash),
+          await this.uploadProjectBackgroundImage(txHash),
         ])
       } else if (this.profileImageFile && !this.backgroundImageFile) {
-        result1 = await this.uploadProjectProfileImage(tx.hash)
+        result1 = await this.uploadProjectProfileImage(txHash)
       } else if (!this.profileImageFile && this.backgroundImageFile) {
-        result2 = await this.uploadProjectBackgroundImage(tx.hash)
+        result2 = await this.uploadProjectBackgroundImage(txHash)
       }
 
       const postResult = await postProject({
-        create_tx_hash: tx.hash,
+        create_tx_hash: txHash,
         name: this.name,
         symbol: this.symbol,
         status: PENDING,
@@ -149,12 +150,13 @@ export default {
       if (postResult) {
         this.$router.push({
           name: 'CreatingProject',
-          query: { txHash: tx.hash },
+          query: { txHash: txHash },
         })
       }
     },
     async _createNFTContract(contract) {
-      const tx = await contract.createNFTContract(
+      // const tx = await contract.createNFTContract(
+      const tx = await contract.populateTransaction.createNFTContract(
         this.name,
         this.symbol,
         this.maxAmount,
