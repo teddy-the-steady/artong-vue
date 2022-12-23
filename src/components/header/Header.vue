@@ -178,8 +178,15 @@ export default {
         console.log(error)
       }
     },
-    contribute() {
+    async contribute() {
       if (this.$router.currentRoute.name === 'Project') {
+        if (!(await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION'))) {
+          this.$router.push({
+            name: 'Login',
+            query: { redirect: this.$router.currentRoute.fullPath },
+          })
+          return
+        }
         this.$root.$emit('contribute')
       } else if (this.$router.currentRoute.name === 'Projects') {
         alert('First, choose a project to contribute!')
