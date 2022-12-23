@@ -155,7 +155,6 @@ export default {
       }
     },
     async _createNFTContract(contract) {
-      // const tx = await contract.createNFTContract(
       const tx = await contract.populateTransaction.createNFTContract(
         this.name,
         this.symbol,
