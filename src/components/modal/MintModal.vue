@@ -136,19 +136,18 @@ export default {
       this.currentStep.id--
     },
     async mint() {
-      let signer = null
       if (this.isMobile) {
         if (!this.walletStatus) {
           if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = await getWalletConnectSigner()
+            this.signer = await getWalletConnectSigner()
           } else {
             return
           }
         } else {
-          signer = await getWalletConnectSigner()
+          this.signer = await getWalletConnectSigner()
         }
       } else {
-        signer = await getPcSigner()
+        this.signer = await getPcSigner()
       }
 
       this.currentStep.id++
@@ -173,7 +172,6 @@ export default {
               this.slotData.postResult.project_address,
               metadata.url,
               '',
-              signer,
             )
 
             await patchContent(this.slotData.postResult.id, {
@@ -187,7 +185,7 @@ export default {
             const contract = new ethers.Contract(
               this.slotData.postResult.project_address,
               ERC721_ABI,
-              signer,
+              this.signer,
             )
 
             const tx = await this.doMint(
@@ -210,10 +208,10 @@ export default {
         alert('Oops, something went wrong! Please try again')
       }
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri, signer) {
+    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
       const lazyMinter = new LazyMinter({
-        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
-        signer: signer,
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
+        signer: this.signer,
       })
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
