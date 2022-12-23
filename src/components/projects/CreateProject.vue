@@ -51,16 +51,12 @@
 import Storage from '@aws-amplify/storage'
 import { ethers } from 'ethers'
 import { mapState, mapGetters } from 'vuex'
-import {
-  FACTORY_ABI,
-  FACTORY,
-  getPcSigner,
-  getWalletConnectSigner,
-} from '../../contracts'
+import { FACTORY_ABI, FACTORY } from '../../contracts'
 import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 import Ripple from '../../directives/ripple/Ripple'
+import Provider from '../../util/walletConnectProvider'
 import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 
 export default {
@@ -107,61 +103,54 @@ export default {
         return
       }
 
-      // let signer = null
       if (this.isMobile) {
         if (!this.walletStatus) {
           if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            this.signer = await getWalletConnectSigner()
+            this.signer = Provider.getWalletConnectSigner()
           } else {
             return
           }
         } else {
-          this.signer = await getWalletConnectSigner()
+          this.signer = Provider.getWalletConnectSigner()
         }
       } else {
-        this.signer = await getPcSigner()
+        this.signer = await Provider.getPcSigner()
       }
 
-      this.$store.commit('TOGGLE_CONFIRM_MODAL')
-      const ok =
-        await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
+      const tx = await this._createNFTContract(contract)
 
-      if (ok) {
-        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
-        const tx = await this._createNFTContract(contract)
+      let result1 = null
+      let result2 = null
+      if (this.profileImageFile && this.backgroundImageFile) {
+        ;[result1, result2] = await Promise.all([
+          await this.uploadProjectProfileImage(tx.hash),
+          await this.uploadProjectBackgroundImage(tx.hash),
+        ])
+      } else if (this.profileImageFile && !this.backgroundImageFile) {
+        result1 = await this.uploadProjectProfileImage(tx.hash)
+      } else if (!this.profileImageFile && this.backgroundImageFile) {
+        result2 = await this.uploadProjectBackgroundImage(tx.hash)
+      }
 
-        let result1 = null
-        let result2 = null
-        if (this.profileImageFile && this.backgroundImageFile) {
-          ;[result1, result2] = await Promise.all([
-            await this.uploadProjectProfileImage(tx.hash),
-            await this.uploadProjectBackgroundImage(tx.hash),
-          ])
-        } else if (this.profileImageFile && !this.backgroundImageFile) {
-          result1 = await this.uploadProjectProfileImage(tx.hash)
-        } else if (!this.profileImageFile && this.backgroundImageFile) {
-          result2 = await this.uploadProjectBackgroundImage(tx.hash)
-        }
+      const postResult = await postProject({
+        create_tx_hash: tx.hash,
+        name: this.name,
+        symbol: this.symbol,
+        status: PENDING,
+        project_s3key: result1
+          ? `${this.S3_PRIVACY_LEVEL}/${result1.key}`
+          : null,
+        background_s3key: result2
+          ? `${this.S3_PRIVACY_LEVEL}/${result2.key}`
+          : null,
+      })
 
-        const postResult = await postProject({
-          create_tx_hash: tx.hash,
-          name: this.name,
-          symbol: this.symbol,
-          status: PENDING,
-          project_s3key: result1
-            ? `${this.S3_PRIVACY_LEVEL}/${result1.key}`
-            : null,
-          background_s3key: result2
-            ? `${this.S3_PRIVACY_LEVEL}/${result2.key}`
-            : null,
+      if (postResult) {
+        this.$router.push({
+          name: 'CreatingProject',
+          query: { txHash: tx.hash },
         })
-
-        if (postResult) {
-          this.$router.push({
-            name: 'CreatingProject',
-            query: { txHash: tx.hash },
-          })
-        }
       }
     },
     async _createNFTContract(contract) {
