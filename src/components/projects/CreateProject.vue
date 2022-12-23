@@ -126,8 +126,7 @@ export default {
         await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
       if (ok) {
-        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
-        const tx = await this._createNFTContract(contract)
+        const tx = await this._createNFTContract(signer)
 
         let result1 = null
         let result2 = null
@@ -163,7 +162,8 @@ export default {
         }
       }
     },
-    async _createNFTContract(contract) {
+    async _createNFTContract(signer) {
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
       const tx = await contract.createNFTContract(
         this.name,
         this.symbol,
