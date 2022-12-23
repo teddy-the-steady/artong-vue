@@ -7,6 +7,7 @@
       <UserProfileButtons></UserProfileButtons>
       <div>address: {{ walletConnectState.address }}</div>
       <div>chainId: {{ walletConnectState.chainId }}</div>
+      <button @click="signout">force signout</button>
     </div>
     <ProfileTab :tabs="tabs" />
   </div>
@@ -24,7 +25,7 @@ import {
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 import UserProfileButtons from '../button_group/UserProfileButtons.vue'
-
+import { Auth } from '@aws-amplify/auth'
 export default {
   name: 'User',
   mixins: [headerActivate],
@@ -48,6 +49,11 @@ export default {
         { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} },
       ],
     }
+  },
+  methods: {
+    async signout() {
+      await Auth.signOut()
+    },
   },
   created() {
     this.tabs[0].api = {
