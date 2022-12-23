@@ -104,25 +104,26 @@ export default {
       this.$store.commit('TOGGLE_CONFIRM_MODAL')
     },
   },
-  async created() {
+  async mounted() {
     try {
       await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
       const member = await getCurrentMember()
-      await this.$store.dispatch('CURRENT_USER', member)
+      if (member) {
+        await this.$store.dispatch('CURRENT_USER', member)
+        if (this.isMobile) {
+          await this.$store.dispatch(
+            'AUTO_CONNECT_WALLET',
+            this.getDefaultWalletConnectState,
+          )
+        } else {
+          this.addPcWalletEventHandler()
+          await this.getPcWalletOnFirstLoad()
+        }
+      }
     } catch (error) {
       await this.$store.dispatch('AUTH_LOGOUT')
     }
-  },
-  async mounted() {
-    if (this.isMobile) {
-      await this.$store.dispatch(
-        'AUTO_CONNECT_WALLET',
-        this.getDefaultWalletConnectState,
-      )
-    } else {
-      this.addPcWalletEventHandler()
-      await this.getPcWalletOnFirstLoad()
-    }
+
     this.$store.commit(
       'CONFIRM_MODAL_WAIT_FOR_ANSWER',
       this.$refs.confirmModal.waitForAnswer,
