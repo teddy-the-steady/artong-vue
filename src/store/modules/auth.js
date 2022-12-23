@@ -78,25 +78,22 @@ const actions = {
   },
   // INFO] currentAuthenicatedUser vs currentSession
   // https://stackoverflow.com/questions/55739848/what-is-the-difference-between-auth-currentauthenticateduser-and-auth-currents
-  [AUTH_CHECK_CURRENT_USER]: async function ({ commit }) {
+  [AUTH_CHECK_CURRENT_USER]: async function ({ dispatch }) {
     try {
       const authenticatedUser = await Auth.currentAuthenticatedUser()
       return authenticatedUser
     } catch (error) {
-      commit(AUTH_ERROR, error)
+      await dispatch('AUTH_LOGOUT')
       throw error
     }
   },
-  [AUTH_CHECK_CURRENT_SESSION]: async function ({ commit }) {
+  [AUTH_CHECK_CURRENT_SESSION]: async function ({ dispatch }) {
     try {
-      const currentSssion = await Auth.currentSession()
-      return currentSssion
+      const currentSession = await Auth.currentSession()
+      return currentSession
     } catch (error) {
-      if (error === 'No current user') {
-        throw error
-      }
-      commit(AUTH_ERROR, error)
-      throw error
+      await dispatch('AUTH_LOGOUT')
+      return false
     }
   },
 }

@@ -95,7 +95,6 @@ const router = new Router({
           next()
         }
       },
-      meta: { requiresAuth: true },
     },
     {
       path: '/create/project',
@@ -120,7 +119,7 @@ router.beforeEach(async function (to, from, next) {
       }
       next()
     } catch (error) {
-      console.log(error)
+      await store.dispatch('AUTH_LOGOUT')
       if (!user) {
         next({
           path: '/login',
