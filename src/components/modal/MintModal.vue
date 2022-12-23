@@ -151,6 +151,12 @@ export default {
         signer = await getPcSigner()
       }
 
+      const contract = new ethers.Contract(
+        this.slotData.postResult.project_address,
+        ERC721_ABI,
+        signer,
+      )
+
       this.currentStep.id++
 
       const metadata = await uploadToNftStorage({
@@ -184,12 +190,6 @@ export default {
               description: this.slotData.description,
             })
           } else {
-            const contract = new ethers.Contract(
-              this.slotData.postResult.project_address,
-              ERC721_ABI,
-              signer,
-            )
-
             const tx = await this.doMint(
               contract,
               metadata.url,
