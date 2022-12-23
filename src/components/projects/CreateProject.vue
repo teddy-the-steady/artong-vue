@@ -94,6 +94,7 @@ export default {
       profileImageFile: null,
       backgroundImageFile: null,
       S3_PRIVACY_LEVEL: 'public',
+      signer: null,
     }
   },
   methods: {
@@ -106,19 +107,19 @@ export default {
         return
       }
 
-      let signer = null
+      // let signer = null
       if (this.isMobile) {
         if (!this.walletStatus) {
           if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = await getWalletConnectSigner()
+            this.signer = await getWalletConnectSigner()
           } else {
             return
           }
         } else {
-          signer = await getWalletConnectSigner()
+          this.signer = await getWalletConnectSigner()
         }
       } else {
-        signer = await getPcSigner()
+        this.signer = await getPcSigner()
       }
 
       this.$store.commit('TOGGLE_CONFIRM_MODAL')
@@ -126,7 +127,7 @@ export default {
         await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
       if (ok) {
-        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
+        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
         const tx = await this._createNFTContract(contract)
 
         let result1 = null
