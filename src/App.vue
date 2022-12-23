@@ -111,10 +111,7 @@ export default {
       if (member) {
         await this.$store.dispatch('CURRENT_USER', member)
         if (this.isMobile) {
-          await this.$store.dispatch(
-            'AUTO_CONNECT_WALLET',
-            this.getDefaultWalletConnectState,
-          )
+          await this.$store.dispatch('AUTO_CONNECT_WALLET')
         } else {
           this.addPcWalletEventHandler()
           await this.getPcWalletOnFirstLoad()

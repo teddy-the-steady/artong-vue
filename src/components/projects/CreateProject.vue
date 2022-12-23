@@ -108,15 +108,15 @@ export default {
 
       let signer = null
       if (this.isMobile) {
-        if (!this.walletStatus) {
-          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = getWalletConnectSigner()
-          } else {
-            return
-          }
-        } else {
-          signer = getWalletConnectSigner()
-        }
+        // if (!this.walletStatus) {
+        //   if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
+        //     signer = getWalletConnectSigner()
+        //   } else {
+        //     return
+        //   }
+        // } else {
+        signer = getWalletConnectSigner()
+        // }
       } else {
         signer = await getPcSigner()
       }
@@ -126,7 +126,8 @@ export default {
         await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
 
       if (ok) {
-        const tx = await this._createNFTContract(signer)
+        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
+        const tx = await this._createNFTContract(contract)
 
         let result1 = null
         let result2 = null
@@ -162,8 +163,7 @@ export default {
         }
       }
     },
-    async _createNFTContract(signer) {
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
+    async _createNFTContract(contract) {
       const tx = await contract.createNFTContract(
         this.name,
         this.symbol,

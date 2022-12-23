@@ -31,7 +31,6 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function ({ state, commit, dispatch }) {
     try {
-      console.log('SET_UP_WALLET_CONNECTION')
       await Provider.provider.enable()
       const address = Provider.provider.wc.accounts[0]
       commit(WALLET_STATUS, true)
@@ -107,8 +106,7 @@ const actions = {
       throw error
     }
   },
-  [AUTO_CONNECT_WALLET]: async function ({ commit, dispatch }, state) {
-    console.log('AUTO_CONNECT_WALLET:', state)
+  [AUTO_CONNECT_WALLET]: async function ({ commit, dispatch }) {
     if (localStorage.getItem('walletconnect') == null) {
       console.log('walletconnect == null')
       commit(WALLET_STATUS, false)

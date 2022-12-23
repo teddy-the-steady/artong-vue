@@ -138,24 +138,18 @@ export default {
     async mint() {
       let signer = null
       if (this.isMobile) {
-        if (!this.walletStatus) {
-          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = getWalletConnectSigner()
-          } else {
-            return
-          }
-        } else {
-          signer = getWalletConnectSigner()
-        }
+        // if (!this.walletStatus) {
+        //   if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
+        //     signer = getWalletConnectSigner()
+        //   } else {
+        //     return
+        //   }
+        // } else {
+        signer = getWalletConnectSigner()
+        // }
       } else {
         signer = await getPcSigner()
       }
-
-      const contract = new ethers.Contract(
-        this.slotData.postResult.project_address,
-        ERC721_ABI,
-        signer,
-      )
 
       this.currentStep.id++
 
@@ -190,6 +184,12 @@ export default {
               description: this.slotData.description,
             })
           } else {
+            const contract = new ethers.Contract(
+              this.slotData.postResult.project_address,
+              ERC721_ABI,
+              signer,
+            )
+
             const tx = await this.doMint(
               contract,
               metadata.url,
