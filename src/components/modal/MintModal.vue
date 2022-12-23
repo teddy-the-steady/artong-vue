@@ -50,14 +50,10 @@
 import { ethers } from 'ethers'
 import { mapState, mapGetters } from 'vuex'
 import Ripple from '../../directives/ripple/Ripple'
-import {
-  ERC721_ABI,
-  getPcSigner,
-  getWalletConnectSigner,
-  LazyMinter,
-} from '../../contracts'
+import { ERC721_ABI, LazyMinter } from '../../contracts'
 import { patchContent, uploadToNftStorage } from '../../api/contents'
 import { etherToWei } from '../../util/commonFunc'
+import Provider from '../../util/walletConnectProvider'
 
 export default {
   name: 'MintModal',
@@ -139,15 +135,15 @@ export default {
       if (this.isMobile) {
         if (!this.walletStatus) {
           if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            this.signer = await getWalletConnectSigner()
+            this.signer = Provider.getWalletConnectSigner()
           } else {
             return
           }
         } else {
-          this.signer = await getWalletConnectSigner()
+          this.signer = Provider.getWalletConnectSigner()
         }
       } else {
-        this.signer = await getPcSigner()
+        this.signer = await Provider.getPcSigner()
       }
 
       this.currentStep.id++
