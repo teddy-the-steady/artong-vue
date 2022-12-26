@@ -41,7 +41,7 @@
         walletStatus: {{ walletStatus }}<br /><br />
         walletConnect: {{ walletConnect }}<br /><br />
         getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
-        <button @click="createProject" v-ripple>CREATE PROJECT</button>
+        <button @click="createProject">CREATE PROJECT</button>
       </div>
     </div>
   </div>
@@ -51,17 +51,16 @@
 import Storage from '@aws-amplify/storage'
 import { ethers } from 'ethers'
 import { mapState, mapGetters } from 'vuex'
-import {
-  FACTORY_ABI,
-  FACTORY,
-  getPcSigner,
-  getWalletConnectSigner,
-} from '../../contracts'
+import { FACTORY_ABI, FACTORY } from '../../contracts'
 import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 import Ripple from '../../directives/ripple/Ripple'
 import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
+import {
+  checkMobileWalletStatusAndGetSigner,
+  isSessionValid,
+} from '../../util/commonFunc'
 
 export default {
   name: 'CreateProject',
@@ -72,9 +71,6 @@ export default {
       currentUser: state => state.user.currentUser,
       walletStatus: state => state.wallet.status,
     }),
-    isMobile() {
-      return this.$isMobile()
-    },
     walletConnect() {
       return localStorage.getItem('walletconnect')
     },
@@ -94,51 +90,39 @@ export default {
       profileImageFile: null,
       backgroundImageFile: null,
       S3_PRIVACY_LEVEL: 'public',
+      signer: null,
     }
   },
   methods: {
     async createProject() {
-      if (!(await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION'))) {
-        this.$router.push({
-          name: 'Login',
-          query: { redirect: this.$router.currentRoute.fullPath },
-        })
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
 
-      let signer = null
-      if (this.isMobile) {
-        if (!this.walletStatus) {
-          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = getWalletConnectSigner()
-          } else {
-            return
-          }
-        } else {
-          signer = getWalletConnectSigner()
-        }
-      } else {
-        signer = await getPcSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner()
+      if (!this.signer) {
+        return
       }
 
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, signer)
+      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
       const tx = await this._createNFTContract(contract)
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
 
       let result1 = null
       let result2 = null
       if (this.profileImageFile && this.backgroundImageFile) {
         ;[result1, result2] = await Promise.all([
-          await this.uploadProjectProfileImage(tx.hash),
-          await this.uploadProjectBackgroundImage(tx.hash),
+          await this.uploadProjectProfileImage(txHash),
+          await this.uploadProjectBackgroundImage(txHash),
         ])
       } else if (this.profileImageFile && !this.backgroundImageFile) {
-        result1 = await this.uploadProjectProfileImage(tx.hash)
+        result1 = await this.uploadProjectProfileImage(txHash)
       } else if (!this.profileImageFile && this.backgroundImageFile) {
-        result2 = await this.uploadProjectBackgroundImage(tx.hash)
+        result2 = await this.uploadProjectBackgroundImage(txHash)
       }
 
       const postResult = await postProject({
-        create_tx_hash: tx.hash,
+        create_tx_hash: txHash,
         name: this.name,
         symbol: this.symbol,
         status: PENDING,
@@ -149,16 +133,16 @@ export default {
           ? `${this.S3_PRIVACY_LEVEL}/${result2.key}`
           : null,
       })
-
+      // TODO] tx발행 이후 화면 안넘어가는 이슈. postProject 감안해서 최소한 완료 메세지 보여주기
       if (postResult) {
         this.$router.push({
           name: 'CreatingProject',
-          query: { txHash: tx.hash },
+          query: { txHash: txHash },
         })
       }
     },
     async _createNFTContract(contract) {
-      const tx = await contract.createNFTContract(
+      const tx = await contract.populateTransaction.createNFTContract(
         this.name,
         this.symbol,
         this.maxAmount,

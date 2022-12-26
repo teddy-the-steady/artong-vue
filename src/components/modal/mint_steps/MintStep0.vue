@@ -16,7 +16,7 @@
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
 import { postContent } from '../../../api/contents'
-
+// TODO] 이미지 올려도 안넘어가는 이슈. 이미지 올라가는동안 next버튼 살아있음. disable 해주자
 export default {
   name: 'MintStep0',
   props: {
