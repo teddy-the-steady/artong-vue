@@ -50,14 +50,13 @@
 import { ethers } from 'ethers'
 import { mapState, mapGetters } from 'vuex'
 import Ripple from '../../directives/ripple/Ripple'
-import {
-  ERC721_ABI,
-  getPcSigner,
-  getWalletConnectSigner,
-  LazyMinter,
-} from '../../contracts'
+import { ERC721_ABI, LazyMinter } from '../../contracts'
 import { patchContent, uploadToNftStorage } from '../../api/contents'
-import { etherToWei } from '../../util/commonFunc'
+import {
+  etherToWei,
+  checkMobileWalletStatusAndGetSigner,
+} from '../../util/commonFunc'
+import Provider from '../../util/walletConnectProvider'
 
 export default {
   name: 'MintModal',
@@ -136,19 +135,9 @@ export default {
       this.currentStep.id--
     },
     async mint() {
-      let signer = null
-      if (this.isMobile) {
-        if (!this.walletStatus) {
-          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            signer = getWalletConnectSigner()
-          } else {
-            return
-          }
-        } else {
-          signer = getWalletConnectSigner()
-        }
-      } else {
-        signer = await getPcSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner()
+      if (!this.signer) {
+        return
       }
 
       this.currentStep.id++
@@ -173,7 +162,6 @@ export default {
               this.slotData.postResult.project_address,
               metadata.url,
               '',
-              signer,
             )
 
             await patchContent(this.slotData.postResult.id, {
@@ -187,7 +175,7 @@ export default {
             const contract = new ethers.Contract(
               this.slotData.postResult.project_address,
               ERC721_ABI,
-              signer,
+              this.signer,
             )
 
             const tx = await this.doMint(
@@ -196,9 +184,10 @@ export default {
               '',
               this.slotData.tokenRoyalty || 0,
             )
+            const txHash = await this.signer.sendUncheckedTransaction(tx)
 
-            const approveReceipt = await tx.wait()
-            const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
+            const approveReceipt = await this.wait(txHash)
+            const tokenId = parseInt(approveReceipt.logs[1].topics[3])
 
             await patchContent(this.slotData.postResult.id, {
               tokenId: tokenId,
@@ -210,10 +199,10 @@ export default {
         alert('Oops, something went wrong! Please try again')
       }
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri, signer) {
+    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
       const lazyMinter = new LazyMinter({
-        contract: new ethers.Contract(projectAddress, ERC721_ABI, signer),
-        signer: signer,
+        contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
+        signer: this.signer,
       })
       const voucher = await lazyMinter.createVoucher(
         this.currentUser.wallet_address,
@@ -224,13 +213,20 @@ export default {
       return voucher
     },
     async doMint(contract, tokenUri, contentUri, tokenRoyalty) {
-      const tx = await contract.mint(
+      const tx = await contract.populateTransaction.mint(
         this.currentUser.wallet_address,
         tokenUri,
         contentUri,
         tokenRoyalty || 0,
       )
       return tx
+    },
+    async wait(txHash) {
+      if (this.isMobile) {
+        return await Provider.mobileProvider.waitForTransaction(txHash)
+      } else {
+        return await Provider.pcProvider.waitForTransaction(txHash)
+      }
     },
   },
   directives: {
