@@ -55,6 +55,7 @@ export default {
   background: linear-gradient(45deg, $darkgray, transparent);
   cursor: pointer;
   overflow: hidden;
+  min-width: 340px;
 
   .background {
     position: absolute;
