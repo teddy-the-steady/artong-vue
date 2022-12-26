@@ -1,5 +1,8 @@
 import { ethers } from 'ethers'
 import store from '../store'
+import router from '../router'
+import Provider from './walletConnectProvider'
+import Vue from '../main'
 
 const makeS3Path = function (path) {
   if (path) {
@@ -12,6 +15,18 @@ const isAuthenticated = function () {
     return true
   }
   return false
+}
+
+const isSessionValid = async function (pathToRedirect) {
+  if (await store.dispatch('AUTH_CHECK_CURRENT_SESSION')) {
+    return true
+  } else {
+    router.push({
+      name: 'Login',
+      query: { redirect: pathToRedirect },
+    })
+    return false
+  }
 }
 
 const getRandomString = function (bytes) {
@@ -36,11 +51,29 @@ const weiToEther = function (wei) {
   return ethers.utils.formatEther(wei)
 }
 
+const checkMobileWalletStatusAndGetSigner = async function () {
+  if (Vue.$isMobile()) {
+    if (!store.state.wallet.walletStatus) {
+      if (await store.dispatch('SET_UP_WALLET_CONNECTION')) {
+        return Provider.getWalletConnectSigner()
+      } else {
+        return null
+      }
+    } else {
+      return Provider.getWalletConnectSigner()
+    }
+  } else {
+    return await Provider.getPcSigner()
+  }
+}
+
 export {
   makeS3Path,
   isAuthenticated,
+  isSessionValid,
   getRandomString,
   deepCopy,
   etherToWei,
   weiToEther,
+  checkMobileWalletStatusAndGetSigner,
 }

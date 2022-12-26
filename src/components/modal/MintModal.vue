@@ -52,7 +52,10 @@ import { mapState, mapGetters } from 'vuex'
 import Ripple from '../../directives/ripple/Ripple'
 import { ERC721_ABI, LazyMinter } from '../../contracts'
 import { patchContent, uploadToNftStorage } from '../../api/contents'
-import { etherToWei } from '../../util/commonFunc'
+import {
+  etherToWei,
+  checkMobileWalletStatusAndGetSigner,
+} from '../../util/commonFunc'
 import Provider from '../../util/walletConnectProvider'
 
 export default {
@@ -132,18 +135,9 @@ export default {
       this.currentStep.id--
     },
     async mint() {
-      if (this.isMobile) {
-        if (!this.walletStatus) {
-          if (await this.$store.dispatch('SET_UP_WALLET_CONNECTION')) {
-            this.signer = Provider.getWalletConnectSigner()
-          } else {
-            return
-          }
-        } else {
-          this.signer = Provider.getWalletConnectSigner()
-        }
-      } else {
-        this.signer = await Provider.getPcSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner()
+      if (!this.signer) {
+        return
       }
 
       this.currentStep.id++
