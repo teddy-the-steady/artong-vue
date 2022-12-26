@@ -108,17 +108,15 @@ export default {
     try {
       await this.$store.dispatch('AUTH_CHECK_CURRENT_SESSION')
       const member = await getCurrentMember()
-      if (member) {
-        await this.$store.dispatch('CURRENT_USER', member)
-        if (this.isMobile) {
-          await this.$store.dispatch(
-            'AUTO_CONNECT_WALLET',
-            this.getDefaultWalletConnectState,
-          )
-        } else {
-          this.addPcWalletEventHandler()
-          await this.getPcWalletOnFirstLoad()
-        }
+      await this.$store.dispatch('CURRENT_USER', member)
+      if (this.isMobile) {
+        await this.$store.dispatch(
+          'AUTO_CONNECT_WALLET',
+          this.getDefaultWalletConnectState,
+        )
+      } else {
+        this.addPcWalletEventHandler()
+        await this.getPcWalletOnFirstLoad()
       }
     } catch (error) {
       await this.$store.dispatch('AUTH_LOGOUT')
