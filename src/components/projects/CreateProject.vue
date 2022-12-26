@@ -38,9 +38,6 @@
             <label for="r2">Approved</label>
           </div>
         </div>
-        walletStatus: {{ walletStatus }}<br /><br />
-        walletConnect: {{ walletConnect }}<br /><br />
-        getDefaultWalletConnectState: {{ getDefaultWalletConnectState }}
         <button @click="createProject">CREATE PROJECT</button>
       </div>
     </div>
@@ -50,7 +47,7 @@
 <script>
 import Storage from '@aws-amplify/storage'
 import { ethers } from 'ethers'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { FACTORY_ABI, FACTORY } from '../../contracts'
 import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
@@ -69,13 +66,6 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      walletStatus: state => state.wallet.status,
-    }),
-    walletConnect() {
-      return localStorage.getItem('walletconnect')
-    },
-    ...mapGetters({
-      getDefaultWalletConnectState: 'getDefaultWalletConnectState',
     }),
   },
   directives: {
