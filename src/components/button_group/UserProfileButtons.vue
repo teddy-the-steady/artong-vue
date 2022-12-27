@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link :to="{ name: 'ProfileSetting' }">
+    <router-link :to="{ name: 'ProfileSettings' }">
       <button>EDIT</button>
     </router-link>
   </div>
