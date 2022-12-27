@@ -11,8 +11,31 @@
           <div class="round-button">
             <img src="../../assets/icons/launch.svg" />
           </div>
-          <div class="round-button">
+          <div
+            class="round-button"
+            @mousedown="moreMouseDown"
+            @mouseup="moreMouseUp"
+          >
             <img src="../../assets/icons/more.svg" />
+            <BasicDialog
+              class="dialog"
+              :class="{ active: isDialogActive }"
+              @dialog-focus-out="closeDialog"
+              ref="dialog"
+            >
+              <router-link
+                slot="body"
+                tag="div"
+                v-if="project.owner === currentUser.wallet_address"
+                :to="{
+                  name: 'ProjectSettings',
+                  params: { project_address: project.id },
+                }"
+              >
+                Edit Project
+              </router-link>
+              <div slot="body">Report</div>
+            </BasicDialog>
           </div>
           <div v-if="this.width >= 1080" class="creators-button">
             <div class="creator">Creator</div>
@@ -65,6 +88,7 @@
       ></MintStepFinal>
       <MintStepMinting slot="body_step_5"></MintStepMinting>
     </MintModal>
+    {{ project }}
   </div>
 </template>
 
@@ -85,6 +109,7 @@ import ProjectTabSort from '../tabs/ProjectTabSort.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
+import BasicDialog from '../dialog/BasicDialog.vue'
 
 export default {
   name: 'Project',
@@ -102,10 +127,12 @@ export default {
     ContentsProfileBundle,
     LeftProjectTab,
     ContentsProfile,
+    BasicDialog,
   },
   computed: {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
+      currentUser: state => state.user.currentUser,
     }),
   },
   data() {
@@ -127,6 +154,9 @@ export default {
         { id: 5, title: 'stepModalMinting' },
       ],
       slotData: { lazyMint: 1 },
+      isDialogActive: false,
+      isMouseDownOnMore: false,
+      isMouseUpOnMore: false,
     }
   },
   methods: {
@@ -152,6 +182,20 @@ export default {
     },
     setSlotData(key, val) {
       this.slotData[key] = val
+    },
+    closeDialog() {
+      this.isDialogActive = false
+      this.isMouseDownOnMore = false
+      this.isMouseUpOnMore = false
+    },
+    moreMouseDown() {
+      this.isMouseDownOnMore = true
+    },
+    moreMouseUp() {
+      this.isMouseUpOnMore = true
+      if (this.isMouseDownOnMore) {
+        this.isDialogActive = true
+      }
     },
   },
   async created() {
@@ -224,6 +268,11 @@ export default {
           break
       }
     },
+    isDialogActive(val) {
+      if (val) {
+        this.$nextTick(() => this.$refs.dialog.$el.focus())
+      }
+    },
   },
 }
 </script>
@@ -258,12 +307,18 @@ export default {
         border: 1px solid #f2f2f2;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
         border-radius: 999px;
-        // img 중앙정렬
         display: flex;
         justify-content: center;
+        align-items: center;
         img {
-          margin-top: auto;
-          margin-bottom: auto;
+          position: absolute;
+        }
+
+        .dialog {
+          display: none;
+          &.active {
+            display: block;
+          }
         }
       }
       .creators-button {

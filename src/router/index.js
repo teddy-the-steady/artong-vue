@@ -14,7 +14,8 @@ import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
 import ContentDetail from '@/components/contents_v2/ContentDetail'
-import ProfileSetting from '@/components/member/ProfileSetting'
+import ProfileSettings from '@/components/member/ProfileSettings'
+import ProjectSettings from '@/components/projects/ProjectSettings'
 import VueCarousel from 'vue-carousel' // for 무한 슬라이드 swipe 배너
 
 Vue.use(Router)
@@ -54,6 +55,11 @@ const router = new Router({
       path: '/projects/:project_address/contents/:token_id',
       name: 'ContentDetail',
       component: ContentDetail,
+    },
+    {
+      path: '/projects/:project_address/settings',
+      name: 'ProjectSettings',
+      component: ProjectSettings,
     },
     {
       path: '/contents',
@@ -103,8 +109,8 @@ const router = new Router({
     },
     {
       path: '/settings/profile',
-      name: 'ProfileSetting',
-      component: ProfileSetting,
+      name: 'ProfileSettings',
+      component: ProfileSettings,
     },
   ],
 })
