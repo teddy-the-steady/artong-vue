@@ -5,8 +5,8 @@
       <div class="collection-name">Collection name</div>
       <ContentsProfile class="contents-profile" />
       <div class="buttons1">
-        <div class="subscribe-btn">Subscribe</div>
-        <div class="contribute-btn">Contribute</div>
+        <button class="white-btn">Subscribe</button>
+        <button class="contribute-btn">Contribute</button>
       </div>
       <div class="detail">
         <div class="top">Items</div>
@@ -19,10 +19,10 @@
         <div class="bottom">12K ETH</div>
       </div>
       <div class="buttons2">
-        <div class="wide-btn">Instagram</div>
-        <div class="wide-btn">twitter</div>
-        <div class="wide-btn">discord</div>
-        <div class="wide-btn">website</div>
+        <button class="wide-btn">Instagram</button>
+        <button class="wide-btn">twitter</button>
+        <button class="wide-btn">discord</button>
+        <button class="wide-btn">website</button>
       </div>
       <div class="info">
         <div class="info-title">Information</div>
@@ -88,16 +88,6 @@ export default {
     .subscribe-btn {
       width: 141px;
       height: 48px;
-      background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: 5px;
-
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 48px;
-      color: #000000;
 
       margin-right: 16px;
     }
@@ -111,7 +101,6 @@ export default {
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
-      line-height: 48px;
       color: #ffffff;
     }
   }
@@ -146,10 +135,12 @@ export default {
       font-style: normal;
       font-weight: 500;
       font-size: 14px;
-      line-height: 48px;
       color: #000000;
 
       margin-bottom: 8px;
+      //
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+        box-shadow 0.2s;
     }
   }
   .info {
