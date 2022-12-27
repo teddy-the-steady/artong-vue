@@ -94,7 +94,7 @@
         </div>
       </div>
       <UserDialog
-        class="user_dialog"
+        class="dialog"
         :class="{ active: isDialogActive }"
         @dialog-focus-out="closeDialog"
         ref="dialog"
@@ -192,10 +192,6 @@ export default {
         this.$router.push({ name: 'Projects' })
       }
     },
-  },
-  afterEach(to, from) {
-    console.log(to)
-    console.log(from)
   },
   watch: {
     isSideMenuOpen(val) {
@@ -409,7 +405,7 @@ export default {
     }
   }
 
-  .user_dialog {
+  .dialog {
     display: none;
     &.active {
       display: block;
