@@ -183,6 +183,17 @@ html {
       transition: background-color 0.2s, color 0.2s, border-color 0.2s,
         box-shadow 0.2s;
       border-radius: 6px;
+      &.white-btn {
+        background: #ffffff;
+        border: 1px solid #000000;
+        border-radius: 5px;
+
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #000000;
+      }
     }
 
     #header-bar {
