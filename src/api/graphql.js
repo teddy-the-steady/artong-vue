@@ -10,6 +10,7 @@ const queryProject = function (variables) {
       query Project($id: String) {
         project(id: $id) {
           id
+          txHash
           creator
           owner
           name
@@ -23,6 +24,8 @@ const queryProject = function (variables) {
           _db_project_thumbnail_s3key
           _db_background_s3key
           _db_background_thumbnail_s3key
+          _db_description
+          _db_sns
         }
       }
     `,
