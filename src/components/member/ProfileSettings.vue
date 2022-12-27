@@ -14,7 +14,7 @@ import { mapState } from 'vuex'
 import { getCurrentMember, patchMember } from '../../api/member'
 
 export default {
-  name: 'ProfileSetting',
+  name: 'ProfileSettings',
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
@@ -46,7 +46,7 @@ export default {
   },
   watch: {
     async $route(val) {
-      if (val.name === 'ProfileSetting') {
+      if (val.name === 'ProfileSettings') {
         this.member = await getCurrentMember()
       }
     },
