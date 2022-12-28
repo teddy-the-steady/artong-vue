@@ -99,11 +99,7 @@ export default {
       //   )
       // }
 
-      try {
-        this.signer = await checkMobileWalletStatusAndGetSigner()
-      } catch (error) {
-        console.log('error while getting signer:', error)
-      }
+      this.signer = await checkMobileWalletStatusAndGetSigner()
       if (!this.signer) {
         return
       }
@@ -115,6 +111,8 @@ export default {
         txHash = await this.signer.sendUncheckedTransaction(tx)
       } catch (error) {
         console.log('error while calling contract:', error)
+        console.log(error.code)
+        console.log(error.message)
       }
 
       let result1 = null
