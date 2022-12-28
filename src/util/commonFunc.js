@@ -55,7 +55,7 @@ const weiToEther = function (wei) {
   return ethers.utils.formatEther(wei)
 }
 
-const checkMobileWalletStatusAndGetSigner = async function () {
+const checkMobileWalletStatusAndGetSigner = async function (pathToRedirect) {
   if (Vue.$isMobile()) {
     if (!store.state.wallet.walletStatus) {
       if (await store.dispatch('SET_UP_WALLET_CONNECTION')) {
@@ -67,6 +67,13 @@ const checkMobileWalletStatusAndGetSigner = async function () {
       return Provider.getWalletConnectSigner()
     }
   } else {
+    if (
+      store.state.user.currentUser.wallet_address !== store.state.wallet.address
+    ) {
+      await store.dispatch('AUTH_LOGOUT')
+      loginAndRedirectBack(pathToRedirect)
+      return
+    }
     return await Provider.getPcSigner()
   }
 }
