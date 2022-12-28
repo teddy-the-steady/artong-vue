@@ -145,7 +145,7 @@ export default {
       tabs: [
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
         { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
-        { id: 2, type: 'INFO', label: 'Info', api: {} },
+        { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       width: window.innerWidth,
       steps: [
@@ -165,12 +165,6 @@ export default {
         { name: 'Subscirber', info: '2,000' },
         { name: 'Floor price', info: '0.001 ETH' },
         { name: 'Total sales', info: '12K ETH' },
-      ],
-      projectLink: [
-        { name: 'Instagram', link: '' },
-        { name: 'twitter', link: '' },
-        { name: 'discord', link: '' },
-        { name: 'website', link: '' },
       ],
     }
   },
@@ -237,10 +231,15 @@ export default {
       queryParams: { start_num: 0, count_num: 5 },
     }
 
+    this.tabs[2].data = {
+      description: this.project.description,
+      sns: this.project.sns,
+    }
+
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'Project' && this.projectAddress) {
+        if (to.name === 'Project' && !to.query.tab) {
           this.project = await this.getProject()
         }
       },
@@ -277,6 +276,12 @@ export default {
             func: getTobeApprovedContents,
             pathParams: { projectId: to.params.id },
             queryParams: { start_num: 0, count_num: 5 },
+          }
+          break
+        case '2':
+          this.tabs[2].data = {
+            description: this.project.description,
+            sns: this.project.sns,
           }
           break
         default:
