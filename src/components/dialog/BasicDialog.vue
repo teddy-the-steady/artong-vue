@@ -6,7 +6,7 @@
           <slot name="header"></slot>
         </div>
 
-        <div class="dialog-body">
+        <div class="dialog-body" @click="dialogClick">
           <slot name="body"></slot>
         </div>
 
@@ -30,6 +30,9 @@ export default {
   },
   methods: {
     handleFocusOut() {
+      this.$emit('dialog-focus-out')
+    },
+    dialogClick() {
       this.$emit('dialog-focus-out')
     },
   },
