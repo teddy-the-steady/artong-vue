@@ -57,6 +57,7 @@ import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 import {
   checkMobileWalletStatusAndGetSigner,
   isSessionValid,
+  loginAndRedirectBack,
 } from '../../util/commonFunc'
 
 export default {
@@ -89,14 +90,24 @@ export default {
         return
       }
 
-      this.signer = await checkMobileWalletStatusAndGetSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
       if (!this.signer) {
         return
       }
 
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
-      const tx = await this._createNFTContract(contract)
-      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      let txHash = null
+      try {
+        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
+        const tx = await this._createNFTContract(contract)
+        txHash = await this.signer.sendUncheckedTransaction(tx)
+      } catch (error) {
+        if (error.message.indexOf('Invalid parameters') > -1) {
+          await this.$store.dispatch('AUTH_LOGOUT')
+          loginAndRedirectBack(this.$router.currentRoute.fullPath)
+        }
+      }
 
       let result1 = null
       let result2 = null

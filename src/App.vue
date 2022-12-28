@@ -67,6 +67,7 @@ export default {
       window.addEventListener('load', () => {
         if (window.ethereum) {
           window.ethereum.on('accountsChanged', async accounts => {
+            this.$store.commit('WALLET_ACCOUNT', accounts[0])
             if (this.currentUser.id && accounts.length > 0) {
               this.toggleConfirmModal()
               const ok = await this.$refs.confirmModal.waitForAnswer()
@@ -89,7 +90,6 @@ export default {
                 await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
                 const member = await getCurrentMember()
                 await this.$store.dispatch('CURRENT_USER', member)
-                this.$store.commit('WALLET_ACCOUNT', accounts[0])
               }
             }
           })
