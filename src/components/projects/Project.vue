@@ -51,14 +51,16 @@
           <div class="red-button">Art</div>
           <div class="collection-name">Collection name</div>
           <ContentsProfile class="contents-profile" />
-          <div class="info">Information</div>
-          <div class="desc">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
-            lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
-            tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
-            morbi sit diam arcu.
+          <div class="statistic-container">
+            <div
+              class="statistic"
+              v-for="(item, index) in projectData"
+              :key="index"
+            >
+              <div class="name">{{ item.name }}</div>
+              <div class="info">{{ item.info }}</div>
+            </div>
           </div>
-          <div class="project-info">Project info</div>
         </div>
         <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
       </div>
@@ -143,6 +145,7 @@ export default {
       tabs: [
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
         { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
+        { id: 2, type: 'INFO', label: 'Info', api: {} },
       ],
       width: window.innerWidth,
       steps: [
@@ -157,6 +160,18 @@ export default {
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
+      projectData: [
+        { name: 'Items', info: '235/1000' },
+        { name: 'Subscirber', info: '2,000' },
+        { name: 'Floor price', info: '0.001 ETH' },
+        { name: 'Total sales', info: '12K ETH' },
+      ],
+      projectLink: [
+        { name: 'Instagram', link: '' },
+        { name: 'twitter', link: '' },
+        { name: 'discord', link: '' },
+        { name: 'website', link: '' },
+      ],
     }
   },
   methods: {
@@ -384,43 +399,57 @@ export default {
       .contents-profile {
         margin-top: 8px;
       }
-      .info {
-        margin-top: 8px;
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        text-align: left;
-        color: #000000;
-      }
-      .desc {
-        text-align: left;
-        margin-top: 8px;
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 16px;
-        color: #4d4d4d;
-        line-height: 150%;
-      }
-      .project-info {
-        width: 100%;
-        height: 48px;
-        background: #ffffff;
-        border: 1px solid #000000;
-        border-radius: 5px;
-
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        color: #000000;
-        text-align: center;
-        line-height: 48px;
-
-        margin-top: 8px;
+      .statistic-container {
+        display: flex;
+        margin-top: 16px;
+        justify-content: space-around;
         margin-bottom: 24px;
+        .statistic {
+          .name {
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+          }
+          .info {
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 15px;
+            color: #4d4d4d;
+            margin-top: 8px;
+          }
+        }
       }
+
+      // .info {
+      //   margin-top: 8px;
+      //   font-family: 'Pretendard';
+      //   font-style: normal;
+      //   font-weight: 600;
+      //   font-size: 18px;
+      //   text-align: left;
+      //   color: #000000;
+      // }
+      // .desc {
+      //   text-align: left;
+      //   margin-top: 8px;
+      //   font-family: 'Pretendard';
+      //   font-style: normal;
+      //   font-weight: 400;
+      //   font-size: 16px;
+      //   color: #4d4d4d;
+      //   line-height: 150%;
+      // }
+      // .project-info {
+      //   width: 100%;
+      //   height: 48px;
+
+      //   border-radius: 5px;
+
+      //   margin-top: 8px;
+      //   margin-bottom: 24px;
+      // }
     }
     .left-tab {
       margin-left: 185px;
