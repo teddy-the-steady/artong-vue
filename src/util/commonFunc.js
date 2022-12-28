@@ -21,12 +21,16 @@ const isSessionValid = async function (pathToRedirect) {
   if (await store.dispatch('AUTH_CHECK_CURRENT_SESSION')) {
     return true
   } else {
-    router.push({
-      name: 'Login',
-      query: { redirect: pathToRedirect },
-    })
+    loginAndRedirectBack(pathToRedirect)
     return false
   }
+}
+
+const loginAndRedirectBack = function (pathToRedirect) {
+  router.push({
+    name: 'Login',
+    query: { redirect: pathToRedirect },
+  })
 }
 
 const getRandomString = function (bytes) {
@@ -71,6 +75,7 @@ export {
   makeS3Path,
   isAuthenticated,
   isSessionValid,
+  loginAndRedirectBack,
   getRandomString,
   deepCopy,
   etherToWei,
