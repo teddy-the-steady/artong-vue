@@ -55,14 +55,13 @@ const actions = {
           }
 
           const { accounts, chainId } = payload.params[0]
+          commit(WALLET_ACCOUNT, accounts[0])
           const currentUser = JSON.parse(localStorage.getItem('current-user'))
 
           if (
             accounts.length > 0 &&
             accounts[0].toLowerCase() !== currentUser.wallet_address
           ) {
-            commit(WALLET_ACCOUNT, accounts[0])
-
             let signature = null
             await Auth.signOut()
             const cognitoUser = await dispatch('AUTH_SIGN_IN_AND_UP', {
