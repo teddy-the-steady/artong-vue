@@ -110,9 +110,14 @@ export default {
         const tx = await this._createNFTContract(contract)
         txHash = await this.signer.sendUncheckedTransaction(tx)
       } catch (error) {
-        console.log('error while calling contract:', error)
-        console.log(error.code)
-        console.log(error.message)
+        if (error.message.include('Invalid parameters')) {
+          alert('Oops, something went wrong! Please connect your wallet again')
+          await this.$store.dispatch('AUTH_LOGOUT')
+          this.$router.push({
+            name: 'Login',
+            query: { redirect: this.$router.currentRoute.fullPath },
+          })
+        }
       }
 
       let result1 = null
