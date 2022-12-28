@@ -66,6 +66,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
+      wallet: state => state.wallet,
     }),
   },
   directives: {
@@ -89,14 +90,32 @@ export default {
         return
       }
 
-      this.signer = await checkMobileWalletStatusAndGetSigner()
+      // if (this.currentUser.wallet_address !== this.wallet.address) {
+      //   console.log(
+      //     '이 체크를 어디다 넣어야 좋을까?',
+      //     '1. 지갑+코그니토 두 호출이 섞이는 곳 (바로여기)',
+      //     '2. 이게 다르면 아예 로그아웃? ㅇㅇ',
+      //     '3. 로그아웃 후에 사인로직. 사인로직 모듈화 필요함. App.vue, Login.vue 참고',
+      //   )
+      // }
+
+      try {
+        this.signer = await checkMobileWalletStatusAndGetSigner()
+      } catch (error) {
+        console.log('error while getting signer:', error)
+      }
       if (!this.signer) {
         return
       }
 
-      const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
-      const tx = await this._createNFTContract(contract)
-      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      let txHash = null
+      try {
+        const contract = new ethers.Contract(FACTORY, FACTORY_ABI, this.signer)
+        const tx = await this._createNFTContract(contract)
+        txHash = await this.signer.sendUncheckedTransaction(tx)
+      } catch (error) {
+        console.log('error while calling contract:', error)
+      }
 
       let result1 = null
       let result2 = null
