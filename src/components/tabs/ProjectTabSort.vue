@@ -21,6 +21,25 @@
             :windowWide="false"
           ></ContentList>
         </div>
+        <div v-show="current.type === 'INFO'" class="info">
+          <div class="info-top">
+            <div class="info-name">Information</div>
+            <div class="info-desc" v-if="current.data">
+              {{ current.data.description }}
+            </div>
+          </div>
+          <div class="sns-btns" v-if="current.data">
+            <div
+              class="btn-container"
+              v-for="(url, sns) in current.data.sns"
+              :key="sns"
+            >
+              <button class="white-btn long-btn" @click="openNewTab(url)">
+                {{ sns }}
+              </button>
+            </div>
+          </div>
+        </div>
         {{ current }}
       </section>
     </div>
@@ -61,6 +80,9 @@ export default {
     tabClick(id) {
       this.currentId = id
       this.$router.push({ query: { tab: id } })
+    },
+    openNewTab(url) {
+      window.open(url)
     },
   },
   watch: {
@@ -106,6 +128,39 @@ export default {
       width: 9.5px;
       height: 5.9px;
       margin-top: 14px;
+    }
+  }
+}
+.info {
+  .info-top {
+    .info-name {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+
+      color: #000000;
+    }
+    .info-desc {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+
+      color: #4d4d4d;
+    }
+  }
+  .sns-btns {
+    margin-top: 16px;
+    margin-bottom: 299px;
+    .btn-container {
+      margin-top: 8px;
+      .long-btn {
+        width: 100%;
+        height: 48px;
+
+        border-radius: 999px;
+      }
     }
   }
 }
