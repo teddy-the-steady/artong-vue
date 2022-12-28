@@ -26,7 +26,7 @@
               <router-link
                 slot="body"
                 tag="div"
-                v-if="project.owner === currentUser.wallet_address"
+                v-show="project.owner === currentUser.wallet_address"
                 :to="{
                   name: 'ProjectSettings',
                   params: { project_address: project.id },
