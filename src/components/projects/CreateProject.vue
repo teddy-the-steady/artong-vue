@@ -67,7 +67,6 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      wallet: state => state.wallet,
     }),
   },
   directives: {
@@ -91,13 +90,9 @@ export default {
         return
       }
 
-      // if (this.currentUser.wallet_address !== this.wallet.address) {
-      //   await this.$store.dispatch('AUTH_LOGOUT')
-      //   loginAndRedirectBack(this.$router.currentRoute.fullPath)
-      //   return
-      // }
-
-      this.signer = await checkMobileWalletStatusAndGetSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
       if (!this.signer) {
         return
       }
