@@ -39,6 +39,7 @@ const queryProjects = function (variables) {
       query Projects($first: Int, $skip: Int) {
         projects(first: $first, skip: $skip) {
           id
+          txHash
           creator
           owner
           name
