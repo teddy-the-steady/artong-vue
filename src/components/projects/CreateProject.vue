@@ -91,11 +91,11 @@ export default {
         return
       }
 
-      if (this.currentUser.wallet_address !== this.wallet.address) {
-        await this.$store.dispatch('AUTH_LOGOUT')
-        loginAndRedirectBack(this.$router.currentRoute.fullPath)
-        return
-      }
+      // if (this.currentUser.wallet_address !== this.wallet.address) {
+      //   await this.$store.dispatch('AUTH_LOGOUT')
+      //   loginAndRedirectBack(this.$router.currentRoute.fullPath)
+      //   return
+      // }
 
       this.signer = await checkMobileWalletStatusAndGetSigner()
       if (!this.signer) {
