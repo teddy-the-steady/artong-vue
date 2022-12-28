@@ -57,6 +57,7 @@ import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 import {
   checkMobileWalletStatusAndGetSigner,
   isSessionValid,
+  loginAndRedirectBack,
 } from '../../util/commonFunc'
 
 export default {
@@ -90,14 +91,11 @@ export default {
         return
       }
 
-      // if (this.currentUser.wallet_address !== this.wallet.address) {
-      //   console.log(
-      //     '이 체크를 어디다 넣어야 좋을까?',
-      //     '1. 지갑+코그니토 두 호출이 섞이는 곳 (바로여기)',
-      //     '2. 이게 다르면 아예 로그아웃? ㅇㅇ',
-      //     '3. 로그아웃 후에 사인로직. 사인로직 모듈화 필요함. App.vue, Login.vue 참고',
-      //   )
-      // }
+      if (this.currentUser.wallet_address !== this.wallet.address) {
+        await this.$store.dispatch('AUTH_LOGOUT')
+        loginAndRedirectBack(this.$router.currentRoute.fullPath)
+        return
+      }
 
       this.signer = await checkMobileWalletStatusAndGetSigner()
       if (!this.signer) {
@@ -110,13 +108,9 @@ export default {
         const tx = await this._createNFTContract(contract)
         txHash = await this.signer.sendUncheckedTransaction(tx)
       } catch (error) {
-        if (error.message.include('Invalid parameters')) {
-          alert('Oops, something went wrong! Please connect your wallet again')
+        if (error.message.indexOf('Invalid parameters') > -1) {
           await this.$store.dispatch('AUTH_LOGOUT')
-          this.$router.push({
-            name: 'Login',
-            query: { redirect: this.$router.currentRoute.fullPath },
-          })
+          loginAndRedirectBack(this.$router.currentRoute.fullPath)
         }
       }
 
