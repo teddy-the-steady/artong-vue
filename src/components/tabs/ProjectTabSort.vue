@@ -21,6 +21,28 @@
             :windowWide="false"
           ></ContentList>
         </div>
+        <div v-show="current.type === 'INFO'" class="info">
+          <div class="info-top">
+            <div class="info-name">Information</div>
+            <div class="info-desc">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
+              lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
+              tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
+              morbi sit diam arcu.
+            </div>
+          </div>
+          <div class="sns-btns">
+            <div
+              class="btn-container"
+              v-for="(item, index) in data2"
+              :key="index"
+            >
+              <button class="white-btn long-btn" @click="move">
+                {{ item.name }}
+              </button>
+            </div>
+          </div>
+        </div>
         {{ current }}
       </section>
     </div>
@@ -47,6 +69,12 @@ export default {
   data() {
     return {
       currentId: parseInt(this.$router.currentRoute.query.tab) || 0,
+      sns: [
+        { name: 'Instagram', link: 'data.project.sns.twitter' },
+        { name: 'twitter', link: 'https://www.naver.com/' },
+        { name: 'discord', link: 'https://naver.com' },
+        { name: 'website', link: 'https://naver.com' },
+      ],
     }
   },
   computed: {
@@ -61,6 +89,9 @@ export default {
     tabClick(id) {
       this.currentId = id
       this.$router.push({ query: { tab: id } })
+    },
+    move() {
+      window.open(this.data2.link)
     },
   },
   watch: {
@@ -106,6 +137,39 @@ export default {
       width: 9.5px;
       height: 5.9px;
       margin-top: 14px;
+    }
+  }
+}
+.info {
+  .info-top {
+    .info-name {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+
+      color: #000000;
+    }
+    .info-desc {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+
+      color: #4d4d4d;
+    }
+  }
+  .sns-btns {
+    margin-top: 16px;
+    margin-bottom: 299px;
+    .btn-container {
+      margin-top: 8px;
+      .long-btn {
+        width: 100%;
+        height: 48px;
+
+        border-radius: 999px;
+      }
     }
   }
 }
