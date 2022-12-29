@@ -1,31 +1,31 @@
-const separator = {
-  template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">',
-}
+// const separator = {
+//   template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">',
+// }
 
 export default [
-  {
-    header: true,
-    title: 'Alarms',
-  },
-  {
-    href: '',
-    title: 'Example Alarm',
-    icon: 'far fa-bell',
-    badge: {
-      text: '2m ago',
-    },
-  },
-  {
-    href: '',
-    title: 'Example Alarm',
-    icon: 'far fa-bell',
-    badge: {
-      text: '10m ago',
-    },
-  },
-  {
-    component: separator,
-  },
+  // {
+  //   header: true,
+  //   title: 'Alarms',
+  // },
+  // {
+  //   href: '',
+  //   title: 'Example Alarm',
+  //   icon: 'far fa-bell',
+  //   badge: {
+  //     text: '2m ago',
+  //   },
+  // },
+  // {
+  //   href: '',
+  //   title: 'Example Alarm',
+  //   icon: 'far fa-bell',
+  //   badge: {
+  //     text: '10m ago',
+  //   },
+  // },
+  // {
+  //   component: separator,
+  // },
   {
     header: true,
     title: 'Menu',
