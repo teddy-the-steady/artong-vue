@@ -5,9 +5,9 @@
       <div class="user-info">
         <ProjectPageProfile class="profile"></ProjectPageProfile>
         <div class="buttons">
-          <div class="round-button">
+          <button class="round-button" @click="share">
             <img src="../../assets/icons/share.svg" />
-          </div>
+          </button>
           <div class="round-button">
             <img src="../../assets/icons/launch.svg" />
           </div>
@@ -95,6 +95,7 @@
       <MintStepMinting slot="body_step_5"></MintStepMinting>
     </MintModal>
     {{ project }}
+    <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
 
@@ -140,6 +141,10 @@ export default {
       isModalOpen: state => state.menu.isModalOpen,
       currentUser: state => state.user.currentUser,
     }),
+
+    isMobile() {
+      return this.$isMobile()
+    },
   },
   data() {
     return {
@@ -170,6 +175,7 @@ export default {
         { name: 'Floor price', info: '0.001 ETH' },
         { name: 'Total sales', info: '12K ETH' },
       ],
+      url: '',
     }
   },
   methods: {
@@ -208,6 +214,27 @@ export default {
       this.isMouseUpOnMore = true
       if (this.isMouseDownOnMore) {
         this.isDialogActive = true
+      }
+    },
+    getURL() {
+      this.url = window.location.href
+    },
+    share() {
+      if (this.isMobile) {
+        if (navigator.share) {
+          navigator.share({
+            title: 'artong',
+            url: this.url,
+          })
+        } else {
+          alert('공유하기가 지원되지 않는 환경입니다.')
+        }
+      } else {
+        this.getURL()
+        const element = this.$refs.url
+        element.select()
+        document.execCommand('copy')
+        // TODO]alert 창 띄우는 거 구현해야 함
       }
     },
   },
@@ -334,6 +361,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 0px;
         img {
           position: absolute;
         }
@@ -468,6 +496,11 @@ export default {
     }
   }
 }
+textarea {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+}
 
 @media only screen and (max-width: 599px) {
   .header {
@@ -490,7 +523,6 @@ export default {
     }
   }
 }
-// if width is larger than 1440 then change the display
 @media only screen and (min-width: 1440px) {
   .tab-n-content {
     display: flex;
