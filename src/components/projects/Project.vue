@@ -8,7 +8,7 @@
           <button class="round-button" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <div class="round-button">
+          <div class="round-button" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
           </div>
           <div
@@ -233,7 +233,14 @@ export default {
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        // TODO]alert 창 띄우는 거 구현해야 함
+        alert('링크 복사 완료')
+      }
+    },
+    toEtherscan() {
+      if (process.env.NODE_ENV == 'production') {
+        window.open('https://etherscan.io/address/' + this.project.id)
+      } else {
+        window.open('https://goerli.etherscan.io/address/' + this.project.id)
       }
     },
   },
@@ -364,7 +371,6 @@ export default {
         img {
           position: absolute;
         }
-
         .dialog {
           display: none;
           &.active {
