@@ -36,6 +36,7 @@ export default {
           username: this.member.username,
           introduction: this.member.introduction,
         })
+        alert('Saved!')
       } catch (error) {
         this.errorMessage = error
       }
