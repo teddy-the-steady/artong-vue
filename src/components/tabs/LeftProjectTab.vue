@@ -19,12 +19,6 @@
         <div class="bottom">12K ETH</div>
       </div>
       <SnsLinks :sns="sns" />
-      <!-- <div class="buttons2">
-        <button class="wide-btn">Instagram</button>
-        <button class="wide-btn">twitter</button>
-        <button class="wide-btn">discord</button>
-        <button class="wide-btn">website</button>
-      </div> -->
       <div class="info">
         <div class="info-title">Information</div>
         <div class="info-description">
