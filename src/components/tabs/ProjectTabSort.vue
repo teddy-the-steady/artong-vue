@@ -7,6 +7,7 @@
         :key="tab.id"
         v-model="currentId"
         @tabClick="tabClick"
+        v-show="tab.type !== 'INFO' || (tab.type === 'INFO' && width < 1440)"
       />
       <div class="newest">
         <div>Newest</div>
@@ -61,6 +62,10 @@ export default {
     tabs: {
       type: Array,
       default: () => [],
+    },
+    width: {
+      type: Number,
+      default: window.innerWidth,
     },
   },
   data() {
