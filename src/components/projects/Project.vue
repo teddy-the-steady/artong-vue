@@ -458,35 +458,6 @@ export default {
           }
         }
       }
-
-      // .info {
-      //   margin-top: 8px;
-      //   font-family: 'Pretendard';
-      //   font-style: normal;
-      //   font-weight: 600;
-      //   font-size: 18px;
-      //   text-align: left;
-      //   color: #000000;
-      // }
-      // .desc {
-      //   text-align: left;
-      //   margin-top: 8px;
-      //   font-family: 'Pretendard';
-      //   font-style: normal;
-      //   font-weight: 400;
-      //   font-size: 16px;
-      //   color: #4d4d4d;
-      //   line-height: 150%;
-      // }
-      // .project-info {
-      //   width: 100%;
-      //   height: 48px;
-
-      //   border-radius: 5px;
-
-      //   margin-top: 8px;
-      //   margin-bottom: 24px;
-      // }
     }
     .left-tab {
       margin-left: 185px;
