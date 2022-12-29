@@ -1,39 +1,32 @@
 <template>
   <div>
     <div class="box">
-      <div class="red-button">Art</div>
-      <div class="collection-name">Collection name</div>
+      <div class="red-button">{{ project.symbol }}</div>
+      <div class="collection-name">{{ project.name }}</div>
       <ContentsProfile class="contents-profile" />
       <div class="buttons1">
         <button class="white-btn">Subscribe</button>
-        <button class="contribute-btn">Contribute</button>
+        <button @click="contribute" v-ripple>Contribute</button>
       </div>
       <div class="detail">
         <div class="top">Items</div>
-        <div class="bottom">325/1000</div>
-        <div class="top">Subscriber</div>
-        <div class="bottom">2,000</div>
-        <div class="top">Floor price</div>
-        <div class="bottom">0,001 ETH</div>
-        <div class="top">Total sales</div>
-        <div class="bottom">12K ETH</div>
+        <div class="bottom">325/{{ project.maxAmount }}</div>
       </div>
-      <SnsLinks :sns="sns" />
       <div class="info">
         <div class="info-title">Information</div>
         <div class="info-description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit lorem
-          vel magna id. Enim feugiat felis at ultrices a dolor amet, tincidunt
-          in. Cursus volutpat convallis turpis elementum. Fusce morbi sit diam
-          arcu.
+          {{ project.description }}
         </div>
       </div>
+      <SnsLinks :sns="project.sns" />
     </div>
   </div>
 </template>
 <script>
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import SnsLinks from '../projects/SnsLinks.vue'
+import { isSessionValid } from '../../util/commonFunc'
+import Ripple from '../../directives/ripple/Ripple'
 
 export default {
   name: 'LeftProjectTab',
@@ -42,10 +35,21 @@ export default {
     SnsLinks,
   },
   props: {
-    sns: {
+    project: {
       type: Object,
       default: () => {},
     },
+  },
+  methods: {
+    async contribute() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+      this.$root.$emit('contribute')
+    },
+  },
+  directives: {
+    ripple: Ripple,
   },
 }
 </script>
@@ -87,25 +91,12 @@ export default {
     display: flex;
     flex-direction: row;
     margin-top: 32px;
-    .subscribe-btn {
-      width: 141px;
-      height: 48px;
-
-      margin-right: 16px;
-    }
-    .contribute-btn {
-      width: 141px;
-      height: 48px;
-      background: #000000;
-      border-radius: 5px;
-
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      color: #ffffff;
+    justify-content: space-between;
+    button {
+      width: 48%;
     }
   }
+
   .detail {
     font-family: 'Pretendard';
     font-style: normal;
