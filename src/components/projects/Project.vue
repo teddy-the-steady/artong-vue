@@ -8,7 +8,7 @@
           <button class="round-button" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <div class="round-button">
+          <div class="round-button" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
           </div>
           <div
@@ -48,8 +48,8 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
-          <div class="red-button">Art</div>
-          <div class="collection-name">Collection name</div>
+          <div class="red-button">{{ project.symbol }}</div>
+          <div class="collection-name">{{ project.name }}</div>
           <ContentsProfile class="contents-profile" />
           <div class="statistic-container">
             <div
@@ -64,7 +64,7 @@
         </div>
         <LeftProjectTab
           v-else-if="this.width >= 1440"
-          :sns="project.sns"
+          :project="project"
           class="left-tab"
         />
       </div>
@@ -94,7 +94,6 @@
       ></MintStepFinal>
       <MintStepMinting slot="body_step_5"></MintStepMinting>
     </MintModal>
-    {{ project }}
     <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
@@ -234,7 +233,14 @@ export default {
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        // TODO]alert 창 띄우는 거 구현해야 함
+        alert('링크 복사 완료')
+      }
+    },
+    toEtherscan() {
+      if (process.env.NODE_ENV == 'production') {
+        window.open('https://etherscan.io/address/' + this.project.id)
+      } else {
+        window.open('https://goerli.etherscan.io/address/' + this.project.id)
       }
     },
   },
@@ -365,7 +371,6 @@ export default {
         img {
           position: absolute;
         }
-
         .dialog {
           display: none;
           &.active {
@@ -465,6 +470,9 @@ export default {
     .contents {
       padding: 0 10%;
     }
+  }
+  .project-tab-sort {
+    width: 100%;
   }
 }
 textarea {
