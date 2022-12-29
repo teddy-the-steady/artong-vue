@@ -471,6 +471,9 @@ export default {
       padding: 0 10%;
     }
   }
+  .project-tab-sort {
+    width: 100%;
+  }
 }
 textarea {
   opacity: 0;
