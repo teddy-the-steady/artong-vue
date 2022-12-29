@@ -1,13 +1,7 @@
 <template>
   <div>
-    <div class="info-top">
-      <div class="info-name">Information</div>
-      <div class="info-desc" v-if="links">
-        {{ links.description }}
-      </div>
-    </div>
-    <div class="sns-btns" v-if="links">
-      <div class="btn-container" v-for="(url, name) in links.sns" :key="name">
+    <div class="sns-btns" v-if="sns">
+      <div class="btn-container" v-for="(url, name) in sns" :key="name">
         <button class="white-btn long-btn" @click="openNewTab(url)">
           {{ name }}
         </button>
@@ -20,7 +14,7 @@
 export default {
   name: 'SnsLinks',
   props: {
-    links: {
+    sns: {
       type: Object,
       default: () => {},
     },
@@ -34,28 +28,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info-top {
-  .info-name {
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 18px;
-
-    color: #000000;
-  }
-  .info-desc {
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-
-    color: #4d4d4d;
-  }
-}
-
 .sns-btns {
-  margin-top: 16px;
-  margin-bottom: 299px;
+  margin: 30px 0;
   .btn-container {
     margin-top: 8px;
     .long-btn {
