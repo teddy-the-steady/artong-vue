@@ -38,6 +38,7 @@ export default {
         await patchProject(this.project.txHash, {
           ...this.project,
         })
+        alert('Saved!')
       } catch (error) {
         this.errorMessage = error
       }
