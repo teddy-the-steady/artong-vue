@@ -62,7 +62,11 @@
             </div>
           </div>
         </div>
-        <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
+        <LeftProjectTab
+          v-else-if="this.width >= 1440"
+          :sns="project.sns"
+          class="left-tab"
+        />
       </div>
       <ProjectTabSort :tabs="tabs" :width="width" class="project-tab-sort" />
     </div>
