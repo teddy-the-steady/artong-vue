@@ -23,7 +23,13 @@
           ></ContentList>
         </div>
         <div v-show="current.type === 'INFO'" class="info">
-          <SnsLinks :links="current.data"></SnsLinks>
+          <div class="info-top">
+            <div class="info-name">Information</div>
+            <div class="info-desc" v-if="current.data">
+              {{ current.data.description }}
+            </div>
+          </div>
+          <SnsLinks v-if="current.data" :sns="current.data.sns" />
         </div>
         {{ current }}
       </section>
@@ -116,6 +122,27 @@ export default {
       width: 9.5px;
       height: 5.9px;
       margin-top: 14px;
+    }
+  }
+}
+
+.info {
+  .info-top {
+    .info-name {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+
+      color: #000000;
+    }
+    .info-desc {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+
+      color: #4d4d4d;
     }
   }
 }
