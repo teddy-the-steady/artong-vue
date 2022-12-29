@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 import { Auth } from '@aws-amplify/auth'
-import { isAuthenticated } from '../util/commonFunc'
-import Home from '@/components/menu/Home'
+import Main from '@/components/menu/Main'
 import Project from '@/components/projects/Project'
 import Projects from '@/components/menu/Projects'
 import Following from '@/components/menu/Following'
@@ -16,7 +15,7 @@ import Contents from '@/components/menu/Contents'
 import ContentDetail from '@/components/contents_v2/ContentDetail'
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
-import VueCarousel from 'vue-carousel' // for 무한 슬라이드 swipe 배너
+import VueCarousel from 'vue-carousel'
 
 Vue.use(Router)
 Vue.use(VueCarousel)
@@ -26,20 +25,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HomeOrMain',
-      component: () => {
-        if (isAuthenticated()) {
-          return import('@/components/menu/Home')
-        } else {
-          return import('@/components/menu/Main')
-        }
-      },
-      beforeEnter(to, from, next) {
-        if (isAuthenticated()) {
-          to.matched[0].components.default = Home
-        }
-        next()
-      },
+      name: 'Main',
+      component: Main,
     },
     {
       path: '/projects/:id',
