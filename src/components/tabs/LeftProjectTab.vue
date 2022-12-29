@@ -18,12 +18,13 @@
         <div class="top">Total sales</div>
         <div class="bottom">12K ETH</div>
       </div>
-      <div class="buttons2">
+      <SnsLinks :sns="sns" />
+      <!-- <div class="buttons2">
         <button class="wide-btn">Instagram</button>
         <button class="wide-btn">twitter</button>
         <button class="wide-btn">discord</button>
         <button class="wide-btn">website</button>
-      </div>
+      </div> -->
       <div class="info">
         <div class="info-title">Information</div>
         <div class="info-description">
@@ -38,11 +39,19 @@
 </template>
 <script>
 import ContentsProfile from '../profile/ContentsProfile.vue'
+import SnsLinks from '../projects/SnsLinks.vue'
 
 export default {
   name: 'LeftProjectTab',
   components: {
     ContentsProfile,
+    SnsLinks,
+  },
+  props: {
+    sns: {
+      type: Object,
+      default: () => {},
+    },
   },
 }
 </script>
@@ -53,7 +62,6 @@ export default {
   padding: 32px 24px;
   gap: 32px;
   width: 346px;
-  height: 1012px;
   background: #ffffff;
   border: 1px solid #cccccc;
   border-radius: 8px;
@@ -122,27 +130,7 @@ export default {
       margin-bottom: 24px;
     }
   }
-  .buttons2 {
-    margin-bottom: 32px;
-    .wide-btn {
-      width: 298px;
-      height: 48px;
-      background: #ffffff;
-      border: 1px solid #000000;
-      border-radius: 999px;
 
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      color: #000000;
-
-      margin-bottom: 8px;
-      //
-      transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-        box-shadow 0.2s;
-    }
-  }
   .info {
     text-align: left;
     .info-title {
