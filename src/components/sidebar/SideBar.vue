@@ -46,10 +46,8 @@ export default {
     closeSidebarPanel() {
       this.$store.commit('TOGGLE_NAV')
     },
-    onItemClick(event, item) {
-      console.log('onItemClick')
-      console.log(event)
-      console.log(item)
+    onItemClick() {
+      this.$store.commit('SET_SIDE_MENU_FALSE')
     },
   },
 }

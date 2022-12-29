@@ -106,7 +106,6 @@
         >
           Profile
         </router-link>
-        <div slot="body">Settings</div>
         <div slot="body" @click="signOut">Disconnect</div>
       </UserDialog>
     </nav>

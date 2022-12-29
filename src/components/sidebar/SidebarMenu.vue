@@ -21,20 +21,20 @@
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <LightDarkSwitch></LightDarkSwitch>
+      <!-- <LightDarkSwitch></LightDarkSwitch> -->
     </div>
   </div>
 </template>
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem.vue'
-import LightDarkSwitch from '../util/LightDarkSwitch.vue'
+// import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 
 export default {
   name: 'SidebarMenu',
   components: {
     SidebarMenuItem,
-    LightDarkSwitch,
+    // LightDarkSwitch,
   },
   props: {
     menu: {

@@ -31,7 +31,6 @@
           </div>
           <SnsLinks v-if="current.data" :sns="current.data.sns" />
         </div>
-        {{ current }}
       </section>
     </div>
   </div>
