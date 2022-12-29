@@ -48,8 +48,8 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
-          <div class="red-button">Art</div>
-          <div class="collection-name">Collection name</div>
+          <div class="red-button">{{ project.symbol }}</div>
+          <div class="collection-name">{{ project.name }}</div>
           <ContentsProfile class="contents-profile" />
           <div class="statistic-container">
             <div
@@ -64,7 +64,7 @@
         </div>
         <LeftProjectTab
           v-else-if="this.width >= 1440"
-          :sns="project.sns"
+          :project="project"
           class="left-tab"
         />
       </div>
@@ -94,7 +94,6 @@
       ></MintStepFinal>
       <MintStepMinting slot="body_step_5"></MintStepMinting>
     </MintModal>
-    {{ project }}
     <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
