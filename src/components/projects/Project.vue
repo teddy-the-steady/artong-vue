@@ -64,7 +64,7 @@
         </div>
         <LeftProjectTab v-else-if="this.width >= 1440" class="left-tab" />
       </div>
-      <ProjectTabSort :tabs="tabs" class="project-tab-sort" />
+      <ProjectTabSort :tabs="tabs" :width="width" class="project-tab-sort" />
     </div>
     <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
       <span slot="header" @click="close">X</span>
