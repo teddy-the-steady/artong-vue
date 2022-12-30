@@ -12,7 +12,9 @@
       </div>
       <div class="detail">
         <div class="top">Items</div>
-        <div class="bottom">325/{{ project.maxAmount }}</div>
+        <div class="bottom">
+          {{ project.max_token_id }}/{{ project.maxAmount }}
+        </div>
       </div>
       <div class="info">
         <div class="info-title">Information</div>
