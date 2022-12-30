@@ -48,7 +48,9 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
-          <div class="red-button">{{ project.symbol }}</div>
+          <div class="red-button">
+            {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+          </div>
           <div class="collection-name">{{ project.name }}</div>
           <ContentsProfile class="contents-profile" />
           <div class="statistic-container">
@@ -168,12 +170,7 @@ export default {
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
-      projectData: [
-        { name: 'Items', info: '235/1000' },
-        { name: 'Subscirber', info: '2,000' },
-        { name: 'Floor price', info: '0.001 ETH' },
-        { name: 'Total sales', info: '12K ETH' },
-      ],
+      projectData: [],
       url: '',
     }
   },
@@ -243,6 +240,12 @@ export default {
         window.open('https://goerli.etherscan.io/address/' + this.project.id)
       }
     },
+    setStatistics() {
+      this.projectData[0] = {
+        name: 'Items',
+        info: `${this.project.max_token_id || 0}/${this.project.maxAmount}`,
+      }
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -250,6 +253,7 @@ export default {
       this.$route.params.id,
     )
     this.project = await this.getProject()
+    this.setStatistics()
 
     this.tabs[0].api = {
       func: graphql,
@@ -278,6 +282,7 @@ export default {
       async to => {
         if (to.name === 'Project' && !to.query.tab) {
           this.project = await this.getProject()
+          this.setStatistics()
         }
       },
     )
