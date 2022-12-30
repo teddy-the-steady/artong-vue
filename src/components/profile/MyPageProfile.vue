@@ -14,10 +14,12 @@
       <div class="introduction">
         {{ currentUser.profile.introduction }}
       </div>
-      <div class="address">
+      <button class="address white-btn" @click="copy">
         {{ currentUser.wallet_address }}
-      </div>
+        <img src="../../assets/icons/copy.svg" />
+      </button>
     </div>
+    <textarea v-model="address" ref="address"></textarea>
   </div>
 </template>
 
@@ -69,6 +71,16 @@ export default {
         )
       }
     },
+    getAddress() {
+      this.address = this.member.wallet_address
+    },
+    copy() {
+      this.getAddress()
+      const element = this.$refs.address
+      element.select()
+      document.execCommand('copy')
+      alert('주소 복사 완료')
+    },
   },
   mounted() {
     this.isFirstLoading = false
@@ -79,6 +91,11 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
+textarea {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+}
 .profile {
   display: flex;
   margin-left: 15%;
@@ -93,6 +110,25 @@ export default {
 
     .username {
       font-size: 1.5em;
+    }
+    .address {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid #f2f2f2;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+      border-radius: 999px;
+      padding-left: 16px;
+      padding-right: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      img {
+        width: 20px;
+        height: 20px;
+        transform: translateY(3px);
+      }
     }
   }
 }
