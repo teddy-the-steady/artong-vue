@@ -72,6 +72,12 @@ export default {
           text-align: left;
           color: $artong-black;
           font-weight: 500;
+          transition: background 0.3s;
+          &:hover {
+            background: $lightgray
+              radial-gradient(circle, transparent 1%, $lightgray 1%)
+              center/15000%;
+          }
         }
       }
     }
