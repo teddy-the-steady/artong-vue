@@ -13,7 +13,7 @@
           project.project_thumbnail_s3key || project.project_s3key
         "
       ></ProjectPageProfile_wrapped>
-      <div class="symbol">{{ project.symbol.toUpperCase() }}</div>
+      <div class="symbol">{{ project.symbol }}</div>
     </div>
     <div class="name">{{ project.name }}</div>
     <div class="bottom">

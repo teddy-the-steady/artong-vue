@@ -17,7 +17,6 @@
         <div v-show="current.type === 'PROJECTS'">
           <ProjectList :queryProjects="current.api"></ProjectList>
         </div>
-        {{ current }}
       </section>
     </div>
   </div>
