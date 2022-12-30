@@ -26,6 +26,7 @@ const queryProject = function (variables) {
           _db_background_thumbnail_s3key
           _db_description
           _db_sns
+          _db_subscribers
         }
       }
     `,

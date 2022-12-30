@@ -173,7 +173,7 @@ export default {
       if (urlToRedirect) {
         this.$router.push(urlToRedirect)
       } else {
-        this.$router.push({ name: 'HomeOrMain' })
+        this.$router.push({ name: 'Main' })
       }
     },
   },
