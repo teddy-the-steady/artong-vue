@@ -194,6 +194,18 @@ html {
         font-size: 14px;
         color: #000000;
       }
+      &.round-button {
+        width: 48px;
+        height: 48px;
+        background: #ffffff;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+      }
     }
 
     #header-bar {

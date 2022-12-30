@@ -10,13 +10,6 @@ const makeS3Path = function (path) {
   }
 }
 
-const isAuthenticated = function () {
-  if (store.state.auth.status === 'success') {
-    return true
-  }
-  return false
-}
-
 const isSessionValid = async function (pathToRedirect) {
   if (await store.dispatch('AUTH_CHECK_CURRENT_SESSION')) {
     return true
@@ -80,7 +73,6 @@ const checkMobileWalletStatusAndGetSigner = async function (pathToRedirect) {
 
 export {
   makeS3Path,
-  isAuthenticated,
   isSessionValid,
   loginAndRedirectBack,
   getRandomString,

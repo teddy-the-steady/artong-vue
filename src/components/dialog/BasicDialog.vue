@@ -70,6 +70,8 @@ export default {
           padding: 10px;
           cursor: pointer;
           text-align: left;
+          color: $artong-black;
+          font-weight: 500;
         }
       }
     }

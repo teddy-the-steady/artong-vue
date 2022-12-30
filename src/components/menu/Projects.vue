@@ -1,7 +1,7 @@
 <template>
   <div>
+    <h1>Explore Projects</h1>
     <ProjectList :queryProjects="queryProjects"></ProjectList>
-    <div>hello</div>
   </div>
 </template>
 
