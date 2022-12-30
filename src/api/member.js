@@ -28,10 +28,21 @@ const patchMember = async function (member_id, { username, introduction }) {
   })
 }
 
+const postMemberFollower = async function ({
+  isFollowRequest,
+  targetMemberId,
+}) {
+  return await instance.post('/follow', {
+    isFollowRequest: isFollowRequest,
+    targetMemberId: targetMemberId,
+  })
+}
+
 export {
   getMemberByUsername,
   getCurrentMember,
   postMember,
   patchMemberProfileS3key,
   patchMember,
+  postMemberFollower,
 }
