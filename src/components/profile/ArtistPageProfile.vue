@@ -78,33 +78,32 @@ export default {
 
     async follow() {
       console.log(this.member)
-      try {
-        await postMemberFollower({
-          isFollowRequest: true,
-          targetMemberId: this.member.id,
-        })
-        this.follower = this.member.follower
-        console.log(this.member.follower)
-        alert('followed')
-      } catch (error) {
-        this.errorMessage = error
+      if (this.member.isFollowing) {
+        try {
+          await postMemberFollower({
+            isFollowRequest: true,
+            targetMemberId: this.member.id,
+          })
+          this.$emit('changeFollower', this.member.follower)
+          console.log(this.member.follower)
+          alert('followed')
+        } catch (error) {
+          this.errorMessage = error
+        }
+      } else {
+        try {
+          await postMemberFollower({
+            isFollowRequest: false,
+            targetMemberId: this.member.id,
+          })
+          this.follower = this.member.follower
+          console.log(this.member.follower)
+          this.$emit('changeFollower', this.member.follower)
+          alert('unfollowed')
+        } catch (error) {
+          this.errorMessage = error
+        }
       }
-      // try {
-      //   await postMemberFollower({
-      //     isFollowRequest: false,
-      //     targetMemberId: this.member.id,
-      //   })
-      //   this.follower = this.member.follower
-      //   console.log(this.member.follower)
-      //   alert('unfollowed')
-      // } catch (error) {
-      //   this.errorMessage = error
-      // }
-      // if (true) {
-
-      // } else {
-      //
-      // }
     },
   },
   watch: {
