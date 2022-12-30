@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="box">
-      <div class="red-button">{{ project.symbol }}</div>
+      <div class="red-button">
+        {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+      </div>
       <div class="collection-name">{{ project.name }}</div>
       <ContentsProfile class="contents-profile" />
       <div class="buttons1">
