@@ -198,13 +198,26 @@ html {
         width: 48px;
         height: 48px;
         background: #ffffff;
-        border: 1px solid #f2f2f2;
+        border: none;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
         border-radius: 999px;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 0px;
+      }
+      &.ripple {
+        background-position: center;
+        transition: background 0.8s;
+      }
+      &.ripple:hover {
+        background: $lightergray
+          radial-gradient(circle, transparent 1%, $lightergray 1%) center/15000%;
+      }
+      &.ripple:active {
+        background-color: #ffffff;
+        background-size: 100%;
+        transition: background 0s;
       }
     }
 
