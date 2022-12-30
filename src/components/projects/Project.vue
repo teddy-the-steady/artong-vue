@@ -5,14 +5,14 @@
       <div class="user-info">
         <ProjectPageProfile class="profile"></ProjectPageProfile>
         <div class="buttons">
-          <button class="round-button" @click="share">
+          <button class="round-button ripple" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <button class="round-button" @click="toEtherscan">
+          <button class="round-button ripple" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
           </button>
           <button
-            class="round-button"
+            class="round-button ripple"
             @mousedown="moreMouseDown"
             @mouseup="moreMouseUp"
           >
