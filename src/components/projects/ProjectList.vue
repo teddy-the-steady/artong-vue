@@ -69,7 +69,7 @@ export default {
               address: results[i].id,
               creator: results[i].creator,
               name: results[i].name,
-              symbol: results[i].symbol,
+              symbol: results[i].symbol.toUpperCase(),
               // status: results[i].status,
               policy: results[i].policy,
               max_amount: results[i].maxAmount,
