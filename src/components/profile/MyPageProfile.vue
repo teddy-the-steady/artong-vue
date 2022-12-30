@@ -20,6 +20,14 @@
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
+    <div class="follow-static-box">
+      <div class="title">Follwer</div>
+      <div class="number">299</div>
+    </div>
+    <div class="follow-static-box">
+      <div class="title">Follow</div>
+      <div class="number">300</div>
+    </div>
   </div>
 </template>
 

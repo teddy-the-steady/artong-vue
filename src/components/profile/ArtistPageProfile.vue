@@ -17,6 +17,18 @@
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
+    <button v-if="this.member.isFollowing" class="follow-btn" @click="follow">
+      Follow
+    </button>
+    <button v-else class="unfollow-btn" @click="follow">unfollow</button>
+    <div class="follow-static-box">
+      <div class="title">Follwer</div>
+      <div class="number">{{ member.follower }}</div>
+    </div>
+    <div class="follow-static-box">
+      <div class="title">Follow</div>
+      <div class="number">{{ member.following }}</div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +36,7 @@
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
+import { postMemberFollower } from '../../api/member'
 
 export default {
   name: 'ArtistPageProfile',
@@ -37,6 +50,7 @@ export default {
       isFirstLoading: true,
       hasErrorGettingImage: false,
       address: '',
+      errorMessage: '',
     }
   },
   props: {
@@ -60,6 +74,37 @@ export default {
       element.select()
       document.execCommand('copy')
       alert('주소 복사 완료')
+    },
+
+    async follow() {
+      console.log(this.member)
+      try {
+        await postMemberFollower({
+          isFollowRequest: true,
+          targetMemberId: this.member.id,
+        })
+        this.follower = this.member.follower
+        console.log(this.member.follower)
+        alert('followed')
+      } catch (error) {
+        this.errorMessage = error
+      }
+      // try {
+      //   await postMemberFollower({
+      //     isFollowRequest: false,
+      //     targetMemberId: this.member.id,
+      //   })
+      //   this.follower = this.member.follower
+      //   console.log(this.member.follower)
+      //   alert('unfollowed')
+      // } catch (error) {
+      //   this.errorMessage = error
+      // }
+      // if (true) {
+
+      // } else {
+      //
+      // }
     },
   },
   watch: {
