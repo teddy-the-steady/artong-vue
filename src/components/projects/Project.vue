@@ -8,10 +8,10 @@
           <button class="round-button" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <div class="round-button" @click="toEtherscan">
+          <button class="round-button" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
-          </div>
-          <div
+          </button>
+          <button
             class="round-button"
             @mousedown="moreMouseDown"
             @mouseup="moreMouseUp"
@@ -36,7 +36,7 @@
               </router-link>
               <div slot="body">Report</div>
             </BasicDialog>
-          </div>
+          </button>
           <div v-if="this.width >= 1080" class="creators-button">
             <div class="creator">Creator</div>
             <ContentsProfileBundle class="profile-bundle" />
@@ -357,20 +357,12 @@ export default {
       transform: translateY(-24px);
       margin-right: 16px;
       width: 160px;
-      .round-button {
-        width: 48px;
-        height: 48px;
-        background: #ffffff;
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
-        border-radius: 999px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 0px;
-        img {
-          position: absolute;
-        }
+
+      img {
+        position: absolute;
+      }
+
+      button {
         .dialog {
           display: none;
           &.active {
@@ -378,36 +370,36 @@ export default {
           }
         }
       }
-      .creators-button {
-        width: 258px;
-        height: 48px;
-        background: #ffffff;
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-        border-radius: 999px;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        .creator {
-          font-family: 'Pretendard';
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
-          color: #000000;
-        }
-        .profile-bundle {
-          margin-bottom: 0px;
-          margin-left: 6px;
-          transform: translateX(5px);
-        }
-        .viewAll {
-          font-family: 'Pretendard';
-          font-style: normal;
-          font-weight: 400;
-          font-size: 12px;
-          color: #808080;
-        }
+    }
+    .creators-button {
+      width: 258px;
+      height: 48px;
+      background: #ffffff;
+      border: 1px solid #f2f2f2;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+      border-radius: 999px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .creator {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #000000;
+      }
+      .profile-bundle {
+        margin-bottom: 0px;
+        margin-left: 6px;
+        transform: translateX(5px);
+      }
+      .viewAll {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        color: #808080;
       }
     }
   }
