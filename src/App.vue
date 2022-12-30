@@ -211,8 +211,8 @@ html {
         transition: background 0.8s;
       }
       &.ripple:hover {
-        background: $lightgray
-          radial-gradient(circle, transparent 1%, $lightgray 1%) center/15000%;
+        background: $lightergray
+          radial-gradient(circle, transparent 1%, $lightergray 1%) center/15000%;
       }
       &.ripple:active {
         background-color: #ffffff;
