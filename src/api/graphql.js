@@ -55,6 +55,10 @@ const queryProjects = function (variables) {
           _db_project_thumbnail_s3key
           _db_background_s3key
           _db_background_thumbnail_s3key
+          _db_create_tx_hash
+          _db_description
+          _db_status
+          _db_member_id
         }
       }
     `,
@@ -82,6 +86,10 @@ const queryProjectsByCreator = function (variables) {
           _db_project_thumbnail_s3key
           _db_background_s3key
           _db_background_thumbnail_s3key
+          _db_create_tx_hash
+          _db_description
+          _db_status
+          _db_member_id
         }
       }
     `,
