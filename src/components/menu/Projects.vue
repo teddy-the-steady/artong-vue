@@ -29,7 +29,7 @@ export default {
       func: graphql,
       body: queryProjects({
         variables: {
-          first: 5,
+          first: 10,
           skip: 0,
         },
       }),
