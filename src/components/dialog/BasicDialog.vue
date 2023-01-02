@@ -43,9 +43,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .dialog-mask {
-  position: relative;
-  top: 130%;
-  right: 80%;
+  position: absolute;
+  top: 70%;
+  right: 0%;
   outline: 0;
 
   .dialog-wrapper {
@@ -57,6 +57,8 @@ export default {
       background-color: $artong-white;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
+      border-radius: 10px;
+      overflow: hidden;
 
       .dialog-header {
         float: right;
