@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="dropdown" @mousedown="sortMouseDown" @mouseup="sortMouseUp">
-      <div>Newest</div>
+      <div>{{ sortSelected.name || 'Newest' }}</div>
       <img src="../../assets/icons/arrow_down.svg" />
     </button>
     <BasicDialog
@@ -10,8 +10,14 @@
       @dialog-focus-out="closeDialog"
       ref="dialog"
     >
-      <div slot="body">Newest</div>
-      <div slot="body">Oldest</div>
+      <div
+        slot="body"
+        v-for="(option, name) in sortOptions"
+        :key="name"
+        @click="sort(name)"
+      >
+        {{ option.name }}
+      </div>
     </BasicDialog>
   </div>
 </template>
@@ -23,7 +29,11 @@ export default {
   name: 'SortDropdown',
   components: { BasicDialog },
   props: {
-    options: {
+    sortOptions: {
+      type: Object,
+      default: () => {},
+    },
+    sortSelected: {
       type: Object,
       default: () => {},
     },
@@ -49,6 +59,15 @@ export default {
       if (this.isMouseDownSort) {
         this.isDialogActive = true
       }
+    },
+    sort(option) {
+      if (this.$route.query.sort === option) {
+        return
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: { ...this.$route.query, sort: option },
+      })
     },
   },
   watch: {
