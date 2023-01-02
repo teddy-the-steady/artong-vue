@@ -69,8 +69,8 @@ const queryProjects = function (variables) {
 const queryProjectsByCreator = function (variables) {
   return {
     query: `
-      query ProjectsByCreator($first: Int, $skip: Int, $creator: String) {
-        projects(first: $first, skip: $skip, where: {creator: $creator}) {
+      query ProjectsByCreator($first: Int, $skip: Int, $creator: String, $orderBy: String, $orderDirection: String) {
+        projects(first: $first, skip: $skip, where: {creator: $creator}, orderBy: $orderBy, orderDirection: $orderDirection) {
           id
           txHash
           creator
@@ -164,8 +164,8 @@ const queryTokensByProject = function (variables) {
 const queryTokensByCreator = function (variables) {
   return {
     query: `
-      query TokensByCreator($first: Int, $skip: Int, $creator: String) {
-        tokens(first: $first, skip: $skip, where: {creator: $creator}) {
+      query TokensByCreator($first: Int, $skip: Int, $creator: String, $orderBy: String, $orderDirection: String) {
+        tokens(first: $first, skip: $skip, where: {creator: $creator}, orderBy: $orderBy, orderDirection: $orderDirection) {
           id
           tokenId
           tokenURI
@@ -189,8 +189,8 @@ const queryTokensByCreator = function (variables) {
 const queryTokensByOwner = function (variables) {
   return {
     query: `
-      query TokensByOwner($first: Int, $skip: Int, $owner: String) {
-        tokens(first: $first, skip: $skip, where: {owner: $owner}) {
+      query TokensByOwner($first: Int, $skip: Int, $owner: String, $orderBy: String, $orderDirection: String) {
+        tokens(first: $first, skip: $skip, where: {owner: $owner}, orderBy: $orderBy, orderDirection: $orderDirection) {
           id
           tokenId
           tokenURI
