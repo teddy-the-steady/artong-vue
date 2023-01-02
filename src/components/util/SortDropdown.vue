@@ -1,8 +1,15 @@
 <template>
   <div>
-    <button class="dropdown" @mousedown="sortMouseDown" @mouseup="sortMouseUp">
+    <button
+      class="dropdown ripple"
+      @mousedown="sortMouseDown"
+      @mouseup="sortMouseUp"
+    >
       <div>{{ sortSelected.name || 'Newest' }}</div>
-      <img src="../../assets/icons/arrow_down.svg" />
+      <img
+        :class="{ active: isDialogActive }"
+        src="../../assets/icons/arrow_down.svg"
+      />
     </button>
     <BasicDialog
       class="dialog"
@@ -82,6 +89,10 @@ export default {
 
 <style lang="scss" scoped>
 img {
+  &.active {
+    transition: 0.1s transform ease;
+    transform: rotate(180deg);
+  }
   width: 9.5px;
 }
 .dialog {
