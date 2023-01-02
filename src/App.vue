@@ -195,6 +195,7 @@ html {
         color: #000000;
       }
       &.round-button {
+        position: relative;
         width: 48px;
         height: 48px;
         background: #ffffff;
@@ -218,6 +219,27 @@ html {
         background-color: #ffffff;
         background-size: 100%;
         transition: background 0s;
+      }
+      &.dropdown {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 16px;
+        padding-right: 14px;
+        box-sizing: border-box;
+
+        width: 105px;
+        height: 36px;
+        background: #ffffff;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: #000000;
       }
     }
 

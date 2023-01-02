@@ -52,6 +52,7 @@ import { patchContent, uploadToNftStorage } from '../../api/contents'
 import {
   etherToWei,
   checkMobileWalletStatusAndGetSigner,
+  makeS3Path,
 } from '../../util/commonFunc'
 import Provider from '../../util/walletConnectProvider'
 
@@ -151,7 +152,9 @@ export default {
             const voucher = await this.makeLazyMintingVoucher(
               this.slotData.postResult.project_address,
               metadata.url,
-              '',
+              makeS3Path(
+                `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
+              ),
             )
 
             await patchContent(this.slotData.postResult.id, {
