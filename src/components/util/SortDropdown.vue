@@ -42,7 +42,9 @@ export default {
     },
     sortSelected: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return { name: 'Newest' }
+      },
     },
   },
   data() {
@@ -68,7 +70,7 @@ export default {
       }
     },
     sort(option) {
-      if (this.$route.query.sort === option) {
+      if (this.sortSelected.name.toLowerCase() === option) {
         return
       }
       this.$router.push({
