@@ -70,7 +70,7 @@
           class="left-tab"
         />
       </div>
-      <ProjectTabSort :tabs="tabs" :width="width" class="project-tab-sort" />
+      <ProjectTab :tabs="tabs" :width="width" class="project-tab-sort" />
     </div>
     <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
       <span slot="header" @click="close">X</span>
@@ -113,7 +113,7 @@ import MintStep2 from '../modal/mint_steps/MintStep2.vue'
 import MintStep3 from '../modal/mint_steps/MintStep3.vue'
 import MintStepFinal from '../modal/mint_steps/MintStepFinal.vue'
 import MintStepMinting from '../modal/mint_steps/MintStepMinting.vue'
-import ProjectTabSort from '../tabs/ProjectTabSort.vue'
+import ProjectTab from '../tabs/ProjectTab.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
@@ -131,7 +131,7 @@ export default {
     MintStep3,
     MintStepFinal,
     MintStepMinting,
-    ProjectTabSort,
+    ProjectTab,
     ContentsProfileBundle,
     LeftProjectTab,
     ContentsProfile,
