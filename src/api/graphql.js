@@ -137,8 +137,8 @@ const queryToken = function (variables) {
 const queryTokensByProject = function (variables) {
   return {
     query: `
-      query TokensByProject($first: Int, $skip: Int, $project: String) {
-        tokens(first: $first, skip: $skip, where: {project: $project}) {
+      query TokensByProject($first: Int, $skip: Int, $project: String, $orderBy: String, $orderDirection: String) {
+        tokens(first: $first, skip: $skip, where: {project: $project}, orderBy: $orderBy, orderDirection: $orderDirection) {
           id
           tokenId
           tokenURI

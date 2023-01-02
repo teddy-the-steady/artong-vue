@@ -9,10 +9,14 @@
         @tabClick="tabClick"
         v-show="tab.type !== 'INFO' || (tab.type === 'INFO' && width < 1440)"
       />
-      <SortDropdown class="sort"></SortDropdown>
+      <SortDropdown
+        class="sort"
+        :sortOptions="sortOptions"
+        :sortSelected="current.sort"
+      ></SortDropdown>
     </div>
     <div class="items">
-      <section class="item" :key="currentId">
+      <section class="item" :key="generateKey()">
         <div v-show="current.type === 'CONTENTS'">
           <ContentList
             :queryContents="current.api"
@@ -57,6 +61,10 @@ export default {
       type: Number,
       default: window.innerWidth,
     },
+    sortOptions: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
@@ -75,6 +83,9 @@ export default {
     tabClick(id) {
       this.currentId = id
       this.$router.push({ query: { tab: id } })
+    },
+    generateKey() {
+      return this.currentId + this.current.sort.name
     },
   },
   watch: {
