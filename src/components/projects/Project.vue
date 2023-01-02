@@ -70,7 +70,12 @@
           class="left-tab"
         />
       </div>
-      <ProjectTab :tabs="tabs" :width="width" class="project-tab-sort" />
+      <ProjectTab
+        :tabs="tabs"
+        :width="width"
+        :sortOptions="sortOptions"
+        class="project-tab-sort"
+      />
     </div>
     <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
       <span slot="header" @click="close">X</span>
@@ -153,8 +158,14 @@ export default {
       backgroundColor: null,
       project: {},
       tabs: [
-        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
-        { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
+        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {}, sort: {} },
+        {
+          id: 1,
+          type: 'CONTENTS',
+          label: 'Waiting For Approval',
+          api: {},
+          sort: {},
+        },
         { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       width: window.innerWidth,
@@ -172,6 +183,18 @@ export default {
       isMouseUpOnMore: false,
       projectData: [],
       url: '',
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
     }
   },
   methods: {
@@ -255,6 +278,8 @@ export default {
     this.project = await this.getProject()
     this.setStatistics()
 
+    this.tabs[0].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
       body: queryTokensByProject({
@@ -262,6 +287,8 @@ export default {
           first: 10,
           skip: 0,
           project: this.$route.params.id,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
         },
       }),
     }
@@ -280,7 +307,7 @@ export default {
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'Project' && !to.query.tab) {
+        if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
           this.project = await this.getProject()
           this.setStatistics()
         }
@@ -302,6 +329,8 @@ export default {
 
       switch (to.query.tab || '0') {
         case '0':
+          this.tabs[0].sort =
+            this.sortOptions[to.query.sort] || this.sortOptions['newest']
           this.tabs[0].api = {
             func: graphql,
             body: queryTokensByProject({
@@ -309,6 +338,8 @@ export default {
                 first: 10,
                 skip: 0,
                 project: to.params.id,
+                orderBy: this.tabs[0].sort.orderBy,
+                orderDirection: this.tabs[0].sort.orderDirection,
               },
             }),
           }
