@@ -327,32 +327,33 @@ export default {
         this.backgroundColor = this.generateGradientBackground(to.params.id)
       }
 
-      switch (to.query.tab || '0') {
+      const t = to.query.tab || '0'
+      switch (t) {
         case '0':
-          this.tabs[0].sort =
+          this.tabs[t].sort =
             this.sortOptions[to.query.sort] || this.sortOptions['newest']
-          this.tabs[0].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryTokensByProject({
               variables: {
                 first: 10,
                 skip: 0,
                 project: to.params.id,
-                orderBy: this.tabs[0].sort.orderBy,
-                orderDirection: this.tabs[0].sort.orderDirection,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
           }
           break
         case '1':
-          this.tabs[1].api = {
+          this.tabs[t].api = {
             func: getTobeApprovedContents,
             pathParams: { projectId: to.params.id },
             queryParams: { start_num: 0, count_num: 5 },
           }
           break
         case '2':
-          this.tabs[2].data = {
+          this.tabs[t].data = {
             description: this.project.description,
             sns: this.project.sns,
           }
