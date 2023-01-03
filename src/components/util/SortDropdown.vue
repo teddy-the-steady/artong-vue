@@ -4,6 +4,8 @@
       class="dropdown ripple"
       @mousedown="sortMouseDown"
       @mouseup="sortMouseUp"
+      @touchstart="sortTouchStart"
+      @touchend="sortTouchEnd"
     >
       <div>{{ sortSelected.name || 'Newest' }}</div>
       <img
@@ -47,6 +49,11 @@ export default {
       },
     },
   },
+  computed: {
+    isMobile() {
+      return this.$isMobile()
+    },
+  },
   data() {
     return {
       isDialogActive: false,
@@ -61,12 +68,34 @@ export default {
       this.isMouseUpSort = false
     },
     sortMouseDown() {
-      this.isMouseDownSort = true
+      if (!this.isMobile) {
+        this.isMouseDownSort = true
+      }
     },
     sortMouseUp() {
-      this.isMouseUpSort = true
-      if (this.isMouseDownSort) {
-        this.isDialogActive = true
+      if (!this.isMobile) {
+        this.isMouseUpSort = true
+        if (this.isMouseDownSort) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    sortTouchStart() {
+      if (this.isMobile) {
+        this.isMouseDownSort = true
+      }
+    },
+    sortTouchEnd() {
+      if (this.isMobile) {
+        this.isMouseUpSort = true
+        if (this.isDialogActive) {
+          console.log('in?!')
+          this.isDialogActive = false
+          return
+        }
+        if (this.isMouseDownSort) {
+          this.isDialogActive = true
+        }
       }
     },
     sort(option) {
@@ -81,7 +110,7 @@ export default {
   },
   watch: {
     isDialogActive(val) {
-      if (val) {
+      if (val && !this.isMobile) {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     },
