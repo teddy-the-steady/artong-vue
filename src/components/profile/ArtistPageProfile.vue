@@ -12,7 +12,7 @@
         {{ member ? member.introduction : '' }}
       </div>
       <button class="address white-btn" @click="copy">
-        {{ member ? member.wallet_address : '' }}
+        {{ member ? this.shortAddress : '' }}
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
@@ -41,6 +41,7 @@ import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
 import { postMemberFollower } from '../../api/member'
+import { shortenAddress } from '../../util/commonFunc'
 
 export default {
   name: 'ArtistPageProfile',
@@ -55,6 +56,7 @@ export default {
       hasErrorGettingImage: false,
       address: '',
       errorMessage: '',
+      shortAddress: '',
     }
   },
   props: {
@@ -72,6 +74,7 @@ export default {
     getAddress() {
       this.address = this.member.wallet_address
     },
+
     copy() {
       this.getAddress()
       const element = this.$refs.address
@@ -79,7 +82,6 @@ export default {
       document.execCommand('copy')
       alert('주소 복사 완료')
     },
-
     async follow() {
       try {
         this.member = await postMemberFollower({
@@ -113,6 +115,10 @@ export default {
         }
       },
     },
+  },
+  mounted() {
+    this.getAddress()
+    this.shortAddress = shortenAddress(this.address)
   },
 }
 </script>

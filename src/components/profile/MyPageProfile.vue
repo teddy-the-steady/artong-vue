@@ -15,7 +15,7 @@
         {{ currentUser.profile.introduction }}
       </div>
       <button class="address white-btn" @click="copy">
-        {{ currentUser.wallet_address }}
+        {{ this.shortAddress }}
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
@@ -37,6 +37,7 @@ import Storage from '@aws-amplify/storage'
 import { makeS3Path } from '../../util/commonFunc'
 import { patchMemberProfileS3key } from '../../api/member'
 import ProfileImageBig from './ProfileImageBig.vue'
+import { shortenAddress } from '../../util/commonFunc'
 
 export default {
   name: 'MyPageProfile',
@@ -55,6 +56,8 @@ export default {
       isFirstLoading: true,
       S3_PRIVACY_LEVEL: 'public',
       hasErrorGettingImage: false,
+      address: '',
+      shortAddress: '',
     }
   },
   methods: {
@@ -80,7 +83,7 @@ export default {
       }
     },
     getAddress() {
-      this.address = this.member.wallet_address
+      this.address = this.currentUser.wallet_address
     },
     copy() {
       this.getAddress()
@@ -92,6 +95,8 @@ export default {
   },
   mounted() {
     this.isFirstLoading = false
+    this.getAddress()
+    this.shortAddress = shortenAddress(this.address)
   },
 }
 </script>
