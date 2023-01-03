@@ -12,4 +12,19 @@ const getProjectWhileUpdatingPendingToCreated = async function (txHash) {
   return await instance.get(`/projects/${txHash}/tx_receipt_updated`)
 }
 
-export { postProject, patchProject, getProjectWhileUpdatingPendingToCreated }
+const postProjectSubscriber = async function ({
+  isSubscribeRequest,
+  targetProjectAddress,
+}) {
+  return await instance.post('/subscribe', {
+    isSubscribeRequest: isSubscribeRequest,
+    targetProjectAddress: targetProjectAddress,
+  })
+}
+
+export {
+  postProject,
+  patchProject,
+  getProjectWhileUpdatingPendingToCreated,
+  postProjectSubscriber,
+}

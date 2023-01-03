@@ -28,6 +28,7 @@ const queryProject = function (variables) {
           _db_sns
           _db_subscribers
           _db_max_token_id
+          _db_is_subscriber
         }
       }
     `,
