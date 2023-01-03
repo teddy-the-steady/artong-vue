@@ -116,8 +116,10 @@
 import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
-import { getTobeApprovedContents } from '../../api/contents'
-import { postProjectSubscriber } from '../../api/projects'
+import {
+  postProjectSubscriber,
+  getProjectContributors,
+} from '../../api/projects'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -167,13 +169,7 @@ export default {
       project: {},
       tabs: [
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {}, sort: {} },
-        {
-          id: 1,
-          type: 'CONTENTS',
-          label: 'Waiting For Approval',
-          api: {},
-          sort: {},
-        },
+        { id: 1, type: 'PROFILES', label: 'Contributors', api: {}, sort: {} },
         { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       width: window.innerWidth,
@@ -351,8 +347,8 @@ export default {
     }
 
     this.tabs[1].api = {
-      func: getTobeApprovedContents,
-      pathParams: { projectId: this.$route.params.id },
+      func: getProjectContributors,
+      pathParams: { address: this.$route.params.id },
       queryParams: { start_num: 0, count_num: 5 },
     }
 
@@ -404,8 +400,8 @@ export default {
           break
         case '1':
           this.tabs[t].api = {
-            func: getTobeApprovedContents,
-            pathParams: { projectId: to.params.id },
+            func: getProjectContributors,
+            pathParams: { address: to.params.id },
             queryParams: { start_num: 0, count_num: 5 },
           }
           break
