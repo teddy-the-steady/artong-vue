@@ -17,10 +17,14 @@
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
-    <button v-if="this.member.is_follower" class="follow-btn" @click="follow">
-      Follow
+    <button
+      v-if="this.member.is_follower"
+      class="unfollow-btn"
+      @click="unfollow"
+    >
+      unfollow
     </button>
-    <button v-else class="unfollow-btn" @click="follow">unfollow</button>
+    <button v-else class="follow-btn" @click="follow">follow</button>
     <div class="follow-static-box">
       <div class="title">Follwer</div>
       <div class="number">{{ member.follower }}</div>
@@ -77,28 +81,25 @@ export default {
     },
 
     async follow() {
-      if (this.member.is_follower) {
-        try {
-          this.member = await postMemberFollower({
-            isFollowRequest: true,
-            targetMemberId: this.member.id,
-          })
-          this.$emit('changeFollower', this.member)
-          alert('followed')
-        } catch (error) {
-          this.errorMessage = error
-        }
-      } else {
-        try {
-          this.member = await postMemberFollower({
-            isFollowRequest: false,
-            targetMemberId: this.member.id,
-          })
-          this.$emit('changeFollower', this.member)
-          alert('unfollowed')
-        } catch (error) {
-          this.errorMessage = error
-        }
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: true,
+          targetMemberId: this.member.id,
+        })
+        this.$emit('changeFollower', this.member)
+      } catch (error) {
+        this.errorMessage = error
+      }
+    },
+    async unfollow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: false,
+          targetMemberId: this.member.id,
+        })
+        this.$emit('changeFollower', this.member)
+      } catch (error) {
+        this.errorMessage = error
       }
     },
   },
