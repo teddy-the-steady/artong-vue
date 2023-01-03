@@ -51,8 +51,8 @@ export default {
     async getMember(username) {
       return await getMemberByUsername(username)
     },
-    changeFollower(follwer) {
-      this.member.follower = follwer
+    changeFollower(member) {
+      this.member = member
     },
   },
   async created() {
