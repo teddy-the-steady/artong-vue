@@ -23,6 +23,9 @@
             :windowWide="false"
           ></ContentList>
         </div>
+        <div v-show="current.type === 'PROFILES'">
+          <ProfileList :apiProfiles="current.api"></ProfileList>
+        </div>
         <div v-show="current.type === 'INFO'" class="info">
           <div class="info-top">
             <div class="info-name">Information</div>
@@ -41,6 +44,7 @@
 import { mapState } from 'vuex'
 import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
+import ProfileList from '../profile/ProfileList.vue'
 import SnsLinks from '../projects/SnsLinks.vue'
 import SortDropdown from '../util/SortDropdown.vue'
 
@@ -49,6 +53,7 @@ export default {
   components: {
     TabItem,
     ContentList,
+    ProfileList,
     SnsLinks,
     SortDropdown,
   },
