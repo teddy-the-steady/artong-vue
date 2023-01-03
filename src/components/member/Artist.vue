@@ -2,7 +2,10 @@
   <div :key="componentKey">
     <div class="header">
       <div class="user-info">
-        <ArtistPageProfile :member="member"></ArtistPageProfile>
+        <ArtistPageProfile
+          :member="member"
+          @changeFollower="changeFollower"
+        ></ArtistPageProfile>
       </div>
       <ProfileTab v-if="member.id" :tabs="tabs" :sortOptions="sortOptions" />
     </div>
@@ -59,6 +62,10 @@ export default {
   methods: {
     async getMember(username) {
       return await getMemberByUsername(username)
+    },
+    changeFollower(member) {
+      console.log(member)
+      this.member = member
     },
   },
   async created() {

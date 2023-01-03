@@ -12,18 +12,35 @@
         {{ member ? member.introduction : '' }}
       </div>
       <button class="address white-btn" @click="copy">
-        {{ member ? member.wallet_address : '' }}
+        {{ member ? shortenAddress(member.wallet_address) : '' }}
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
+    <button
+      v-if="this.member.is_follower"
+      class="unfollow-btn"
+      @click="unfollow"
+    >
+      unfollow
+    </button>
+    <button v-else class="follow-btn" @click="follow">follow</button>
+    <div class="follow-static-box">
+      <div class="title">Follwer</div>
+      <div class="number">{{ member.follower }}</div>
+    </div>
+    <div class="follow-static-box">
+      <div class="title">Follow</div>
+      <div class="number">{{ member.following }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, shortenAddress } from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
+import { postMemberFollower } from '../../api/member'
 
 export default {
   name: 'ArtistPageProfile',
@@ -37,6 +54,8 @@ export default {
       isFirstLoading: true,
       hasErrorGettingImage: false,
       address: '',
+      errorMessage: '',
+      shortAddress: '',
     }
   },
   props: {
@@ -51,15 +70,41 @@ export default {
         ? makeS3Path(member.profile_thumbnail_s3key)
         : makeS3Path(member.profile_s3key)
     },
-    getAddress() {
-      this.address = this.member.wallet_address
+    shortenAddress(address) {
+      return shortenAddress(address)
     },
+
     copy() {
-      this.getAddress()
-      const element = this.$refs.address
-      element.select()
-      document.execCommand('copy')
-      alert('주소 복사 완료')
+      navigator.clipboard
+        .writeText(`${this.address}`)
+        .then(() => {
+          alert('주소 복사 완료')
+        })
+        .catch(() => {
+          alert('주소 복사 실패')
+        })
+    },
+    async follow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: true,
+          targetMemberId: this.member.id,
+        })
+        this.$emit('changeFollower', this.member)
+      } catch (error) {
+        this.errorMessage = error
+      }
+    },
+    async unfollow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: false,
+          targetMemberId: this.member.id,
+        })
+        this.$emit('changeFollower', this.member)
+      } catch (error) {
+        this.errorMessage = error
+      }
     },
   },
   watch: {
