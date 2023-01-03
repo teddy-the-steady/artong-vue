@@ -15,6 +15,8 @@
             class="round-button ripple"
             @mousedown="moreMouseDown"
             @mouseup="moreMouseUp"
+            @touchstart="moreTouchStart"
+            @touchend="moreTouchEnd"
           >
             <img src="../../assets/icons/more.svg" />
             <BasicDialog
@@ -227,12 +229,33 @@ export default {
       this.isMouseUpOnMore = false
     },
     moreMouseDown() {
-      this.isMouseDownOnMore = true
+      if (!this.isMobile) {
+        this.isMouseDownOnMore = true
+      }
     },
     moreMouseUp() {
-      this.isMouseUpOnMore = true
-      if (this.isMouseDownOnMore) {
-        this.isDialogActive = true
+      if (!this.isMobile) {
+        this.isMouseUpOnMore = true
+        if (this.isMouseDownOnMore) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    moreTouchStart() {
+      if (this.isMobile) {
+        this.isMouseDownSort = true
+      }
+    },
+    moreTouchEnd() {
+      if (this.isMobile) {
+        this.isMouseUpSort = true
+        if (this.isDialogActive) {
+          this.isDialogActive = false
+          return
+        }
+        if (this.isMouseDownSort) {
+          this.isDialogActive = true
+        }
       }
     },
     getURL() {
@@ -362,8 +385,8 @@ export default {
           break
       }
     },
-    isDialogActive(val) {
-      if (val) {
+    isDialogActive() {
+      if (!this.isMobile) {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     },
@@ -375,6 +398,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  position: relative;
+  z-index: 2;
   .background {
     height: 330px;
   }
@@ -402,6 +427,7 @@ export default {
       button {
         .dialog {
           display: none;
+          top: 110%;
           &.active {
             display: block;
           }
