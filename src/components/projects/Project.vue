@@ -70,7 +70,12 @@
           class="left-tab"
         />
       </div>
-      <ProjectTabSort :tabs="tabs" :width="width" class="project-tab-sort" />
+      <ProjectTab
+        :tabs="tabs"
+        :width="width"
+        :sortOptions="sortOptions"
+        class="project-tab-sort"
+      />
     </div>
     <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
       <span slot="header" @click="close">X</span>
@@ -113,7 +118,7 @@ import MintStep2 from '../modal/mint_steps/MintStep2.vue'
 import MintStep3 from '../modal/mint_steps/MintStep3.vue'
 import MintStepFinal from '../modal/mint_steps/MintStepFinal.vue'
 import MintStepMinting from '../modal/mint_steps/MintStepMinting.vue'
-import ProjectTabSort from '../tabs/ProjectTabSort.vue'
+import ProjectTab from '../tabs/ProjectTab.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
@@ -131,7 +136,7 @@ export default {
     MintStep3,
     MintStepFinal,
     MintStepMinting,
-    ProjectTabSort,
+    ProjectTab,
     ContentsProfileBundle,
     LeftProjectTab,
     ContentsProfile,
@@ -153,8 +158,14 @@ export default {
       backgroundColor: null,
       project: {},
       tabs: [
-        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {} },
-        { id: 1, type: 'CONTENTS', label: 'Waiting For Approval', api: {} },
+        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {}, sort: {} },
+        {
+          id: 1,
+          type: 'CONTENTS',
+          label: 'Waiting For Approval',
+          api: {},
+          sort: {},
+        },
         { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       width: window.innerWidth,
@@ -172,6 +183,18 @@ export default {
       isMouseUpOnMore: false,
       projectData: [],
       url: '',
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
     }
   },
   methods: {
@@ -255,6 +278,8 @@ export default {
     this.project = await this.getProject()
     this.setStatistics()
 
+    this.tabs[0].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
       body: queryTokensByProject({
@@ -262,6 +287,8 @@ export default {
           first: 10,
           skip: 0,
           project: this.$route.params.id,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
         },
       }),
     }
@@ -280,7 +307,7 @@ export default {
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'Project' && !to.query.tab) {
+        if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
           this.project = await this.getProject()
           this.setStatistics()
         }
@@ -300,28 +327,33 @@ export default {
         this.backgroundColor = this.generateGradientBackground(to.params.id)
       }
 
-      switch (to.query.tab || '0') {
+      const t = to.query.tab || '0'
+      switch (t) {
         case '0':
-          this.tabs[0].api = {
+          this.tabs[t].sort =
+            this.sortOptions[to.query.sort] || this.sortOptions['newest']
+          this.tabs[t].api = {
             func: graphql,
             body: queryTokensByProject({
               variables: {
                 first: 10,
                 skip: 0,
                 project: to.params.id,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
           }
           break
         case '1':
-          this.tabs[1].api = {
+          this.tabs[t].api = {
             func: getTobeApprovedContents,
             pathParams: { projectId: to.params.id },
             queryParams: { start_num: 0, count_num: 5 },
           }
           break
         case '2':
-          this.tabs[2].data = {
+          this.tabs[t].data = {
             description: this.project.description,
             sns: this.project.sns,
           }

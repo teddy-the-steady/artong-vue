@@ -8,9 +8,14 @@
         v-model="currentId"
         @tabClick="tabClick"
       />
+      <SortDropdown
+        class="sort"
+        :sortOptions="sortOptions"
+        :sortSelected="current.sort"
+      ></SortDropdown>
     </div>
     <div class="items">
-      <section class="item" :key="currentId">
+      <section class="item" :key="generateKey()">
         <div v-show="current.type === 'CONTENTS'">
           <ContentList :queryContents="current.api"></ContentList>
         </div>
@@ -27,6 +32,7 @@ import { mapState } from 'vuex'
 import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
 import ProjectList from '../projects/ProjectList.vue'
+import SortDropdown from '../util/SortDropdown.vue'
 
 export default {
   name: 'ProfileTab',
@@ -34,11 +40,16 @@ export default {
     TabItem,
     ContentList,
     ProjectList,
+    SortDropdown,
   },
   props: {
     tabs: {
       type: Array,
       default: () => [],
+    },
+    sortOptions: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -59,6 +70,9 @@ export default {
       this.currentId = id
       this.$router.push({ query: { tab: id } })
     },
+    generateKey() {
+      return this.currentId + this.current.sort.name
+    },
   },
   watch: {
     async $route(val) {
@@ -77,5 +91,10 @@ export default {
   border-bottom: 1px solid #b3b3b3;
   margin: 0px 24px 0px 24px;
   display: flex;
+
+  .sort {
+    position: relative;
+    margin-left: auto;
+  }
 }
 </style>

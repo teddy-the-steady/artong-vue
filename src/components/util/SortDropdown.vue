@@ -1,0 +1,106 @@
+<template>
+  <div>
+    <button
+      class="dropdown ripple"
+      @mousedown="sortMouseDown"
+      @mouseup="sortMouseUp"
+    >
+      <div>{{ sortSelected.name || 'Newest' }}</div>
+      <img
+        :class="{ active: isDialogActive }"
+        src="../../assets/icons/arrow_down.svg"
+      />
+    </button>
+    <BasicDialog
+      class="dialog"
+      :class="{ active: isDialogActive }"
+      @dialog-focus-out="closeDialog"
+      ref="dialog"
+    >
+      <div
+        slot="body"
+        v-for="(option, name) in sortOptions"
+        :key="name"
+        @click="sort(name)"
+      >
+        {{ option.name }}
+      </div>
+    </BasicDialog>
+  </div>
+</template>
+
+<script>
+import BasicDialog from '../dialog/BasicDialog.vue'
+
+export default {
+  name: 'SortDropdown',
+  components: { BasicDialog },
+  props: {
+    sortOptions: {
+      type: Object,
+      default: () => {},
+    },
+    sortSelected: {
+      type: Object,
+      default: () => {
+        return { name: 'Newest' }
+      },
+    },
+  },
+  data() {
+    return {
+      isDialogActive: false,
+      isMouseDownSort: false,
+      isMouseUpSort: false,
+    }
+  },
+  methods: {
+    closeDialog() {
+      this.isDialogActive = false
+      this.isMouseDownSort = false
+      this.isMouseUpSort = false
+    },
+    sortMouseDown() {
+      this.isMouseDownSort = true
+    },
+    sortMouseUp() {
+      this.isMouseUpSort = true
+      if (this.isMouseDownSort) {
+        this.isDialogActive = true
+      }
+    },
+    sort(option) {
+      if (this.sortSelected.name.toLowerCase() === option) {
+        return
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: { ...this.$route.query, sort: option },
+      })
+    },
+  },
+  watch: {
+    isDialogActive(val) {
+      if (val) {
+        this.$nextTick(() => this.$refs.dialog.$el.focus())
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+img {
+  &.active {
+    transition: 0.1s transform ease;
+    transform: rotate(180deg);
+  }
+  width: 9.5px;
+}
+.dialog {
+  display: none;
+  &.active {
+    display: block;
+  }
+}
+</style>

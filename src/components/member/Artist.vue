@@ -7,7 +7,7 @@
           @changeFollower="changeFollower"
         ></ArtistPageProfile>
       </div>
-      <ProfileTab v-if="member.id" :tabs="tabs" />
+      <ProfileTab v-if="member.id" :tabs="tabs" :sortOptions="sortOptions" />
     </div>
   </div>
 </template>
@@ -41,10 +41,22 @@ export default {
       member: {},
       username: '',
       tabs: [
-        { id: 0, label: 'Owned', type: 'CONTENTS', api: {} },
-        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {} },
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
       ],
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
     }
   },
   methods: {
@@ -59,6 +71,8 @@ export default {
     this.username = this.$route.params.id
     this.member = await this.getMember(this.username)
 
+    this.tabs[0].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
       body: queryTokensByOwner({
@@ -66,10 +80,14 @@ export default {
           first: 10,
           skip: 0,
           owner: this.member.wallet_address,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
         },
       }),
     }
 
+    this.tabs[1].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[1].api = {
       func: graphql,
       body: queryProjectsByCreator({
@@ -77,10 +95,14 @@ export default {
           first: 10,
           skip: 0,
           creator: this.member.wallet_address,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
         },
       }),
     }
 
+    this.tabs[2].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[2].api = {
       func: graphql,
       body: queryTokensByCreator({
@@ -88,6 +110,8 @@ export default {
           first: 10,
           skip: 0,
           creator: this.member.wallet_address,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
         },
       }),
     }
@@ -111,39 +135,48 @@ export default {
   },
   watch: {
     $route(to) {
-      switch (to.query.tab || '0') {
+      const t = to.query.tab || '0'
+      this.tabs[t].sort =
+        this.sortOptions[to.query.sort] || this.sortOptions['newest']
+      switch (t) {
         case '0':
-          this.tabs[0].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryTokensByOwner({
               variables: {
                 first: 10,
                 skip: 0,
                 owner: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
           }
           break
         case '1':
-          this.tabs[1].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryProjectsByCreator({
               variables: {
                 first: 10,
                 skip: 0,
                 creator: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
           }
           break
         case '2':
-          this.tabs[2].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryTokensByCreator({
               variables: {
                 first: 10,
                 skip: 0,
                 creator: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
           }
