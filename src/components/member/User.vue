@@ -4,9 +4,7 @@
       <div class="user-info">
         <MyPageProfile></MyPageProfile>
       </div>
-      <UserProfileButtons></UserProfileButtons>
-      <div>address: {{ walletConnectState.address }}</div>
-      <div>chainId: {{ walletConnectState.chainId }}</div>
+      <UserProfileButtons class="edit-button"></UserProfileButtons>
     </div>
     <ProfileTab :tabs="tabs" :sortOptions="sortOptions" />
   </div>
@@ -176,7 +174,11 @@ export default {
       border-radius: 10px;
     }
   }
-
+  .edit-button {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 46px;
+  }
   .tab {
     height: 50px;
   }
