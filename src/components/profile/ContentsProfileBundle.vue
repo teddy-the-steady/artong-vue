@@ -3,10 +3,17 @@
     <div v-if="members.length > 0">
       <ol>
         <li v-for="(val, i) in members" :key="i">
-          <ContentsProfile
-            :needUserName="needUserName"
-            :member="val"
-          ></ContentsProfile>
+          <router-link
+            :to="{
+              name: 'UserOrArtist',
+              params: { id: val.username },
+            }"
+          >
+            <ContentsProfile
+              :needUserName="needUserName"
+              :member="val"
+            ></ContentsProfile>
+          </router-link>
         </li>
       </ol>
     </div>
