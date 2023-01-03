@@ -28,7 +28,9 @@
               <router-link
                 slot="body"
                 tag="div"
-                v-show="project.owner === currentUser.wallet_address"
+                v-show="
+                  project.owner.wallet_address === currentUser.wallet_address
+                "
                 :to="{
                   name: 'ProjectSettings',
                   params: { project_address: project.id },
@@ -41,7 +43,10 @@
           </button>
           <div v-if="this.width >= 1080" class="creators-button">
             <div class="creator">Creator</div>
-            <ContentsProfileBundle class="profile-bundle" />
+            <ContentsProfileBundle
+              class="profile-bundle"
+              :members="project.contributors"
+            />
             <div class="viewAll">View all</div>
           </div>
         </div>
@@ -59,7 +64,14 @@
             {{ project.symbol ? project.symbol.toUpperCase() : '' }}
           </div>
           <div class="collection-name">{{ project.name }}</div>
-          <ContentsProfile class="contents-profile" />
+          <router-link
+            :to="{
+              name: 'UserOrArtist',
+              params: { id: project.owner.username },
+            }"
+          >
+            <ContentsProfile class="contents-profile" :member="project.owner" />
+          </router-link>
           <div class="statistic-container">
             <div
               class="statistic"
