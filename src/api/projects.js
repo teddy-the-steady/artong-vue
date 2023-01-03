@@ -22,9 +22,19 @@ const postProjectSubscriber = async function ({
   })
 }
 
+const getProjectContributors = async function (pathParams, queryParams) {
+  return await instance.get(`/projects/${pathParams.address}/contributors`, {
+    params: {
+      start_num: queryParams.start_num,
+      count_num: queryParams.count_num,
+    },
+  })
+}
+
 export {
   postProject,
   patchProject,
   getProjectWhileUpdatingPendingToCreated,
   postProjectSubscriber,
+  getProjectContributors,
 }
