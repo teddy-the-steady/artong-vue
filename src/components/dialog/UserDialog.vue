@@ -58,6 +58,8 @@ export default {
       background-color: $artong-white;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
+      border-radius: 10px;
+      overflow: hidden;
 
       .dialog-header {
         float: right;
