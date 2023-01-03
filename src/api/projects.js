@@ -12,4 +12,29 @@ const getProjectWhileUpdatingPendingToCreated = async function (txHash) {
   return await instance.get(`/projects/${txHash}/tx_receipt_updated`)
 }
 
-export { postProject, patchProject, getProjectWhileUpdatingPendingToCreated }
+const postProjectSubscriber = async function ({
+  isSubscribeRequest,
+  targetProjectAddress,
+}) {
+  return await instance.post('/subscribe', {
+    isSubscribeRequest: isSubscribeRequest,
+    targetProjectAddress: targetProjectAddress,
+  })
+}
+
+const getProjectContributors = async function (pathParams, queryParams) {
+  return await instance.get(`/projects/${pathParams.address}/contributors`, {
+    params: {
+      start_num: queryParams.start_num,
+      count_num: queryParams.count_num,
+    },
+  })
+}
+
+export {
+  postProject,
+  patchProject,
+  getProjectWhileUpdatingPendingToCreated,
+  postProjectSubscriber,
+  getProjectContributors,
+}

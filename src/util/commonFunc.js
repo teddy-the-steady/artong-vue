@@ -71,6 +71,14 @@ const checkMobileWalletStatusAndGetSigner = async function (pathToRedirect) {
   }
 }
 
+const shortenAddress = function (address) {
+  const result =
+    address.substr(0, 6) +
+    '...' +
+    address.substr(address.length - 4, address.length)
+  return result
+}
+
 export {
   makeS3Path,
   isSessionValid,
@@ -80,4 +88,5 @@ export {
   etherToWei,
   weiToEther,
   checkMobileWalletStatusAndGetSigner,
+  shortenAddress,
 }

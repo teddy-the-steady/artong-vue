@@ -15,18 +15,26 @@
         {{ currentUser.profile.introduction }}
       </div>
       <button class="address white-btn" @click="copy">
-        {{ currentUser.wallet_address }}
+        {{ this.shortAddress }}
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
+    <div class="follow-static-box">
+      <div class="title">Follwer</div>
+      <div class="number">299</div>
+    </div>
+    <div class="follow-static-box">
+      <div class="title">Follow</div>
+      <div class="number">300</div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, shortenAddress } from '../../util/commonFunc'
 import { patchMemberProfileS3key } from '../../api/member'
 import ProfileImageBig from './ProfileImageBig.vue'
 
@@ -47,6 +55,8 @@ export default {
       isFirstLoading: true,
       S3_PRIVACY_LEVEL: 'public',
       hasErrorGettingImage: false,
+      address: '',
+      shortAddress: '',
     }
   },
   methods: {
@@ -72,18 +82,23 @@ export default {
       }
     },
     getAddress() {
-      this.address = this.member.wallet_address
+      this.address = this.currentUser.wallet_address
     },
     copy() {
-      this.getAddress()
-      const element = this.$refs.address
-      element.select()
-      document.execCommand('copy')
-      alert('주소 복사 완료')
+      navigator.clipboard
+        .writeText(`${this.address}`)
+        .then(() => {
+          alert('주소 복사 완료')
+        })
+        .catch(() => {
+          alert('주소 복사 실패')
+        })
     },
   },
   mounted() {
     this.isFirstLoading = false
+    this.getAddress()
+    this.shortAddress = shortenAddress(this.address)
   },
 }
 </script>

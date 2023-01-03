@@ -47,6 +47,11 @@
         </div>
       </div>
     </div>
+    <button v-if="project.is_subscriber" @click="unsubscribe">
+      unsubscribe
+    </button>
+    <button v-else @click="subscribe">subscribe</button>
+    <div class="subsribers">{{ this.project.subscribers }}</div>
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
@@ -111,7 +116,10 @@
 import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
-import { getTobeApprovedContents } from '../../api/contents'
+import {
+  postProjectSubscriber,
+  getProjectContributors,
+} from '../../api/projects'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -161,13 +169,7 @@ export default {
       project: {},
       tabs: [
         { id: 0, type: 'CONTENTS', label: 'Tokens', api: {}, sort: {} },
-        {
-          id: 1,
-          type: 'CONTENTS',
-          label: 'Waiting For Approval',
-          api: {},
-          sort: {},
-        },
+        { id: 1, type: 'PROFILES', label: 'Contributors', api: {}, sort: {} },
         { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       width: window.innerWidth,
@@ -292,6 +294,34 @@ export default {
         info: `${this.project.max_token_id || 0}/${this.project.maxAmount}`,
       }
     },
+    async subscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: true,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) + 1,
+        )
+        this.project.is_subscriber = true
+      } catch (error) {
+        console.log('error 발생')
+      }
+    },
+    async unsubscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: false,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) - 1,
+        )
+        this.project.is_subscriber = false
+      } catch (error) {
+        console.log('error 발생')
+      }
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -317,8 +347,8 @@ export default {
     }
 
     this.tabs[1].api = {
-      func: getTobeApprovedContents,
-      pathParams: { projectId: this.$route.params.id },
+      func: getProjectContributors,
+      pathParams: { address: this.$route.params.id },
       queryParams: { start_num: 0, count_num: 5 },
     }
 
@@ -370,8 +400,8 @@ export default {
           break
         case '1':
           this.tabs[t].api = {
-            func: getTobeApprovedContents,
-            pathParams: { projectId: to.params.id },
+            func: getProjectContributors,
+            pathParams: { address: to.params.id },
             queryParams: { start_num: 0, count_num: 5 },
           }
           break
