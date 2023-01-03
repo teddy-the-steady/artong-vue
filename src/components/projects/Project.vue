@@ -47,6 +47,11 @@
         </div>
       </div>
     </div>
+    <button v-if="project.is_subscriber" @click="unsubscribe">
+      unsubscribe
+    </button>
+    <button v-else @click="subscribe">subscribe</button>
+    <div class="subsribers">{{ this.project.subscribers }}</div>
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
@@ -112,6 +117,7 @@ import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import { getTobeApprovedContents } from '../../api/contents'
+import { postProjectSubscriber } from '../../api/projects'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -290,6 +296,34 @@ export default {
       this.projectData[0] = {
         name: 'Items',
         info: `${this.project.max_token_id || 0}/${this.project.maxAmount}`,
+      }
+    },
+    async subscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: true,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) + 1,
+        )
+        this.project.is_subscriber = true
+      } catch (error) {
+        console.log('error 발생')
+      }
+    },
+    async unsubscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: false,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) - 1,
+        )
+        this.project.is_subscriber = false
+      } catch (error) {
+        console.log('error 발생')
       }
     },
   },
