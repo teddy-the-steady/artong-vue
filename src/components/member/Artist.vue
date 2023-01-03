@@ -64,6 +64,7 @@ export default {
       return await getMemberByUsername(username)
     },
     changeFollower(member) {
+      console.log(member)
       this.member = member
     },
   },
