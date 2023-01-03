@@ -89,7 +89,6 @@ export default {
       if (this.isMobile) {
         this.isMouseUpSort = true
         if (this.isDialogActive) {
-          console.log('in?!')
           this.isDialogActive = false
           return
         }
@@ -109,8 +108,8 @@ export default {
     },
   },
   watch: {
-    isDialogActive(val) {
-      if (val && !this.isMobile) {
+    isDialogActive() {
+      if (!this.isMobile) {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     },
