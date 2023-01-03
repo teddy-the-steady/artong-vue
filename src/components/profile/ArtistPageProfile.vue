@@ -17,7 +17,7 @@
       </button>
     </div>
     <textarea v-model="address" ref="address"></textarea>
-    <button v-if="this.member.isFollowing" class="follow-btn" @click="follow">
+    <button v-if="this.member.is_follower" class="follow-btn" @click="follow">
       Follow
     </button>
     <button v-else class="unfollow-btn" @click="follow">unfollow</button>
@@ -77,28 +77,24 @@ export default {
     },
 
     async follow() {
-      console.log(this.member)
-      if (this.member.isFollowing) {
+      if (this.member.is_follower) {
         try {
-          await postMemberFollower({
+          this.member = await postMemberFollower({
             isFollowRequest: true,
             targetMemberId: this.member.id,
           })
-          this.$emit('changeFollower', this.member.follower)
-          console.log(this.member.follower)
+          this.$emit('changeFollower', this.member)
           alert('followed')
         } catch (error) {
           this.errorMessage = error
         }
       } else {
         try {
-          await postMemberFollower({
+          this.member = await postMemberFollower({
             isFollowRequest: false,
             targetMemberId: this.member.id,
           })
-          this.follower = this.member.follower
-          console.log(this.member.follower)
-          this.$emit('changeFollower', this.member.follower)
+          this.$emit('changeFollower', this.member)
           alert('unfollowed')
         } catch (error) {
           this.errorMessage = error
