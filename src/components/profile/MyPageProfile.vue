@@ -34,10 +34,9 @@
 <script>
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, shortenAddress } from '../../util/commonFunc'
 import { patchMemberProfileS3key } from '../../api/member'
 import ProfileImageBig from './ProfileImageBig.vue'
-import { shortenAddress } from '../../util/commonFunc'
 
 export default {
   name: 'MyPageProfile',
@@ -86,11 +85,14 @@ export default {
       this.address = this.currentUser.wallet_address
     },
     copy() {
-      this.getAddress()
-      const element = this.$refs.address
-      element.select()
-      document.execCommand('copy')
-      alert('주소 복사 완료')
+      navigator.clipboard
+        .writeText(`${this.address}`)
+        .then(() => {
+          alert('주소 복사 완료')
+        })
+        .catch(() => {
+          alert('주소 복사 실패')
+        })
     },
   },
   mounted() {
