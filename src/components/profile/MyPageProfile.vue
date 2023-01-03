@@ -19,7 +19,6 @@
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
-    <textarea v-model="address" ref="address"></textarea>
     <div class="follow-static-box">
       <div class="title">Follwer</div>
       <div class="number">299</div>
@@ -106,11 +105,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-textarea {
-  opacity: 0;
-  height: 0px;
-  width: 0px;
-}
 .profile {
   display: flex;
   margin-left: 15%;
