@@ -44,7 +44,7 @@ export default {
 
 .dialog-mask {
   position: absolute;
-  top: 70%;
+  top: 80%;
   right: 0%;
   outline: 0;
 

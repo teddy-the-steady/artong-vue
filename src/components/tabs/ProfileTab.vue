@@ -88,6 +88,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .tabs {
+  position: relative;
+  z-index: 1;
   border-bottom: 1px solid #b3b3b3;
   margin: 0px 24px 0px 24px;
   display: flex;
