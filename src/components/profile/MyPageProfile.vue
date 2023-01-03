@@ -4,29 +4,61 @@
       <ProfileImageBig
         :profileImageUrl="profileImageUrl"
         :isFirstLoading="isFirstLoading"
+        class="profile-image"
       ></ProfileImageBig>
     </span>
     <input ref="fileInput" type="file" @change="onFileChange" />
-    <div class="info">
-      <div class="username">
-        {{ currentUser.username }}
+    <div v-if="this.width < 1080" class="top1">
+      <!-- TODO] width에 따라 화면이 달라지는 거 구현해야 함 -->
+      <div class="info">
+        <div class="username">@{{ currentUser.username }}</div>
+
+        <button class="address white-btn" @click="copy">
+          {{ this.shortAddress }}
+          <img src="../../assets/icons/copy.svg" />
+        </button>
+      </div>
+      <div class="follow-static-container">
+        <div class="follow-static">
+          <div class="title">Follwer</div>
+          <div class="number">299</div>
+        </div>
+        <div class="follow-static">
+          <div class="title">Following</div>
+          <div class="number">300</div>
+        </div>
       </div>
       <div class="introduction">
+        <div class="title">Introduction</div>
+        <div class="text"></div>
         {{ currentUser.profile.introduction }}
       </div>
-      <button class="address white-btn" @click="copy">
-        {{ this.shortAddress }}
-        <img src="../../assets/icons/copy.svg" />
-      </button>
     </div>
-    <textarea v-model="address" ref="address"></textarea>
-    <div class="follow-static-box">
-      <div class="title">Follwer</div>
-      <div class="number">299</div>
-    </div>
-    <div class="follow-static-box">
-      <div class="title">Follow</div>
-      <div class="number">300</div>
+    <div v-else class="top2">
+      <div>hello</div>
+      <div class="info">
+        <div class="username">@{{ currentUser.username }}</div>
+
+        <button class="address white-btn" @click="copy">
+          {{ this.shortAddress }}
+          <img src="../../assets/icons/copy.svg" />
+        </button>
+      </div>
+      <div class="follow-static-container">
+        <div class="follow-static">
+          <div class="title">Follwer</div>
+          <div class="number">299</div>
+        </div>
+        <div class="follow-static">
+          <div class="title">Following</div>
+          <div class="number">300</div>
+        </div>
+      </div>
+      <div class="introduction">
+        <div class="title">Introduction</div>
+        <div class="text"></div>
+        {{ currentUser.profile.introduction }}
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +89,7 @@ export default {
       hasErrorGettingImage: false,
       address: '',
       shortAddress: '',
+      width: window.innerWidth,
     }
   },
   methods: {
@@ -94,11 +127,15 @@ export default {
           alert('주소 복사 실패')
         })
     },
+    setWidth() {
+      this.width = window.innerWidth
+    },
   },
   mounted() {
     this.isFirstLoading = false
     this.getAddress()
     this.shortAddress = shortenAddress(this.address)
+    window.addEventListener('resize', this.setWidth)
   },
 }
 </script>
@@ -106,57 +143,164 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-textarea {
-  opacity: 0;
-  height: 0px;
-  width: 0px;
-}
 .profile {
-  display: flex;
-  margin-left: 15%;
-
+  text-align: initial;
+  margin-left: 16px; // 840이상부터 24px;
+  .profile-image {
+    margin-left: 8px;
+  }
   input {
     display: none;
   }
-
-  .info {
-    text-align: center;
-    word-break: break-all;
-
-    .username {
-      font-size: 1.5em;
+  .top1 {
+    .info {
+      .username {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        color: $artong-black;
+      }
+      .address {
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        padding-left: 16px;
+        padding-right: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        img {
+          width: 20px;
+          height: 20px;
+          transform: translateY(3px);
+        }
+      }
     }
-    .address {
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      border: 1px solid #f2f2f2;
-      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
-      border-radius: 999px;
-      padding-left: 16px;
-      padding-right: 16px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      img {
-        width: 20px;
-        height: 20px;
-        transform: translateY(3px);
+    .follow-static-container {
+      display: flex;
+      margin-top: 16px;
+      .follow-static {
+        margin-right: 24px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-size: 18px;
+        color: $artong-black;
+        .title {
+          font-weight: 600;
+        }
+        .number {
+          margin-top: 8px;
+          font-weight: 400;
+        }
+      }
+    }
+    .introduction {
+      margin-top: 16px;
+      margin-bottom: 16px;
+      .title {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        color: $artong-black;
+      }
+      .text {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #4d4d4d;
+        margin-top: 8px;
+      }
+    }
+  }
+  .top2 {
+    display: flex;
+    flex-direction: row;
+    .info {
+      .username {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        color: $artong-black;
+      }
+      .address {
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        padding-left: 16px;
+        padding-right: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        img {
+          width: 20px;
+          height: 20px;
+          transform: translateY(3px);
+        }
       }
     }
   }
 }
 
-@media only screen and (max-width: 599px) {
-  .profile {
-    transform: translateY(-30%);
-    flex-direction: column;
-    align-items: center;
-    margin-left: 0;
+// .profile {
+//   display: flex;
+//   margin-left: 15%;
 
-    input {
-      display: none;
+//   .info {
+//     text-align: center;
+//     word-break: break-all;
+
+//     .username {
+//       font-size: 1.5em;
+//     }
+//     .address {
+//       font-family: 'Pretendard';
+//       font-style: normal;
+//       font-weight: 500;
+//       font-size: 14px;
+//       border: 1px solid #f2f2f2;
+//       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+//       border-radius: 999px;
+//       padding-left: 16px;
+//       padding-right: 16px;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//       white-space: nowrap;
+//       img {
+//         width: 20px;
+//         height: 20px;
+//         transform: translateY(3px);
+//       }
+//     }
+//   }
+// }
+
+// @media only screen and (max-width: 599px) {
+//   .profile {
+//     transform: translateY(-30%);
+//     flex-direction: column;
+//     align-items: center;
+//     margin-left: 0;
+//   }
+// }
+@media (min-width: 840px) and(max-width:1079px) {
+  .profile {
+    margin-left: 24px;
+    .profile-image {
+      margin-left: 0px;
     }
   }
 }
