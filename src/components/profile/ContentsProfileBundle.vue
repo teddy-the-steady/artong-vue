@@ -6,7 +6,10 @@
           <router-link
             :to="{
               name: 'UserOrArtist',
-              params: { id: val.username },
+              params: {
+                id: val.username,
+                wallet_address: val.wallet_address,
+              },
             }"
           >
             <ContentsProfile
