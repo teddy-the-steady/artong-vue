@@ -9,8 +9,8 @@
         :to="{
           name: 'UserOrArtist',
           params: {
-            id: project.owner.username,
-            wallet_address: project.owner.wallet_address,
+            id: project.owner ? project.owner.username : '',
+            wallet_address: project.owner ? project.owner.wallet_address : '',
           },
         }"
       >
