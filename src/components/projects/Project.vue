@@ -52,34 +52,60 @@
         </div>
       </div>
     </div>
-    <button v-if="project.is_subscriber" @click="unsubscribe">
-      unsubscribe
-    </button>
-    <button v-else @click="subscribe">subscribe</button>
-    <div class="subsribers">{{ this.project.subscribers }}</div>
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="this.width < 1440">
           <div class="red-button">
             {{ project.symbol ? project.symbol.toUpperCase() : '' }}
           </div>
-          <div class="collection-name">{{ project.name }}</div>
-          <router-link
-            :to="{
-              name: 'UserOrArtist',
-              params: { id: project.owner.username },
-            }"
+          <div class="container1">
+            <div class="collection-name">{{ project.name }}</div>
+            <div class="statistic-container">
+              <div
+                class="statistic"
+                v-for="(item, index) in projectData"
+                :key="index"
+              >
+                <!-- <div class="name">{{ item.name }}</div> -->
+                <div class="info">{{ item.info }}</div>
+              </div>
+            </div>
+          </div>
+          <button
+            v-if="project.is_subscriber"
+            @click="unsubscribe"
+            class="subscribe-n-unsubscribe-button"
           >
-            <ContentsProfile class="contents-profile" :member="project.owner" />
-          </router-link>
-          <div class="statistic-container">
-            <div
-              class="statistic"
-              v-for="(item, index) in projectData"
-              :key="index"
-            >
-              <div class="name">{{ item.name }}</div>
-              <div class="info">{{ item.info }}</div>
+            Unsubscribe {{ this.project.subscribers }}
+          </button>
+          <button
+            v-else
+            @click="subscribe"
+            class="subscribe-n-unsubscribe-button"
+          >
+            Subscribe {{ this.project.subscribers }}
+          </button>
+          <div class="people-container">
+            <div class="people-inner-container">
+              <div class="title">Owned by</div>
+              <router-link
+                :to="{
+                  name: 'UserOrArtist',
+                  params: { id: project.owner.username },
+                }"
+              >
+                <ContentsProfile
+                  class="contents-profile"
+                  :member="project.owner"
+                />
+              </router-link>
+            </div>
+            <div class="people-inner-container">
+              <div class="title">Created by</div>
+              <ContentsProfileBundle
+                class="profile-bundle"
+                :members="project.contributors"
+              />
             </div>
           </div>
         </div>
@@ -526,37 +552,59 @@ export default {
         color: #f22e3e;
         line-height: 25px;
       }
-      .collection-name {
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 24px;
-        color: #000000;
-        text-align: left;
-        margin-top: 8px;
-      }
-      .contents-profile {
-        margin-top: 8px;
-      }
-      .statistic-container {
+      .container1 {
         display: flex;
-        margin-top: 16px;
-        justify-content: space-around;
+        .collection-name {
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 24px;
+          color: #000000;
+          text-align: left;
+          margin-top: 8px;
+        }
+        .statistic-container {
+          display: flex;
+          //sjustify-content: space-around;
+          align-items: center;
+          margin-left: 4px;
+          margin-top: 2px;
+          .statistic {
+            .name {
+              font-family: 'Pretendard';
+              font-style: normal;
+              font-weight: 600;
+              font-size: 14px;
+            }
+            .info {
+              font-family: 'Pretendard';
+              font-style: normal;
+              font-weight: 400;
+              font-size: 15px;
+              color: #4d4d4d;
+            }
+          }
+        }
+      }
+      .subscribe-n-unsubscribe-button {
+        width: 100%;
+        height: 47px;
+        margin-top: 24px;
         margin-bottom: 24px;
-        .statistic {
-          .name {
+      }
+      .people-container {
+        .people-inner-container {
+          margin-top: 16px;
+          .title {
             font-family: 'Pretendard';
             font-style: normal;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 18px;
+            color: $artong-black;
+            text-align: initial;
+            margin-bottom: 8px;
           }
-          .info {
-            font-family: 'Pretendard';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 15px;
-            color: #4d4d4d;
-            margin-top: 8px;
+          .contents-profile {
           }
         }
       }
