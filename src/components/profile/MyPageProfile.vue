@@ -29,8 +29,7 @@
       </div>
       <div class="introduction">
         <div class="title">Introduction</div>
-        <div class="text"></div>
-        {{ currentUser.profile.introduction }}
+        <div class="text">{{ currentUser.profile.introduction }}</div>
       </div>
     </div>
     <div v-else class="top2">
@@ -44,8 +43,7 @@
       </div>
       <div class="introduction">
         <div class="title">Introduction</div>
-        <div class="text"></div>
-        {{ currentUser.profile.introduction }}
+        <div class="text">{{ currentUser.profile.introduction }}</div>
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
@@ -264,7 +262,6 @@ export default {
       }
       .text {
         margin-top: 8px;
-        width: 174px;
         font-weight: 400;
         font-size: 16px;
         color: #4d4d4d;
