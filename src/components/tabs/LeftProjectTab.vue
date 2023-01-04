@@ -5,9 +5,32 @@
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
       <div class="collection-name">{{ project.name }}</div>
-      <ContentsProfile class="contents-profile" :member="project.owner" />
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: {
+            id: project.owner.username,
+            wallet_address: project.owner.wallet_address,
+          },
+        }"
+      >
+        <ContentsProfile class="contents-profile" :member="project.owner" />
+      </router-link>
       <div class="buttons1">
-        <button class="white-btn">Subscribe</button>
+        <button
+          v-if="project.is_subscriber"
+          @click="unsubscribe"
+          class="subscribe-n-unsubscribe-button white-btn"
+        >
+          Unsubscribe {{ this.project.subscribers }}
+        </button>
+        <button
+          v-else
+          @click="subscribe"
+          class="subscribe-n-unsubscribe-button white-btn"
+        >
+          Subscribe {{ this.project.subscribers }}
+        </button>
         <button @click="contribute" v-ripple>Contribute</button>
       </div>
       <div class="detail">
@@ -30,6 +53,7 @@
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import SnsLinks from '../projects/SnsLinks.vue'
 import { isSessionValid } from '../../util/commonFunc'
+import { postProjectSubscriber } from '../../api/projects'
 import Ripple from '../../directives/ripple/Ripple'
 
 export default {
@@ -50,6 +74,35 @@ export default {
         return
       }
       this.$root.$emit('contribute')
+    },
+    async subscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: true,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) + 1,
+        )
+        this.project.is_subscriber = true
+        //this.$emit(event:"increaseSubscriber")
+      } catch (error) {
+        console.log('error 발생')
+      }
+    },
+    async unsubscribe() {
+      try {
+        await postProjectSubscriber({
+          isSubscribeRequest: false,
+          targetProjectAddress: this.project.id,
+        })
+        this.project.subscribers = String(
+          parseInt(this.project.subscribers) - 1,
+        )
+        this.project.is_subscriber = false
+      } catch (error) {
+        console.log('error 발생')
+      }
     },
   },
   directives: {
