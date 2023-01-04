@@ -56,6 +56,7 @@ export default {
           orderDirection: 'asc',
         },
       },
+      tabKey: 0,
     }
   },
   methods: {
@@ -134,9 +135,10 @@ export default {
   watch: {
     async $route(to) {
       if (!to.params.wallet_address && to.params.id !== this.member.username) {
-        console.log('corner case!!!!!!!')
-        // this.member = await this.getMember(to.params.id)
+        this.member = await this.getMember(to.params.id)
+        this.tabKey++
       }
+
       const t = to.query.tab || '0'
       this.tabs[t].sort =
         this.sortOptions[to.query.sort] || this.sortOptions['newest']
@@ -153,6 +155,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         case '1':
@@ -167,6 +170,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         case '2':
@@ -181,6 +185,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         default:

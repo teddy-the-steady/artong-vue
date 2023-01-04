@@ -71,7 +71,7 @@ export default {
       this.$router.push({ query: { tab: id } })
     },
     generateKey() {
-      return this.currentId + this.current.sort.name
+      return this.currentId + this.current.sort.name + this.current.api.key
     },
   },
   watch: {
