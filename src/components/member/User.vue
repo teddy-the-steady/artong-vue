@@ -196,12 +196,14 @@ export default {
 }
 
 @media only screen and (min-width: 1080px) {
-  .header {
-    .edit-button {
-      width: 89px;
-      height: 48px;
-      margin-left: auto;
-      margin-bottom: 8px;
+  .container {
+    .header {
+      .edit-button {
+        width: 89px;
+        height: 48px;
+        margin-left: auto;
+        margin-bottom: 8px;
+      }
     }
   }
 }
