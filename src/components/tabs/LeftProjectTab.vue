@@ -5,7 +5,7 @@
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
       <div class="collection-name">{{ project.name }}</div>
-      <ContentsProfile class="contents-profile" />
+      <ContentsProfile class="contents-profile" :member="project.owner" />
       <div class="buttons1">
         <button class="white-btn">Subscribe</button>
         <button @click="contribute" v-ripple>Contribute</button>
