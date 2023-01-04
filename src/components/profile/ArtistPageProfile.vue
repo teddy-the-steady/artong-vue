@@ -74,6 +74,7 @@ export default {
     },
 
     copy() {
+      this.address = this.member.wallet_address
       navigator.clipboard
         .writeText(`${this.address}`)
         .then(() => {
