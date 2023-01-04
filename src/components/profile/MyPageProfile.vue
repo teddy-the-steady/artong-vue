@@ -9,7 +9,6 @@
     </span>
     <input ref="fileInput" type="file" @change="onFileChange" />
     <div v-if="this.width < 1080" class="top1">
-      <!-- TODO] width에 따라 화면이 달라지는 거 구현해야 함 -->
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
@@ -35,7 +34,6 @@
       </div>
     </div>
     <div v-else class="top2">
-      <div>hello</div>
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
@@ -43,6 +41,11 @@
           {{ this.shortAddress }}
           <img src="../../assets/icons/copy.svg" />
         </button>
+      </div>
+      <div class="introduction">
+        <div class="title">Introduction</div>
+        <div class="text"></div>
+        {{ currentUser.profile.introduction }}
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
@@ -53,11 +56,6 @@
           <div class="title">Following</div>
           <div class="number">300</div>
         </div>
-      </div>
-      <div class="introduction">
-        <div class="title">Introduction</div>
-        <div class="text"></div>
-        {{ currentUser.profile.introduction }}
       </div>
     </div>
   </div>
@@ -217,6 +215,7 @@ export default {
         font-size: 16px;
         color: #4d4d4d;
         margin-top: 8px;
+        word-break: break-all;
       }
     }
   }
@@ -224,6 +223,8 @@ export default {
     display: flex;
     flex-direction: row;
     .info {
+      width: 382px;
+      margin-right: 24px;
       .username {
         font-family: 'Pretendard';
         font-style: normal;
@@ -252,50 +253,46 @@ export default {
         }
       }
     }
+    .introduction {
+      font-family: 'Pretendard';
+      font-style: normal;
+      width: 472px;
+      .title {
+        font-weight: 600;
+        font-size: 18px;
+        color: $artong-black;
+      }
+      .text {
+        margin-top: 8px;
+        width: 174px;
+        font-weight: 400;
+        font-size: 16px;
+        color: #4d4d4d;
+        word-break: break-all;
+      }
+    }
+    .follow-static-container {
+      display: flex;
+      margin-right: 24px;
+      margin-left: auto;
+      .follow-static {
+        font-family: 'Pretendard';
+        font-style: normal;
+        color: $artong-black;
+        margin-left: 24px;
+        .title {
+          font-weight: 600;
+          font-size: 18px;
+          margin-bottom: 8px;
+        }
+        .number {
+          font-weight: 400;
+          font-size: 18px;
+        }
+      }
+    }
   }
 }
-
-// .profile {
-//   display: flex;
-//   margin-left: 15%;
-
-//   .info {
-//     text-align: center;
-//     word-break: break-all;
-
-//     .username {
-//       font-size: 1.5em;
-//     }
-//     .address {
-//       font-family: 'Pretendard';
-//       font-style: normal;
-//       font-weight: 500;
-//       font-size: 14px;
-//       border: 1px solid #f2f2f2;
-//       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
-//       border-radius: 999px;
-//       padding-left: 16px;
-//       padding-right: 16px;
-//       overflow: hidden;
-//       text-overflow: ellipsis;
-//       white-space: nowrap;
-//       img {
-//         width: 20px;
-//         height: 20px;
-//         transform: translateY(3px);
-//       }
-//     }
-//   }
-// }
-
-// @media only screen and (max-width: 599px) {
-//   .profile {
-//     transform: translateY(-30%);
-//     flex-direction: column;
-//     align-items: center;
-//     margin-left: 0;
-//   }
-// }
 @media (min-width: 840px) and(max-width:1079px) {
   .profile {
     margin-left: 24px;

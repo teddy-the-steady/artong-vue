@@ -29,7 +29,10 @@
                 slot="body"
                 tag="div"
                 v-show="
-                  project.owner.wallet_address === currentUser.wallet_address
+                  project.owner
+                    ? project.owner.wallet_address ===
+                      currentUser.wallet_address
+                    : false
                 "
                 :to="{
                   name: 'ProjectSettings',
@@ -93,6 +96,7 @@
         :tabs="tabs"
         :width="width"
         :sortOptions="sortOptions"
+        :tabsLength="tabs.length"
         class="project-tab-sort"
       />
     </div>
@@ -132,6 +136,7 @@ import {
   postProjectSubscriber,
   getProjectContributors,
 } from '../../api/projects'
+import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -334,6 +339,59 @@ export default {
         console.log('error 발생')
       }
     },
+    setTabs() {
+      this.tabs[0].sort =
+        this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+      this.tabs[0].api = {
+        func: graphql,
+        body: queryTokensByProject({
+          variables: {
+            first: 10,
+            skip: 0,
+            project: this.$route.params.id,
+            orderBy: this.tabs[0].sort.orderBy,
+            orderDirection: this.tabs[0].sort.orderDirection,
+          },
+        }),
+      }
+
+      this.tabs[1].api = {
+        func: getProjectContributors,
+        pathParams: { address: this.$route.params.id },
+        queryParams: { start_num: 0, count_num: 5 },
+      }
+
+      this.tabs[2].data = {
+        description: this.project.description,
+        sns: this.project.sns,
+      }
+    },
+    setConditionalTabs() {
+      if (this.project.policy === 1) {
+        if (
+          this.currentUser.wallet_address ===
+            this.project.owner.wallet_address ||
+          this.project.is_contributor
+        ) {
+          this.tabs[3] = {
+            id: 3,
+            type: 'CONTENTS',
+            label: 'Waiting for Apporval',
+            api: {
+              func: getTobeApprovedContents,
+              pathParams: { address: this.projectAddress },
+              queryParams: { start_num: 0, count_num: 5 },
+            },
+            sort: {},
+          }
+          console.log('Waiting for apporval added')
+        } else {
+          this.tabs.length = 3
+        }
+      } else {
+        this.tabs.length = 3
+      }
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -342,32 +400,8 @@ export default {
     )
     this.project = await this.getProject()
     this.setStatistics()
-
-    this.tabs[0].sort =
-      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-    this.tabs[0].api = {
-      func: graphql,
-      body: queryTokensByProject({
-        variables: {
-          first: 10,
-          skip: 0,
-          project: this.$route.params.id,
-          orderBy: this.tabs[0].sort.orderBy,
-          orderDirection: this.tabs[0].sort.orderDirection,
-        },
-      }),
-    }
-
-    this.tabs[1].api = {
-      func: getProjectContributors,
-      pathParams: { address: this.$route.params.id },
-      queryParams: { start_num: 0, count_num: 5 },
-    }
-
-    this.tabs[2].data = {
-      description: this.project.description,
-      sns: this.project.sns,
-    }
+    this.setTabs()
+    this.setConditionalTabs()
 
     this.$watch(
       () => this.$route,
@@ -375,6 +409,7 @@ export default {
         if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
           this.project = await this.getProject()
           this.setStatistics()
+          this.setConditionalTabs()
         }
       },
     )
@@ -390,6 +425,7 @@ export default {
       if (this.projectAddress !== to.params.id) {
         this.projectAddress = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
+        this.tabs.length = 3
       }
 
       const t = to.query.tab || '0'
