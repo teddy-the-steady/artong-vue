@@ -102,7 +102,13 @@
         <router-link
           slot="body"
           tag="div"
-          :to="{ name: 'UserOrArtist', params: { id: currentUser.username } }"
+          :to="{
+            name: 'UserOrArtist',
+            params: {
+              id: currentUser.username,
+              wallet_address: currentUser.wallet_address,
+            },
+          }"
         >
           Profile
         </router-link>

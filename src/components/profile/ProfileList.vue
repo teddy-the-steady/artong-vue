@@ -3,7 +3,10 @@
     <div class="profiles">
       <div v-for="(val, i) in profileList" :key="i">
         <router-link
-          :to="{ name: 'UserOrArtist', params: { id: val.username } }"
+          :to="{
+            name: 'UserOrArtist',
+            params: { id: val.username, wallet_address: val.wallet_address },
+          }"
         >
           <ProfileCard :profile="val"></ProfileCard>
         </router-link>

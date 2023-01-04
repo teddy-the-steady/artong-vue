@@ -69,7 +69,6 @@
                 v-for="(item, index) in projectData"
                 :key="index"
               >
-                <!-- <div class="name">{{ item.name }}</div> -->
                 <div class="info">{{ item.info }}</div>
               </div>
             </div>
@@ -94,7 +93,10 @@
               <router-link
                 :to="{
                   name: 'UserOrArtist',
-                  params: { id: project.owner.username },
+                  params: {
+                    id: project.owner.username,
+                    wallet_address: project.owner.wallet_address,
+                  },
                 }"
               >
                 <ContentsProfile
@@ -402,15 +404,14 @@ export default {
           this.tabs[3] = {
             id: 3,
             type: 'CONTENTS',
-            label: 'Waiting for Apporval',
+            label: 'Waiting for Approval',
             api: {
               func: getTobeApprovedContents,
-              pathParams: { address: this.projectAddress },
+              pathParams: { address: this.project.id },
               queryParams: { start_num: 0, count_num: 5 },
             },
             sort: {},
           }
-          console.log('Waiting for apporval added')
         } else {
           this.tabs.length = 3
         }

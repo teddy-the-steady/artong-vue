@@ -5,7 +5,17 @@
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
       <div class="collection-name">{{ project.name }}</div>
-      <ContentsProfile class="contents-profile" :member="project.owner" />
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: {
+            id: project.owner.username,
+            wallet_address: project.owner.wallet_address,
+          },
+        }"
+      >
+        <ContentsProfile class="contents-profile" :member="project.owner" />
+      </router-link>
       <div class="buttons1">
         <button
           v-if="project.is_subscriber"
