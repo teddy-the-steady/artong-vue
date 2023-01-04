@@ -132,6 +132,7 @@ import {
   postProjectSubscriber,
   getProjectContributors,
 } from '../../api/projects'
+import { isSessionValid } from '../../util/commonFunc'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -307,6 +308,9 @@ export default {
       }
     },
     async subscribe() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
       try {
         await postProjectSubscriber({
           isSubscribeRequest: true,

@@ -37,7 +37,11 @@
 
 <script>
 import { headerActivate } from '../../mixin'
-import { makeS3Path, shortenAddress } from '../../util/commonFunc'
+import {
+  makeS3Path,
+  shortenAddress,
+  isSessionValid,
+} from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
 import { postMemberFollower } from '../../api/member'
 
@@ -85,6 +89,9 @@ export default {
         })
     },
     async follow() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
       try {
         this.member = await postMemberFollower({
           isFollowRequest: true,
