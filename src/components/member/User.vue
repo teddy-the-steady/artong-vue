@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="header">
-      <div class="user-info">
-        <MyPageProfile></MyPageProfile>
+    <div class="container">
+      <div class="header">
+        <div class="user-info">
+          <MyPageProfile></MyPageProfile>
+        </div>
+        <UserProfileButtons class="edit-button"></UserProfileButtons>
       </div>
-      <UserProfileButtons class="edit-button"></UserProfileButtons>
+      <ProfileTab :tabs="tabs" :sortOptions="sortOptions" />
     </div>
-    <ProfileTab :tabs="tabs" :sortOptions="sortOptions" />
   </div>
 </template>
 
@@ -162,40 +164,55 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+.container {
+  max-width: 1392px;
+  margin-left: auto;
+  margin-right: auto;
 
-.header {
-  margin-top: 50px;
+  .header {
+    margin-top: 50px;
 
-  .user-info {
-    height: 30%;
+    .user-info {
+      height: 30%;
 
-    button {
-      padding: 10px;
-      border-radius: 10px;
+      button {
+        padding: 10px;
+        border-radius: 10px;
+      }
+    }
+    .edit-button {
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-bottom: 46px;
+    }
+    .tab {
+      height: 50px;
     }
   }
-  .edit-button {
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-bottom: 46px;
-  }
-  .tab {
-    height: 50px;
-  }
-}
 
-.contents {
-  padding: 0 10%;
+  .contents {
+    padding: 0 10%;
+  }
 }
 
 @media only screen and (min-width: 1080px) {
-  .header {
-    .edit-button {
-      width: 89px;
-      height: 48px;
-      margin-left: auto;
-      margin-bottom: 8px;
+  .container {
+    .header {
+      .edit-button {
+        width: 89px;
+        height: 48px;
+        margin-left: auto;
+        margin-bottom: 8px;
+      }
     }
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .container {
+    max-width: 1392px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>
