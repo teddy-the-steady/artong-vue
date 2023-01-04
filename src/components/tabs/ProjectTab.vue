@@ -37,6 +37,7 @@
         </div>
       </section>
     </div>
+    <span class="hide_on_purpose">{{ tabsLength }}</span>
   </div>
 </template>
 
@@ -61,6 +62,10 @@ export default {
     tabs: {
       type: Array,
       default: () => [],
+    },
+    tabsLength: {
+      type: Number,
+      default: 3,
     },
     width: {
       type: Number,
@@ -138,5 +143,9 @@ export default {
       color: #4d4d4d;
     }
   }
+}
+
+.hide_on_purpose {
+  display: none;
 }
 </style>
