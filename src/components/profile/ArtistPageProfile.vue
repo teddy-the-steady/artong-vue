@@ -3,35 +3,37 @@
     <ProfileImageBig
       :profileImageUrl="profileImageUrl"
       :isFirstLoading="isFirstLoading"
+      class="profile-image"
     ></ProfileImageBig>
     <div class="info">
-      <div class="username">
-        {{ member ? member.username : '' }}
-      </div>
-      <div class="introduction">
-        {{ member ? member.introduction : '' }}
-      </div>
+      <div class="username">@{{ member ? member.username : '' }}</div>
       <button class="address white-btn" @click="copy">
         {{ member ? shortenAddress(member.wallet_address) : '' }}
         <img src="../../assets/icons/copy.svg" />
       </button>
     </div>
+    <div class="follow-static-container">
+      <div class="follow-static">
+        <div class="title">Follwer</div>
+        <div class="number">{{ member.follower }}</div>
+      </div>
+      <div class="follow-static">
+        <div class="title">Following</div>
+        <div class="number">{{ member.following }}</div>
+      </div>
+    </div>
+    <div class="introduction">
+      <div class="title">Introduction</div>
+      <div class="text">{{ member ? member.introduction : '' }}</div>
+    </div>
     <button
       v-if="this.member.is_follower"
-      class="unfollow-btn"
+      class="follow-n-unfollow-btn"
       @click="unfollow"
     >
-      unfollow
+      Unfollow
     </button>
-    <button v-else class="follow-btn" @click="follow">follow</button>
-    <div class="follow-static-box">
-      <div class="title">Follwer</div>
-      <div class="number">{{ member.follower }}</div>
-    </div>
-    <div class="follow-static-box">
-      <div class="title">Follow</div>
-      <div class="number">{{ member.following }}</div>
-    </div>
+    <button v-else class="follow-n-unfollow-btn" @click="follow">Follow</button>
   </div>
 </template>
 
@@ -131,15 +133,19 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .profile {
-  display: flex;
-  margin-left: 15%;
-
+  text-align: initial;
+  padding-left: 16px;
+  padding-right: 16px;
+  .profile-image {
+    margin-left: 8px;
+  }
   .info {
-    text-align: center;
-    word-break: break-all;
-
     .username {
-      font-size: 1.5em;
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 32px;
+      color: $artong-black;
     }
     .address {
       font-family: 'Pretendard';
@@ -161,14 +167,100 @@ export default {
       }
     }
   }
-}
-
-@media only screen and (max-width: 599px) {
-  .profile {
-    transform: translateY(-30%);
-    flex-direction: column;
-    align-items: center;
-    margin-left: 0;
+  .follow-static-container {
+    display: flex;
+    margin-top: 16px;
+    .follow-static {
+      margin-right: 24px;
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-size: 18px;
+      color: $artong-black;
+      .title {
+        font-weight: 600;
+      }
+      .number {
+        margin-top: 8px;
+        font-weight: 400;
+      }
+    }
+  }
+  .introduction {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    .title {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 18px;
+      color: $artong-black;
+    }
+    .text {
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      color: #4d4d4d;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+  }
+  .follow-n-unfollow-btn {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: $artong-white;
+    height: 48px;
+    width: 100%;
+    margin-bottom: 46px;
   }
 }
+@media (min-width: 840px) {
+  .profile {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+// .profile {
+//   display: flex;
+//   margin-left: 15%;
+
+//   .info {
+//     text-align: center;
+//     word-break: break-all;
+
+//     .username {
+//       font-size: 1.5em;
+//     }
+//     .address {
+//       font-family: 'Pretendard';
+//       font-style: normal;
+//       font-weight: 500;
+//       font-size: 14px;
+//       border: 1px solid #f2f2f2;
+//       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+//       border-radius: 999px;
+//       padding-left: 16px;
+//       padding-right: 16px;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//       white-space: nowrap;
+//       img {
+//         width: 20px;
+//         height: 20px;
+//         transform: translateY(3px);
+//       }
+//     }
+//   }
+// }
+
+// @media only screen and (max-width: 599px) {
+//   .profile {
+//     transform: translateY(-30%);
+//     flex-direction: column;
+//     align-items: center;
+//     margin-left: 0;
+//   }
+// }
 </style>
