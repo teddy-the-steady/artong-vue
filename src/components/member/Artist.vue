@@ -194,6 +194,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  max-width: 1392px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 50px;
 
   .user-info {
@@ -225,6 +228,13 @@ export default {
 
   .contents {
     padding: 0;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .header {
+    max-width: 1392px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>
