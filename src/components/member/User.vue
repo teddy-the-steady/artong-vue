@@ -188,17 +188,14 @@ export default {
   padding: 0 10%;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (min-width: 1080px) {
   .header {
-    .user-info {
-      button {
-        border-radius: 10px;
-      }
+    .edit-button {
+      width: 89px;
+      height: 48px;
+      margin-left: auto;
+      margin-bottom: 8px;
     }
-  }
-
-  .contents {
-    padding: 0;
   }
 }
 </style>
