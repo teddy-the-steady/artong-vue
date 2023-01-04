@@ -39,7 +39,6 @@ export default {
     return {
       componentKey: 0,
       member: {},
-      username: '',
       tabs: [
         { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
@@ -69,8 +68,7 @@ export default {
     },
   },
   async created() {
-    this.username = this.$route.params.id
-    this.member = await this.getMember(this.username)
+    this.member = await this.getMember(this.$route.params.id)
 
     this.tabs[0].sort =
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
@@ -128,14 +126,17 @@ export default {
           to.name === 'UserOrArtist' &&
           to.params.id !== this.currentUser.username
         ) {
-          this.username = to.params.id
-          this.member = await this.getMember(this.username)
+          this.member = await this.getMember(to.params.id)
         }
       },
     )
   },
   watch: {
-    $route(to) {
+    async $route(to) {
+      if (!to.params.wallet_address && to.params.id !== this.member.username) {
+        console.log('corner case!!!!!!!')
+        // this.member = await this.getMember(to.params.id)
+      }
       const t = to.query.tab || '0'
       this.tabs[t].sort =
         this.sortOptions[to.query.sort] || this.sortOptions['newest']
@@ -194,6 +195,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  max-width: 1392px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 50px;
 
   .user-info {
@@ -225,6 +229,13 @@ export default {
 
   .contents {
     padding: 0;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .header {
+    max-width: 1392px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>
