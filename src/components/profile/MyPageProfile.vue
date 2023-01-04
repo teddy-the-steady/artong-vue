@@ -262,7 +262,6 @@ export default {
       }
       .text {
         margin-top: 8px;
-        width: 174px;
         font-weight: 400;
         font-size: 16px;
         color: #4d4d4d;
