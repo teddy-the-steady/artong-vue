@@ -1,7 +1,7 @@
 <template>
   <div class="profile-bundle">
     <div v-if="members.length > 0">
-      <ol>
+      <ul>
         <li v-for="(val, i) in members" :key="i">
           <router-link
             :to="{
@@ -18,10 +18,10 @@
             ></ContentsProfile>
           </router-link>
         </li>
-      </ol>
+      </ul>
     </div>
     <div v-else>
-      <ol>
+      <ul>
         <li>
           <ContentsProfile :needUserName="needUserName"></ContentsProfile>
         </li>
@@ -37,7 +37,7 @@
         <li>
           <ContentsProfile :needUserName="needUserName"></ContentsProfile>
         </li>
-      </ol>
+      </ul>
     </div>
   </div>
 </template>
@@ -70,11 +70,10 @@ export default {
     flex-direction: row;
     position: relative;
 
-    ol {
-      // profile-bundle
+    ul {
       list-style: none;
       padding-left: 0px;
-      margin-top: 0px;
+      margin: 0px;
 
       li {
         float: left;

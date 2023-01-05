@@ -36,7 +36,7 @@
       <div class="detail">
         <div class="top">Items</div>
         <div class="bottom">
-          {{ project.max_token_id }}/{{ project.maxAmount }}
+          {{ project.max_token_id || 0 }}/{{ project.maxAmount }}
         </div>
       </div>
       <div class="info">
