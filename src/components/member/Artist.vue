@@ -41,7 +41,6 @@ export default {
     return {
       componentKey: 0,
       member: {},
-      username: '',
       tabs: [
         { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
@@ -59,6 +58,7 @@ export default {
           orderDirection: 'asc',
         },
       },
+      tabKey: 0,
     }
   },
   methods: {
@@ -87,8 +87,7 @@ export default {
     },
   },
   async created() {
-    this.username = this.$route.params.id
-    this.member = await this.getMember(this.username)
+    this.member = await this.getMember(this.$route.params.id)
 
     this.tabs[0].sort =
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
@@ -146,14 +145,18 @@ export default {
           to.name === 'UserOrArtist' &&
           to.params.id !== this.currentUser.username
         ) {
-          this.username = to.params.id
-          this.member = await this.getMember(this.username)
+          this.member = await this.getMember(to.params.id)
         }
       },
     )
   },
   watch: {
-    $route(to) {
+    async $route(to) {
+      if (!to.params.wallet_address && to.params.id !== this.member.username) {
+        this.member = await this.getMember(to.params.id)
+        this.tabKey++
+      }
+
       const t = to.query.tab || '0'
       this.tabs[t].sort =
         this.sortOptions[to.query.sort] || this.sortOptions['newest']
@@ -170,6 +173,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         case '1':
@@ -184,6 +188,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         case '2':
@@ -198,6 +203,7 @@ export default {
                 orderDirection: this.tabs[t].sort.orderDirection,
               },
             }),
+            key: this.tabKey,
           }
           break
         default:

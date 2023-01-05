@@ -5,7 +5,17 @@
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
       <div class="collection-name">{{ project.name }}</div>
-      <ContentsProfile class="contents-profile" :member="project.owner" />
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: {
+            id: project.owner ? project.owner.username : '',
+            wallet_address: project.owner ? project.owner.wallet_address : '',
+          },
+        }"
+      >
+        <ContentsProfile class="contents-profile" :member="project.owner" />
+      </router-link>
       <div class="buttons1">
         <button
           v-if="project.is_subscriber"
@@ -26,7 +36,7 @@
       <div class="detail">
         <div class="top">Items</div>
         <div class="bottom">
-          {{ project.max_token_id }}/{{ project.maxAmount }}
+          {{ project.max_token_id || 0 }}/{{ project.maxAmount }}
         </div>
       </div>
       <div class="info">

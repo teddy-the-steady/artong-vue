@@ -45,12 +45,12 @@
             </BasicDialog>
           </button>
           <div v-if="this.width >= 1080" class="creators-button">
-            <div class="creator">Creator</div>
+            <div class="creator">Created by</div>
             <ContentsProfileBundle
               class="profile-bundle"
               :members="project.contributors"
             />
-            <div class="viewAll">View all</div>
+            <div class="viewAll" @click="gotoContributorTab">View all</div>
           </div>
         </div>
       </div>
@@ -69,7 +69,6 @@
                 v-for="(item, index) in projectData"
                 :key="index"
               >
-                <!-- <div class="name">{{ item.name }}</div> -->
                 <div class="info">{{ item.info }}</div>
               </div>
             </div>
@@ -94,7 +93,12 @@
               <router-link
                 :to="{
                   name: 'UserOrArtist',
-                  params: { id: project.owner.username },
+                  params: {
+                    id: project.owner ? project.owner.username : '',
+                    wallet_address: project.owner
+                      ? project.owner.wallet_address
+                      : '',
+                  },
                 }"
               >
                 <ContentsProfile
@@ -406,21 +410,26 @@ export default {
           this.tabs[3] = {
             id: 3,
             type: 'CONTENTS',
-            label: 'Waiting for Apporval',
+            label: 'Waiting for Approval',
             api: {
               func: getTobeApprovedContents,
-              pathParams: { address: this.projectAddress },
+              pathParams: { address: this.project.id },
               queryParams: { start_num: 0, count_num: 5 },
             },
             sort: {},
           }
-          console.log('Waiting for apporval added')
         } else {
           this.tabs.length = 3
         }
       } else {
         this.tabs.length = 3
       }
+    },
+    gotoContributorTab() {
+      this.$router.push({
+        path: this.$route.path,
+        query: { tab: 1 },
+      })
     },
   },
   async created() {
@@ -514,7 +523,6 @@ export default {
   .user-info {
     height: 30%;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     .profile {
       transform: translateY(-60px);
@@ -522,7 +530,6 @@ export default {
     }
     .buttons {
       display: flex;
-      flex-direction: row;
       justify-content: space-between;
       transform: translateY(-24px);
       margin-right: 16px;
@@ -543,16 +550,16 @@ export default {
       }
     }
     .creators-button {
-      width: 258px;
+      min-width: 250px;
       height: 48px;
       background: #ffffff;
       border: 1px solid #f2f2f2;
       box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
       border-radius: 999px;
       display: flex;
-      flex-direction: row;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
+      padding: 0 10px;
       .creator {
         font-family: 'Pretendard';
         font-style: normal;
@@ -562,7 +569,6 @@ export default {
       }
       .profile-bundle {
         margin-bottom: 0px;
-        margin-left: 6px;
         transform: translateX(5px);
       }
       .viewAll {
@@ -571,6 +577,7 @@ export default {
         font-weight: 400;
         font-size: 12px;
         color: #808080;
+        cursor: pointer;
       }
     }
   }
@@ -682,7 +689,8 @@ textarea {
       .profile {
       }
       .buttons {
-        width: 426px;
+        width: 100%;
+        max-width: 450px;
       }
     }
   }
@@ -693,7 +701,6 @@ textarea {
     margin-right: 185px;
     .bottom {
       display: flex;
-      flex-direction: row;
       .left-tab {
         margin-left: 185px;
       }

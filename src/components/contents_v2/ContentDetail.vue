@@ -3,16 +3,17 @@
     <div class="content-image">
       <img
         :src="
-          makeS3Path(content.content_thumbnail_s3key) ||
-          makeS3Path(content.content_s3key) ||
-          this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+          content
+            ? makeS3Path(content.content_s3key) ||
+              makeS3Path(content.content_thumbnail_s3key) ||
+              content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+            : ''
         "
-        @error="replaceImage"
       />
     </div>
     <div class="content-wrap">
       <div class="content-info">
-        <div class="left-container" style="flex: 1">
+        <div class="left-container">
           <div class="round-box">
             <div class="title">
               <img :src="require('@/assets/icons/100-add-folder.svg')" /> Offers
@@ -125,13 +126,13 @@
             </div>
           </div>
           <div class="name">
-            {{ content.name }}
+            {{ content ? content.name : '' }}
           </div>
           <div class="owner">
             <div class="label">Owned by</div>
             <div>
               <ContentsProfile
-                :member="content.owner"
+                :member="content ? content.owner : null"
                 :needUserName="true"
               ></ContentsProfile>
             </div>
@@ -149,7 +150,7 @@
           <div class="information">
             <div class="label">Information</div>
             <div>
-              {{ content.description }}
+              {{ content ? content.description : '' }}
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
               lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
               tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
@@ -163,7 +164,11 @@
               ETH
             </div>
           </div>
-          <div v-if="content.owner === currentUser.wallet_address">
+          <div
+            v-if="
+              content ? content.owner === currentUser.wallet_address : false
+            "
+          >
             <div class="buyNSell-container d-flex">
               <div class="flex-1">
                 <div
@@ -192,7 +197,11 @@
             </div>
           </div>
 
-          <div v-if="content.owner === currentUser.wallet_address">
+          <div
+            v-if="
+              content ? content.owner === currentUser.wallet_address : false
+            "
+          >
             <button v-if="!isListed" @click="action('sell')">Sell</button>
             <button v-else @click="action('cancel')">
               Cancel/Update Listing
@@ -205,7 +214,10 @@
           <div class="title">More from this collection</div>
           <div class="url">
             <router-link
-              :to="{ name: 'Project', params: { id: content.project.id } }"
+              :to="{
+                name: 'Project',
+                params: { id: content ? content.project.id : null },
+              }"
               >View more</router-link
             >
           </div>
@@ -220,7 +232,9 @@
     </div>
     <div>
       {{ content }}
-      <div v-if="content.owner === currentUser.wallet_address">
+      <div
+        v-if="content ? content.owner === currentUser.wallet_address : false"
+      >
         <button v-if="!isListed" @click="action('sell')">Sell</button>
         <button v-else @click="action('cancel')">Cancel/Update Listing</button>
       </div>
@@ -285,7 +299,6 @@
 import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
-import baseLazyLoading from '../../util/baseLazyLoading'
 import {
   graphql,
   queryToken,
@@ -334,56 +347,54 @@ export default {
       return this.currentUser.wallet_address === this.content.owner
     },
   },
-  extends: baseLazyLoading(async (to, callback) => {
-    const [result1, result2, result3, result4] = await Promise.all([
-      await graphql(
-        queryToken({
-          variables: {
-            id: to.params.project_address + to.params.token_id,
-          },
-          db: {
-            project_address: to.params.project_address,
-            token_id: to.params.token_id,
-          },
-        }),
-      ),
-      await graphql(
-        queryOffersByToken({
-          variables: {
-            id: to.params.project_address + to.params.token_id,
-          },
-        }),
-      ),
-      await graphql(
-        queryTokenHistory({
-          variables: {
-            id: to.params.project_address + to.params.token_id,
-          },
-          pagination: {
-            start_num: 0,
-            count_num: 5,
-          },
-        }),
-      ),
-      await graphql(
-        queryTokensByProject({
-          variables: {
-            first: 10,
-            skip: 0,
-            project: to.params.project_address,
-          },
-        }),
-      ),
-    ])
-    callback(function () {
-      console.log(['result4', result1, result4])
-      this.content = result1.token
-      this.offers = result2.offers
-      this.histories = result3
-      this.tokens = result4.tokens
-    })
-  }),
   methods: {
+    async getContents(project_address, token_id) {
+      const [token, offers, histories, tokensByProject] = await Promise.all([
+        await graphql(
+          queryToken({
+            variables: {
+              id: project_address + token_id,
+            },
+            db: {
+              project_address: project_address,
+              token_id: token_id,
+            },
+          }),
+        ),
+        await graphql(
+          queryOffersByToken({
+            variables: {
+              id: project_address + token_id,
+            },
+          }),
+        ),
+        await graphql(
+          queryTokenHistory({
+            variables: {
+              id: project_address + token_id,
+            },
+            pagination: {
+              start_num: 0,
+              count_num: 5,
+            },
+          }),
+        ),
+        await graphql(
+          queryTokensByProject({
+            variables: {
+              first: 10,
+              skip: 0,
+              project: project_address,
+            },
+          }),
+        ),
+      ])
+
+      this.content = token.token
+      this.offers = offers.offers
+      this.histories = histories
+      this.tokens = tokensByProject.tokens
+    },
     async action(which, acceptParam) {
       // TODO] 모달로 바꾸기
       let signer = null
@@ -465,17 +476,6 @@ export default {
           break
       }
     },
-    replaceImage(e) {
-      const imageUrl = e.target.currentSrc
-      if (imageUrl.indexOf('resized-') > -1) {
-        e.target.src = this.content.content_s3key
-      } else {
-        e.target.src = this.content.contentURI.replace(
-          'ipfs://',
-          'https://ipfs.io/ipfs/',
-        )
-      }
-    },
     makeS3Path(path) {
       return makeS3Path(path)
     },
@@ -489,6 +489,21 @@ export default {
 
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
+  },
+  async created() {
+    await this.getContents(
+      this.$route.params.project_address,
+      this.$route.params.token_id,
+    )
+
+    this.$watch(
+      () => this.$route,
+      async to => {
+        if (to.name === 'ContentDetail') {
+          await this.getContents(to.params.project_address, to.params.token_id)
+        }
+      },
+    )
   },
 }
 </script>
@@ -607,7 +622,6 @@ export default {
           }
         }
         .creators-button {
-          width: 258px;
           height: 48px;
           background: #ffffff;
           border: 1px solid #f2f2f2;
