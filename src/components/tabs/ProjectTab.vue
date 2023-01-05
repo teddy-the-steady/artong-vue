@@ -114,9 +114,11 @@ export default {
   padding-left: 24px;
   padding-right: 24px;
   .sort {
-    position: fixed;
+    text-align: initial;
+    float: right;
+    position: relative;
+    transform: translateY(40px);
     z-index: 1;
-    right: 24px;
   }
   .tabs {
     position: relative;
@@ -125,6 +127,9 @@ export default {
     white-space: nowrap;
     overflow-x: auto;
     width: 100%;
+    min-width: 680px;
+    padding-right: 60px;
+    box-sizing: border-box;
   }
 
   .info {
@@ -150,6 +155,14 @@ export default {
 
   .hide_on_purpose {
     display: none;
+  }
+}
+@media (min-width: 1440px) {
+  .container {
+    .tabs {
+      padding-right: 0px;
+      box-sizing: initial;
+    }
   }
 }
 </style>

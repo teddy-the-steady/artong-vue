@@ -97,12 +97,15 @@ export default {
     white-space: nowrap;
     overflow-x: auto;
     width: 100%;
-    // overflow-y: hidden;
+    padding-right: 60px;
+    box-sizing: border-box;
   }
   .sort {
-    position: fixed;
+    text-align: initial;
+    float: right;
+    position: relative;
+    transform: translateY(40px);
     z-index: 1;
-    right: 24px;
   }
 }
 </style>
