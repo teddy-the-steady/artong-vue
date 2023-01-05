@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <SortDropdown
+      class="sort"
+      :sortOptions="sortOptions"
+      :sortSelected="current.sort"
+    ></SortDropdown>
     <div class="tabs">
       <TabItem
         v-for="tab in tabs"
@@ -9,11 +14,6 @@
         @tabClick="tabClick"
         v-show="tab.type !== 'INFO' || (tab.type === 'INFO' && width < 1440)"
       />
-      <SortDropdown
-        class="sort"
-        :sortOptions="sortOptions"
-        :sortSelected="current.sort"
-      ></SortDropdown>
     </div>
     <div class="items">
       <section class="item" :key="generateKey()">
@@ -110,42 +110,46 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-
-.tabs {
-  position: relative;
-  z-index: 1;
-  border-bottom: 1px solid #b3b3b3;
-  margin: 0px 24px 0px 24px;
-  display: flex;
-
+.container {
+  padding-left: 24px;
+  padding-right: 24px;
   .sort {
+    position: fixed;
+    z-index: 1;
+    right: 24px;
+  }
+  .tabs {
     position: relative;
-    margin-left: auto;
+    border-bottom: 1px solid #b3b3b3;
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+    width: 100%;
   }
-}
 
-.info {
-  .info-top {
-    .info-name {
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 600;
-      font-size: 18px;
+  .info {
+    .info-top {
+      .info-name {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
 
-      color: #000000;
-    }
-    .info-desc {
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 16px;
+        color: #000000;
+      }
+      .info-desc {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
 
-      color: #4d4d4d;
+        color: #4d4d4d;
+      }
     }
   }
-}
 
-.hide_on_purpose {
-  display: none;
+  .hide_on_purpose {
+    display: none;
+  }
 }
 </style>

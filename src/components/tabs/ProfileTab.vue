@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <div class="tabs">
+  <div class="container">
+    <SortDropdown
+      class="sort"
+      :sortOptions="sortOptions"
+      :sortSelected="current.sort"
+    ></SortDropdown>
+    <div class="tabs" ref="tabs">
       <TabItem
         v-for="tab in tabs"
         v-bind="tab"
@@ -8,11 +13,6 @@
         v-model="currentId"
         @tabClick="tabClick"
       />
-      <SortDropdown
-        class="sort"
-        :sortOptions="sortOptions"
-        :sortSelected="current.sort"
-      ></SortDropdown>
     </div>
     <div class="items">
       <section class="item" :key="generateKey()">
@@ -86,17 +86,23 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+.container {
+  padding-right: 24px;
+  padding-left: 24px;
 
-.tabs {
-  position: relative;
-  z-index: 1;
-  border-bottom: 1px solid #b3b3b3;
-  margin: 0px 24px 0px 24px;
-  display: flex;
-
-  .sort {
+  .tabs {
     position: relative;
-    margin-left: auto;
+    border-bottom: 1px solid #b3b3b3;
+    display: flex;
+    white-space: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    // overflow-y: hidden;
+  }
+  .sort {
+    position: fixed;
+    z-index: 1;
+    right: 24px;
   }
 }
 </style>
