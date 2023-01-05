@@ -1,6 +1,7 @@
 <template>
   <div>
     <button
+      v-if="width >= 1150"
       class="dropdown ripple"
       @mousedown="sortMouseDown"
       @mouseup="sortMouseUp"
@@ -8,6 +9,19 @@
       @touchend="sortTouchEnd"
     >
       <div>{{ sortSelected.name || 'Newest' }}</div>
+      <img
+        :class="{ active: isDialogActive }"
+        src="../../assets/icons/arrow_down.svg"
+      />
+    </button>
+    <button
+      v-else
+      class="round-dropdown ripple"
+      @mousedown="sortMouseDown"
+      @mouseup="sortMouseUp"
+      @touchstart="sortTouchStart"
+      @touchend="sortTouchEnd"
+    >
       <img
         :class="{ active: isDialogActive }"
         src="../../assets/icons/arrow_down.svg"
@@ -59,6 +73,7 @@ export default {
       isDialogActive: false,
       isMouseDownSort: false,
       isMouseUpSort: false,
+      width: window.innerWidth,
     }
   },
   methods: {
@@ -106,6 +121,12 @@ export default {
         query: { ...this.$route.query, sort: option },
       })
     },
+    setWidth() {
+      this.width = window.innerWidth
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.setWidth)
   },
   watch: {
     isDialogActive() {
@@ -118,6 +139,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.round-dropdown {
+  border-radius: 100%;
+  border: 0px;
+  box-shadow: 2px 2px 6px rgb(0 0 0 / 8%);
+  background: #ffffff;
+  border: 1px solid #f2f2f2;
+}
 img {
   &.active {
     transition: 0.1s transform ease;
@@ -129,6 +157,8 @@ img {
   display: none;
   &.active {
     display: block;
+    z-index: 1;
+    transform: translateY(16px);
   }
 }
 </style>
