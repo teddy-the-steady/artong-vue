@@ -4,7 +4,8 @@
       <div class="user-info">
         <ArtistPageProfile
           :member="member"
-          @changeFollower="changeFollower"
+          @follow="follow"
+          @unfollow="unfollow"
         ></ArtistPageProfile>
       </div>
       <ProfileTab v-if="member.id" :tabs="tabs" :sortOptions="sortOptions" />
@@ -21,6 +22,7 @@ import {
   queryTokensByCreator,
   queryTokensByOwner,
 } from '../../api/graphql'
+import { postMemberFollower } from '../../api/member'
 import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 
@@ -63,9 +65,25 @@ export default {
     async getMember(username) {
       return await getMemberByUsername(username)
     },
-    changeFollower(member) {
-      console.log(member)
-      this.member = member
+    async follow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: true,
+          targetMemberId: this.member.id,
+        })
+      } catch (error) {
+        console.log('오류 발생')
+      }
+    },
+    async unfollow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: false,
+          targetMemberId: this.member.id,
+        })
+      } catch (error) {
+        console.log('오류 발생')
+      }
     },
   },
   async created() {

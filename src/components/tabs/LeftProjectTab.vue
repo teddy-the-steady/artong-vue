@@ -76,6 +76,9 @@ export default {
       this.$root.$emit('contribute')
     },
     async subscribe() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
       try {
         await postProjectSubscriber({
           isSubscribeRequest: true,
