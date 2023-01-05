@@ -607,7 +607,6 @@ export default {
           }
         }
         .creators-button {
-          width: 258px;
           height: 48px;
           background: #ffffff;
           border: 1px solid #f2f2f2;
