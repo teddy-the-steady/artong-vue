@@ -96,33 +96,22 @@
               <div><img src="@/assets/icons/launch.svg" /></div>
               <div>2000</div>
             </div>
-            <div class="social-buttons">
-              <div class="buttons">
-                <!-- heart -->
-                <div class="round-button">
-                  <img src="@/assets/icons/share.svg" />
-                </div>
-                <!-- refresh -->
-                <div class="round-button">
-                  <img src="@/assets/icons/launch.svg" />
-                </div>
-                <div class="round-button">
-                  <img src="@/assets/icons/share.svg" />
-                </div>
-                <div class="round-button">
-                  <img src="@/assets/icons/launch.svg" />
-                </div>
-                <div class="round-button">
-                  <img src="@/assets/icons/more.svg" />
-                </div>
-                <!--
-                <div v-if="this.width >= 1080" class="creators-button">
-                  <div class="creator">Creator</div>
-                  <ContentsProfileBundle class="profile-bundle" />
-                  <div class="viewAll">View all</div>
-                </div>
-                -->
-              </div>
+            <div class="buttons">
+              <button class="round-button ripple">
+                <img src="@/assets/icons/share.svg" />
+              </button>
+              <button class="round-button ripple">
+                <img src="@/assets/icons/launch.svg" />
+              </button>
+              <button class="round-button ripple">
+                <img src="@/assets/icons/share.svg" />
+              </button>
+              <button class="round-button ripple">
+                <img src="@/assets/icons/launch.svg" />
+              </button>
+              <button class="round-button ripple">
+                <img src="@/assets/icons/more.svg" />
+              </button>
             </div>
           </div>
           <div class="name">
@@ -137,7 +126,7 @@
               ></ContentsProfile>
             </div>
           </div>
-          <div class="collection d-flex">
+          <div class="collection">
             <div class="info">
               <div class="label">Collection</div>
               <div class="profile">img</div>
@@ -164,48 +153,22 @@
               ETH
             </div>
           </div>
-          <div
-            v-if="
-              content ? content.owner === currentUser.wallet_address : false
-            "
-          >
-            <div class="buyNSell-container d-flex">
-              <div class="flex-1">
-                <div
-                  class="btn btn-buy"
-                  v-if="isListed"
-                  @click="action('sell')"
-                >
-                  Sell
-                </div>
-                <div v-else @click="action('cancel')">
-                  Cancel/Update Listing
-                </div>
+          <div class="trade-buttons">
+            <div v-if="content ? isCurrentUserTokenOwner : false">
+              <button v-if="!isListed" @click="action('sell')">Sell</button>
+              <div v-else>
+                <button @click="action('update')">Update Listing</button>
+                <button @click="action('cancel')" class="white-btn">
+                  Cancel Listing
+                </button>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <div class="buyNSell-container d-flex">
-              <div class="flex-1">
-                <div class="btn btn-buy" v-if="isListed" @click="action('buy')">
-                  Buy
-                </div>
-              </div>
-              <div class="flex-1">
-                <div class="btn" @click="action('offer')">Make offer</div>
-              </div>
+            <div v-else>
+              <button v-if="isListed" @click="action('buy')">Buy</button>
+              <button @click="action('offer')" class="white-btn">
+                Make offer
+              </button>
             </div>
-          </div>
-
-          <div
-            v-if="
-              content ? content.owner === currentUser.wallet_address : false
-            "
-          >
-            <button v-if="!isListed" @click="action('sell')">Sell</button>
-            <button v-else @click="action('cancel')">
-              Cancel/Update Listing
-            </button>
           </div>
         </div>
       </div>
@@ -232,9 +195,7 @@
     </div>
     <div>
       {{ content }}
-      <div
-        v-if="content ? content.owner === currentUser.wallet_address : false"
-      >
+      <div v-if="content ? isCurrentUserTokenOwner : false">
         <button v-if="!isListed" @click="action('sell')">Sell</button>
         <button v-else @click="action('cancel')">Cancel/Update Listing</button>
       </div>
@@ -344,7 +305,9 @@ export default {
       return this.$isMobile()
     },
     isCurrentUserTokenOwner() {
-      return this.currentUser.wallet_address === this.content.owner
+      return (
+        this.currentUser.wallet_address === this.content.owner.wallet_address
+      )
     },
   },
   methods: {
@@ -510,12 +473,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-.d-flex {
-  display: flex;
-}
-.flex-1 {
-  flex: 1;
-}
 .content-image {
   display: flex;
   justify-content: center;
@@ -543,7 +500,6 @@ export default {
         &.history {
           margin-top: 3rem;
         }
-        //min-height: 425px;
         max-width: 90%;
         border: 1px solid #f2f2f2;
         box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
@@ -563,7 +519,6 @@ export default {
 
         table {
           width: 100%;
-          //border-top: 1px solid #444444;
           border-collapse: collapse;
           th {
             font-weight: 50;
@@ -601,58 +556,22 @@ export default {
           flex: 1;
           display: flex;
         }
-      }
-      .social-buttons {
-        display: flex;
+
         .buttons {
           display: flex;
-          flex-direction: row;
           justify-content: space-between;
-          transform: translateY(-24px);
-          margin-right: 16px;
-          width: 260px;
-          .round-button {
-            width: 48px;
-            height: 48px;
-            background: #ffffff;
-            border: 1px solid #f2f2f2;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
-            border-radius: 999px;
-            display: flex;
-            justify-content: center;
-            img {
-              margin-top: auto;
-              margin-bottom: auto;
-            }
+
+          img {
+            position: absolute;
           }
-          .creators-button {
-            height: 48px;
-            background: #ffffff;
-            border: 1px solid #f2f2f2;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-            border-radius: 999px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            .creator {
-              font-family: 'Pretendard';
-              font-style: normal;
-              font-weight: 500;
-              font-size: 14px;
-              color: #000000;
-            }
-            .profile-bundle {
-              margin-bottom: 0px;
-              margin-left: 6px;
-              transform: translateX(5px);
-            }
-            .viewAll {
-              font-family: 'Pretendard';
-              font-style: normal;
-              font-weight: 400;
-              font-size: 12px;
-              color: #808080;
+
+          button {
+            .dialog {
+              display: none;
+              top: 110%;
+              &.active {
+                display: block;
+              }
             }
           }
         }
@@ -667,6 +586,7 @@ export default {
         display: flex;
       }
       .collection {
+        display: flex;
         margin-top: 30px;
         .info {
           flex: 0.5;
@@ -689,25 +609,15 @@ export default {
           background: #f2f2f2;
         }
       }
-      .buyNSell-container {
-        margin-top: 30px;
-        justify-items: center;
-        .btn {
-          border: 1px solid black;
-          cursor: pointer;
-          border-radius: 5px;
-          padding: 15px 24px 16px;
-          text-align: center;
-          gap: 8px;
-          width: calc(98% - 48px);
-        }
-        .btn-buy {
-          background-color: black;
-          color: white;
-        }
-        .btn-offer {
-          background-color: white;
-          color: black;
+      .trade-buttons {
+        margin-top: 20px;
+        div {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          button {
+            width: 100%;
+          }
         }
       }
       .label {
