@@ -664,7 +664,7 @@ export default {
     }
   }
   .project-tab-sort {
-    width: 100%;
+    //width: 100%;
   }
 }
 textarea {
