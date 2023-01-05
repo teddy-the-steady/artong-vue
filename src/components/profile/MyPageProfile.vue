@@ -1,12 +1,12 @@
 <template>
   <div class="profile">
-    <span @click="$refs.fileInput.click()">
+    <div class="profile-image-wrapper" @click="$refs.fileInput.click()">
       <ProfileImageBig
         :profileImageUrl="profileImageUrl"
         :isFirstLoading="isFirstLoading"
         class="profile-image"
       ></ProfileImageBig>
-    </span>
+    </div>
     <input ref="fileInput" type="file" @change="onFileChange" />
     <div v-if="this.width < 1080" class="top1">
       <div class="info">
@@ -142,9 +142,13 @@ export default {
 .profile {
   text-align: initial;
   margin-left: 16px; // 840이상부터 24px;
-  .profile-image {
-    margin-left: 8px;
+  .profile-image-wrapper {
+    width: 120px;
+    .profile-image {
+      margin-left: 8px;
+    }
   }
+
   input {
     display: none;
   }
