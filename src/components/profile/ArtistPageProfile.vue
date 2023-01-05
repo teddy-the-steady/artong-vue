@@ -70,7 +70,6 @@ import {
   isSessionValid,
 } from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
-import { postMemberFollower } from '../../api/member'
 
 export default {
   name: 'ArtistPageProfile',
@@ -123,26 +122,30 @@ export default {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
-      try {
-        this.member = await postMemberFollower({
-          isFollowRequest: true,
-          targetMemberId: this.member.id,
-        })
-        this.$emit('changeFollower', this.member)
-      } catch (error) {
-        this.errorMessage = error
-      }
+      this.$emit('follow')
+      // try {
+      //   this.member = await postMemberFollower({
+      //     isFollowRequest: true,
+      //     targetMemberId: this.member.id,
+      //   })
+      //   console.log(this.member)
+      //   this.$emit('changeFollower', this.member)
+      // } catch (error) {
+      //   this.errorMessage = error
+      // }
     },
     async unfollow() {
-      try {
-        this.member = await postMemberFollower({
-          isFollowRequest: false,
-          targetMemberId: this.member.id,
-        })
-        this.$emit('changeFollower', this.member)
-      } catch (error) {
-        this.errorMessage = error
-      }
+      this.$emit('unfollow')
+      // try {
+      //   this.member = await postMemberFollower({
+      //     isFollowRequest: false,
+      //     targetMemberId: this.member.id,
+      //   })
+      //   console.log(this.member)
+      //   this.$emit('changeFollower', this.member)
+      // } catch (error) {
+      //   this.errorMessage = error
+      // }
     },
   },
   mounted() {
