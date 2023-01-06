@@ -111,13 +111,11 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .container {
-  padding-left: 24px;
-  padding-right: 24px;
   .sort {
     text-align: initial;
     float: right;
     position: relative;
-    transform: translateY(40px);
+    transform: translate(-10px, 40px);
     z-index: 1;
   }
   .tabs {
@@ -127,7 +125,6 @@ export default {
     white-space: nowrap;
     overflow-x: auto;
     width: 100%;
-    min-width: 680px;
     padding-right: 60px;
     box-sizing: border-box;
   }
