@@ -87,9 +87,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .container {
-  padding-right: 24px;
-  padding-left: 24px;
-
   .tabs {
     position: relative;
     border-bottom: 1px solid #b3b3b3;
@@ -104,7 +101,7 @@ export default {
     text-align: initial;
     float: right;
     position: relative;
-    transform: translateY(40px);
+    transform: translate(-10px, 40px);
     z-index: 1;
   }
 }
