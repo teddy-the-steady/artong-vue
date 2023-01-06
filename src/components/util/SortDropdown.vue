@@ -16,7 +16,7 @@
     </button>
     <button
       v-else
-      class="round-dropdown ripple"
+      class="round-button ripple"
       @mousedown="sortMouseDown"
       @mouseup="sortMouseUp"
       @touchstart="sortTouchStart"
@@ -139,13 +139,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.round-dropdown {
-  border-radius: 100%;
-  border: 0px;
-  box-shadow: 2px 2px 6px rgb(0 0 0 / 8%);
-  background: #ffffff;
-  border: 1px solid #f2f2f2;
-}
 img {
   &.active {
     transition: 0.1s transform ease;
