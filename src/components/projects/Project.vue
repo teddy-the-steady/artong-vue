@@ -664,7 +664,7 @@ export default {
     }
   }
   .project-tab-sort {
-    //width: 100%;
+    width: 100%;
   }
 }
 textarea {
@@ -701,6 +701,7 @@ textarea {
     margin-right: 185px;
     .bottom {
       display: flex;
+      margin-right: 20px;
       .left-tab {
         margin-left: 185px;
       }
