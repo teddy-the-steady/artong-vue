@@ -2,10 +2,18 @@
   <div>
     <ul>
       <li class="like" @click="onLikeClick()">
-        <img :class="{active: image.like}" src="../../assets/images/heart.png" alt="">
+        <img
+          :class="{ active: image.like }"
+          src="../../assets/images/heart.png"
+          alt=""
+        />
       </li>
       <li class="comment" @click="onCommentClick()">
-        <img :class="{active: isCommentActive}" src="../../assets/images/comment.png" alt="">
+        <img
+          :class="{ active: isCommentActive }"
+          src="../../assets/images/comment.png"
+          alt=""
+        />
       </li>
     </ul>
   </div>
@@ -13,39 +21,38 @@
 
 <script>
 import axios from 'axios'
-import { isAuthenticated } from '../../util/commonFunc'
 
 export default {
   name: 'ReactionList',
   props: {
     image: {
       type: Object,
-      default: null
+      default: null,
     },
     isPropCommentActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      isCommentActive: this.isPropCommentActive
+      isCommentActive: this.isPropCommentActive,
     }
   },
   methods: {
     async onLikeClick() {
-      if (!isAuthenticated()) {
-        alert('로그인이 필요합니다:)')
-        return
-      }
+      // if (!isAuthenticated()) {
+      //   alert('로그인이 필요합니다:)')
+      //   return
+      // }
 
       if (this.image.like) {
         await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          reaction_code: 'unlike'
+          reaction_code: 'unlike',
         })
       } else {
         await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          reaction_code: 'like'
+          reaction_code: 'like',
         })
       }
       this.image.like = !this.image.like
@@ -53,8 +60,8 @@ export default {
     onCommentClick() {
       this.isCommentActive = !this.isCommentActive
       this.$emit('handle-comment-click', this.isCommentActive)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -76,10 +83,12 @@ ul {
     &.comment {
       z-index: 99;
       img {
-        filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
+        filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg)
+          brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
 
         &.active {
-          filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 0px 1px black);
+          filter: invert(100%) sepia(1%) saturate(1%) hue-rotate(1deg)
+            brightness(1000%) contrast(100%) drop-shadow(0px 0px 1px black);
         }
       }
     }
@@ -87,11 +96,12 @@ ul {
     &.like {
       z-index: 100;
       img {
-        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg) brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
+        filter: invert(1%) sepia(1%) saturate(1%) hue-rotate(1deg)
+          brightness(1000%) contrast(100%) drop-shadow(0px 1px 2px black);
 
         &.active {
           filter: none;
-          animation: bounce-in .8s;
+          animation: bounce-in 0.8s;
         }
 
         @keyframes bounce-in {

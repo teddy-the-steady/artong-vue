@@ -4,7 +4,7 @@ export const itemMixin = {
       active: false,
       exactActive: false,
       itemShow: false,
-      itemHover: false
+      itemHover: false,
     }
   },
   created() {
@@ -37,9 +37,13 @@ export const itemMixin = {
       if (!href) return false
       if (this.$router) {
         const { route } = this.$router.resolve(href)
-        return exactPath ? route.path === this.$route.path : this.matchExactRoute(href)
+        return exactPath
+          ? route.path === this.$route.path
+          : this.matchExactRoute(href)
       } else {
-        return exactPath ? href === window.location.pathname : this.matchExactRoute(href)
+        return exactPath
+          ? href === window.location.pathname
+          : this.matchExactRoute(href)
       }
     },
     matchExactRoute(href) {
@@ -48,7 +52,12 @@ export const itemMixin = {
         const { route } = this.$router.resolve(href)
         return route.fullPath === this.$route.fullPath
       } else {
-        return href === window.location.pathname + window.location.search + window.location.hash
+        return (
+          href ===
+          window.location.pathname +
+            window.location.search +
+            window.location.hash
+        )
       }
     },
     clickEvent(event) {
@@ -59,7 +68,9 @@ export const itemMixin = {
       if (this.showChild) return
       if (this.item.child && (!this.item.href || this.exactActive)) {
         if (this.showOneChild) {
-          this.activeShow === this.item ? this.emitActiveShow(null) : this.emitActiveShow(this.item)
+          this.activeShow === this.item
+            ? this.emitActiveShow(null)
+            : this.emitActiveShow(this.item)
         } else {
           this.itemShow = !this.itemShow
         }
@@ -100,11 +111,16 @@ export const itemMixin = {
     mouseLeaveEvent(event) {
       event.stopPropagation()
       this.itemHover = false
-    }
+    },
   },
   computed: {
     isRouterLink() {
-      return (this.$router && this.item && this.item.href !== undefined && !this.item.external) === true
+      return (
+        (this.$router &&
+          this.item &&
+          this.item.href !== undefined &&
+          !this.item.external) === true
+      )
     },
     isFirstLevel() {
       return this.level === 1
@@ -122,16 +138,20 @@ export const itemMixin = {
         { 'art--link_active': this.active },
         { 'art--link_exact-active': this.exactActive },
         { 'art--link_disabled': this.item.disabled },
-        this.item.class
+        this.item.class,
       ]
     },
     itemLinkHref() {
-      if (!this.$router && (!this.item.href || typeof this.item.href !== 'string')) return ''
+      if (
+        !this.$router &&
+        (!this.item.href || typeof this.item.href !== 'string')
+      )
+        return ''
       return this.item.href ? this.item.href : ''
     },
     hover() {
       return this.itemHover
-    }
+    },
   },
   watch: {
     $route() {
@@ -145,50 +165,68 @@ export const itemMixin = {
     },
     activeShow() {
       this.itemShow = this.item === this.activeShow
-    }
+    },
   },
-  inject: ['emitActiveShow', 'emitItemClick', 'emitItemUpdate']
+  inject: ['emitActiveShow', 'emitItemClick', 'emitItemUpdate'],
 }
 
 export const menuDeactivate = {
   activated() {
     this.$store.commit('SET_HEAD_NAV_FALSE')
     this.$store.commit('SET_SIDE_MENU_FALSE')
-  }
+  },
 }
 
 export const headerActivate = {
   activated() {
     this.$store.commit('SET_HEAD_NAV_TRUE')
-  }
+  },
 }
 
 export const backgroundColor = {
   methods: {
     generateGradientBackground(address) {
-      let color1, color2 = null
+      let color1,
+        color2 = null
 
       if (address && typeof address === 'string' && address.startsWith('0x')) {
         const hexString = address.split('x')[1]
         color1 = '#' + hexString.slice(0, 6)
         color2 = '#' + hexString.slice(hexString.length - 6, hexString.length)
       } else {
-        const hexValues = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e']
-        const populate = function(a) {
-          for (let i = 0; i < 6; i++ ) {
-            const x = Math.round( Math.random() * 14 )
+        const hexValues = [
+          '0',
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          'a',
+          'b',
+          'c',
+          'd',
+          'e',
+        ]
+        const populate = function (a) {
+          for (let i = 0; i < 6; i++) {
+            const x = Math.round(Math.random() * 14)
             const y = hexValues[x]
             a += y
           }
           return a
         }
-    
+
         color1 = populate('#')
         color2 = populate('#')
       }
-      const angle = Math.round( Math.random() * 360 )
-      const gradient = 'linear-gradient(' + angle + 'deg, ' + color1 + ', ' + color2 + ')'
+      const angle = Math.round(Math.random() * 360)
+      const gradient =
+        'linear-gradient(' + angle + 'deg, ' + color1 + ', ' + color2 + ')'
       return gradient
-    }
-  }
+    },
+  },
 }

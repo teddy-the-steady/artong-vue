@@ -3,20 +3,22 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <div class="modal-header">
             <slot name="header"></slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-            </slot>
+            <slot name="body"> </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-button" @click="confirm()">{{ okButton }}</button>
-              <button class="modal-button" @click="cancel()">{{ cancelButton }}</button>
+              <button class="modal-button" @click="confirm()">
+                {{ okButton }}
+              </button>
+              <button class="modal-button" @click="cancel()">
+                {{ cancelButton }}
+              </button>
             </slot>
           </div>
         </div>
@@ -33,7 +35,7 @@ export default {
       okButton: 'Continue',
       cancelButton: 'Cancel',
       resolvePromise: null,
-      rejectPromise: null
+      rejectPromise: null,
     }
   },
   methods: {
@@ -50,8 +52,8 @@ export default {
     cancel() {
       this.$emit('close-modal')
       this.rejectPromise(new Error('Cancelled signing message'))
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -67,20 +69,20 @@ export default {
   height: 100%;
   background-color: $backdrop;
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
 
     .modal-container {
-      width:300px;
+      width: 300px;
       margin: 0px auto;
       padding: 20px 30px;
       background-color: $artong-white;
       border-radius: 2px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-      transition: all .3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+      transition: all 0.3s ease;
       font-family: Helvetica, Arial, sans-serif;
 
       .modal-header {

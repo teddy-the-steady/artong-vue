@@ -1,21 +1,37 @@
 <template>
   <div>
-    <div class="layer" :class="{active: isLayerActive}" @click="onLayerClick()">
-    </div>
+    <div
+      class="layer"
+      :class="{ active: isLayerActive }"
+      @click="onLayerClick()"
+    ></div>
     <transition name="slide-right">
-      <div class="inContentsProfile" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <router-link :to="{ name: 'UserOrArtist', params: { id: image.username }}">
-          <in-contents-profile :profileImageUrl="image.profileImageUrl"></in-contents-profile>
+      <div
+        class="inContentsProfile"
+        v-if="isLayerActive"
+        :class="{ active: isLayerActive }"
+      >
+        <router-link
+          :to="{ name: 'UserOrArtist', params: { id: image.username } }"
+        >
+          <InContentsProfile
+            :profileImageUrl="image.profileImageUrl"
+          ></InContentsProfile>
         </router-link>
       </div>
     </transition>
     <transition name="slide-left">
-      <div class="reactionList" v-if="isLayerActive" :class="{active: isLayerActive}">
-        <reaction-list
+      <div
+        class="reactionList"
+        v-if="isLayerActive"
+        :class="{ active: isLayerActive }"
+      >
+        <ReactionList
           :isPropCommentActive="isPropCommentActive"
           :image="image"
-          @handle-comment-click="handleCommentClick">
-        </reaction-list>
+          @handle-comment-click="handleCommentClick"
+        >
+        </ReactionList>
       </div>
     </transition>
   </div>
@@ -23,26 +39,27 @@
 
 <script>
 import InContentsProfile from '../profile/InContentsProfile.vue'
-import ReactionList from '../contents/ReactionList.vue'
+import ReactionList from '../contents(deprecated)/ReactionList.vue'
 
 export default {
   name: 'ContentLayer',
   components: {
-    InContentsProfile, ReactionList
+    InContentsProfile,
+    ReactionList,
   },
   props: {
     image: {
       type: Object,
-      default: null
+      default: null,
     },
     isPropCommentActive: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      isLayerActive: false
+      isLayerActive: false,
     }
   },
   methods: {
@@ -51,8 +68,8 @@ export default {
     },
     handleCommentClick(isActive) {
       this.$emit('handle-comment-click', isActive)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -69,28 +86,27 @@ export default {
   cursor: pointer;
   user-select: none;
   &.active {
-    opacity: .3;
+    opacity: 0.3;
   }
 }
 
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,
-.slide-left-leave-active
-{
-    transition: transform 0.2s ease;
+.slide-left-leave-active {
+  transition: transform 0.2s ease;
 }
 
 .slide-right-enter,
 .slide-right-leave-to {
-    transform: translateX(-10px);
-    transition: all 100ms ease-in 0s;
+  transform: translateX(-10px);
+  transition: all 100ms ease-in 0s;
 }
 
 .slide-left-enter,
 .slide-left-leave-to {
-    transform: translateX(10px);
-    transition: all 100ms ease-in 0s;
+  transform: translateX(10px);
+  transition: all 100ms ease-in 0s;
 }
 
 .inContentsProfile {
@@ -117,5 +133,4 @@ export default {
     right: 10px;
   }
 }
-
 </style>

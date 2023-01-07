@@ -3,14 +3,23 @@
     <div v-if="image" class="center">
       <!-- <img :src="image.url" alt=""/> -->
       <div class="image">
-        <img v-if="isNaN(image.url)" :src="image.url" alt=""/>
-        <img v-else :src="require(`../../assets/images/art${image.url}.jpg`)" alt=""/>
-        <content-layer :image="image" class="content-layer" :isPropCommentActive="isCommentActive" @handle-comment-click="handleCommentClick"></content-layer>
+        <img v-if="isNaN(image.url)" :src="image.url" alt="" />
+        <img
+          v-else
+          :src="require(`../../assets/images/art${image.url}.jpg`)"
+          alt=""
+        />
+        <ContentLayer
+          :image="image"
+          class="content-layer"
+          :isPropCommentActive="isCommentActive"
+          @handle-comment-click="handleCommentClick"
+        ></ContentLayer>
       </div>
     </div>
     <div class="comment" v-if="isCommentActive">
-      <div class="spinner" :class="{active: isSpinnerActive}"></div>
-      <ul class="comment-list" :class="{active: isCommentListActive}">
+      <div class="spinner" :class="{ active: isSpinnerActive }"></div>
+      <ul class="comment-list" :class="{ active: isCommentListActive }">
         <li>user1: 훌륭한 작품이네요!</li>
         <li>user2: 잘봤습니다.</li>
         <li>user3: Good work</li>
@@ -25,19 +34,19 @@ import ContentLayer from './ContentLayer.vue'
 export default {
   name: 'CenterContainer',
   components: {
-    ContentLayer
+    ContentLayer,
   },
   props: {
     image: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       isCommentActive: false,
       isSpinnerActive: true,
-      isCommentListActive: false
+      isCommentListActive: false,
     }
   },
   methods: {
@@ -47,8 +56,8 @@ export default {
         this.isSpinnerActive = !this.isCommentActive
         this.isCommentListActive = this.isCommentActive
       }, 1000)
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -85,7 +94,7 @@ export default {
   position: relative;
   width: 100%;
   min-height: 57px;
-  box-shadow: 1px 1px .5em $lightgray;
+  box-shadow: 1px 1px 0.5em $lightgray;
   border-radius: 20px;
 
   .comment-list {
@@ -108,18 +117,22 @@ export default {
       height: 30px;
       width: 30px;
       margin: 0px auto;
-      animation: rotation .6s infinite linear;
-      border-left: 6px solid rgba(0,174,239,.15);
-      border-right: 6px solid rgba(0,174,239,.15);
-      border-bottom: 6px solid rgba(0,174,239,.15);
-      border-top: 6px solid rgba(0,174,239,.8);
+      animation: rotation 0.6s infinite linear;
+      border-left: 6px solid rgba(0, 174, 239, 0.15);
+      border-right: 6px solid rgba(0, 174, 239, 0.15);
+      border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+      border-top: 6px solid rgba(0, 174, 239, 0.8);
       border-radius: 100%;
     }
   }
 
   @keyframes rotation {
-    from {transform: rotate(0deg);}
-    to {transform: rotate(359deg);}
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
   }
 }
 

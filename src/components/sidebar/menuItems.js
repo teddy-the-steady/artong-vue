@@ -1,54 +1,54 @@
-const separator = {
-  template: `<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">`
-}
+// const separator = {
+//   template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">',
+// }
 
 export default [
+  // {
+  //   header: true,
+  //   title: 'Alarms',
+  // },
+  // {
+  //   href: '',
+  //   title: 'Example Alarm',
+  //   icon: 'far fa-bell',
+  //   badge: {
+  //     text: '2m ago',
+  //   },
+  // },
+  // {
+  //   href: '',
+  //   title: 'Example Alarm',
+  //   icon: 'far fa-bell',
+  //   badge: {
+  //     text: '10m ago',
+  //   },
+  // },
+  // {
+  //   component: separator,
+  // },
   {
     header: true,
-    title: 'Alarms',
-  },
-  {
-    href: '',
-    title: 'Example Alarm',
-    icon: 'far fa-bell',
-    badge: {
-      text: '2m ago',
-    }
-  },
-  {
-    href: '',
-    title: 'Example Alarm',
-    icon: 'far fa-bell',
-    badge: {
-      text: '10m ago',
-    }
-  },
-  {
-    component: separator
-  },
-  {
-    header: true,
-    title: 'Menu'
+    title: 'Menu',
   },
   {
     href: '/projects',
     title: 'Projects',
-    icon: 'fa fa-folder-open'
+    icon: 'fa fa-folder-open',
   },
   {
     href: '/contents',
     title: 'Contents',
-    icon: 'fa fa-image'
+    icon: 'fa fa-image',
   },
   {
     href: '/following',
     title: 'Feed',
-    icon: 'fa fa-bolt'
+    icon: 'fa fa-bolt',
   },
   {
     href: '/create/project',
     title: 'CreateProject',
-    icon: 'fa fa-hammer'
+    icon: 'fa fa-hammer',
   },
   // {
   //   header: true,

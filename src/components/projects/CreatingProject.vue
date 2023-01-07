@@ -1,27 +1,29 @@
 <template>
-  <div>
-    ing..
-  </div>
+  <div>ing..</div>
 </template>
 
 <script>
 import { getProjectWhileUpdatingPendingToCreated } from '../../api/projects'
 import { CREATED } from '../../constants'
+import { headerActivate } from '../../mixin'
 
 export default {
   name: 'CreatingProject',
+  mixins: [headerActivate],
   data() {
     return {
-      txHash: this.$router.currentRoute.query.txHash
+      txHash: this.$router.currentRoute.query.txHash,
     }
   },
   methods: {
     wait(timeToDelay) {
-      return new Promise((resolve) => setTimeout(resolve, timeToDelay))
+      return new Promise(resolve => setTimeout(resolve, timeToDelay))
     },
     async getProject() {
       for (;;) {
-        const result = await getProjectWhileUpdatingPendingToCreated(this.txHash)
+        const result = await getProjectWhileUpdatingPendingToCreated(
+          this.txHash,
+        )
         if (result && result.status === CREATED) {
           // TODO] 다른 화면으로 리다이렉트!!!
           break
@@ -31,7 +33,7 @@ export default {
         }
         await this.wait(3000)
       }
-    }
+    },
   },
   async mounted() {
     await this.getProject()
@@ -41,10 +43,9 @@ export default {
       if (val.name === 'CreatingProject') {
         await this.getProject()
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -2,12 +2,12 @@
   <div
     class="v-sidebar-menu"
     :class="[theme ? `art_${theme}` : '']"
-    :style="{'max-width': sidebarWidth}"
-    >
+    :style="{ 'max-width': sidebarWidth }"
+  >
     <slot name="header" />
     <div class="art--scroll-wrapper">
       <div class="art--list">
-        <sidebar-menu-item
+        <SidebarMenuItem
           v-for="(item, index) in menu"
           :key="index"
           :item="item"
@@ -15,68 +15,66 @@
           :show-one-child="showOneChild"
           :show-child="showChild"
         >
-          <slot
-            slot="dropdown-icon"
-            name="dropdown-icon"
-          />
-        </sidebar-menu-item>
+          <slot slot="dropdown-icon" name="dropdown-icon" />
+        </SidebarMenuItem>
       </div>
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <light-dark-switch ></light-dark-switch>
+      <!-- <LightDarkSwitch></LightDarkSwitch> -->
     </div>
   </div>
 </template>
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem.vue'
-import LightDarkSwitch from '../util/LightDarkSwitch.vue'
+// import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 
 export default {
   name: 'SidebarMenu',
   components: {
-    SidebarMenuItem, LightDarkSwitch
+    SidebarMenuItem,
+    // LightDarkSwitch,
   },
   props: {
     menu: {
       type: Array,
-      required: true
+      required: true,
     },
     width: {
       type: String,
-      default: '300px'
+      default: '300px',
     },
     showChild: {
       type: Boolean,
-      default: false
+      default: false,
     },
     theme: {
       type: String,
-      default: ''
+      default: '',
     },
     showOneChild: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hideToggle: {
       type: Boolean,
-      default: false
+      default: false,
     },
     relative: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
-      activeShow: null
+      activeShow: null,
     }
   },
   computed: {
     sidebarWidth() {
       return this.width
-    }
+    },
   },
   methods: {
     onActiveShow(item) {
@@ -89,18 +87,18 @@ export default {
       if (item === this.activeShow) {
         this.activeShow = newItem
       }
-    }
+    },
   },
   provide() {
     return {
       emitActiveShow: this.onActiveShow,
       emitItemClick: this.onItemClick,
-      emitItemUpdate: this.onItemUpdate
+      emitItemUpdate: this.onItemUpdate,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss">
-@import '../../assets/scss/vue-sidebar-menu';
+@import './vue-sidebar-menu';
 </style>

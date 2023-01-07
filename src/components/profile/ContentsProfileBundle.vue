@@ -1,65 +1,114 @@
 <template>
-    <ol class="profile-bundle"> <!--이거 하는 중이었음-->
-      <li><ContentsProfile :needUserName="needUserName"></ContentsProfile></li>
-      <li><ContentsProfile :needUserName="needUserName"></ContentsProfile></li>
-      <li><ContentsProfile :needUserName="needUserName"></ContentsProfile></li>
-      <li><ContentsProfile :needUserName="needUserName"></ContentsProfile></li>
-      <li><ContentsProfile :needUserName="needUserName"></ContentsProfile></li>
-    </ol>
+  <div class="profile-bundle">
+    <div v-if="members.length > 0">
+      <ul>
+        <li v-for="(val, i) in members" :key="i">
+          <router-link
+            :to="{
+              name: 'UserOrArtist',
+              params: {
+                id: val.username,
+                wallet_address: val.wallet_address,
+              },
+            }"
+          >
+            <ContentsProfile
+              :needUserName="needUserName"
+              :member="val"
+            ></ContentsProfile>
+          </router-link>
+        </li>
+      </ul>
+    </div>
+    <div v-else>
+      <ul>
+        <li>
+          <ContentsProfile :needUserName="needUserName"></ContentsProfile>
+        </li>
+        <li>
+          <ContentsProfile :needUserName="needUserName"></ContentsProfile>
+        </li>
+        <li>
+          <ContentsProfile :needUserName="needUserName"></ContentsProfile>
+        </li>
+        <li>
+          <ContentsProfile :needUserName="needUserName"></ContentsProfile>
+        </li>
+        <li>
+          <ContentsProfile :needUserName="needUserName"></ContentsProfile>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 <script>
-import ContentsProfile from './ContentsProfile.vue';
+import ContentsProfile from './ContentsProfile.vue'
 
-export default{
+export default {
   name: 'ContentsProfileBundle',
-  components:{
-    ContentsProfile
+  components: {
+    ContentsProfile,
   },
-  data(){
-    return{
+  props: {
+    members: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  data() {
+    return {
       needUserName: false,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scopde>
-    .profile-bundle{
+.profile-bundle {
+  div {
     display: flex;
     flex-direction: row;
     position: relative;
+
+    ul {
+      list-style: none;
+      padding-left: 0px;
+      margin: 0px;
+
+      li {
+        float: left;
+      }
+
+      li:first-child {
+        position: relative;
+        left: 0px;
+        z-index: 5;
+      }
+
+      li:nth-child(2) {
+        position: relative;
+        left: -4px;
+        z-index: 4;
+      }
+
+      li:nth-child(3) {
+        position: relative;
+        left: -8px;
+        z-index: 3;
+      }
+
+      li:nth-child(4) {
+        position: relative;
+        left: -12px;
+        z-index: 2;
+      }
+
+      li:nth-child(5) {
+        position: relative;
+        left: -16px;
+        z-index: 1;
+      }
+    }
   }
-  ol{ // profile-bundle
-    list-style:none;
-    padding-left:0px;
-    margin-top:0px;
-  }
-  li{
-    float:left;
-  }
-  ol li:first-child{
-    position:relative;
-    left:0px;
-    z-index: 5;
-  }
-  ol li:nth-child(2){
-    position: relative;
-    left: -4px;
-    z-index: 4;
-  }
-  ol li:nth-child(3){
-    position:relative;
-    left: -8px;
-    z-index: 3;
-  }
-  ol li:nth-child(4){
-    position:relative;
-    left:-12px;
-    z-index: 2;
-  }
-  ol li:nth-child(5){
-    position:relative;
-    left:-16px;
-    z-index: 1;
-  }
+}
 </style>

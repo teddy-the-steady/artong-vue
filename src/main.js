@@ -8,7 +8,7 @@ import { Auth } from '@aws-amplify/auth'
 import { Storage } from '@aws-amplify/storage'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
-import VueMobileDetection from "vue-mobile-detection"
+import VueMobileDetection from 'vue-mobile-detection'
 import Masonry from './plugin/masonry'
 import router from './router'
 import store from './store'
@@ -27,10 +27,10 @@ Vue.config.productionTip = false
 axiosInit
 
 /* eslint-disable no-new */
-new Vue({
+export default new Vue({
   el: '#app',
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })
