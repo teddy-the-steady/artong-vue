@@ -154,7 +154,7 @@
             </div>
           </div>
           <div class="trade-buttons">
-            <div v-if="content ? isCurrentUserTokenOwner : false">
+            <!-- <div v-if="content ? isCurrentUserTokenOwner : false">
               <button v-if="!isListed" @click="action('sell')">Sell</button>
               <div v-else>
                 <button @click="action('update')">Update Listing</button>
@@ -165,6 +165,21 @@
             </div>
             <div v-else>
               <button v-if="isListed" @click="action('buy')">Buy</button>
+              <button @click="action('offer')" class="white-btn">
+                Make offer
+              </button>
+            </div> -->
+            <div>
+              <button @click="action('sell')">Sell</button>
+              <div>
+                <button @click="action('update')">Update Listing</button>
+                <button @click="cancel()" class="white-btn">
+                  Cancel Listing
+                </button>
+              </div>
+            </div>
+            <div>
+              <button @click="buy()">Buy</button>
               <button @click="action('offer')" class="white-btn">
                 Make offer
               </button>
@@ -267,7 +282,13 @@ import {
   queryTokenHistory,
   queryTokensByProject,
 } from '../../api/graphql'
-import { makeS3Path, etherToWei, weiToEther } from '../../util/commonFunc'
+import {
+  makeS3Path,
+  etherToWei,
+  weiToEther,
+  isSessionValid,
+  checkMobileWalletStatusAndGetSigner,
+} from '../../util/commonFunc'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import {
@@ -287,10 +308,10 @@ export default {
   data() {
     return {
       content: null,
-      price: null,
       offers: [],
       histories: [],
       tokens: [],
+      signer: null,
     }
   },
   computed: {
@@ -313,7 +334,7 @@ export default {
   methods: {
     async getContents(project_address, token_id) {
       const [token, offers, histories, tokensByProject] = await Promise.all([
-        await graphql(
+        graphql(
           queryToken({
             variables: {
               id: project_address + token_id,
@@ -324,14 +345,14 @@ export default {
             },
           }),
         ),
-        await graphql(
+        graphql(
           queryOffersByToken({
             variables: {
               id: project_address + token_id,
             },
           }),
         ),
-        await graphql(
+        graphql(
           queryTokenHistory({
             variables: {
               id: project_address + token_id,
@@ -342,7 +363,7 @@ export default {
             },
           }),
         ),
-        await graphql(
+        graphql(
           queryTokensByProject({
             variables: {
               first: 10,
@@ -357,6 +378,56 @@ export default {
       this.offers = offers.offers
       this.histories = histories
       this.tokens = tokensByProject.tokens
+    },
+    async buy() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
+      if (!this.signer) {
+        return
+      }
+
+      const contract = new ethers.Contract(
+        MARKETPLACE,
+        MARKETPLACE_ABI,
+        this.signer,
+      )
+      const tx = await contract.buyItem(
+        this.content.project.id,
+        this.content.tokenId,
+        this.content.owner,
+        { value: etherToWei(this.price) },
+      )
+      await tx.wait()
+      alert('purchased!')
+    },
+    async cancel() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
+      if (!this.signer) {
+        return
+      }
+
+      const contract = new ethers.Contract(
+        MARKETPLACE,
+        MARKETPLACE_ABI,
+        this.signer,
+      )
+      const tx = await contract.cancelListing(
+        this.content.project.id,
+        this.content.tokenId,
+      )
+      await tx.wait()
+      alert('canceled!')
     },
     async action(which, acceptParam) {
       // TODO] 모달로 바꾸기
