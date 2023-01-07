@@ -2,78 +2,136 @@
   <div :key="componentKey">
     <div class="header">
       <div class="user-info">
-        <artist-page-profile :member="member"></artist-page-profile>
+        <ArtistPageProfile
+          :member="member"
+          @follow="follow"
+          @unfollow="unfollow"
+        ></ArtistPageProfile>
       </div>
-      <profile-tab v-if="member.id" :tabs="tabs"/>
+      <ProfileTab v-if="member.id" :tabs="tabs" :sortOptions="sortOptions" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import { getMembers } from '../../api/member'
-import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
+import { getMemberByUsername } from '../../api/member'
+import {
+  graphql,
+  queryProjectsByCreator,
+  queryTokensByCreator,
+  queryTokensByOwner,
+} from '../../api/graphql'
+import { postMemberFollower } from '../../api/member'
 import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 
 export default {
   name: 'Artist',
   components: {
-    ArtistPageProfile, ProfileTab
+    ArtistPageProfile,
+    ProfileTab,
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
-    })
+      currentUser: state => state.user.currentUser,
+    }),
   },
   data() {
     return {
       componentKey: 0,
       member: {},
-      username: '',
       tabs: [
-        { id: 0, label: 'Contributed', type: 'CONTENTS', api: {} },
-        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 2, label: 'Owned', type: 'CONTENTS', api: {} }
-      ]
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
+      ],
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
+      tabKey: 0,
     }
   },
   methods: {
-    forceRerender() {
-      this.componentKey += 1
-    },
     async getMember(username) {
-      const member = await getMembers(username)
-      if (member.length === 1) {
-        return member[0]
+      return await getMemberByUsername(username)
+    },
+    async follow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: true,
+          targetMemberId: this.member.id,
+        })
+      } catch (error) {
+        console.log('오류 발생')
       }
-      return null
-    }
+    },
+    async unfollow() {
+      try {
+        this.member = await postMemberFollower({
+          isFollowRequest: false,
+          targetMemberId: this.member.id,
+        })
+      } catch (error) {
+        console.log('오류 발생')
+      }
+    },
   },
   async created() {
-    this.username = this.$route.params.id
-    this.member = await this.getMember(this.username)
+    this.member = await this.getMember(this.$route.params.id)
 
+    this.tabs[0].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
-      body: queryTokensByCreator({
+      body: queryTokensByOwner({
         variables: {
           first: 10,
           skip: 0,
-          creator: this.member.wallet_address
-        }
-      })
+          owner: this.member.wallet_address,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
+        },
+      }),
     }
 
+    this.tabs[1].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[1].api = {
       func: graphql,
       body: queryProjectsByCreator({
         variables: {
           first: 10,
           skip: 0,
-          creator: this.member.wallet_address
-        }
-      })
+          creator: this.member.wallet_address,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
+        },
+      }),
+    }
+
+    this.tabs[2].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.tabs[2].api = {
+      func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.member.wallet_address,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
+        },
+      }),
     }
 
     this.$watch(
@@ -83,46 +141,76 @@ export default {
           return
         }
 
-        if (to.name === 'UserOrArtist' && to.params.id !== this.currentUser.username) {
-          this.username = to.params.id
-          this.forceRerender()
-          this.member = await this.getMember(this.username)
+        if (
+          to.name === 'UserOrArtist' &&
+          to.params.id !== this.currentUser.username
+        ) {
+          this.member = await this.getMember(to.params.id)
         }
-      }
+      },
     )
   },
   watch: {
-    $route(to) {
-      switch (to.query.tab || '0') {
+    async $route(to) {
+      if (!to.params.wallet_address && to.params.id !== this.member.username) {
+        this.member = await this.getMember(to.params.id)
+        this.tabKey++
+      }
+
+      const t = to.query.tab || '0'
+      this.tabs[t].sort =
+        this.sortOptions[to.query.sort] || this.sortOptions['newest']
+      switch (t) {
         case '0':
-          this.tabs[0].api = {
+          this.tabs[t].api = {
             func: graphql,
-            body: queryTokensByCreator({
+            body: queryTokensByOwner({
               variables: {
                 first: 10,
                 skip: 0,
-                creator: to.params.id
-              }
-            })
+                owner: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
+            key: this.tabKey,
           }
-          break;
+          break
         case '1':
-          this.tabs[1].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryProjectsByCreator({
               variables: {
                 first: 10,
                 skip: 0,
-                creator: to.params.id
-              }
-            })
+                creator: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
+            key: this.tabKey,
           }
-          break;
+          break
+        case '2':
+          this.tabs[t].api = {
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: to.params.wallet_address || this.member.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
+            key: this.tabKey,
+          }
+          break
         default:
-          break;
+          break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -130,6 +218,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .header {
+  max-width: 1392px;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 50px;
 
   .user-info {
@@ -153,7 +244,6 @@ export default {
 @media only screen and (max-width: 599px) {
   .header {
     .user-info {
-
       button {
         border-radius: 10px;
       }
@@ -162,6 +252,13 @@ export default {
 
   .contents {
     padding: 0;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .header {
+    max-width: 1392px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>

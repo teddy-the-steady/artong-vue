@@ -1,137 +1,218 @@
 <template>
   <div>
-    <div class="header">
-      <div class="user-info">
-        <my-page-profile></my-page-profile>
+    <div class="container">
+      <div class="header">
+        <div class="user-info">
+          <MyPageProfile></MyPageProfile>
+        </div>
+        <UserProfileButtons class="edit-button"></UserProfileButtons>
       </div>
-      <div>address: {{walletConnectState.address}}</div>
-      <div>chainId: {{walletConnectState.chainId}}</div>
+      <ProfileTab :tabs="tabs" :sortOptions="sortOptions" />
     </div>
-    <profile-tab :tabs="tabs"/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
-import { graphql, queryProjectsByCreator, queryTokensByCreator } from '../../api/graphql'
+import {
+  graphql,
+  queryProjectsByCreator,
+  queryTokensByCreator,
+  queryTokensByOwner,
+} from '../../api/graphql'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
-
+import UserProfileButtons from '../button_group/UserProfileButtons.vue'
 export default {
   name: 'User',
   mixins: [headerActivate],
   components: {
-    MyPageProfile, ProfileTab
+    MyPageProfile,
+    ProfileTab,
+    UserProfileButtons,
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      walletConnectState: state => state.wallet
-    })
+      walletConnectState: state => state.wallet,
+    }),
   },
   data() {
     return {
       username: '',
       tabs: [
-        { id: 0, label: 'Contributed', type: 'CONTENTS', api: {} },
-        { id: 1, label: 'Created', type: 'PROJECTS', api: {} },
-        { id: 2, label: 'Owned', type: 'CONTENTS', api: {} },
-      ]
+        { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
+        { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
+        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
+      ],
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
     }
   },
   created() {
+    this.tabs[0].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
-      body: queryTokensByCreator({
+      body: queryTokensByOwner({
         variables: {
           first: 10,
           skip: 0,
-          creator: this.currentUser.wallet_address
-        }
-      })
+          owner: this.currentUser.wallet_address,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
+        },
+      }),
     }
+
+    this.tabs[1].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[1].api = {
       func: graphql,
       body: queryProjectsByCreator({
         variables: {
           first: 10,
           skip: 0,
-          creator: this.currentUser.wallet_address
-        }
-      })
+          creator: this.currentUser.wallet_address,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
+        },
+      }),
+    }
+
+    this.tabs[2].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.tabs[2].api = {
+      func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.currentUser.wallet_address,
+          orderBy: this.tabs[2].sort.orderBy,
+          orderDirection: this.tabs[2].sort.orderDirection,
+        },
+      }),
     }
   },
   watch: {
-    $route(val) {
-      switch (val.query.tab) {
+    $route(to) {
+      const t = to.query.tab || '0'
+      this.tabs[t].sort =
+        this.sortOptions[to.query.sort] || this.sortOptions['newest']
+      switch (t) {
         case '0':
-          this.tabs[0].api = {
+          this.tabs[t].api = {
             func: graphql,
-            body: queryTokensByCreator({
+            body: queryTokensByOwner({
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.currentUser.wallet_address
-              }
-            })
+                owner: this.currentUser.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
           }
-          break;
+          break
         case '1':
-          this.tabs[1].api = {
+          this.tabs[t].api = {
             func: graphql,
             body: queryProjectsByCreator({
               variables: {
                 first: 10,
                 skip: 0,
-                creator: this.currentUser.wallet_address
-              }
-            })
+                creator: this.currentUser.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
           }
-          break;
+          break
+        case '2':
+          this.tabs[t].api = {
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: this.currentUser.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
+          }
+          break
         default:
-          break;
+          break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+.container {
+  max-width: 1392px;
+  margin-left: auto;
+  margin-right: auto;
 
-.header {
-  margin-top: 50px;
-
-  .user-info {
-    height: 30%;
-
-    button {
-      padding: 10px;
-      border-radius: 10px;
-    }
-  }
-
-  .tab {
-    height: 50px;
-  }
-}
-
-.contents {
-  padding: 0 10%;
-}
-
-@media only screen and (max-width: 599px) {
   .header {
+    margin-top: 50px;
+
     .user-info {
+      height: 30%;
+
       button {
+        padding: 10px;
         border-radius: 10px;
       }
+    }
+    .edit-button {
+      margin-left: 16px;
+      margin-right: 16px;
+      margin-bottom: 46px;
+    }
+    .tab {
+      height: 50px;
     }
   }
 
   .contents {
-    padding: 0;
+    padding: 0 10%;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  .container {
+    .header {
+      .edit-button {
+        width: 89px;
+        height: 48px;
+        margin-left: auto;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .container {
+    max-width: 1392px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 </style>

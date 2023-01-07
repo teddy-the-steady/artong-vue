@@ -5,7 +5,7 @@ import {
   SET_SIDE_MENU_FALSE,
   TOGGLE_MODAL,
   TOGGLE_CONFIRM_MODAL,
-  TOGGLE_THEME
+  TOGGLE_THEME,
 } from '../actions/menu'
 
 const state = {
@@ -14,7 +14,7 @@ const state = {
   isModalOpen: false,
   isConfirmModalOpen: false,
   isDark: false,
-  waitForAnswer: null
+  waitForAnswer: null,
 }
 
 const mutations = {
@@ -38,10 +38,10 @@ const mutations = {
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
-  }
+  },
 }
 
 export default {
   state,
-  mutations
+  mutations,
 }

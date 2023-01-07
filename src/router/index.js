@@ -2,8 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 import { Auth } from '@aws-amplify/auth'
-import { isAuthenticated } from '../util/commonFunc'
-import Home from '@/components/menu/Home'
+import Main from '@/components/menu/Main'
 import Project from '@/components/projects/Project'
 import Projects from '@/components/menu/Projects'
 import Following from '@/components/menu/Following'
@@ -13,32 +12,21 @@ import Artist from '@/components/member/Artist'
 import CreateProject from '@/components/projects/CreateProject'
 import CreatingProject from '@/components/projects/CreatingProject'
 import Contents from '@/components/menu/Contents'
-import Content from '@/components/menu/Content'
-import VueCarousel from 'vue-carousel'; // for 무한 슬라이드 swipe 배너
-
+import ContentDetail from '@/components/contents_v2/ContentDetail'
+import ProfileSettings from '@/components/member/ProfileSettings'
+import ProjectSettings from '@/components/projects/ProjectSettings'
+import VueCarousel from 'vue-carousel'
 
 Vue.use(Router)
-Vue.use(VueCarousel);
+Vue.use(VueCarousel)
 
 const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'HomeOrMain',
-      component: () => {
-        if (isAuthenticated()) {
-          return import('@/components/menu/Home')
-        } else {
-          return import('@/components/menu/Main')
-        }
-      },
-      beforeEnter(to, from, next) {
-        if (isAuthenticated()) {
-          to.matched[0].components.default = Home
-        }
-        next()
-      }
+      name: 'Main',
+      component: Main,
     },
     {
       path: '/projects/:id',
@@ -48,23 +36,28 @@ const router = new Router({
     {
       path: '/projects',
       name: 'Projects',
-      component: Projects
+      component: Projects,
     },
     {
       path: '/projects/:project_address/contents/:token_id',
-      name: 'Content',
-      component: Content
+      name: 'ContentDetail',
+      component: ContentDetail,
+    },
+    {
+      path: '/projects/:project_address/settings',
+      name: 'ProjectSettings',
+      component: ProjectSettings,
     },
     {
       path: '/contents',
       name: 'Contents',
-      component: Contents
+      component: Contents,
     },
     {
       path: '/following',
       name: 'Following',
       component: Following,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: '/@:id',
@@ -77,12 +70,12 @@ const router = new Router({
           to.matched[0].components.default = Artist
           next()
         }
-      }
+      },
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
     },
     {
       path: '/create/project',
@@ -95,17 +88,21 @@ const router = new Router({
           next()
         }
       },
-      meta: { requiresAuth: true }
     },
     {
       path: '/create/project',
       name: 'CreatingProject',
-      component: CreatingProject
+      component: CreatingProject,
     },
-  ]
+    {
+      path: '/settings/profile',
+      name: 'ProfileSettings',
+      component: ProfileSettings,
+    },
+  ],
 })
 
-router.beforeEach(async function(to, from, next) {
+router.beforeEach(async function (to, from, next) {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let user = null
     try {
@@ -115,13 +112,13 @@ router.beforeEach(async function(to, from, next) {
       }
       next()
     } catch (error) {
-      console.log(error)
+      await store.dispatch('AUTH_LOGOUT')
       if (!user) {
         next({
           path: '/login',
           query: {
-            redirect: to.fullPath
-          }
+            redirect: to.fullPath,
+          },
         })
       }
     }

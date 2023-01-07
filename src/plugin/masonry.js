@@ -11,37 +11,41 @@ var componentName = 'masonry'
 var props = {
   tag: {
     type: [String],
-    default: 'div'
+    default: 'div',
   },
   cols: {
     type: [Object, Number, String],
-    default: 2
+    default: 2,
   },
   gutter: {
     type: [Object, Number, String],
-    default: 0
+    default: 0,
   },
   css: {
     type: [Boolean],
-    default: true
+    default: true,
   },
   columnTag: {
     type: [String],
-    default: 'div'
+    default: 'div',
   },
   columnClass: {
     type: [String, Array, Object],
-    default: function() { return [] }
+    default: function () {
+      return []
+    },
   },
   columnAttr: {
     type: [Object],
-    default: function() { return ({}) }
-  }
+    default: function () {
+      return {}
+    },
+  },
 }
 
 // Get the resulting value from  `:col=` prop
 // based on the window width
-var breakpointValue = function(mixed, windowWidth) {
+var breakpointValue = function (mixed, windowWidth) {
   var valueAsNum = parseInt(mixed)
 
   if (valueAsNum > -1) {
@@ -62,7 +66,8 @@ var breakpointValue = function(mixed, windowWidth) {
       continue
     }
 
-    var isNewBreakpoint = windowWidth <= breakpoint && breakpoint < matchedBreakpoint
+    var isNewBreakpoint =
+      windowWidth <= breakpoint && breakpoint < matchedBreakpoint
 
     if (isNewBreakpoint) {
       matchedBreakpoint = breakpoint
@@ -79,7 +84,7 @@ var component = {
   data() {
     return {
       displayColumns: 2,
-      displayGutter: 0
+      displayGutter: 0,
     }
   },
 
@@ -148,12 +153,20 @@ var component = {
 
       // This component does not work with a child <transition-group /> ..yet,
       // so for now we think it may be helpful to ignore until we can find a way for support
-      if (childItems.length === 1 && childItems[0].componentOptions && childItems[0].componentOptions.tag === 'transition-group') {
+      if (
+        childItems.length === 1 &&
+        childItems[0].componentOptions &&
+        childItems[0].componentOptions.tag === 'transition-group'
+      ) {
         childItems = childItems[0].componentOptions.children
       }
 
       // Loop through child elements
-      for (var i = 0, visibleItemI = 0; i < childItems.length; i++, visibleItemI++) {
+      for (
+        var i = 0, visibleItemI = 0;
+        i < childItems.length;
+        i++, visibleItemI++
+      ) {
         // skip Vue elements without tags, which includes
         // whitespace elements and also plain text
         if (!childItems[i].tag) {
@@ -173,51 +186,58 @@ var component = {
       }
 
       return columns
-    }
+    },
   },
 
   render(createElement) {
     console.log('render')
     var columnsContainingChildren = this._getChildItemsInColumnsArray()
-    var isGutterSizeUnitless = parseInt(this.displayGutter) === this.displayGutter * 1
-    var gutterSizeWithUnit = isGutterSizeUnitless ? ((this.displayGutter) + 'px') : this.displayGutter
+    var isGutterSizeUnitless =
+      parseInt(this.displayGutter) === this.displayGutter * 1
+    var gutterSizeWithUnit = isGutterSizeUnitless
+      ? this.displayGutter + 'px'
+      : this.displayGutter
 
     var columnStyle = {
       boxSizing: 'border-box',
       backgroundClip: 'padding-box',
-      width: ((100 / this.displayColumns) + '%'),
+      width: 100 / this.displayColumns + '%',
       border: '0 solid transparent',
-      borderLeftWidth: gutterSizeWithUnit
+      borderLeftWidth: gutterSizeWithUnit,
     }
 
     var columns = columnsContainingChildren.map((children, index) => {
       /// Create column element and inject the children
-      return createElement(this.columnTag, {
-        key: index + '-' + columnsContainingChildren.length,
-        style: this.css ? columnStyle : null,
-        class: this.columnClass,
-        attrs: this.columnAttr,
-        ref: 'masonryEl-' + index
-      }, children) // specify child items here
+      return createElement(
+        this.columnTag,
+        {
+          key: index + '-' + columnsContainingChildren.length,
+          style: this.css ? columnStyle : null,
+          class: this.columnClass,
+          attrs: this.columnAttr,
+          ref: 'masonryEl-' + index,
+        },
+        children,
+      ) // specify child items here
     })
 
     var containerStyle = {
       display: ['-webkit-box', '-ms-flexbox', 'flex'],
-      marginLeft: ('-' + gutterSizeWithUnit)
+      marginLeft: '-' + gutterSizeWithUnit,
     }
 
     // Return wrapper with columns
     return createElement(
       this.tag, // tag name
       this.css ? { style: containerStyle } : null, // element options
-      columns // column vue elements
+      columns, // column vue elements
     )
-  }
+  },
 }
 
-var Plugin = function() {}
+var Plugin = function () {}
 
-Plugin.install = function(Vue, options) {
+Plugin.install = function (Vue, options) {
   if (Plugin.installed) {
     return
   }

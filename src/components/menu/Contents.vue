@@ -1,6 +1,6 @@
 <template>
   <div>
-    <content-list></content-list>
+    <ContentList></ContentList>
   </div>
 </template>
 
@@ -12,8 +12,8 @@ export default {
   name: 'Contents',
   mixins: [headerActivate],
   components: {
-    ContentList
-  }
+    ContentList,
+  },
 }
 </script>
 

@@ -13,11 +13,11 @@ class LazyMinter {
     const domain = await this._signingDomain()
     const types = {
       NFTVoucher: [
-        {name: 'creator', type: 'address'},
-        {name: 'minPrice', type: 'uint256'},
-        {name: 'tokenUri', type: 'string'},
-        {name: 'contentUri', type: 'string'},
-      ]
+        { name: 'creator', type: 'address' },
+        { name: 'minPrice', type: 'uint256' },
+        { name: 'tokenUri', type: 'string' },
+        { name: 'contentUri', type: 'string' },
+      ],
     }
     const signature = await this.signer._signTypedData(domain, types, voucher)
     return {
@@ -43,5 +43,5 @@ class LazyMinter {
 }
 
 module.exports = {
-  LazyMinter
+  LazyMinter,
 }

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <project-list :queryProjects="queryProjects"></project-list>
+    <h1>Explore Projects</h1>
+    <ProjectList :queryProjects="queryProjects"></ProjectList>
   </div>
 </template>
 
@@ -13,14 +14,14 @@ export default {
   name: 'Projects',
   mixins: [headerActivate],
   components: {
-    ProjectList
+    ProjectList,
   },
   data() {
     return {
       queryProjects: {
         func: null,
-        body: {}
-      }
+        body: {},
+      },
     }
   },
   mounted() {
@@ -28,12 +29,12 @@ export default {
       func: graphql,
       body: queryProjects({
         variables: {
-          first: 5,
+          first: 10,
           skip: 0,
-        }
-      })
+        },
+      }),
     }
-  }
+  },
 }
 </script>
 

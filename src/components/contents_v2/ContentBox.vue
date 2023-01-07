@@ -1,9 +1,11 @@
 <template>
-  <div class="box" @click="imageSelect()">
+  <div class="box">
     <img
-      :src="image.content_thumbnail_s3key ||
-            image.content_s3key ||
-            this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')"
+      :src="
+        image.content_thumbnail_s3key ||
+        image.content_s3key ||
+        this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+      "
       @error="replaceImage"
     />
   </div>
@@ -15,22 +17,22 @@ export default {
   props: {
     image: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   methods: {
-    imageSelect() {
-      this.$emit('image-selected', this.image.index)
-    },
     replaceImage(e) {
       const imageUrl = e.target.currentSrc
       if (imageUrl.indexOf('resized-') > -1) {
         e.target.src = this.image.content_s3key
       } else {
-        e.target.src = this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+        e.target.src = this.image.contentURI.replace(
+          'ipfs://',
+          'https://ipfs.io/ipfs/',
+        )
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -42,18 +44,17 @@ export default {
   align-items: flex-start;
   overflow: hidden;
   border-radius: 20px;
-  max-height: 500px;
+  max-height: 300px;
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
   margin: 0 10px;
   &:hover {
-    box-shadow: 1px 1px .5em $darkgray, -1px -1px .5em $darkgray;
+    box-shadow: 1px 1px 0.5em $darkgray, -1px -1px 0.5em $darkgray;
   }
 
- img {
+  img {
     width: 100%;
     height: auto;
     cursor: pointer;
   }
 }
-
 </style>

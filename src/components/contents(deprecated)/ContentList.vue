@@ -1,11 +1,26 @@
 <template>
   <div>
-    <top-container :topImages="topContents" :selectedImage="selectedImage"
-      @image-selected="onTopImageSelect"></top-container>
-    <center-container class="center-container" v-show="selectedImage" :image="selectedImage" ref="center"></center-container>
-    <bottom-container v-if="bottomContents" :bottomImages="bottomContents"
-      @image-selected="onBottomImageSelect"></bottom-container>
-    <infinite-loading :identifier="$route.params.id" @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <TopContainer
+      :topImages="topContents"
+      :selectedImage="selectedImage"
+      @image-selected="onTopImageSelect"
+    ></TopContainer>
+    <CenterContainer
+      class="center-container"
+      v-show="selectedImage"
+      :image="selectedImage"
+      ref="center"
+    ></CenterContainer>
+    <BottomContainer
+      v-if="bottomContents"
+      :bottomImages="bottomContents"
+      @image-selected="onBottomImageSelect"
+    ></BottomContainer>
+    <InfiniteLoading
+      :identifier="$route.params.id"
+      @infinite="infiniteHandler"
+      spinner="spiral"
+    ></InfiniteLoading>
   </div>
 </template>
 
@@ -21,22 +36,25 @@ import BottomContainer from './BottomContainer.vue'
 export default {
   name: 'ContentList',
   components: {
-    CenterContainer, TopContainer, BottomContainer, InfiniteLoading
+    CenterContainer,
+    TopContainer,
+    BottomContainer,
+    InfiniteLoading,
   },
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser
-    })
+      currentUser: state => state.user.currentUser,
+    }),
   },
   props: {
     contentsApi: {
       type: Object,
-      default: null
+      default: null,
     },
     numberOfContentsToLoad: {
       type: Number,
-      default: 10
-    }
+      default: 10,
+    },
   },
   data() {
     return {
@@ -44,7 +62,7 @@ export default {
       bottomContents: [],
       selectedImage: null,
       lastLoadedId: null,
-      noMoreDataToLoad: false
+      noMoreDataToLoad: false,
     }
   },
   methods: {
@@ -58,7 +76,9 @@ export default {
       } else {
         await this.pushContentToTop()
       }
-      setTimeout(function() { $state.loaded() }, 1000)
+      setTimeout(function () {
+        $state.loaded()
+      }, 1000)
     },
     async pushContentToBottom() {
       const imageArrayToPush = await this.makeImageArray()
@@ -72,7 +92,10 @@ export default {
       const imageArrayToPush = []
       if (this.contentsApi) {
         let results = null
-        results = await this.getContents(this.contentsApi, this.numberOfContentsToLoad)
+        results = await this.getContents(
+          this.contentsApi,
+          this.numberOfContentsToLoad,
+        )
 
         if (results) {
           for (let i = 0; i < results.length; i++) {
@@ -80,22 +103,23 @@ export default {
               index: i,
               id_pk: results[i].id,
               url: this.getImageUrl(results[i].thumbnail_url),
-              profileImageUrl: results[i].profile_thumbnail_s3key ?
-                this.getImageUrl(results[i].profile_thumbnail_s3key) :
-                this.getImageUrl(results[i].profile_s3key),
+              profileImageUrl: results[i].profile_thumbnail_s3key
+                ? this.getImageUrl(results[i].profile_thumbnail_s3key)
+                : this.getImageUrl(results[i].profile_s3key),
               username: results[i].username,
-              like: results[i].like
+              like: results[i].like,
             })
           }
         }
-      } else { // TODO] 일단은 임시 컨텐츠들. content-list props으로 contentsApi가 안넘어오면 결국은 No contents 보여줘야 할듯
+      } else {
+        // TODO] 일단은 임시 컨텐츠들. content-list props으로 contentsApi가 안넘어오면 결국은 No contents 보여줘야 할듯
         for (let i = 0; i < this.numberOfContentsToLoad; i++) {
           const randomInt = this.getRandomIntInclusive(11, 20)
           imageArrayToPush.push({
             index: i,
             url: randomInt,
             username: 'qhqoxogh',
-            like: false
+            like: false,
           })
         }
       }
@@ -112,10 +136,11 @@ export default {
         params: {
           username: contentsApi.params.id ? contentsApi.params.id : null,
           pageSize: numOfImages,
-          lastId: this.lastLoadedId
-        }
+          lastId: this.lastLoadedId,
+        },
       })
-      this.lastLoadedId = results.length > 0 ? results[results.length - 1].id : null
+      this.lastLoadedId =
+        results.length > 0 ? results[results.length - 1].id : null
       this.noMoreDataToLoad = results.length < numOfImages
       return results
     },
@@ -124,7 +149,8 @@ export default {
     },
     pushImages(images, destContainer) {
       let lastImageOfContainer = destContainer[destContainer.length - 1]
-      if (lastImageOfContainer) this.resetImageIndexBeforePush(images, lastImageOfContainer)
+      if (lastImageOfContainer)
+        this.resetImageIndexBeforePush(images, lastImageOfContainer)
       for (let i in images) {
         this.pushImage(images[i], destContainer)
       }
@@ -178,18 +204,20 @@ export default {
       this.topContents = []
       this.bottomContents = []
       this.selectedImage = null
-    }
+    },
   },
   mounted() {
     this.$watch(
-      () => { return this.$refs.center.image },
+      () => {
+        return this.$refs.center.image
+      },
       () => {
         const center = this.$refs.center.$el
         const centerPosition = center.offsetTop
         const headerOffset = 55
         const offsetPosition = centerPosition - headerOffset
         let option = {
-          top: offsetPosition
+          top: offsetPosition,
         }
         if (navigator.userAgent.indexOf('Mobile') !== -1) {
           if (navigator.userAgent.indexOf('iPhone') !== -1) {
@@ -203,18 +231,18 @@ export default {
           option.behavior = 'auto'
         }
         window.scrollTo(option)
-        setTimeout(function() {
+        setTimeout(function () {
           const centerTop = center.getBoundingClientRect().top
           if (centerTop < 54 || centerTop > 56) {
             window.scrollTo({
               top: centerPosition + centerTop - 110,
-              behavior: 'smooth'
+              behavior: 'smooth',
             })
           }
         }, 400)
-      }
+      },
     )
-  }
+  },
 }
 </script>
 
