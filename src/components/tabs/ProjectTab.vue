@@ -127,7 +127,6 @@ export default {
     white-space: nowrap;
     overflow-x: auto;
     width: 100%;
-    min-width: 680px;
     padding-right: 60px;
     box-sizing: border-box;
   }
