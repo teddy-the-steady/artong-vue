@@ -662,8 +662,6 @@ export default {
         .info {
           flex: 0.5;
         }
-        .profile {
-        }
       }
       .information {
         margin-top: 30px;
