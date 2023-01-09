@@ -8,15 +8,25 @@
           </div>
 
           <div class="modal-body">
-            <slot name="body"> </slot>
+            <slot name="body">
+              <input type="text" v-model="price" placeholder="Price in ETH" />
+            </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-button" @click="confirm()">
-                {{ okButton }}
+                <div
+                  class="spinner"
+                  :class="{ active: confirmOnProcess }"
+                ></div>
+                <span v-show="!confirmOnProcess">{{ okButton }}</span>
               </button>
-              <button class="modal-button" @click="cancel()">
+              <button
+                class="modal-button"
+                :class="{ disabled: cancelDisabled }"
+                @click="cancel()"
+              >
                 {{ cancelButton }}
               </button>
             </slot>
@@ -29,13 +39,24 @@
 
 <script>
 export default {
-  name: 'ConfirmModal',
+  name: 'PromptModal',
+  props: {
+    confirmOnProcess: {
+      type: Boolean,
+      default: false,
+    },
+    cancelDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       okButton: 'Continue',
       cancelButton: 'Cancel',
       resolvePromise: null,
       rejectPromise: null,
+      price: null,
     }
   },
   methods: {
@@ -46,12 +67,10 @@ export default {
       })
     },
     confirm() {
-      this.$emit('close-modal')
-      this.resolvePromise(true)
+      this.resolvePromise(this.price)
     },
     cancel() {
-      this.$emit('close-modal')
-      this.rejectPromise(new Error('Cancelled signing message'))
+      this.rejectPromise(new Error('canceled'))
     },
   },
 }
@@ -100,6 +119,39 @@ export default {
         .modal-button {
           padding: 10px;
           margin: 10px;
+          width: 40%;
+          .spinner {
+            display: none;
+
+            &.active {
+              display: inline-block;
+              position: relative;
+              width: 2px;
+              margin: 0px auto;
+              animation: rotation 0.6s infinite linear;
+              border-left: 6px solid rgba(0, 174, 239, 0.15);
+              border-right: 6px solid rgba(0, 174, 239, 0.15);
+              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+              border-top: 6px solid $artong-white;
+              border-radius: 100%;
+            }
+          }
+
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+          button {
+            width: 100%;
+          }
+
+          & > span:nth-child(2) {
+            align-self: center;
+          }
         }
       }
     }
