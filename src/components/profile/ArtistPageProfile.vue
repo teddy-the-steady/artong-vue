@@ -180,6 +180,8 @@ export default {
       font-style: normal;
       font-weight: 700;
       font-size: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: $artong-black;
     }
     .address {
@@ -192,9 +194,6 @@ export default {
       border-radius: 999px;
       padding-left: 16px;
       padding-right: 16px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       img {
         width: 20px;
         height: 20px;
@@ -268,6 +267,8 @@ export default {
       font-style: normal;
       font-weight: 700;
       font-size: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: $artong-black;
     }
     .address {
@@ -281,9 +282,6 @@ export default {
       border-radius: 999px;
       padding-left: 16px;
       padding-right: 16px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       img {
         width: 20px;
         height: 20px;

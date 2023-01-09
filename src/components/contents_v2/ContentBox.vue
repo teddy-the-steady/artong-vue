@@ -44,7 +44,7 @@ export default {
   align-items: flex-start;
   overflow: hidden;
   border-radius: 20px;
-  max-height: 500px;
+  max-height: 300px;
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
   margin: 0 10px;
   &:hover {
