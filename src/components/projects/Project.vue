@@ -73,6 +73,7 @@
             v-if="project.is_subscriber"
             @click="unsubscribe"
             class="subscribe-n-unsubscribe-button"
+            v-ripple
           >
             Unsubscribe {{ this.project.subscribers }}
           </button>
@@ -80,6 +81,7 @@
             v-else
             @click="subscribe"
             class="subscribe-n-unsubscribe-button"
+            v-ripple
           >
             Subscribe {{ this.project.subscribers }}
           </button>
@@ -177,6 +179,7 @@ import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
+import Ripple from '../../directives/ripple/Ripple'
 
 export default {
   name: 'Project',
@@ -509,6 +512,9 @@ export default {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
     },
+  },
+  directives: {
+    ripple: Ripple,
   },
 }
 </script>
