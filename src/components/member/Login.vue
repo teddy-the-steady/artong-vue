@@ -243,9 +243,8 @@ export default {
         display: none;
 
         &.active {
-          display: block;
+          display: inline-block;
           position: relative;
-          height: 4px;
           width: 2px;
           margin: 0px auto;
           animation: rotation 0.6s infinite linear;
