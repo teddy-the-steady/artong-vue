@@ -19,31 +19,27 @@
             @touchend="moreTouchEnd"
           >
             <img src="../../assets/icons/more.svg" />
-            <BasicDialog
-              class="dialog"
-              :class="{ active: isDialogActive }"
-              @dialog-focus-out="closeDialog"
-              ref="dialog"
-            >
-              <router-link
-                slot="body"
-                tag="div"
-                v-show="
-                  project.owner
-                    ? project.owner.wallet_address ===
-                      currentUser.wallet_address
-                    : false
-                "
-                :to="{
-                  name: 'ProjectSettings',
-                  params: { project_address: project.id },
-                }"
-              >
-                Edit Project
-              </router-link>
-              <div slot="body">Report</div>
-            </BasicDialog>
           </button>
+          <BasicDialog
+            class="dialog"
+            :class="{ active: isDialogActive }"
+            @dialog-focus-out="closeDialog"
+            ref="dialog"
+          >
+            <div
+              slot="body"
+              @click="editProject"
+              v-show="
+                project.owner
+                  ? project.owner.wallet_address === currentUser.wallet_address
+                  : false
+              "
+            >
+              Edit Project
+            </div>
+            <!-- </router-link> -->
+            <div slot="body">Report</div>
+          </BasicDialog>
           <div v-if="this.width >= 1080" class="creators-button">
             <div class="creator">Created by</div>
             <ContentsProfileBundle
@@ -293,17 +289,17 @@ export default {
     },
     moreTouchStart() {
       if (this.isMobile) {
-        this.isMouseDownSort = true
+        this.isMouseDownOnMore = true
       }
     },
     moreTouchEnd() {
       if (this.isMobile) {
-        this.isMouseUpSort = true
+        this.isMouseUpOnMore = true
         if (this.isDialogActive) {
           this.isDialogActive = false
           return
         }
-        if (this.isMouseDownSort) {
+        if (this.isMouseDownOnMore) {
           this.isDialogActive = true
         }
       }
@@ -431,6 +427,12 @@ export default {
         query: { tab: 1 },
       })
     },
+    editProject() {
+      this.$router.push({
+        name: 'ProjectSettings',
+        params: { project_address: this.project.id },
+      })
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -534,23 +536,22 @@ export default {
       transform: translateY(-24px);
       margin-right: 16px;
       width: 160px;
+      height: 100%;
 
       img {
         position: absolute;
       }
 
-      button {
-        .dialog {
-          display: none;
+      .dialog {
+        display: none;
+        &.active {
+          display: block;
           top: 110%;
-          &.active {
-            display: block;
-          }
         }
       }
     }
     .creators-button {
-      min-width: 250px;
+      min-width: 265px;
       height: 48px;
       background: #ffffff;
       border: 1px solid #f2f2f2;
@@ -664,7 +665,7 @@ export default {
     }
   }
   .project-tab-sort {
-    //width: 100%;
+    width: 100%;
   }
 }
 textarea {
@@ -690,7 +691,13 @@ textarea {
       }
       .buttons {
         width: 100%;
-        max-width: 450px;
+        max-width: 465px;
+
+        .dialog {
+          &.active {
+            right: 60%;
+          }
+        }
       }
     }
   }
@@ -701,6 +708,7 @@ textarea {
     margin-right: 185px;
     .bottom {
       display: flex;
+      margin-right: 20px;
       .left-tab {
         margin-left: 185px;
       }
@@ -715,7 +723,6 @@ textarea {
       }
       .buttons {
         margin-right: 24px;
-        width: 426px;
       }
     }
   }
