@@ -159,7 +159,8 @@
                   Update Listing
                 </button>
                 <button @click="makeTransaction('cancel')" class="white-btn">
-                  Cancel Listing
+                  <div class="spinner" :class="{ active: canceling }"></div>
+                  <span v-show="!canceling">Cancel Listing</span>
                 </button>
               </div>
             </div>
@@ -247,6 +248,7 @@ export default {
       confirmOnProcess: false,
       cancelDisabled: false,
       buying: false,
+      canceling: false,
     }
   },
   computed: {
@@ -375,7 +377,12 @@ export default {
           break
         }
         case 'cancel': {
-          await this.cancel(contract)
+          try {
+            this.canceling = true
+            await this.cancel(contract)
+          } finally {
+            this.canceling = false
+          }
           break
         }
         case 'update': {
@@ -435,7 +442,6 @@ export default {
       }
     },
     async buy(contract) {
-      this.buying = true
       const tx = await contract.buyItem(
         this.content.project.id,
         this.content.tokenId,
@@ -444,7 +450,6 @@ export default {
       )
       await tx.wait()
       alert('purchased!')
-      this.buying = false
     },
     async cancel(contract) {
       const tx = await contract.cancelListing(
