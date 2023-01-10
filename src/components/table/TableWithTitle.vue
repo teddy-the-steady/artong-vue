@@ -6,22 +6,29 @@
     </div>
     <!-- {{ fields[1] }} -->
     <table>
-      <th></th>
+      <th v-for="(field, i) in fields" :key="i">{{ field }}</th>
+      <tr v-for="(content, i) in contents" :key="i">
+        <td v-for="(field, i) in fields" :key="i">
+          <div v-if="field == 'PRICE'">{{ content.price }}</div>
+          <div v-else-if="field == 'DATE'">{{ content.createdAt }}</div>
+          <div v-else-if="field == 'FROM'">
+            <ContentsProfile
+              :member="content.from"
+              :needUserName="true"
+            ></ContentsProfile>
+          </div>
+        </td>
+      </tr>
     </table>
-    <div v-if="this.contents">
-      {{ contents[0].price }}
-      {{ contents[0].from.id }}
-      {{ contents[0].createdAt }}
-    </div>
   </div>
 </template>
 <script>
-//import ContentsProfile from '../profile/ContentsProfile.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'TableWithTitle',
   components: {
-    //ContentsProfile,
+    ContentsProfile,
   },
   data() {
     return {
