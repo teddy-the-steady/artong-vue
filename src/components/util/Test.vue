@@ -37,11 +37,6 @@
           key: 'price',
         },
         {
-          name: 'Total',
-          type: 'price',
-          key: 'total',
-        },
-        {
           name: 'From',
           type: 'member',
           key: 'from_member',
