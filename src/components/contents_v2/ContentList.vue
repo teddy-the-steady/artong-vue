@@ -2,17 +2,10 @@
   <div class="contents">
     <masonry :cols="windowWide ? colsWide : cols">
       <div class="content" v-for="(val, i) in contentList" :key="i">
-        <router-link
-          :to="{
-            name: 'ContentDetail',
-            params: {
-              project_address: val.projectAddress,
-              token_id: val.tokenId,
-            },
-          }"
-        >
-          <ContentBox :image="val"></ContentBox>
-        </router-link>
+        <ContentBox
+          :image="val"
+          @click.native="onContentClick(val)"
+        ></ContentBox>
         <router-link
           class="profileBox"
           :to="{
@@ -129,7 +122,8 @@ export default {
           contentArrayToPush.push({
             id: apiResults[i].id,
             tokenId: apiResults[i].tokenId,
-            projectAddress: apiResults[i].project?.id,
+            projectAddress:
+              apiResults[i].project?.id || apiResults[i].project_address,
             tokenURI: apiResults[i].tokenURI,
             contentURI: apiResults[i].contentURI,
             creator: apiResults[i].creator,
@@ -158,6 +152,25 @@ export default {
         this.queryContents.queryParams,
       )
       return results
+    },
+    onContentClick(val) {
+      if (val.tokenId) {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: val.projectAddress,
+            token_id: val.tokenId,
+          },
+        })
+      } else if (val.id) {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address: val.projectAddress,
+            contents_id: val.id,
+          },
+        })
+      }
     },
   },
   watch: {
