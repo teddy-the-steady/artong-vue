@@ -1,12 +1,25 @@
 import instance from './index'
 import axios from 'axios'
 
+const getContent = async function (project_address, contents_id) {
+  return await instance.get(
+    `/projects/${project_address}/contents/${contents_id}`,
+  )
+}
+
 const postContent = async function (body) {
   return await instance.post('/contents', body)
 }
 
 const patchContent = async function (contentId, body) {
   return await instance.patch(`/contents/${contentId}`, body)
+}
+
+const patchContentStatus = async function (project_address, contentId, body) {
+  return await instance.patch(
+    `/projects/${project_address}/contents/${contentId}/status`,
+    body,
+  )
 }
 
 const uploadToNftStorage = async function (body) {
@@ -37,8 +50,10 @@ const getTobeApprovedContents = async function (pathParams, queryParams) {
 }
 
 export {
+  getContent,
   postContent,
   patchContent,
+  patchContentStatus,
   uploadToNftStorage,
   getContentVoucher,
   getIpfsMetadata,
