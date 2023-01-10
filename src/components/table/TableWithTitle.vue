@@ -29,6 +29,12 @@
             </div>
           </td>
         </tr>
+        <div class="infinite-loading">
+          <InfiniteLoading
+            @infinite="infiniteHandler"
+            spinner="spiral"
+          ></InfiniteLoading>
+        </div>
       </table>
     </div>
   </div>
@@ -36,15 +42,18 @@
 <script>
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import { weiToEther } from '../../util/commonFunc'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: 'TableWithTitle',
   components: {
     ContentsProfile,
+    InfiniteLoading,
   },
   data() {
     return {
       contents: null,
+      noMoreDataToLoad: false,
     }
   },
   props: {
@@ -95,6 +104,62 @@ export default {
       const now = toDay.getTime()
       const deadLine = date * 1000
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
+    },
+    async infiniteHandler($state) {
+      if (this.noMoreDataToLoad) {
+        $state.complete()
+        return
+      }
+      await this.pushData()
+      setTimeout(function () {
+        $state.loaded()
+      }, 1000)
+    },
+    async pushData() {
+      const contentArrayToPush = await this.makeContentArray()
+      if (contentArrayToPush.length > 0) {
+        for (let i in contentArrayToPush) {
+          this.contents.push(contentArrayToPush[i])
+        }
+      }
+    },
+    async makeContentArray() {
+      const contentArrayToPush = []
+      if (this.api == 'queryOffersByToken') {
+        const result = await this.getContents(this.api).offers
+        this.api.body.variables.skip += this.api.body.variables.first
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            contentArrayToPush.push({
+              id: result[i].id,
+              from: {
+                id: result[i].from.id,
+                email: result[i].from.email,
+                username: result[i].from.username,
+                created_at: result[i].from.created_at,
+                updated_at: result[i].from.updated_at,
+                introduction: result[i].from.introduction,
+                profile_s3key: result[i].from.profile_s3key,
+                country_id: result[i].from.country_id,
+                wallet_address: result[i].from.wallet_address,
+                principal_id: result[i].from.principal_id,
+                profile_thumbnail_s3key: result[i].from.profile_thumbnail_s3key,
+              },
+              price: result[i].price,
+              deadline: result[i].deadline,
+              isAccepted: result[i].isAccepted,
+              createdAt: result[i].createdAt,
+              updatedAt: result[i].updatedAt,
+              sale: {
+                id: result[i].sale.id,
+              },
+            })
+          }
+        } else {
+          this.noMoreDataToLoad = true
+        }
+      }
+      return contentArrayToPush
     },
   },
   async mounted() {
@@ -149,6 +214,9 @@ export default {
         color: #333333;
         border-bottom: 1px solid #cccccc;
       }
+    }
+    .infinite-loading {
+      text-align: center;
     }
   }
 }
