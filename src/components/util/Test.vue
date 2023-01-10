@@ -1,7 +1,13 @@
 <template>
   <div>
     This is a test
-    <TableWithTitle :api="queryOffersByToken"></TableWithTitle>
+    <TableWithTitle
+      :api="queryOffersByToken"
+      :tableName="'Offers'"
+      :iconSrc="require('@/assets/icons/100-add-folder.svg')"
+      :showHeader="true"
+      :fields="['PRICE', 'DATE', 'FROM']"
+    ></TableWithTitle>
     <TableWithTitle :api="queryTokenHistory"></TableWithTitle>
   </div>
 </template>
@@ -30,7 +36,7 @@ export default {
       },
     }
   },
-  mounted() {
+  created() {
     this.queryOffersByToken = {
       func: graphql,
       body: queryOffersByToken({
