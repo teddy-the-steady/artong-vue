@@ -44,6 +44,8 @@ const getTobeApprovedContents = async function (pathParams, queryParams) {
       params: {
         start_num: queryParams.start_num,
         count_num: queryParams.count_num,
+        order_by: queryParams.orderBy,
+        order_direction: queryParams.orderDirection,
       },
     },
   )
