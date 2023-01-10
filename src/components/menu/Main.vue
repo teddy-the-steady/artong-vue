@@ -237,7 +237,6 @@
         </div>
       </div>
     </div>
-    <TableWithTitle></TableWithTitle>
   </div>
 </template>
 
@@ -250,7 +249,6 @@ import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import Table from '../table/Table.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
-import TableWithTitle from '../table/TableWithTitle.vue'
 
 export default {
   name: 'Main',
@@ -262,7 +260,6 @@ export default {
     FeaturedCreator,
     Table,
     CuratedCollectionWide,
-    TableWithTitle,
   },
   data() {
     return {
