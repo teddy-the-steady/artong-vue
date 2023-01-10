@@ -8,7 +8,14 @@
       :showHeader="true"
       :fields="['PRICE', 'DATE', 'FROM']"
     ></TableWithTitle>
-    <TableWithTitle :api="queryTokenHistory"></TableWithTitle>
+    <div class="divider"></div>
+    <TableWithTitle
+      :api="queryTokenHistory"
+      :tableName="'History'"
+      :iconSrc="require('@/assets/icons/history.svg')"
+      :showHeader="true"
+      :fields="['PRICE', 'FROM', 'DATE', 'TO']"
+    ></TableWithTitle>
   </div>
 </template>
 <script>
@@ -66,4 +73,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+
+.divider {
+  background-color: burlywood;
+  width: 100%;
+  height: 10px;
+}
 </style>
