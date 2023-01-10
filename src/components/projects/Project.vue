@@ -124,7 +124,6 @@
         :tabs="tabs"
         :width="width"
         :sortOptions="sortOptions"
-        :tabsLength="tabs.length"
         class="project-tab-sort"
       />
     </div>
@@ -215,9 +214,31 @@ export default {
       backgroundColor: null,
       project: {},
       tabs: [
-        { id: 0, type: 'CONTENTS', label: 'Tokens', api: {}, sort: {} },
-        { id: 1, type: 'PROFILES', label: 'Contributors', api: {}, sort: {} },
-        { id: 2, type: 'INFO', label: 'Info', data: {} },
+        {
+          id: 0,
+          type: 'CONTENTS',
+          label: 'Tokens',
+          api: {},
+          sort: {},
+          show: true,
+        },
+        {
+          id: 1,
+          type: 'PROFILES',
+          label: 'Contributors',
+          api: {},
+          sort: {},
+          show: true,
+        },
+        { id: 2, type: 'INFO', label: 'Info', data: {}, show: true },
+        {
+          id: 3,
+          type: 'CONTENTS',
+          label: 'Waiting for Approval',
+          api: {},
+          sort: {},
+          show: false,
+        },
       ],
       width: window.innerWidth,
       steps: [
@@ -388,6 +409,8 @@ export default {
         }),
       }
 
+      this.tabs[1].sort =
+        this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
       this.tabs[1].api = {
         func: getProjectContributors,
         pathParams: { address: this.$route.params.id },
@@ -398,30 +421,27 @@ export default {
         description: this.project.description,
         sns: this.project.sns,
       }
-    },
-    setConditionalTabs() {
-      if (this.project.policy === 1) {
-        if (
-          this.currentUser.wallet_address ===
-            this.project.owner.wallet_address ||
-          this.project.is_contributor
-        ) {
-          this.tabs[3] = {
-            id: 3,
-            type: 'CONTENTS',
-            label: 'Waiting for Approval',
-            api: {
-              func: getTobeApprovedContents,
-              pathParams: { address: this.project.id },
-              queryParams: { start_num: 0, count_num: 5 },
-            },
-            sort: {},
-          }
-        } else {
-          this.tabs.length = 3
-        }
-      } else {
-        this.tabs.length = 3
+
+      this.tabs[3].sort =
+        this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+      this.tabs[3].api = {
+        func: getTobeApprovedContents,
+        pathParams: { address: this.project.id },
+        queryParams: {
+          start_num: 0,
+          count_num: 5,
+          orderBy: this.tabs[3].sort.orderBy,
+          orderDirection: this.tabs[3].sort.orderDirection,
+        },
+      }
+
+      if (
+        this.project.policy === 1 &&
+        (this.currentUser.wallet_address ===
+          this.project.owner.wallet_address ||
+          this.project.is_contributor)
+      ) {
+        this.tabs[3].show = true
       }
     },
     gotoContributorTab() {
@@ -445,7 +465,6 @@ export default {
     this.project = await this.getProject()
     this.setStatistics()
     this.setTabs()
-    this.setConditionalTabs()
 
     this.$watch(
       () => this.$route,
@@ -453,7 +472,15 @@ export default {
         if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
           this.project = await this.getProject()
           this.setStatistics()
-          this.setConditionalTabs()
+
+          if (
+            this.project.policy === 1 &&
+            (this.currentUser.wallet_address ===
+              this.project.owner.wallet_address ||
+              this.project.is_contributor)
+          ) {
+            this.tabs[3].show = true
+          }
         }
       },
     )
@@ -469,7 +496,7 @@ export default {
       if (this.projectAddress !== to.params.id) {
         this.projectAddress = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
-        this.tabs.length = 3
+        this.tabs[3].show = false
       }
 
       const t = to.query.tab || '0'
@@ -491,6 +518,8 @@ export default {
           }
           break
         case '1':
+          this.tabs[t].sort =
+            this.sortOptions[to.query.sort] || this.sortOptions['newest']
           this.tabs[t].api = {
             func: getProjectContributors,
             pathParams: { address: to.params.id },
@@ -501,6 +530,20 @@ export default {
           this.tabs[t].data = {
             description: this.project.description,
             sns: this.project.sns,
+          }
+          break
+        case '3':
+          this.tabs[t].sort =
+            this.sortOptions[to.query.sort] || this.sortOptions['newest']
+          this.tabs[t].api = {
+            func: getTobeApprovedContents,
+            pathParams: { address: this.project.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 5,
+              orderBy: this.tabs[t].sort.orderBy,
+              orderDirection: this.tabs[t].sort.orderDirection,
+            },
           }
           break
         default:
