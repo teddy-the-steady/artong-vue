@@ -500,7 +500,6 @@ export default {
       const toDay = new Date()
       const now = toDay.getTime()
       const deadLine = date * 1000
-
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
   },
