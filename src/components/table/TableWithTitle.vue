@@ -7,13 +7,21 @@
     <!-- {{ fields[1] }} -->
     <table>
       <th v-for="(field, i) in fields" :key="i">{{ field }}</th>
-      <tr v-for="(content, i) in contents" :key="i">
-        <td v-for="(field, i) in fields" :key="i">
+      <tr v-for="(content, i) in contents" :key="`o-${i}`">
+        <td v-for="(field, k) in fields" :key="k">
           <div v-if="field == 'PRICE'">{{ content.price }}</div>
-          <div v-else-if="field == 'DATE'">{{ content.createdAt }}</div>
+          <div v-else-if="field == 'DATE'">
+            {{ content.createdAt ? content.createdAt : content.created_at }}
+          </div>
           <div v-else-if="field == 'FROM'">
             <ContentsProfile
-              :member="content.from"
+              :member="content.from ? content.from : content.from_member"
+              :needUserName="true"
+            ></ContentsProfile>
+          </div>
+          <div v-else-if="field == 'TO'">
+            <ContentsProfile
+              :member="content.to_member"
               :needUserName="true"
             ></ContentsProfile>
           </div>
@@ -60,12 +68,17 @@ export default {
   methods: {
     async getContents() {
       const results = await this.api.func(this.api.body)
-      if (results) {
-        return results.offers
-      }
+      return results
     },
     async setContents() {
-      this.contents = await this.getContents()
+      const tmp = await this.getContents()
+      if (tmp) {
+        if (tmp.offers) {
+          this.contents = tmp.offers // api가 offers인 경우
+        } else {
+          this.contents = tmp // api가 history인 경우
+        }
+      }
       if (this.contents) {
         console.log(this.contents)
       }
