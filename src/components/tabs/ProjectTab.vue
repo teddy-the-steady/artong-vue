@@ -12,21 +12,24 @@
         :key="tab.id"
         v-model="currentId"
         @tabClick="tabClick"
-        v-show="tab.type !== 'INFO' || (tab.type === 'INFO' && width < 1440)"
+        v-show="
+          (tab.show && tab.type !== 'INFO') ||
+          (tab.type === 'INFO' && width < 1440)
+        "
       />
     </div>
     <div class="items">
       <section class="item" :key="generateKey()">
-        <div v-show="current.type === 'CONTENTS'">
+        <div v-show="current.type === 'CONTENTS' && current.show">
           <ContentList
             :queryContents="current.api"
             :windowWide="false"
           ></ContentList>
         </div>
-        <div v-show="current.type === 'PROFILES'">
+        <div v-show="current.type === 'PROFILES' && current.show">
           <ProfileList :apiProfiles="current.api"></ProfileList>
         </div>
-        <div v-show="current.type === 'INFO'" class="info">
+        <div v-show="current.type === 'INFO' && current.show" class="info">
           <div class="info-top">
             <div class="info-name">Information</div>
             <div class="info-desc" v-if="current.data">
@@ -37,7 +40,6 @@
         </div>
       </section>
     </div>
-    <span class="hide_on_purpose">{{ tabsLength }}</span>
   </div>
 </template>
 
@@ -62,10 +64,6 @@ export default {
     tabs: {
       type: Array,
       default: () => [],
-    },
-    tabsLength: {
-      type: Number,
-      default: 3,
     },
     width: {
       type: Number,
@@ -148,10 +146,6 @@ export default {
         color: #4d4d4d;
       }
     }
-  }
-
-  .hide_on_purpose {
-    display: none;
   }
 }
 @media (min-width: 1440px) {
