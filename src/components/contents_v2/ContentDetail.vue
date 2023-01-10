@@ -28,10 +28,6 @@
                 <td class="price">
                   {{ weiToEther(val.price) }}
                   ETH
-                  <img
-                    :src="require('@/assets/icons/launch.svg')"
-                    @click="action('price')"
-                  />
                 </td>
                 <td class="record">
                   {{ convertDay(val.createdAt) }}
@@ -149,38 +145,31 @@
           <div class="price-box">
             <div class="label">Price</div>
             <div>
-              <input type="text" v-model="price" placeholder="price in ETH" />
+              {{ price ? weiToEther(price) : '' }}
               ETH
             </div>
           </div>
           <div class="trade-buttons">
-            <!-- <div v-if="content ? isCurrentUserTokenOwner : false">
-              <button v-if="!isListed" @click="action('sell')">Sell</button>
+            <div v-if="content ? isCurrentUserTokenOwner : false">
+              <button v-if="!isListed" @click="makeTransaction('sell')">
+                Sell
+              </button>
               <div v-else>
-                <button @click="action('update')">Update Listing</button>
-                <button @click="action('cancel')" class="white-btn">
-                  Cancel Listing
+                <button @click="makeTransaction('update')">
+                  Update Listing
+                </button>
+                <button @click="makeTransaction('cancel')" class="white-btn">
+                  <div class="spinner" :class="{ active: canceling }"></div>
+                  <span v-show="!canceling">Cancel Listing</span>
                 </button>
               </div>
             </div>
             <div v-else>
-              <button v-if="isListed" @click="action('buy')">Buy</button>
-              <button @click="action('offer')" class="white-btn">
-                Make offer
+              <button v-if="isListed" @click="makeTransaction('buy')">
+                <div class="spinner" :class="{ active: buying }"></div>
+                <span v-show="!buying">Buy</span>
               </button>
-            </div> -->
-            <div>
-              <button @click="action('sell')">Sell</button>
-              <div>
-                <button @click="action('update')">Update Listing</button>
-                <button @click="cancel()" class="white-btn">
-                  Cancel Listing
-                </button>
-              </div>
-            </div>
-            <div>
-              <button @click="buy()">Buy</button>
-              <button @click="action('offer')" class="white-btn">
+              <button @click="makeTransaction('offer')" class="white-btn">
                 Make offer
               </button>
             </div>
@@ -208,66 +197,13 @@
         </div>
       </div>
     </div>
-    <div>
-      {{ content }}
-      <div v-if="content ? isCurrentUserTokenOwner : false">
-        <button v-if="!isListed" @click="action('sell')">Sell</button>
-        <button v-else @click="action('cancel')">Cancel/Update Listing</button>
-      </div>
-      <div v-else>
-        <button v-if="isListed" @click="action('buy')">Buy</button>
-        <button @click="action('offer')">Make offer</button>
-      </div>
-
-      <input type="text" v-model="price" placeholder="price in ETH" />
-
-      <div>
-        OFFER LIST
-        <ul v-for="(val, i) in offers" :key="i">
-          CREATED:
-          {{
-            new Date(val.createdAt * 1000)
-          }}
-          / Offeror:
-          {{
-            val.from
-          }}
-          / Price:
-          {{
-            weiToEther(val.price)
-          }}
-          ETH / isAccepted:
-          {{
-            val.isAccepted
-          }}
-          / Deadline:
-          {{
-            new Date(val.deadline * 1000)
-          }}
-          <button
-            v-if="
-              isCurrentUserTokenOwner &&
-              !val.isAccepted &&
-              new Date(val.deadline * 1000) > new Date()
-            "
-            @click="action('accept', val.from.wallet_address)"
-          >
-            Accept Offer
-          </button>
-          <button v-if="isCurrentUserTokenOwner && val.isAccepted">
-            Accepted
-          </button>
-          <button
-            v-if="
-              isCurrentUserTokenOwner &&
-              new Date(val.deadline * 1000) <= new Date()
-            "
-          >
-            Expired
-          </button>
-        </ul>
-      </div>
-    </div>
+    <PromptModal
+      v-if="isModalOpen"
+      @close-modal="toggleModal"
+      :confirmOnProcess="confirmOnProcess"
+      :cancelDisabled="cancelDisabled"
+      ref="promptModal"
+    ></PromptModal>
   </div>
 </template>
 
@@ -289,14 +225,10 @@ import {
   isSessionValid,
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
+import { MARKETPLACE_ABI, MARKETPLACE } from '../../contracts'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
-import {
-  MARKETPLACE_ABI,
-  MARKETPLACE,
-  getPcSigner,
-  getWalletConnectSigner,
-} from '../../contracts'
+import PromptModal from '../modal/PromptModal.vue'
 
 export default {
   name: 'ContentDetail',
@@ -304,6 +236,7 @@ export default {
   components: {
     ContentsProfile,
     TokensByCollection,
+    PromptModal,
   },
   data() {
     return {
@@ -312,11 +245,16 @@ export default {
       histories: [],
       tokens: [],
       signer: null,
+      confirmOnProcess: false,
+      cancelDisabled: false,
+      buying: false,
+      canceling: false,
     }
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
+      isModalOpen: state => state.menu.isModalOpen,
     }),
     isListed() {
       const eventType = this.content?.listings[0]?.eventType
@@ -329,6 +267,13 @@ export default {
       return (
         this.currentUser.wallet_address === this.content.owner.wallet_address
       )
+    },
+    price() {
+      if (this.isListed) {
+        return this.content?.listings[0]?.price
+      } else {
+        return ''
+      }
     },
   },
   methods: {
@@ -379,7 +324,10 @@ export default {
       this.histories = histories
       this.tokens = tokensByProject.tokens
     },
-    async buy() {
+    toggleModal() {
+      this.$store.commit('TOGGLE_MODAL')
+    },
+    async makeTransaction(which) {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -396,32 +344,114 @@ export default {
         MARKETPLACE_ABI,
         this.signer,
       )
+
+      switch (which) {
+        case 'sell': {
+          this.toggleModal()
+          await this.$nextTick()
+          for (;;) {
+            try {
+              const newPrice = await this.$refs.promptModal.waitForAnswer()
+              this.confirmOnProcess = true
+              await this.sell(contract, newPrice)
+              break
+            } catch (error) {
+              if (error.message === 'canceled') {
+                break
+              }
+            } finally {
+              this.confirmOnProcess = false
+              this.cancelDisabled = false
+            }
+          }
+          this.toggleModal()
+          break
+        }
+        case 'buy': {
+          try {
+            this.buying = true
+            await this.buy(contract)
+          } finally {
+            this.buying = false
+          }
+          break
+        }
+        case 'cancel': {
+          try {
+            this.canceling = true
+            await this.cancel(contract)
+          } finally {
+            this.canceling = false
+          }
+          break
+        }
+        case 'update': {
+          this.toggleModal()
+          await this.$nextTick()
+          for (;;) {
+            try {
+              const newPrice = await this.$refs.promptModal.waitForAnswer()
+              this.confirmOnProcess = true
+              await this.update(contract, newPrice)
+              break
+            } catch (error) {
+              if (error.message === 'canceled') {
+                break
+              }
+            } finally {
+              this.confirmOnProcess = false
+              this.cancelDisabled = false
+            }
+          }
+          this.toggleModal()
+          break
+        }
+        case 'offer': {
+          this.toggleModal()
+          await this.$nextTick()
+          for (;;) {
+            try {
+              const offerPrice = await this.$refs.promptModal.waitForAnswer()
+              this.confirmOnProcess = true
+              await this.offer(contract, offerPrice)
+              break
+            } catch (error) {
+              if (error.message === 'canceled') {
+                break
+              }
+            } finally {
+              this.confirmOnProcess = false
+              this.cancelDisabled = false
+            }
+          }
+          this.toggleModal()
+          break
+        }
+        // case 'accept': {
+        //   const tx = await contract.acceptOffer(
+        //     this.content.project.id,
+        //     this.content.tokenId,
+        //     acceptParam,
+        //   )
+        //   await tx.wait()
+        //   alert('accepted!')
+        //   break
+        // }
+        default:
+          break
+      }
+    },
+    async buy(contract) {
       const tx = await contract.buyItem(
         this.content.project.id,
         this.content.tokenId,
-        this.content.owner,
-        { value: etherToWei(this.price) },
+        this.content.owner.wallet_address,
+        { value: this.price },
       )
       await tx.wait()
       alert('purchased!')
     },
-    async cancel() {
-      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
-        return
-      }
-
-      this.signer = await checkMobileWalletStatusAndGetSigner(
-        this.$router.currentRoute.fullPath,
-      )
-      if (!this.signer) {
-        return
-      }
-
-      const contract = new ethers.Contract(
-        MARKETPLACE,
-        MARKETPLACE_ABI,
-        this.signer,
-      )
+    async cancel(contract) {
       const tx = await contract.cancelListing(
         this.content.project.id,
         this.content.tokenId,
@@ -429,86 +459,36 @@ export default {
       await tx.wait()
       alert('canceled!')
     },
-    async action(which, acceptParam) {
-      // TODO] 모달로 바꾸기
-      let signer = null
-
-      if (this.isMobile) {
-        signer = await getWalletConnectSigner()
-      } else {
-        signer = await getPcSigner()
-      }
-
-      const contract = new ethers.Contract(MARKETPLACE, MARKETPLACE_ABI, signer)
-      switch (which) {
-        case 'sell': {
-          const tx = await contract.listItem(
-            this.content.project.id,
-            this.content.tokenId,
-            etherToWei(this.price),
-          )
-          await tx.wait()
-          alert('listed!')
-          break
-        }
-        case 'buy': {
-          const tx = await contract.buyItem(
-            this.content.project.id,
-            this.content.tokenId,
-            this.content.owner,
-            { value: etherToWei(this.price) },
-          )
-          await tx.wait()
-          alert('purchased!')
-          break
-        }
-        case 'cancel': {
-          const tx = await contract.cancelListing(
-            this.content.project.id,
-            this.content.tokenId,
-          )
-          await tx.wait()
-          alert('canceled!')
-          break
-        }
-        case 'update': {
-          const tx = await contract.updateListing(
-            this.content.project.id,
-            this.content.tokenId,
-            etherToWei(this.price),
-          )
-          await tx.wait()
-          alert('updated!')
-          break
-        }
-        case 'offer': {
-          const tx = await contract.createOffer(
-            this.content.project.id,
-            this.content.tokenId,
-            1,
-            { value: etherToWei(this.price) },
-          )
-          await tx.wait()
-          alert('offered!')
-          break
-        }
-        case 'accept': {
-          const tx = await contract.acceptOffer(
-            this.content.project.id,
-            this.content.tokenId,
-            acceptParam,
-          )
-          await tx.wait()
-          alert('accepted!')
-          break
-        }
-        case 'price': {
-          // TODO] 이동 경로??
-          break
-        }
-        default:
-          break
-      }
+    async sell(contract, newPrice) {
+      this.cancelDisabled = true
+      const tx = await contract.listItem(
+        this.content.project.id,
+        this.content.tokenId,
+        etherToWei(newPrice),
+      )
+      await tx.wait()
+      alert('listed!')
+    },
+    async update(contract, newPrice) {
+      this.cancelDisabled = true
+      const tx = await contract.updateListing(
+        this.content.project.id,
+        this.content.tokenId,
+        etherToWei(newPrice),
+      )
+      await tx.wait()
+      alert('updated!')
+    },
+    async offer(contract, offerPrice) {
+      this.cancelDisabled = true
+      const tx = await contract.createOffer(
+        this.content.project.id,
+        this.content.tokenId,
+        1,
+        { value: etherToWei(offerPrice) },
+      )
+      await tx.wait()
+      alert('offered!')
     },
     makeS3Path(path) {
       return makeS3Path(path)
@@ -686,6 +666,38 @@ export default {
           width: 100%;
           button {
             width: 100%;
+            .spinner {
+              display: none;
+
+              &.active {
+                display: inline-block;
+                position: relative;
+                width: 2px;
+                margin: 0px auto;
+                animation: rotation 0.6s infinite linear;
+                border-left: 6px solid rgba(0, 174, 239, 0.15);
+                border-right: 6px solid rgba(0, 174, 239, 0.15);
+                border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+                border-top: 6px solid $artong-white;
+                border-radius: 100%;
+              }
+            }
+
+            @keyframes rotation {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(359deg);
+              }
+            }
+            button {
+              width: 100%;
+            }
+
+            & > span:nth-child(2) {
+              align-self: center;
+            }
           }
         }
       }
