@@ -55,10 +55,13 @@
       v-if="this.member.is_follower"
       class="follow-n-unfollow-btn"
       @click="unfollow"
+      v-ripple
     >
       Unfollow
     </button>
-    <button v-else class="follow-n-unfollow-btn" @click="follow">Follow</button>
+    <button v-else class="follow-n-unfollow-btn" @click="follow" v-ripple>
+      Follow
+    </button>
   </div>
 </template>
 
@@ -70,6 +73,7 @@ import {
   isSessionValid,
 } from '../../util/commonFunc'
 import ProfileImageBig from './ProfileImageBig.vue'
+import Ripple from '../../directives/ripple/Ripple'
 
 export default {
   name: 'ArtistPageProfile',
@@ -162,6 +166,9 @@ export default {
       },
     },
   },
+  directives: {
+    ripple: Ripple,
+  },
 }
 </script>
 
@@ -240,11 +247,6 @@ export default {
     }
   }
   .follow-n-unfollow-btn {
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    color: $artong-white;
     height: 48px;
     width: 100%;
     margin-bottom: 46px;
@@ -331,8 +333,7 @@ export default {
 @media only screen and (min-width: 1080px) {
   .profile {
     .follow-n-unfollow-btn {
-      width: 89px;
-      height: 48px;
+      width: 96px;
       margin-left: auto;
       margin-bottom: 8px;
       display: block;
