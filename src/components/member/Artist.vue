@@ -152,7 +152,11 @@ export default {
   },
   watch: {
     async $route(to) {
-      if (!to.params.wallet_address && to.params.id !== this.member.username) {
+      if (
+        to.name === 'UserOrArtist' &&
+        !to.params.wallet_address &&
+        to.params.id !== this.member.username
+      ) {
         this.member = await this.getMember(to.params.id)
         this.tabKey++
       }

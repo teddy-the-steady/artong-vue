@@ -241,6 +241,11 @@ html {
         font-size: 14px;
         color: #000000;
       }
+      &.disabled {
+        cursor: default !important;
+        pointer-events: none;
+        opacity: 0.4;
+      }
     }
 
     #header-bar {
