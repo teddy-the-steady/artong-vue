@@ -6,7 +6,23 @@
       :tableName="'Offers'"
       :iconSrc="require('@/assets/icons/100-add-folder.svg')"
       :showHeader="true"
-      :fields="['PRICE', 'DATE', 'FROM']"
+      :fields="[
+        {
+          name: 'PRICE',
+          type: 'price',
+          key: 'price',
+        },
+        {
+          name: 'DATE',
+          type: 'date',
+          key: 'createdAt',
+        },
+        {
+          name: 'FROM',
+          type: 'member',
+          key: 'from',
+        },
+      ]"
     ></TableWithTitle>
     <div class="divider"></div>
     <TableWithTitle
@@ -14,7 +30,33 @@
       :tableName="'History'"
       :iconSrc="require('@/assets/icons/history.svg')"
       :showHeader="true"
-      :fields="['PRICE', 'FROM', 'DATE', 'TO']"
+      :fields="[
+        {
+          name: 'PRICE',
+          type: 'price',
+          key: 'price',
+        },
+        {
+          name: 'Total',
+          type: 'price',
+          key: 'total',
+        },
+        {
+          name: 'From',
+          type: 'member',
+          key: 'from_member',
+        },
+        {
+          name: 'DATE',
+          type: 'date',
+          key: 'block_timestamp',
+        },
+        {
+          name: 'TO',
+          type: 'member',
+          key: 'to_member',
+        },
+      ]"
     ></TableWithTitle>
   </div>
 </template>

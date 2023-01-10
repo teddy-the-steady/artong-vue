@@ -6,22 +6,14 @@
     </div>
     <!-- {{ fields[1] }} -->
     <table>
-      <th v-for="(field, i) in fields" :key="i">{{ field }}</th>
+      <th v-for="(field, i) in fields" :key="i">{{ field[name] }}</th>
       <tr v-for="(content, i) in contents" :key="`o-${i}`">
         <td v-for="(field, k) in fields" :key="k">
-          <div v-if="field == 'PRICE'">{{ content.price }}</div>
-          <div v-else-if="field == 'DATE'">
-            {{ content.createdAt ? content.createdAt : content.created_at }}
-          </div>
-          <div v-else-if="field == 'FROM'">
+          <div v-if="field.type == 'price'">{{ content[field.key] }}</div>
+          <div v-else-if="field.type == 'date'">{{ content[field.key] }}</div>
+          <div v-else-if="field.type == 'member'">
             <ContentsProfile
-              :member="content.from ? content.from : content.from_member"
-              :needUserName="true"
-            ></ContentsProfile>
-          </div>
-          <div v-else-if="field == 'TO'">
-            <ContentsProfile
-              :member="content.to_member"
+              :member="content[field.key]"
               :needUserName="true"
             ></ContentsProfile>
           </div>
