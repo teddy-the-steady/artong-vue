@@ -5,8 +5,7 @@
         :src="
           content
             ? makeS3Path(content.content_s3key) ||
-              makeS3Path(content.content_thumbnail_s3key) ||
-              content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+              makeS3Path(content.content_thumbnail_s3key)
             : ''
         "
       />
@@ -24,21 +23,6 @@
                 <td>DATE</td>
                 <td>FROM</td>
               </tr>
-              <tr v-for="(val, i) in offers" :key="i">
-                <td class="price">
-                  {{ weiToEther(val.price) }}
-                  ETH
-                </td>
-                <td class="record">
-                  {{ convertDay(val.createdAt) }}
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-              </tr>
             </table>
           </div>
           <div class="round-box history">
@@ -52,34 +36,6 @@
                 <td>FROM</td>
                 <td>TO</td>
                 <td>DATE</td>
-              </tr>
-              <tr v-for="(val, i) in histories" :key="i">
-                <td class="price">
-                  <!--
-                  {{ weiToEther(val.price) }}
-                  ETH
-                  <img
-                    :src="require('@/assets/icons/launch.svg')"
-                    @click="action('price')"
-                  />
-                  -->
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    v-if="val.to_member"
-                    :member="val.to_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="record">
-                  {{ convertDay(val.block_timestamp) }}
-                </td>
               </tr>
             </table>
           </div>
@@ -145,33 +101,19 @@
           <div class="price-box">
             <div class="label">Price</div>
             <div>
-              {{ price ? weiToEther(price) : '' }}
+              {{ content ? weiToEther(price) : '' }}
               ETH
             </div>
           </div>
           <div class="trade-buttons">
-            <div v-if="content ? isCurrentUserTokenOwner : false">
-              <button v-if="!isListed" @click="makeTransaction('sell')">
-                Sell
-              </button>
-              <div v-else>
-                <button @click="makeTransaction('update')">
-                  Update Listing
-                </button>
-                <button @click="makeTransaction('cancel')" class="white-btn">
-                  <div class="spinner" :class="{ active: canceling }"></div>
-                  <span v-show="!canceling">Cancel Listing</span>
-                </button>
-              </div>
-            </div>
-            <div v-else>
-              <button v-if="isListed" @click="makeTransaction('buy')">
+            <div v-if="content ? content.status === 'APPROVED' : false">
+              <button @click="buy()">
                 <div class="spinner" :class="{ active: buying }"></div>
                 <span v-show="!buying">Buy</span>
               </button>
-              <button @click="makeTransaction('offer')" class="white-btn">
-                Make offer
-              </button>
+            </div>
+            <div v-else-if="isCurrentUserProjectOwner">
+              <button @click="approve()" class="white-btn">Approve</button>
             </div>
           </div>
         </div>
@@ -183,7 +125,7 @@
             <router-link
               :to="{
                 name: 'Project',
-                params: { id: content ? content.project.id : null },
+                params: { id: content ? content.project_address : null },
               }"
               >View more</router-link
             >
@@ -211,27 +153,26 @@
 import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
+import { graphql, queryTokensByProject, queryProject } from '../../api/graphql'
 import {
-  graphql,
-  queryToken,
-  queryOffersByToken,
-  queryTokenHistory,
-  queryTokensByProject,
-} from '../../api/graphql'
+  getContent,
+  patchContent,
+  patchContentStatus,
+  getContentVoucher,
+} from '../../api/contents'
 import {
   makeS3Path,
-  etherToWei,
   weiToEther,
   isSessionValid,
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
-import { MARKETPLACE_ABI, MARKETPLACE } from '../../contracts'
+import { ERC721_ABI } from '../../contracts'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
 
 export default {
-  name: 'ContentDetail',
+  name: 'CandidateDetail',
   mixins: [headerActivate],
   components: {
     ContentsProfile,
@@ -241,14 +182,12 @@ export default {
   data() {
     return {
       content: null,
-      offers: [],
-      histories: [],
       tokens: [],
+      project: null,
       signer: null,
       confirmOnProcess: false,
       cancelDisabled: false,
       buying: false,
-      canceling: false,
     }
   },
   computed: {
@@ -256,55 +195,26 @@ export default {
       currentUser: state => state.user.currentUser,
       isModalOpen: state => state.menu.isModalOpen,
     }),
-    isListed() {
-      const eventType = this.content?.listings[0]?.eventType
-      return eventType === 'LISTED' || eventType === 'UPDATED'
-    },
     isMobile() {
       return this.$isMobile()
     },
-    isCurrentUserTokenOwner() {
+    isCurrentUserProjectOwner() {
       return (
-        this.currentUser.wallet_address === this.content.owner.wallet_address
+        this.currentUser.wallet_address === this.project?.owner.wallet_address
       )
     },
     price() {
-      if (this.isListed) {
-        return this.content?.listings[0]?.price
-      } else {
-        return ''
-      }
+      return parseInt(this.content.price).toString()
     },
   },
   methods: {
-    async getContents(project_address, token_id) {
-      const [token, offers, histories, tokensByProject] = await Promise.all([
+    async getContents(project_address, contents_id) {
+      const [content, project, tokensByProject] = await Promise.all([
+        getContent(project_address, contents_id),
         graphql(
-          queryToken({
+          queryProject({
             variables: {
-              id: project_address + token_id,
-            },
-            db: {
-              project_address: project_address,
-              token_id: token_id,
-            },
-          }),
-        ),
-        graphql(
-          queryOffersByToken({
-            variables: {
-              id: project_address + token_id,
-            },
-          }),
-        ),
-        graphql(
-          queryTokenHistory({
-            variables: {
-              id: project_address + token_id,
-            },
-            pagination: {
-              start_num: 0,
-              count_num: 5,
+              id: project_address,
             },
           }),
         ),
@@ -319,15 +229,19 @@ export default {
         ),
       ])
 
-      this.content = token.token
-      this.offers = offers.offers
-      this.histories = histories
+      this.content = content
+      this.project = project.project
       this.tokens = tokensByProject.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
     },
-    async makeTransaction(which) {
+    async approve() {
+      await patchContentStatus(this.project.id, this.content.id, {
+        status: 'APPROVED',
+      })
+    },
+    async buy() {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -340,155 +254,35 @@ export default {
       }
 
       const contract = new ethers.Contract(
-        MARKETPLACE,
-        MARKETPLACE_ABI,
+        this.$router.currentRoute.params.project_address,
+        ERC721_ABI,
         this.signer,
       )
 
-      switch (which) {
-        case 'sell': {
-          this.toggleModal()
-          await this.$nextTick()
-          for (;;) {
-            try {
-              const newPrice = await this.$refs.promptModal.waitForAnswer()
-              this.confirmOnProcess = true
-              await this.sell(contract, newPrice)
-              break
-            } catch (error) {
-              if (error.message === 'canceled') {
-                break
-              }
-            } finally {
-              this.confirmOnProcess = false
-              this.cancelDisabled = false
-            }
-          }
-          this.toggleModal()
-          break
-        }
-        case 'buy': {
-          try {
-            this.buying = true
-            await this.buy(contract)
-          } finally {
-            this.buying = false
-          }
-          break
-        }
-        case 'cancel': {
-          try {
-            this.canceling = true
-            await this.cancel(contract)
-          } finally {
-            this.canceling = false
-          }
-          break
-        }
-        case 'update': {
-          this.toggleModal()
-          await this.$nextTick()
-          for (;;) {
-            try {
-              const newPrice = await this.$refs.promptModal.waitForAnswer()
-              this.confirmOnProcess = true
-              await this.update(contract, newPrice)
-              break
-            } catch (error) {
-              if (error.message === 'canceled') {
-                break
-              }
-            } finally {
-              this.confirmOnProcess = false
-              this.cancelDisabled = false
-            }
-          }
-          this.toggleModal()
-          break
-        }
-        case 'offer': {
-          this.toggleModal()
-          await this.$nextTick()
-          for (;;) {
-            try {
-              const offerPrice = await this.$refs.promptModal.waitForAnswer()
-              this.confirmOnProcess = true
-              await this.offer(contract, offerPrice)
-              break
-            } catch (error) {
-              if (error.message === 'canceled') {
-                break
-              }
-            } finally {
-              this.confirmOnProcess = false
-              this.cancelDisabled = false
-            }
-          }
-          this.toggleModal()
-          break
-        }
-        // case 'accept': {
-        //   const tx = await contract.acceptOffer(
-        //     this.content.project.id,
-        //     this.content.tokenId,
-        //     acceptParam,
-        //   )
-        //   await tx.wait()
-        //   alert('accepted!')
-        //   break
-        // }
-        default:
-          break
+      try {
+        this.buying = true
+        await this.redeem(contract)
+      } finally {
+        this.buying = false
       }
     },
-    async buy(contract) {
-      const tx = await contract.buyItem(
-        this.content.project.id,
-        this.content.tokenId,
-        this.content.owner.wallet_address,
+    async redeem(contract) {
+      const contentResult = await getContentVoucher(this.content.id)
+      const voucher = contentResult.voucher
+
+      const tx = await contract.redeem(
+        this.currentUser.wallet_address,
+        voucher,
         { value: this.price },
       )
-      await tx.wait()
-      alert('purchased!')
-    },
-    async cancel(contract) {
-      const tx = await contract.cancelListing(
-        this.content.project.id,
-        this.content.tokenId,
-      )
-      await tx.wait()
-      alert('canceled!')
-    },
-    async sell(contract, newPrice) {
-      this.cancelDisabled = true
-      const tx = await contract.listItem(
-        this.content.project.id,
-        this.content.tokenId,
-        etherToWei(newPrice),
-      )
-      await tx.wait()
-      alert('listed!')
-    },
-    async update(contract, newPrice) {
-      this.cancelDisabled = true
-      const tx = await contract.updateListing(
-        this.content.project.id,
-        this.content.tokenId,
-        etherToWei(newPrice),
-      )
-      await tx.wait()
-      alert('updated!')
-    },
-    async offer(contract, offerPrice) {
-      this.cancelDisabled = true
-      const tx = await contract.createOffer(
-        this.content.project.id,
-        this.content.tokenId,
-        1,
-        { value: etherToWei(offerPrice) },
-      )
-      await tx.wait()
-      alert('offered!')
+      const approveReceipt = await tx.wait()
+      console.log(approveReceipt)
+      const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
+
+      await patchContent(this.content.id, {
+        tokenId: tokenId,
+        isRedeemed: true,
+      })
     },
     makeS3Path(path) {
       return makeS3Path(path)
@@ -507,14 +301,17 @@ export default {
   async created() {
     await this.getContents(
       this.$route.params.project_address,
-      this.$route.params.token_id,
+      this.$route.params.contents_id,
     )
 
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'ContentDetail') {
-          await this.getContents(to.params.project_address, to.params.token_id)
+        if (to.name === 'ContentCandidateDetail') {
+          await this.getContents(
+            to.params.project_address,
+            to.params.contents_id,
+          )
         }
       },
     )
