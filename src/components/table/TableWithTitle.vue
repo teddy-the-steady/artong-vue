@@ -5,35 +5,43 @@
         <img :src="iconSrc" />
         <div>{{ tableName }}</div>
       </div>
-      <!-- {{ fields[1] }} -->
       <table class="table">
-        <th v-for="(field, i) in fields" :key="i">{{ field.name }}</th>
-        <tr v-for="(content, i) in contents" :key="`o-${i}`">
-          <td v-for="(field, k) in fields" :key="k">
-            <div v-if="field.type == 'price'">
-              {{
-                content[field.key]
-                  ? weiToEther(content[field.key]) + ' ETH'
-                  : ''
-              }}
-            </div>
-            <div v-else-if="field.type == 'date'">
-              {{ convertDay(parseInt(content[field.key])) }}
-              <!-- {{ content[field.key] }} -->
-            </div>
-            <div v-else-if="field.type == 'member'">
-              <ContentsProfile
-                :member="content[field.key]"
-                :needUserName="true"
-              ></ContentsProfile>
-            </div>
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th class="index" v-for="(field, i) in fields" :key="i">
+              {{ field.name }}
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr v-for="(content, i) in contents" :key="`o-${i}`">
+            <td v-for="(field, k) in fields" :key="k">
+              <div v-if="field.type == 'price'">
+                {{
+                  content[field.key]
+                    ? weiToEther(content[field.key]) + ' ETH'
+                    : ''
+                }}
+              </div>
+              <div v-else-if="field.type == 'date'">
+                {{ convertDay(parseInt(content[field.key])) }}
+                <!-- {{ content[field.key] }} -->
+              </div>
+              <div v-else-if="field.type == 'member'">
+                <ContentsProfile
+                  :member="content[field.key]"
+                  :needUserName="true"
+                ></ContentsProfile>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <InfiniteLoading
+          @infinite="infiniteHandler"
+          spinner="spiral"
+          class="infinite-loading"
+        ></InfiniteLoading>
       </table>
-      <InfiniteLoading
-        @infinite="infiniteHandler"
-        spinner="spiral"
-      ></InfiniteLoading>
     </div>
   </div>
 </template>
@@ -97,7 +105,6 @@ export default {
       }
     },
     async infiniteHandler($state) {
-      console.log('infiniteHandler')
       if (this.noMoreDataToLoad) {
         $state.complete()
         return
@@ -108,7 +115,6 @@ export default {
       }, 1000)
     },
     async pushData() {
-      console.log('pushData')
       const contentArrayToPush = await this.makeContentArray()
       if (contentArrayToPush.length > 0) {
         for (let i in contentArrayToPush) {
@@ -120,8 +126,6 @@ export default {
       const contentArrayToPush = []
       if (this.api) {
         const result = await this.getContents()
-        console.log('!!')
-        console.log(result)
         if (result.length > 0) {
           for (let i = 0; i < result.length; i++) {
             contentArrayToPush.push(result[i])
@@ -148,6 +152,8 @@ export default {
   box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
   border-radius: 24px;
   .header {
+    // position: absolute;
+    // background-color: $artong-white;
     display: flex;
     font-family: 'Mustica Pro';
     font-style: normal;
@@ -161,30 +167,46 @@ export default {
       margin-right: 8px;
     }
   }
+
   table {
-    width: 100%;
     text-align: left;
     font-family: 'Pretendard';
     font-style: normal;
     font-size: 14px;
     border-collapse: collapse;
-    th {
-      height: 41px;
-      font-weight: 500;
-      text-align: left;
-      line-height: 41px;
-      border-bottom: 1px solid #cccccc;
+    display: table;
+    width: 100%;
+    height: 100%;
+    thead {
+      tr {
+        width: 100%;
+        th {
+          background-color: $artong-white;
+          height: 41px;
+          font-weight: 500;
+          text-align: left;
+          line-height: 41px;
+          border-bottom: 1px solid #cccccc;
+          position: sticky;
+          top: 0;
+        }
+      }
     }
-    tr {
-      td {
-        height: 64px;
-        font-weight: 400;
-        color: #333333;
-        border-bottom: 1px solid #cccccc;
+    tbody {
+      overflow-y: auto;
+      max-height: 200px;
+      display: block;
+      tr {
+        td {
+          height: 64px;
+          font-weight: 400;
+          color: #333333;
+          border-bottom: 1px solid #cccccc;
+        }
       }
     }
     .infinite-loading {
-      text-align: center;
+      position: static;
     }
   }
 }
