@@ -496,12 +496,21 @@ export default {
       if (this.projectAddress !== to.params.id) {
         this.projectAddress = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
-        this.tabs[3].show = false
+      }
+
+      if (
+        this.project.policy === 1 &&
+        (this.currentUser.wallet_address ===
+          this.project.owner.wallet_address ||
+          this.project.is_contributor)
+      ) {
+        this.tabs[3].show = true
       }
 
       const t = to.query.tab || '0'
       switch (t) {
         case '0':
+          this.tabs[3].show = false
           this.tabs[t].sort =
             this.sortOptions[to.query.sort] || this.sortOptions['newest']
           this.tabs[t].api = {
