@@ -88,20 +88,12 @@ export default {
     },
     async getContents() {
       const results = await this.api.func(this.api.body)
-      this.api.body.variables.skip += this.api.body.variables.first
-      return results.offers
-    },
-    async setContents() {
-      const tmp = await this.getContents()
-      if (tmp) {
-        if (tmp.offers) {
-          this.contents = tmp.offers // api가 offers인 경우
-        } else {
-          this.contents = tmp // api가 history인 경우
-        }
-      }
-      if (this.contents) {
-        console.log(this.contents)
+      if (this.api.result_key == 'offers') {
+        this.api.body.variables.skip += this.api.body.variables.first
+        return results.offers
+      } else if (this.api.result_key == 'history') {
+        this.api.body.pagination.start_num += this.api.body.pagination.count_num
+        return results
       }
     },
     async infiniteHandler($state) {
@@ -132,30 +124,7 @@ export default {
         console.log(result)
         if (result.length > 0) {
           for (let i = 0; i < result.length; i++) {
-            contentArrayToPush.push({
-              id: result[i].id,
-              from: {
-                id: result[i].from.id,
-                email: result[i].from.email,
-                username: result[i].from.username,
-                created_at: result[i].from.created_at,
-                updated_at: result[i].from.updated_at,
-                introduction: result[i].from.introduction,
-                profile_s3key: result[i].from.profile_s3key,
-                country_id: result[i].from.country_id,
-                wallet_address: result[i].from.wallet_address,
-                principal_id: result[i].from.principal_id,
-                profile_thumbnail_s3key: result[i].from.profile_thumbnail_s3key,
-              },
-              price: result[i].price,
-              deadline: result[i].deadline,
-              isAccepted: result[i].isAccepted,
-              createdAt: result[i].createdAt,
-              updatedAt: result[i].updatedAt,
-              sale: {
-                id: result[i].sale?.id,
-              },
-            })
+            contentArrayToPush.push(result[i])
           }
         } else {
           this.noMoreDataToLoad = true
@@ -163,10 +132,6 @@ export default {
       }
       return contentArrayToPush
     },
-  },
-  async mounted() {
-    //console.log(this.api)
-    //await this.setContents()
   },
 }
 </script>

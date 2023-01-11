@@ -25,7 +25,7 @@
       ]"
     ></TableWithTitle>
     <div class="divider"></div>
-    <!-- <TableWithTitle
+    <TableWithTitle
       :api="queryTokenHistory"
       :tableName="'History'"
       :iconSrc="require('@/assets/icons/history.svg')"
@@ -52,7 +52,7 @@
           key: 'to_member',
         },
       ]"
-    ></TableWithTitle> -->
+    ></TableWithTitle>
   </div>
 </template>
 <script>
@@ -103,7 +103,7 @@ export default {
         },
         pagination: {
           start_num: 0,
-          count_num: 5,
+          count_num: 1,
         },
       }),
     }
