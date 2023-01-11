@@ -15,6 +15,8 @@ const state = {
     username: '',
     language: '',
     wallet_address: '',
+    follower: 0,
+    following: 0,
     profile: {
       profile_image_url: '',
       introduction: '',
@@ -31,6 +33,8 @@ const actions = {
         username: member.username,
         language: member.language,
         wallet_address: member.wallet_address,
+        follower: member.follower,
+        following: member.following,
         profile: {
           profile_image_url: member.profile_thumbnail_s3key
             ? makeS3Path(member.profile_thumbnail_s3key)
