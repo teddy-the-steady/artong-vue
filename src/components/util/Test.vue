@@ -25,7 +25,7 @@
       ]"
     ></TableWithTitle>
     <div class="divider"></div>
-    <TableWithTitle
+    <!-- <TableWithTitle
       :api="queryTokenHistory"
       :tableName="'History'"
       :iconSrc="require('@/assets/icons/history.svg')"
@@ -52,7 +52,7 @@
           key: 'to_member',
         },
       ]"
-    ></TableWithTitle>
+    ></TableWithTitle> -->
   </div>
 </template>
 <script>
@@ -82,10 +82,11 @@ export default {
   },
   created() {
     this.queryOffersByToken = {
+      result_key: 'offers',
       func: graphql,
       body: queryOffersByToken({
         variables: {
-          first: 10,
+          first: 1,
           skip: 0,
           id: '0x4704cf416a4c6dcb7317cd7ac8b4b9e487159eb3' + '2',
           //id: this.$route.params.project_address + this.$route.params.token_id,
@@ -93,6 +94,7 @@ export default {
       }),
     }
     this.queryTokenHistory = {
+      result_key: 'history',
       func: graphql,
       body: queryTokenHistory({
         variables: {
