@@ -6,7 +6,7 @@
         <div>{{ tableName }}</div>
       </div>
       <!-- {{ fields[1] }} -->
-      <table>
+      <table class="table">
         <th v-for="(field, i) in fields" :key="i">{{ field.name }}</th>
         <tr v-for="(content, i) in contents" :key="`o-${i}`">
           <td v-for="(field, k) in fields" :key="k">
@@ -29,13 +29,11 @@
             </div>
           </td>
         </tr>
-        <div class="infinite-loading">
-          <InfiniteLoading
-            @infinite="infiniteHandler"
-            spinner="spiral"
-          ></InfiniteLoading>
-        </div>
       </table>
+      <InfiniteLoading
+        @infinite="infiniteHandler"
+        spinner="spiral"
+      ></InfiniteLoading>
     </div>
   </div>
 </template>
@@ -52,7 +50,7 @@ export default {
   },
   data() {
     return {
-      contents: null,
+      contents: [],
       noMoreDataToLoad: false,
     }
   },
@@ -79,9 +77,19 @@ export default {
     },
   },
   methods: {
+    weiToEther(wei) {
+      return weiToEther(wei)
+    },
+    convertDay(date) {
+      const toDay = new Date()
+      const now = toDay.getTime()
+      const deadLine = date * 1000
+      return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
+    },
     async getContents() {
       const results = await this.api.func(this.api.body)
-      return results
+      this.api.body.variables.skip += this.api.body.variables.first
+      return results.offers
     },
     async setContents() {
       const tmp = await this.getContents()
@@ -96,16 +104,8 @@ export default {
         console.log(this.contents)
       }
     },
-    weiToEther(wei) {
-      return weiToEther(wei)
-    },
-    convertDay(date) {
-      const toDay = new Date()
-      const now = toDay.getTime()
-      const deadLine = date * 1000
-      return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
-    },
     async infiniteHandler($state) {
+      console.log('infiniteHandler')
       if (this.noMoreDataToLoad) {
         $state.complete()
         return
@@ -116,6 +116,7 @@ export default {
       }, 1000)
     },
     async pushData() {
+      console.log('pushData')
       const contentArrayToPush = await this.makeContentArray()
       if (contentArrayToPush.length > 0) {
         for (let i in contentArrayToPush) {
@@ -125,9 +126,10 @@ export default {
     },
     async makeContentArray() {
       const contentArrayToPush = []
-      if (this.api == 'queryOffersByToken') {
-        const result = await this.getContents(this.api).offers
-        this.api.body.variables.skip += this.api.body.variables.first
+      if (this.api) {
+        const result = await this.getContents()
+        console.log('!!')
+        console.log(result)
         if (result.length > 0) {
           for (let i = 0; i < result.length; i++) {
             contentArrayToPush.push({
@@ -151,7 +153,7 @@ export default {
               createdAt: result[i].createdAt,
               updatedAt: result[i].updatedAt,
               sale: {
-                id: result[i].sale.id,
+                id: result[i].sale?.id,
               },
             })
           }
@@ -163,7 +165,8 @@ export default {
     },
   },
   async mounted() {
-    await this.setContents()
+    //console.log(this.api)
+    //await this.setContents()
   },
 }
 </script>
