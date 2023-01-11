@@ -1,6 +1,61 @@
 <template>
   <div>
     This is a test
+    <div class="wrapper">
+      <div class="tableBox">
+        <table class="tableData">
+          <colgroup>
+            <col width="8%" />
+            <col width="15%" />
+            <col width="25%" />
+            <col width="16%" />
+            <col width="12%" />
+            <col width="12%" />
+            <col width="12%" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="stiky">순번</th>
+              <th class="stiky">구분</th>
+              <th class="stiky">제목</th>
+              <th class="stiky">글쓴이</th>
+              <th class="stiky">날짜</th>
+              <th class="stiky">첨부파일</th>
+              <th class="stiky">비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>공지사항</td>
+              <td>제목입니다.</td>
+              <td>홍길동</td>
+              <td>2020-11-26</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>공지사항</td>
+              <td>제목 "1","2","3","4","5","6","7","8","9","10","11"</td>
+              <td>홍길동</td>
+              <td>2020-11-26</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>게시판</td>
+              <td>123456789123456789123456789</td>
+              <td>홍길동</td>
+              <td>2020-11-26</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <TableWithTitle
       :api="queryOffersByToken"
       :tableName="'Offers'"
@@ -112,7 +167,43 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+.wrapper {
+  width: 100%;
+  height: 100vh;
+}
+.wrapper .tableBox {
+  position: relative;
+  top: 50px;
+  left: 50px;
+  width: 700px;
+  height: 100px;
+  overflow-y: scroll;
+  border-top: 2px solid dodgerblue;
+}
+.tableData {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.tableData thead tr th {
+  position: sticky;
+  top: 0;
+  background: #ebeaea;
+}
+.tableData thead tr th,
+.tableData tbody tr td {
+  padding: 15px 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #dedede;
+  border-right: 1px solid #ddd;
+  word-break: break-all;
+}
 .divider {
   background-color: burlywood;
   width: 100%;
