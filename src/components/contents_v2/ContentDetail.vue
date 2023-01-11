@@ -15,73 +15,59 @@
       <div class="content-info">
         <div class="left-container">
           <div class="round-box">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" /> Offers
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>DATE</td>
-                <td>FROM</td>
-              </tr>
-              <tr v-for="(val, i) in offers" :key="i">
-                <td class="price">
-                  {{ weiToEther(val.price) }}
-                  ETH
-                </td>
-                <td class="record">
-                  {{ convertDay(val.createdAt) }}
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-              </tr>
-            </table>
+            <TableWithTitle
+              :api="queryOffersByToken"
+              :tableName="'Offers'"
+              :iconSrc="require('@/assets/icons/100-add-folder.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'createdAt',
+                },
+                {
+                  name: 'FROM',
+                  type: 'member',
+                  key: 'from',
+                },
+              ]"
+            ></TableWithTitle>
           </div>
-          <div class="round-box history">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" />
-              History
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>FROM</td>
-                <td>TO</td>
-                <td>DATE</td>
-              </tr>
-              <tr v-for="(val, i) in histories" :key="i">
-                <td class="price">
-                  <!--
-                  {{ weiToEther(val.price) }}
-                  ETH
-                  <img
-                    :src="require('@/assets/icons/launch.svg')"
-                    @click="action('price')"
-                  />
-                  -->
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    v-if="val.to_member"
-                    :member="val.to_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="record">
-                  {{ convertDay(val.block_timestamp) }}
-                </td>
-              </tr>
-            </table>
+          <div class="round-box">
+            <TableWithTitle
+              :api="queryTokenHistory"
+              :tableName="'History'"
+              :iconSrc="require('@/assets/icons/history.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'From',
+                  type: 'member',
+                  key: 'from_member',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'block_timestamp',
+                },
+                {
+                  name: 'TO',
+                  type: 'member',
+                  key: 'to_member',
+                },
+              ]"
+            ></TableWithTitle>
           </div>
         </div>
         <div class="right-container">
@@ -229,6 +215,7 @@ import { MARKETPLACE_ABI, MARKETPLACE } from '../../contracts'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
+import TableWithTitle from '../table/TableWithTitle.vue'
 
 export default {
   name: 'ContentDetail',
@@ -237,6 +224,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
+    TableWithTitle,
   },
   data() {
     return {
@@ -249,6 +237,14 @@ export default {
       cancelDisabled: false,
       buying: false,
       canceling: false,
+      queryOffersByToken: {
+        func: null,
+        body: {},
+      },
+      queryTokenHistory: {
+        func: null,
+        body: {},
+      },
     }
   },
   computed: {
@@ -504,6 +500,32 @@ export default {
     },
   },
   async created() {
+    this.queryOffersByToken = {
+      result_key: 'offers',
+      func: graphql,
+      body: queryOffersByToken({
+        variables: {
+          first: 1,
+          skip: 0,
+          id: '0x4704cf416a4c6dcb7317cd7ac8b4b9e487159eb3' + '2',
+          //id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+      }),
+    }
+    this.queryTokenHistory = {
+      result_key: 'history',
+      func: graphql,
+      body: queryTokenHistory({
+        variables: {
+          id: '0x4704cf416a4c6dcb7317cd7ac8b4b9e487159eb3' + '2',
+          //id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+        pagination: {
+          start_num: 0,
+          count_num: 1,
+        },
+      }),
+    }
     await this.getContents(
       this.$route.params.project_address,
       this.$route.params.token_id,
@@ -536,7 +558,6 @@ export default {
   }
 }
 .content-wrap {
-  width: 100%;
   max-width: 1440px;
   padding: 40px 64px 0 64px;
   margin: 0 auto;
@@ -545,60 +566,13 @@ export default {
     flex-direction: row;
 
     .left-container {
-      flex: 1;
       .round-box {
-        &.history {
-          margin-top: 3rem;
-        }
-        max-width: 90%;
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-        border-radius: 24px;
-        padding: 32px 24px 32px 24px;
-
-        .title {
-          text-align: initial;
-          margin-left: 1rem;
-          font-size: 22px;
-          font-weight: 600;
-          img {
-            max-width: 1.8rem;
-            vertical-align: text-top;
-          }
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          th {
-            font-weight: 50;
-          }
-
-          td {
-            border-bottom: 1px solid #cccccc;
-            padding: 21px;
-            text-align: left;
-
-            font-family: $item-font;
-            font-style: $item-font-style;
-            font-weight: 500;
-            font-size: 14px;
-
-            &.price {
-              img {
-                margin-left: 0.5rem;
-                cursor: pointer;
-                opacity: 0.5;
-                vertical-align: middle;
-              }
-            }
-          }
-        }
+        width: 708px;
+        height: 436px;
       }
     }
 
     .right-container {
-      flex: 1;
       text-align: initial;
       .add-info {
         display: flex;
