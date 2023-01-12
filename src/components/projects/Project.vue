@@ -402,6 +402,7 @@ export default {
           variables: {
             first: 10,
             skip: 0,
+            start_num: 0,
             project: this.$route.params.id,
             orderBy: this.tabs[0].sort.orderBy,
             orderDirection: this.tabs[0].sort.orderDirection,
@@ -472,6 +473,7 @@ export default {
         if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
           this.project = await this.getProject()
           this.setStatistics()
+          this.tabs[3].show = false
 
           if (
             this.project.policy === 1 &&
@@ -496,6 +498,7 @@ export default {
       if (this.projectAddress !== to.params.id) {
         this.projectAddress = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
+        this.tabs[3].show = false
       }
 
       if (
@@ -510,7 +513,6 @@ export default {
       const t = to.query.tab || '0'
       switch (t) {
         case '0':
-          this.tabs[3].show = false
           this.tabs[t].sort =
             this.sortOptions[to.query.sort] || this.sortOptions['newest']
           this.tabs[t].api = {
@@ -519,6 +521,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
+                start_num: 0,
                 project: to.params.id,
                 orderBy: this.tabs[t].sort.orderBy,
                 orderDirection: this.tabs[t].sort.orderDirection,
