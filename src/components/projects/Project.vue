@@ -402,6 +402,7 @@ export default {
           variables: {
             first: 10,
             skip: 0,
+            start_num: 0,
             project: this.$route.params.id,
             orderBy: this.tabs[0].sort.orderBy,
             orderDirection: this.tabs[0].sort.orderDirection,
@@ -520,6 +521,7 @@ export default {
               variables: {
                 first: 10,
                 skip: 0,
+                start_num: 0,
                 project: to.params.id,
                 orderBy: this.tabs[t].sort.orderBy,
                 orderDirection: this.tabs[t].sort.orderDirection,
