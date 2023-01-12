@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="trade-buttons">
-            <div v-if="content ? content.status === 'APPROVED' : false">
+            <div v-if="checkPolicyAndStatus">
               <button @click="buy()">
                 <div class="spinner" :class="{ active: buying }"></div>
                 <span v-show="!buying">Buy</span>
@@ -205,6 +205,17 @@ export default {
     },
     price() {
       return parseInt(this.content.price).toString()
+    },
+    checkPolicyAndStatus() {
+      if (this.project?.policy === 1) {
+        if (this.content.status === 'APPROVED') {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return true
+      }
     },
   },
   methods: {
