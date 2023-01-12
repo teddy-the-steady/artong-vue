@@ -19,12 +19,12 @@
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
-          <div class="title">Follwer</div>
-          <div class="number">299</div>
+          <div class="title">Follower</div>
+          <div class="number">{{ currentUser.follower }}</div>
         </div>
         <div class="follow-static">
           <div class="title">Following</div>
-          <div class="number">300</div>
+          <div class="number">{{ currentUser.following }}</div>
         </div>
       </div>
       <div class="introduction">
@@ -48,11 +48,11 @@
       <div class="follow-static-container">
         <div class="follow-static">
           <div class="title">Follwer</div>
-          <div class="number">299</div>
+          <div class="number">{{ currentUser.follower }}</div>
         </div>
         <div class="follow-static">
           <div class="title">Following</div>
-          <div class="number">300</div>
+          <div class="number">{{ currentUser.following }}</div>
         </div>
       </div>
     </div>
@@ -110,12 +110,9 @@ export default {
         )
       }
     },
-    getAddress() {
-      this.address = this.currentUser.wallet_address
-    },
     copy() {
       navigator.clipboard
-        .writeText(`${this.address}`)
+        .writeText(`${this.currentUser.wallet_address}`)
         .then(() => {
           alert('주소 복사 완료')
         })
@@ -129,8 +126,7 @@ export default {
   },
   mounted() {
     this.isFirstLoading = false
-    this.getAddress()
-    this.shortAddress = shortenAddress(this.address)
+    this.shortAddress = shortenAddress(this.currentUser.wallet_address)
     window.addEventListener('resize', this.setWidth)
   },
 }
