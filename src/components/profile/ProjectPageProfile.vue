@@ -4,13 +4,15 @@
       <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading = true">
-      <!--class="image" 뺌 onerror 수정-->
-      <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage" />
+      <img
+        v-if="project"
+        :src="makeS3Path(project.project_s3key)"
+        class="realImage"
+      />
       <div v-else class="basicProfileImage"></div>
     </div>
     <div class="info" v-if="needProjectName && !isFirstLoading">
       <div class="username">
-        hello
         {{ $route.params.id }}
       </div>
     </div>
@@ -24,6 +26,7 @@
 
 <script>
 import { headerActivate } from '../../mixin'
+import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
@@ -33,6 +36,10 @@ export default {
   },
   mixins: [headerActivate],
   props: {
+    project: {
+      type: Object,
+      default: () => {},
+    },
     needProjectName: {
       type: Boolean,
       default: false,
@@ -40,9 +47,13 @@ export default {
   },
   data() {
     return {
-      projectImageUrl: '',
-      isFirstLoading: true,
+      isFirstLoading: false,
     }
+  },
+  methods: {
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
   },
 }
 </script>
@@ -69,7 +80,6 @@ export default {
     width: 100px;
     height: 100px;
     object-fit: cover;
-    border: 1px solid $profile-border-gray;
     border-radius: 15px;
   }
   .basicProfileImage {

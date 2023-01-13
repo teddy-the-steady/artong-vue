@@ -45,7 +45,7 @@ export default {
   overflow: hidden;
   border-radius: 20px;
   max-height: 300px;
-  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 15%);
+  box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
   margin: 0 10px;
   &:hover {
     box-shadow: 1px 1px 0.5em $darkgray, -1px -1px 0.5em $darkgray;
