@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="box">
-      <div class="red-button">
+      <div class="symbol">
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
       <div class="collection-name">{{ project.name }}</div>
@@ -117,9 +117,9 @@ export default {
   gap: 32px;
   width: 346px;
   background: #ffffff;
-  border: 1px solid #cccccc;
+  box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
   border-radius: 8px;
-  .red-button {
+  .symbol {
     width: 52px;
     height: 25px;
     border: 1px solid #f22e3e;
@@ -130,6 +130,8 @@ export default {
     font-size: 14px;
     color: #f22e3e;
     line-height: 25px;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
   }
   .collection-name {
     font-family: 'Pretendard';
@@ -189,6 +191,7 @@ export default {
       font-size: 16px;
       color: #4d4d4d;
       line-height: 150%;
+      word-break: break-word;
     }
   }
 }

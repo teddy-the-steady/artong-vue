@@ -3,7 +3,10 @@
     <div class="header">
       <div class="background" :style="{ background: backgroundColor }"></div>
       <div class="user-info">
-        <ProjectPageProfile class="profile"></ProjectPageProfile>
+        <ProjectPageProfile
+          class="profile"
+          :project="project"
+        ></ProjectPageProfile>
         <div class="buttons">
           <button class="round-button ripple" @click="share">
             <img src="../../assets/icons/share.svg" />
@@ -764,6 +767,13 @@ textarea {
   }
 }
 @media only screen and (min-width: 1440px) {
+  .header {
+    .user-info {
+      .profile {
+        margin-left: 185px;
+      }
+    }
+  }
   .tab-n-content {
     display: flex;
     margin-right: 185px;
