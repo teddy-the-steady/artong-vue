@@ -256,7 +256,7 @@ html {
       position: relative;
       background: $artong-white;
       height: 100%;
-      // padding-top: 50px;
+      padding-top: 50px;
     }
 
     input[type='text'] {
