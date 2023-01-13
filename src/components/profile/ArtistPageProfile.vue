@@ -127,29 +127,9 @@ export default {
         return
       }
       this.$emit('follow')
-      // try {
-      //   this.member = await postMemberFollower({
-      //     isFollowRequest: true,
-      //     targetMemberId: this.member.id,
-      //   })
-      //   console.log(this.member)
-      //   this.$emit('changeFollower', this.member)
-      // } catch (error) {
-      //   this.errorMessage = error
-      // }
     },
     async unfollow() {
       this.$emit('unfollow')
-      // try {
-      //   this.member = await postMemberFollower({
-      //     isFollowRequest: false,
-      //     targetMemberId: this.member.id,
-      //   })
-      //   console.log(this.member)
-      //   this.$emit('changeFollower', this.member)
-      // } catch (error) {
-      //   this.errorMessage = error
-      // }
     },
   },
   mounted() {
@@ -160,6 +140,7 @@ export default {
       deep: true,
       handler(val) {
         if (val) {
+          this.isFirstLoading = true
           this.profileImageUrl = this.getProfileImageUrl(this.member)
           this.isFirstLoading = false
         }
