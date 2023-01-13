@@ -8,7 +8,6 @@
           class="background-image"
           :class="{ pointer: isProjectOwner }"
           @click="backgroundClick"
-          alt=""
         />
         <input ref="fileInput" type="file" @change="onFileChange" />
       </div>
@@ -648,6 +647,7 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      text-indent: -10000px;
       &.pointer {
         cursor: pointer;
       }
