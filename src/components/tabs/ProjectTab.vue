@@ -142,8 +142,10 @@ export default {
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
-
         color: #4d4d4d;
+        width: 80%;
+        word-break: break-word;
+        margin: auto;
       }
     }
   }

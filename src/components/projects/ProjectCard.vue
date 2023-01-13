@@ -82,8 +82,10 @@ export default {
     align-items: center;
     background: linear-gradient(45deg, #454545, transparent);
     img {
-      height: 120%;
-      opacity: 0.5;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      opacity: 0.8;
       filter: blur(3px);
     }
   }
