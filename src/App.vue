@@ -248,23 +248,15 @@ html {
       }
     }
 
-    #app {
+    #header-bar {
+      z-index: 2020;
+    }
+
+    .contents__body {
+      position: relative;
+      background: $artong-white;
       height: 100%;
-
-      #header-bar {
-        z-index: 2020;
-      }
-
-      .contents {
-        height: 100%;
-
-        .contents__body {
-          position: relative;
-          background: $artong-white;
-          height: 100%;
-          padding-top: 50px;
-        }
-      }
+      // padding-top: 50px;
     }
 
     input[type='text'] {
