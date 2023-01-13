@@ -6,10 +6,13 @@
     <div v-else @error="isFirstLoading = true">
       <img
         v-if="project"
-        :src="makeS3Path(project.project_s3key)"
+        :src="projectImage"
         class="realImage"
+        :class="{ pointer: isProjectOwner }"
+        @click="imageClick"
       />
       <div v-else class="basicProfileImage"></div>
+      <input ref="fileInput" type="file" @change="onFileChange" />
     </div>
     <div class="info" v-if="needProjectName && !isFirstLoading">
       <div class="username">
@@ -25,8 +28,11 @@
 </template>
 
 <script>
+import Storage from '@aws-amplify/storage'
+import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
+import { patchProject } from '../../api/projects'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
@@ -44,15 +50,60 @@ export default {
       type: Boolean,
       default: false,
     },
+    isFirstLoading: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser,
+    }),
+    isProjectOwner() {
+      return (
+        this.currentUser.wallet_address === this.project.owner.wallet_address
+      )
+    },
+    projectImage() {
+      return makeS3Path(
+        this.project.project_thumbnail_s3key || this.project.project_s3key,
+      )
+    },
   },
   data() {
     return {
-      isFirstLoading: false,
+      S3_PRIVACY_LEVEL: 'public',
     }
   },
   methods: {
     makeS3Path(path) {
       return makeS3Path(path)
+    },
+    imageClick() {
+      if (!this.isProjectOwner) {
+        return
+      }
+      this.$refs.fileInput.click()
+    },
+    async onFileChange(e) {
+      const file = e.target.files[0]
+      await this.uploadProjectImage(file)
+    },
+    async uploadProjectImage(file) {
+      const result = await Storage.put(
+        `project/${this.project.txHash}/profile/${file.name}`,
+        file,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: file.type,
+        },
+      )
+      if (result) {
+        const patchResult = await patchProject(this.project.txHash, {
+          project_s3key: `${this.S3_PRIVACY_LEVEL}/${result.key}`,
+        })
+        this.project.project_s3key = patchResult.project_s3key
+      }
     },
   },
 }
@@ -63,8 +114,6 @@ export default {
 
 .project {
   display: flex;
-  //margin-left: 15%;
-  //transform: translateY(-40%);
 
   .image {
     display: inline-block;
@@ -81,6 +130,9 @@ export default {
     height: 100px;
     object-fit: cover;
     border-radius: 15px;
+    &.pointer {
+      cursor: pointer;
+    }
   }
   .basicProfileImage {
     width: 100px;
@@ -89,6 +141,9 @@ export default {
     border: 1px solid $profile-border-gray;
     border-radius: 15px;
     background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+  }
+  input[type='file'] {
+    display: none;
   }
 
   .info {
@@ -115,7 +170,6 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .project {
-    //transform: translateY(-30%);
     align-items: center;
     flex-direction: column;
     margin-left: 0;
