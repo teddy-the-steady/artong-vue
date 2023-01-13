@@ -1,11 +1,22 @@
 <template>
   <div>
     <div class="header">
-      <div class="background" :style="{ background: backgroundColor }"></div>
+      <div class="background" :style="{ background: backgroundColor }">
+        <img
+          v-if="project"
+          :src="backgroundImage"
+          class="background-image"
+          :class="{ pointer: isProjectOwner }"
+          @click="backgroundClick"
+          alt=""
+        />
+        <input ref="fileInput" type="file" @change="onFileChange" />
+      </div>
       <div class="user-info">
         <ProjectPageProfile
           class="profile"
           :project="project"
+          :isFirstLoading="isFirstLoading"
         ></ProjectPageProfile>
         <div class="buttons">
           <button class="round-button ripple" @click="share">
@@ -159,14 +170,16 @@
 </template>
 
 <script>
+import Storage from '@aws-amplify/storage'
 import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import {
   postProjectSubscriber,
   getProjectContributors,
+  patchProject,
 } from '../../api/projects'
-import { isSessionValid } from '../../util/commonFunc'
+import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
@@ -206,9 +219,19 @@ export default {
       isModalOpen: state => state.menu.isModalOpen,
       currentUser: state => state.user.currentUser,
     }),
-
+    isProjectOwner() {
+      return (
+        this.currentUser.wallet_address === this.project?.owner?.wallet_address
+      )
+    },
     isMobile() {
       return this.$isMobile()
+    },
+    backgroundImage() {
+      return makeS3Path(
+        this.project.background_s3key ||
+          this.project.background_thumbnail_s3key,
+      )
     },
   },
   data() {
@@ -256,6 +279,7 @@ export default {
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
+      isFirstLoading: true,
       projectData: [],
       url: '',
       sortOptions: {
@@ -270,6 +294,7 @@ export default {
           orderDirection: 'asc',
         },
       },
+      S3_PRIVACY_LEVEL: 'public',
     }
   },
   methods: {
@@ -460,6 +485,35 @@ export default {
         params: { project_address: this.project.id },
       })
     },
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    backgroundClick() {
+      if (!this.isProjectOwner) {
+        return
+      }
+      this.$refs.fileInput.click()
+    },
+    async onFileChange(e) {
+      const file = e.target.files[0]
+      await this.uploadProjectImage(file)
+    },
+    async uploadProjectImage(file) {
+      const result = await Storage.put(
+        `project/${this.project.txHash}/background/${file.name}`,
+        file,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: file.type,
+        },
+      )
+      if (result) {
+        const patchResult = await patchProject(this.project.txHash, {
+          background_s3key: `${this.S3_PRIVACY_LEVEL}/${result.key}`,
+        })
+        this.project.background_s3key = patchResult.background_s3key
+      }
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -467,14 +521,19 @@ export default {
       this.$route.params.id,
     )
     this.project = await this.getProject()
+    this.isFirstLoading = false
     this.setStatistics()
     this.setTabs()
 
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
+        if (to.name === 'Project' && !to.query.tab) {
+          this.project.background_s3key = null
+          this.project.background_thumbnail_s3key = null
+          this.isFirstLoading = true
           this.project = await this.getProject()
+          this.isFirstLoading = false
           this.setStatistics()
           this.tabs[3].show = false
 
@@ -585,6 +644,17 @@ export default {
   z-index: 2;
   .background {
     height: 330px;
+    .background-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      &.pointer {
+        cursor: pointer;
+      }
+    }
+    input[type='file'] {
+      display: none;
+    }
   }
   .user-info {
     height: 30%;
