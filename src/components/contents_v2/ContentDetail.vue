@@ -100,12 +100,6 @@
                 <img src="@/assets/icons/launch.svg" />
               </button>
               <button class="round-button ripple">
-                <img src="@/assets/icons/share.svg" />
-              </button>
-              <button class="round-button ripple">
-                <img src="@/assets/icons/launch.svg" />
-              </button>
-              <button class="round-button ripple">
                 <img src="@/assets/icons/more.svg" />
               </button>
             </div>
@@ -533,7 +527,7 @@ export default {
 
   img {
     object-fit: cover;
-    max-height: inherit;
+    max-width: 100%;
   }
 }
 .content-wrap {
@@ -738,6 +732,24 @@ export default {
         a {
           text-decoration-line: underline;
           color: $profile-border-red;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .content-wrap {
+    width: 80%;
+    padding: 40px 0;
+    .content-info {
+      flex-direction: column-reverse;
+      .right-container {
+        margin-bottom: 100px;
+      }
+      .left-container {
+        .round-box {
+          max-width: 100%;
         }
       }
     }
