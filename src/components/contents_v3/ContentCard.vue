@@ -1,15 +1,11 @@
 <template>
   <div class="wrapper">
-    <div
-      class="top"
-      :style="{ 'background-image': 'url(' + background(content) + ')' }"
-    >
+    <div class="top">
+      <img :src="contentImage" alt="" />
       <ProjectPageProfile_small
         v-if="needContentName"
         class="project-profile"
       ></ProjectPageProfile_small>
-      <!-- token 이름은 없는듯? -->
-      <!--<div class="description">NFT name</div>-->
     </div>
     <div class="bottom">
       <ContentsProfile
@@ -31,6 +27,14 @@ export default {
   components: {
     ProjectPageProfile_small,
     ContentsProfile,
+  },
+  computed: {
+    contentImage() {
+      return (
+        this.makeS3Path(this.content.content_thumbnail_s3key) ||
+        this.makeS3Path(this.content.content_s3key)
+      )
+    },
   },
   props: {
     content: {
@@ -72,11 +76,14 @@ export default {
 
   .top {
     display: flex;
-    flex-direction: row;
-    //background-image: url(../../assets/images/art11.jpg);
     height: 330px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+
+    img {
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      width: 100%;
+      object-fit: cover;
+    }
 
     .project-profile {
       position: absolute;
