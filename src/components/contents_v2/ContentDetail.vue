@@ -10,6 +10,7 @@
             : ''
         "
         @click="imageZoomIn"
+        @touchstart="touchStart"
       />
     </div>
     <div class="content-wrap">
@@ -499,6 +500,7 @@ export default {
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
     imageZoomIn(event) {
+      console.log('imageZoomIn')
       const element = event.target
       if (document.fullscreenElement) {
         return document.exitFullscreen()
@@ -506,6 +508,10 @@ export default {
       if (element.requestFullscreen) {
         element.requestFullscreen()
       }
+    },
+    touchStart(event) {
+      console.log('touchStart')
+      console.log(event.target)
     },
   },
   async created() {
