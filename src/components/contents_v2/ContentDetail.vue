@@ -744,8 +744,29 @@ export default {
     padding: 40px 0;
     .content-info {
       flex-direction: column-reverse;
+      width: 80%;
+      margin: auto;
       .right-container {
-        margin-bottom: 100px;
+        margin-bottom: 50px;
+      }
+      .left-container {
+        .round-box {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1080px) {
+  .content-wrap {
+    width: 90%;
+    padding: 40px 0;
+    .content-info {
+      flex-direction: column-reverse;
+      width: 100%;
+      .right-container {
+        margin-bottom: 50px;
       }
       .left-container {
         .round-box {
