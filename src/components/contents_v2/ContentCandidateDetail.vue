@@ -1,15 +1,9 @@
 <template>
   <div>
     <div class="content-image">
-      <img
-        :src="
-          content
-            ? makeS3Path(content.content_s3key) ||
-              makeS3Path(content.content_thumbnail_s3key)
-            : ''
-        "
-        @click="imageZoomIn"
-      />
+      <a :href="makeS3Path(content.content_s3key)" target="_blank">
+        <img :src="imagePath" />
+      </a>
     </div>
     <div class="content-wrap">
       <div class="content-info">
@@ -212,6 +206,12 @@ export default {
         return true
       }
     },
+    imagePath() {
+      return (
+        this.makeS3Path(this.content?.content_thumbnail_s3key) ||
+        this.makeS3Path(this.content?.content_s3key)
+      )
+    },
   },
   methods: {
     async getContents(project_address, contents_id) {
@@ -304,15 +304,6 @@ export default {
 
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
-    imageZoomIn(event) {
-      const element = event.target
-      if (document.fullscreenElement) {
-        return document.exitFullscreen()
-      }
-      if (element.requestFullscreen) {
-        element.requestFullscreen()
-      }
-    },
   },
   async created() {
     await this.getContents(
@@ -338,16 +329,16 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .content-image {
-  display: flex;
-  justify-content: center;
-  max-height: 60vh;
-  padding: 2rem 0 4rem 0;
-  background: #f2f2f2;
-
-  img {
-    object-fit: contain;
-    max-width: 100%;
-    cursor: pointer;
+  a {
+    display: flex;
+    justify-content: center;
+    max-height: 60vh;
+    padding: 2rem 0 4rem 0;
+    background: #f2f2f2;
+    img {
+      object-fit: contain;
+      max-width: 100%;
+    }
   }
 }
 .content-wrap {
