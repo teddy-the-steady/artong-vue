@@ -8,6 +8,7 @@
               makeS3Path(content.content_thumbnail_s3key)
             : ''
         "
+        @click="imageZoomIn"
       />
     </div>
     <div class="content-wrap">
@@ -303,6 +304,15 @@ export default {
 
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
+    imageZoomIn(event) {
+      const element = event.target
+      if (document.fullscreenElement) {
+        return document.exitFullscreen()
+      }
+      if (element.requestFullscreen) {
+        element.requestFullscreen()
+      }
+    },
   },
   async created() {
     await this.getContents(
@@ -335,8 +345,9 @@ export default {
   background: #f2f2f2;
 
   img {
-    object-fit: cover;
+    object-fit: contain;
     max-width: 100%;
+    cursor: pointer;
   }
 }
 .content-wrap {
