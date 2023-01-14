@@ -10,7 +10,6 @@
             : ''
         "
         @click="imageZoomIn"
-        @touchstart="touchStart"
       />
     </div>
     <div class="content-wrap">
@@ -507,11 +506,9 @@ export default {
       }
       if (element.requestFullscreen) {
         element.requestFullscreen()
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen()
       }
-    },
-    touchStart(event) {
-      console.log('touchStart')
-      console.log(event.target)
     },
   },
   async created() {
