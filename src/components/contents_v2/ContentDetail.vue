@@ -541,11 +541,11 @@ export default {
 
     .left-container {
       flex: 1;
+      margin-right: 40px;
       .round-box {
         &.history {
           margin-top: 3rem;
         }
-        max-width: 90%;
         border: 1px solid #f2f2f2;
         box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
         border-radius: 24px;
@@ -750,9 +750,7 @@ export default {
         margin-bottom: 50px;
       }
       .left-container {
-        .round-box {
-          max-width: 100%;
-        }
+        margin: 0;
       }
     }
   }
@@ -769,9 +767,7 @@ export default {
         margin-bottom: 50px;
       }
       .left-container {
-        .round-box {
-          max-width: 100%;
-        }
+        margin: 0;
       }
     }
   }
