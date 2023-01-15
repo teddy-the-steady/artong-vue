@@ -122,7 +122,7 @@ const router = new Router({
 router.beforeEach(async function (to, from, next) {
   const IsBackButtonClicked = window.popStateDetected
   window.popStateDetected = false
-  if (!IsBackButtonClicked || from.path === to.path) {
+  if (!IsBackButtonClicked && from.path !== to.path) {
     window.scrollTo(0, 0)
   }
 
