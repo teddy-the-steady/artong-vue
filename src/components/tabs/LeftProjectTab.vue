@@ -20,11 +20,11 @@
         <button
           v-if="project.is_subscriber"
           @click="unsubscribe"
-          class="white-btn"
+          class="white-button"
         >
           Unsubscribe {{ this.project.subscribers }}
         </button>
-        <button v-else @click="subscribe" class="white-btn">
+        <button v-else @click="subscribe" class="white-button">
           Subscribe {{ this.project.subscribers }}
         </button>
         <button @click="contribute" v-ripple>Contribute</button>

@@ -146,7 +146,7 @@
                 <button @click="makeTransaction('update')">
                   Update Listing
                 </button>
-                <button @click="makeTransaction('cancel')" class="white-btn">
+                <button @click="makeTransaction('cancel')" class="white-button">
                   <div class="spinner" :class="{ active: canceling }"></div>
                   <span v-show="!canceling">Cancel Listing</span>
                 </button>
@@ -157,7 +157,7 @@
                 <div class="spinner" :class="{ active: buying }"></div>
                 <span v-show="!buying">Buy</span>
               </button>
-              <button @click="makeTransaction('offer')" class="white-btn">
+              <button @click="makeTransaction('offer')" class="white-button">
                 Make offer
               </button>
             </div>

@@ -18,14 +18,14 @@
           :isFirstLoading="isFirstLoading"
         ></ProjectPageProfile>
         <div class="buttons">
-          <button class="round-button ripple" @click="share">
+          <button class="white-button round-button ripple" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <button class="round-button ripple" @click="toEtherscan">
+          <button class="white-button round-button ripple" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
           </button>
           <button
-            class="round-button ripple"
+            class="white-button round-button ripple"
             @mousedown="moreMouseDown"
             @mouseup="moreMouseUp"
             @touchstart="moreTouchStart"

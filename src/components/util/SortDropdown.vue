@@ -16,7 +16,7 @@
     </button>
     <button
       v-else
-      class="round-button ripple"
+      class="white-button round-button ripple"
       @mousedown="sortMouseDown"
       @mouseup="sortMouseUp"
       @touchstart="sortTouchStart"
