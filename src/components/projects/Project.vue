@@ -53,7 +53,7 @@
             <!-- </router-link> -->
             <div slot="body">Report</div>
           </BasicDialog>
-          <div v-if="this.width >= 1080" class="creators-button">
+          <div v-if="innerWidth >= 1080" class="creators-button">
             <div class="creator">Created by</div>
             <ContentsProfileBundle
               class="profile-bundle"
@@ -66,7 +66,7 @@
     </div>
     <div class="tab-n-content">
       <div class="bottom">
-        <div class="tab" v-if="this.width < 1440">
+        <div class="tab" v-if="innerWidth < 1440">
           <div class="red-button">
             {{ project.symbol ? project.symbol.toUpperCase() : '' }}
           </div>
@@ -128,14 +128,13 @@
           </div>
         </div>
         <LeftProjectTab
-          v-else-if="this.width >= 1440"
+          v-else-if="innerWidth >= 1440"
           :project="project"
           class="left-tab"
         />
       </div>
       <ProjectTab
         :tabs="tabs"
-        :width="width"
         :sortOptions="sortOptions"
         class="project-tab-sort"
       />
@@ -217,6 +216,7 @@ export default {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
     isProjectOwner() {
       return (
@@ -265,7 +265,6 @@ export default {
           show: false,
         },
       ],
-      width: window.innerWidth,
       steps: [
         { id: 0, title: 'stepModal0' },
         { id: 1, title: 'stepModal1' },
@@ -313,9 +312,6 @@ export default {
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
-    },
-    setWidth() {
-      this.width = window.innerWidth
     },
     setSlotData(key, val) {
       this.slotData[key] = val
@@ -549,7 +545,6 @@ export default {
     )
   },
   mounted() {
-    window.addEventListener('resize', this.setWidth)
     this.$root.$on('contribute', () => {
       this.toggleModal()
     })
