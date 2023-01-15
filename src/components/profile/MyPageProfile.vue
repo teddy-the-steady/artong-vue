@@ -12,7 +12,7 @@
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ this.shortAddress }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -36,7 +36,7 @@
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ this.shortAddress }}
           <img src="../../assets/icons/copy.svg" />
         </button>

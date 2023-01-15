@@ -102,7 +102,7 @@
               </button>
             </div>
             <div v-else-if="isCurrentUserProjectOwner">
-              <button @click="approve()" class="white-btn">Approve</button>
+              <button @click="approve()" class="white-button">Approve</button>
             </div>
           </div>
         </div>
