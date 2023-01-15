@@ -237,7 +237,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 150%;
+  height: 100%;
   background-color: $backdrop;
   display: table;
   transition: opacity 0.3s ease;
@@ -254,8 +254,7 @@ export default {
       justify-content: space-between;
       min-height: 300px;
       max-height: 600px;
-      margin-bottom: 120%;
-      margin-top: 30%;
+      margin: auto;
       padding: 20px 30px;
       background-color: $artong-white;
       border-radius: 20px;
@@ -301,9 +300,11 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .modal-mask {
+    height: 150%;
     .modal-wrapper {
       .modal-container {
         width: auto;
+        margin: auto auto 120%;
       }
     }
   }
