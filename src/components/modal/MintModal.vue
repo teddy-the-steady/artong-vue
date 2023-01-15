@@ -253,7 +253,7 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       min-height: 300px;
-      max-height: 600px;
+      max-height: 500px;
       margin: auto;
       padding: 20px 30px;
       background-color: $artong-white;
