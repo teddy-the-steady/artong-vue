@@ -115,6 +115,7 @@ const router = new Router({
 })
 
 router.beforeEach(async function (to, from, next) {
+  window.scrollTo(0, 0)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let user = null
     try {

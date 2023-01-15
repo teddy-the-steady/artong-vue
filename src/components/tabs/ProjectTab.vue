@@ -14,7 +14,7 @@
         @tabClick="tabClick"
         v-show="
           (tab.show && tab.type !== 'INFO') ||
-          (tab.type === 'INFO' && width < 1440)
+          (tab.type === 'INFO' && innerWidth < 1440)
         "
       />
     </div>
@@ -65,10 +65,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    width: {
-      type: Number,
-      default: window.innerWidth,
-    },
     sortOptions: {
       type: Object,
       default: () => {},
@@ -85,6 +81,7 @@ export default {
     },
     ...mapState({
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
   },
   methods: {

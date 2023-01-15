@@ -5,7 +5,7 @@
       :isFirstLoading="isFirstLoading"
       class="profile-image"
     ></ProfileImageBig>
-    <div v-if="this.width < 1080" class="top1">
+    <div v-if="innerWidth < 1080" class="top1">
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
         <button class="address white-button" @click="copy">
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import {
   makeS3Path,
@@ -81,6 +82,11 @@ export default {
     ProfileImageBig,
   },
   mixins: [headerActivate],
+  computed: {
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
+  },
   data() {
     return {
       profileImageUrl: '',
@@ -89,7 +95,6 @@ export default {
       address: '',
       errorMessage: '',
       shortAddress: '',
-      width: window.innerWidth,
     }
   },
   props: {
@@ -119,9 +124,6 @@ export default {
           alert('주소 복사 실패')
         })
     },
-    setWidth() {
-      this.width = window.innerWidth
-    },
     async follow() {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
@@ -131,9 +133,6 @@ export default {
     async unfollow() {
       this.$emit('unfollow')
     },
-  },
-  mounted() {
-    window.addEventListener('resize', this.setWidth)
   },
   watch: {
     member: {

@@ -103,6 +103,9 @@ export default {
     toggleConfirmModal() {
       this.$store.commit('TOGGLE_CONFIRM_MODAL')
     },
+    setWidth() {
+      this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
+    },
   },
   async created() {
     try {
@@ -128,6 +131,8 @@ export default {
       'CONFIRM_MODAL_WAIT_FOR_ANSWER',
       this.$refs.confirmModal.waitForAnswer,
     )
+
+    window.addEventListener('resize', this.setWidth)
   },
   watch: {
     isSideMenuOpen() {

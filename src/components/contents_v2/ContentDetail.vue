@@ -87,13 +87,13 @@
               <div>2000</div>
             </div>
             <div class="buttons">
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/launch.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/more.svg" />
               </button>
             </div>
