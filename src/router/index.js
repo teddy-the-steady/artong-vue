@@ -19,6 +19,11 @@ import ProjectSettings from '@/components/projects/ProjectSettings'
 import VueCarousel from 'vue-carousel'
 import Test from '../components/util/Test'
 
+window.popStateDetected = false
+window.addEventListener('popstate', () => {
+  window.popStateDetected = true
+})
+
 Vue.use(Router)
 Vue.use(VueCarousel)
 
@@ -115,7 +120,12 @@ const router = new Router({
 })
 
 router.beforeEach(async function (to, from, next) {
-  window.scrollTo(0, 0)
+  const IsBackButtonClicked = window.popStateDetected
+  window.popStateDetected = false
+  if (!IsBackButtonClicked || from.path === to.path) {
+    window.scrollTo(0, 0)
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
     let user = null
     try {
