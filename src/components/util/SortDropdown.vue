@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      v-if="width >= 1150"
+      v-if="innerWidth >= 1150"
       class="dropdown ripple"
       @mousedown="sortMouseDown"
       @mouseup="sortMouseUp"
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import BasicDialog from '../dialog/BasicDialog.vue'
 
 export default {
@@ -67,13 +68,15 @@ export default {
     isMobile() {
       return this.$isMobile()
     },
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
   },
   data() {
     return {
       isDialogActive: false,
       isMouseDownSort: false,
       isMouseUpSort: false,
-      width: window.innerWidth,
     }
   },
   methods: {
@@ -121,12 +124,6 @@ export default {
         query: { ...this.$route.query, sort: option },
       })
     },
-    setWidth() {
-      this.width = window.innerWidth
-    },
-  },
-  mounted() {
-    window.addEventListener('resize', this.setWidth)
   },
   watch: {
     isDialogActive() {

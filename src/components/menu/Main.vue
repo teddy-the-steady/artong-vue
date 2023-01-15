@@ -128,10 +128,10 @@
           <div class="url" href="">View more</div>
         </div>
         <CuratedCollection
-          v-if="this.width < 1080"
+          v-if="innerWidth < 1080"
           class="curated-collection"
         ></CuratedCollection>
-        <div v-else-if="width < 1440">
+        <div v-else-if="innerWidth < 1440">
           <CuratedCollectionWide
             v-for="i in 8"
             :key="i"
@@ -241,6 +241,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import BuyAndSell from '../collection_card/BuyAndSell.vue'
@@ -261,18 +262,10 @@ export default {
     Table,
     CuratedCollectionWide,
   },
-  data() {
-    return {
-      width: window.innerWidth,
-    }
-  },
-  methods: {
-    setWidth() {
-      this.width = window.innerWidth
-    },
-  },
-  mounted() {
-    window.addEventListener('resize', this.setWidth)
+  computed: {
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
   },
   directives: {
     ripple: Ripple,
