@@ -183,11 +183,10 @@ html {
       transition: background-color 0.2s, color 0.2s, border-color 0.2s,
         box-shadow 0.2s;
       border-radius: 6px;
-      &.white-btn {
+      &.white-button {
         background: #ffffff;
         border: 1px solid #000000;
         border-radius: 5px;
-
         font-family: 'Pretendard';
         font-style: normal;
         font-weight: 500;
@@ -198,7 +197,6 @@ html {
         position: relative;
         width: 48px;
         height: 48px;
-        background: #ffffff;
         border: none;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
         border-radius: 999px;

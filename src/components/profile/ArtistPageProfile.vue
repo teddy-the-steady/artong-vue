@@ -8,7 +8,7 @@
     <div v-if="this.width < 1080" class="top1">
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ member ? shortenAddress(member.wallet_address) : '' }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -31,7 +31,7 @@
     <div v-else class="top2">
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ member ? shortenAddress(member.wallet_address) : '' }}
           <img src="../../assets/icons/copy.svg" />
         </button>
