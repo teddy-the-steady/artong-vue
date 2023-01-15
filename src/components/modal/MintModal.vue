@@ -237,7 +237,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: $backdrop;
   display: table;
   transition: opacity 0.3s ease;
@@ -300,11 +300,9 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .modal-mask {
-    height: 150%;
     .modal-wrapper {
       .modal-container {
         width: auto;
-        margin: auto auto 120%;
       }
     }
   }
