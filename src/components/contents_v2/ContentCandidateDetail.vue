@@ -1,15 +1,12 @@
 <template>
   <div>
     <div class="content-image">
-      <img
-        :src="
-          content
-            ? makeS3Path(content.content_s3key) ||
-              makeS3Path(content.content_thumbnail_s3key)
-            : ''
-        "
-        @click="imageZoomIn"
-      />
+      <a
+        :href="content ? makeS3Path(content.content_s3key) : ''"
+        target="_blank"
+      >
+        <img :src="imagePath" />
+      </a>
     </div>
     <div class="content-wrap">
       <div class="content-info">
@@ -50,13 +47,13 @@
               <div>2000</div>
             </div>
             <div class="buttons">
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/launch.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/more.svg" />
               </button>
             </div>
@@ -108,7 +105,7 @@
               </button>
             </div>
             <div v-else-if="isCurrentUserProjectOwner">
-              <button @click="approve()" class="white-btn">Approve</button>
+              <button @click="approve()" class="white-button">Approve</button>
             </div>
           </div>
         </div>
@@ -162,6 +159,7 @@ import {
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
 import { ERC721_ABI } from '../../contracts'
+import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
@@ -212,11 +210,16 @@ export default {
         return true
       }
     },
+    imagePath() {
+      return (
+        this.makeS3Path(this.content?.content_thumbnail_s3key) ||
+        this.makeS3Path(this.content?.content_s3key)
+      )
+    },
   },
   methods: {
-    async getContents(project_address, contents_id) {
-      const [content, project, tokensByProject] = await Promise.all([
-        getContent(project_address, contents_id),
+    async getContents(project_address) {
+      const [project, tokensByProject] = await Promise.all([
         graphql(
           queryProject({
             variables: {
@@ -236,7 +239,6 @@ export default {
         ),
       ])
 
-      this.content = content
       this.project = project.project
       this.tokens = tokensByProject.tokens
     },
@@ -277,14 +279,14 @@ export default {
       const contentResult = await getContentVoucher(this.content.id)
       const voucher = contentResult.voucher
 
-      const tx = await contract.redeem(
+      const tx = await contract.populateTransaction.redeem(
         this.currentUser.wallet_address,
         voucher,
         { value: this.price },
       )
-      const approveReceipt = await tx.wait()
-      console.log(approveReceipt)
-      const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      const approveReceipt = await this.wait(txHash)
+      const tokenId = parseInt(approveReceipt.logs[1].topics[3])
 
       await patchContent(this.content.id, {
         tokenId: tokenId,
@@ -304,30 +306,30 @@ export default {
 
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
-    imageZoomIn(event) {
-      const element = event.target
-      if (document.fullscreenElement) {
-        return document.exitFullscreen()
-      }
-      if (element.requestFullscreen) {
-        element.requestFullscreen()
+    async wait(txHash) {
+      if (this.isMobile) {
+        return await Provider.mobileProvider.waitForTransaction(txHash)
+      } else {
+        return await Provider.pcProvider.waitForTransaction(txHash)
       }
     },
   },
   async created() {
-    await this.getContents(
+    this.content = await getContent(
       this.$route.params.project_address,
       this.$route.params.contents_id,
     )
+    await this.getContents(this.$route.params.project_address)
 
     this.$watch(
       () => this.$route,
       async to => {
         if (to.name === 'ContentCandidateDetail') {
-          await this.getContents(
-            to.params.project_address,
-            to.params.contents_id,
+          this.content = await getContent(
+            this.$route.params.project_address,
+            this.$route.params.contents_id,
           )
+          await this.getContents(to.params.project_address)
         }
       },
     )
@@ -338,16 +340,16 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .content-image {
-  display: flex;
-  justify-content: center;
-  max-height: 60vh;
-  padding: 2rem 0 4rem 0;
-  background: #f2f2f2;
-
-  img {
-    object-fit: contain;
-    max-width: 100%;
-    cursor: pointer;
+  a {
+    display: flex;
+    justify-content: center;
+    max-height: 60vh;
+    padding: 2rem 0 4rem 0;
+    background: #f2f2f2;
+    img {
+      object-fit: contain;
+      max-width: 100%;
+    }
   }
 }
 .content-wrap {
