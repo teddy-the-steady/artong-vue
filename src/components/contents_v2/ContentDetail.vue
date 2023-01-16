@@ -355,7 +355,9 @@ export default {
             try {
               const newPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.sell(contract, newPrice)
+              const txHash = await this.sell(contract, newPrice)
+              await this.wait(txHash)
+              alert('listed!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -383,7 +385,9 @@ export default {
         case 'cancel': {
           try {
             this.canceling = true
-            await this.cancel(contract)
+            const txHash = await this.cancel(contract)
+            await this.wait(txHash)
+            alert('canceled!')
           } finally {
             this.canceling = false
           }
@@ -396,7 +400,9 @@ export default {
             try {
               const newPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.update(contract, newPrice)
+              const txHash = await this.update(contract, newPrice)
+              await this.wait(txHash)
+              alert('updated!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -417,7 +423,9 @@ export default {
             try {
               const offerPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.offer(contract, offerPrice)
+              const txHash = await this.offer(contract, offerPrice)
+              await this.wait(txHash)
+              alert('offered!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -457,43 +465,43 @@ export default {
       return txHash
     },
     async cancel(contract) {
-      const tx = await contract.cancelListing(
+      const tx = await contract.populateTransaction.cancelListing(
         this.content.project.id,
         this.content.tokenId,
       )
-      await tx.wait()
-      alert('canceled!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async sell(contract, newPrice) {
       this.cancelDisabled = true
-      const tx = await contract.listItem(
+      const tx = await contract.populateTransaction.listItem(
         this.content.project.id,
         this.content.tokenId,
         etherToWei(newPrice),
       )
-      await tx.wait()
-      alert('listed!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async update(contract, newPrice) {
       this.cancelDisabled = true
-      const tx = await contract.updateListing(
+      const tx = await contract.populateTransaction.updateListing(
         this.content.project.id,
         this.content.tokenId,
         etherToWei(newPrice),
       )
-      await tx.wait()
-      alert('updated!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async offer(contract, offerPrice) {
       this.cancelDisabled = true
-      const tx = await contract.createOffer(
+      const tx = await contract.populateTransaction.createOffer(
         this.content.project.id,
         this.content.tokenId,
         1,
         { value: etherToWei(offerPrice) },
       )
-      await tx.wait()
-      alert('offered!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     makeS3Path(path) {
       return makeS3Path(path)

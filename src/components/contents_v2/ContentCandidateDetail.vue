@@ -159,6 +159,7 @@ import {
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
 import { ERC721_ABI } from '../../contracts'
+import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
@@ -278,13 +279,14 @@ export default {
       const contentResult = await getContentVoucher(this.content.id)
       const voucher = contentResult.voucher
 
-      const tx = await contract.redeem(
+      const tx = await contract.populateTransaction.redeem(
         this.currentUser.wallet_address,
         voucher,
         { value: this.price },
       )
-      const approveReceipt = await tx.wait()
-      const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      const approveReceipt = await this.wait(txHash)
+      const tokenId = parseInt(approveReceipt.logs[1].topics[3])
 
       await patchContent(this.content.id, {
         tokenId: tokenId,
@@ -303,6 +305,13 @@ export default {
       const deadLine = date * 1000
 
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
+    },
+    async wait(txHash) {
+      if (this.isMobile) {
+        return await Provider.mobileProvider.waitForTransaction(txHash)
+      } else {
+        return await Provider.pcProvider.waitForTransaction(txHash)
+      }
     },
   },
   async created() {
