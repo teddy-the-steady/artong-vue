@@ -1,16 +1,12 @@
 <template>
   <div>
     <div class="content-image">
-      <img
-        :src="
-          content
-            ? makeS3Path(content.content_s3key) ||
-              makeS3Path(content.content_thumbnail_s3key) ||
-              content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
-            : ''
-        "
-        @click="imageZoomIn"
-      />
+      <a
+        :href="content ? makeS3Path(content.content_s3key) : ''"
+        target="_blank"
+      >
+        <img :src="imagePath" />
+      </a>
     </div>
     <div class="content-wrap">
       <div class="content-info">
@@ -94,13 +90,13 @@
               <div>2000</div>
             </div>
             <div class="buttons">
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/launch.svg" />
               </button>
-              <button class="round-button ripple">
+              <button class="white-button round-button ripple">
                 <img src="@/assets/icons/more.svg" />
               </button>
             </div>
@@ -153,7 +149,7 @@
                 <button @click="makeTransaction('update')">
                   Update Listing
                 </button>
-                <button @click="makeTransaction('cancel')" class="white-btn">
+                <button @click="makeTransaction('cancel')" class="white-button">
                   <div class="spinner" :class="{ active: canceling }"></div>
                   <span v-show="!canceling">Cancel Listing</span>
                 </button>
@@ -164,7 +160,7 @@
                 <div class="spinner" :class="{ active: buying }"></div>
                 <span v-show="!buying">Buy</span>
               </button>
-              <button @click="makeTransaction('offer')" class="white-btn">
+              <button @click="makeTransaction('offer')" class="white-button">
                 Make offer
               </button>
             </div>
@@ -221,6 +217,7 @@ import {
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
 import { MARKETPLACE_ABI, MARKETPLACE } from '../../contracts'
+import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
@@ -270,21 +267,31 @@ export default {
         return ''
       }
     },
+    imagePath() {
+      return (
+        this.makeS3Path(this.content?.content_thumbnail_s3key) ||
+        this.makeS3Path(this.content?.content_s3key)
+      )
+    },
   },
   methods: {
+    async queryToken(project_address, token_id) {
+      const result = await graphql(
+        queryToken({
+          variables: {
+            id: project_address + token_id,
+          },
+          db: {
+            project_address: project_address,
+            token_id: token_id,
+          },
+        }),
+      )
+
+      return result.token
+    },
     async getContents(project_address, token_id) {
-      const [token, offers, histories, tokensByProject] = await Promise.all([
-        graphql(
-          queryToken({
-            variables: {
-              id: project_address + token_id,
-            },
-            db: {
-              project_address: project_address,
-              token_id: token_id,
-            },
-          }),
-        ),
+      const [offers, histories, tokensByProject] = await Promise.all([
         graphql(
           queryOffersByToken({
             variables: {
@@ -315,7 +322,6 @@ export default {
         ),
       ])
 
-      this.content = token.token
       this.offers = offers.offers
       this.histories = histories
       this.tokens = tokensByProject.tokens
@@ -349,7 +355,9 @@ export default {
             try {
               const newPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.sell(contract, newPrice)
+              const txHash = await this.sell(contract, newPrice)
+              await this.wait(txHash)
+              alert('listed!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -366,7 +374,9 @@ export default {
         case 'buy': {
           try {
             this.buying = true
-            await this.buy(contract)
+            const txHash = await this.buy(contract)
+            await this.wait(txHash)
+            alert('purchased!')
           } finally {
             this.buying = false
           }
@@ -375,7 +385,9 @@ export default {
         case 'cancel': {
           try {
             this.canceling = true
-            await this.cancel(contract)
+            const txHash = await this.cancel(contract)
+            await this.wait(txHash)
+            alert('canceled!')
           } finally {
             this.canceling = false
           }
@@ -388,7 +400,9 @@ export default {
             try {
               const newPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.update(contract, newPrice)
+              const txHash = await this.update(contract, newPrice)
+              await this.wait(txHash)
+              alert('updated!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -409,7 +423,9 @@ export default {
             try {
               const offerPrice = await this.$refs.promptModal.waitForAnswer()
               this.confirmOnProcess = true
-              await this.offer(contract, offerPrice)
+              const txHash = await this.offer(contract, offerPrice)
+              await this.wait(txHash)
+              alert('offered!')
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -423,6 +439,7 @@ export default {
           this.toggleModal()
           break
         }
+        // TODO] table 완성시 accept offer 버튼 추가하기
         // case 'accept': {
         //   const tx = await contract.acceptOffer(
         //     this.content.project.id,
@@ -438,53 +455,53 @@ export default {
       }
     },
     async buy(contract) {
-      const tx = await contract.buyItem(
+      const tx = await contract.populateTransaction.buyItem(
         this.content.project.id,
         this.content.tokenId,
         this.content.owner.wallet_address,
         { value: this.price },
       )
-      await tx.wait()
-      alert('purchased!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async cancel(contract) {
-      const tx = await contract.cancelListing(
+      const tx = await contract.populateTransaction.cancelListing(
         this.content.project.id,
         this.content.tokenId,
       )
-      await tx.wait()
-      alert('canceled!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async sell(contract, newPrice) {
       this.cancelDisabled = true
-      const tx = await contract.listItem(
+      const tx = await contract.populateTransaction.listItem(
         this.content.project.id,
         this.content.tokenId,
         etherToWei(newPrice),
       )
-      await tx.wait()
-      alert('listed!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async update(contract, newPrice) {
       this.cancelDisabled = true
-      const tx = await contract.updateListing(
+      const tx = await contract.populateTransaction.updateListing(
         this.content.project.id,
         this.content.tokenId,
         etherToWei(newPrice),
       )
-      await tx.wait()
-      alert('updated!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async offer(contract, offerPrice) {
       this.cancelDisabled = true
-      const tx = await contract.createOffer(
+      const tx = await contract.populateTransaction.createOffer(
         this.content.project.id,
         this.content.tokenId,
         1,
         { value: etherToWei(offerPrice) },
       )
-      await tx.wait()
-      alert('offered!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     makeS3Path(path) {
       return makeS3Path(path)
@@ -498,17 +515,19 @@ export default {
       const deadLine = date * 1000
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
-    imageZoomIn(event) {
-      const element = event.target
-      if (document.fullscreenElement) {
-        return document.exitFullscreen()
-      }
-      if (element.requestFullscreen) {
-        element.requestFullscreen()
+    async wait(txHash) {
+      if (this.isMobile) {
+        return await Provider.mobileProvider.waitForTransaction(txHash)
+      } else {
+        return await Provider.pcProvider.waitForTransaction(txHash)
       }
     },
   },
   async created() {
+    this.content = await this.queryToken(
+      this.$route.params.project_address,
+      this.$route.params.token_id,
+    )
     await this.getContents(
       this.$route.params.project_address,
       this.$route.params.token_id,
@@ -518,6 +537,10 @@ export default {
       () => this.$route,
       async to => {
         if (to.name === 'ContentDetail') {
+          this.content = await this.queryToken(
+            this.$route.params.project_address,
+            this.$route.params.token_id,
+          )
           await this.getContents(to.params.project_address, to.params.token_id)
         }
       },
@@ -529,16 +552,16 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 .content-image {
-  display: flex;
-  justify-content: center;
-  max-height: 60vh;
-  padding: 2rem 0 4rem 0;
-  background: #f2f2f2;
-
-  img {
-    object-fit: contain;
-    max-width: 100%;
-    cursor: pointer;
+  a {
+    display: flex;
+    justify-content: center;
+    max-height: 60vh;
+    padding: 2rem 0 4rem 0;
+    background: #f2f2f2;
+    img {
+      object-fit: contain;
+      max-width: 100%;
+    }
   }
 }
 .content-wrap {
