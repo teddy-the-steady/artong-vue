@@ -284,7 +284,6 @@ export default {
         { value: this.price },
       )
       const approveReceipt = await tx.wait()
-      console.log(approveReceipt)
       const tokenId = parseInt(approveReceipt.events[1].args.tokenId._hex)
 
       await patchContent(this.content.id, {
