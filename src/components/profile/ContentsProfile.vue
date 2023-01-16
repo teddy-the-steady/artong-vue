@@ -23,6 +23,10 @@
         <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
       </div>
     </div>
+    <div class="price" v-if="price">
+      <img :src="require('@/assets/icons/ethereum.svg')" />
+      {{ price }}
+    </div>
   </div>
 </template>
 
@@ -43,6 +47,10 @@ export default {
     needUserName: {
       type: Boolean,
       default: true,
+    },
+    price: {
+      type: String,
+      default: null,
     },
   },
   data() {
@@ -118,6 +126,13 @@ export default {
       border-radius: 4px;
       overflow: hidden;
     }
+  }
+
+  .price {
+    width: 20px;
+    margin-left: auto;
+    display: flex;
+    justify-content: end;
   }
 }
 </style>
