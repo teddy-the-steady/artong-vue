@@ -16,7 +16,7 @@ const state = {
   isConfirmModalOpen: false,
   isDark: false,
   waitForAnswer: null,
-  innerWidth: null,
+  innerWidth: window.innerWidth,
 }
 
 const mutations = {
