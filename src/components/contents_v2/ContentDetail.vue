@@ -217,6 +217,7 @@ import {
   checkMobileWalletStatusAndGetSigner,
 } from '../../util/commonFunc'
 import { MARKETPLACE_ABI, MARKETPLACE } from '../../contracts'
+import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
@@ -371,7 +372,9 @@ export default {
         case 'buy': {
           try {
             this.buying = true
-            await this.buy(contract)
+            const txHash = await this.buy(contract)
+            await this.wait(txHash)
+            alert('purchased!')
           } finally {
             this.buying = false
           }
@@ -444,14 +447,14 @@ export default {
       }
     },
     async buy(contract) {
-      const tx = await contract.buyItem(
+      const tx = await contract.populateTransaction.buyItem(
         this.content.project.id,
         this.content.tokenId,
         this.content.owner.wallet_address,
         { value: this.price },
       )
-      await tx.wait()
-      alert('purchased!')
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
     },
     async cancel(contract) {
       const tx = await contract.cancelListing(
@@ -503,6 +506,13 @@ export default {
       const now = toDay.getTime()
       const deadLine = date * 1000
       return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
+    },
+    async wait(txHash) {
+      if (this.isMobile) {
+        return await Provider.mobileProvider.waitForTransaction(txHash)
+      } else {
+        return await Provider.pcProvider.waitForTransaction(txHash)
+      }
     },
   },
   async created() {
