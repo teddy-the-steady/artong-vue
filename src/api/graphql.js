@@ -40,8 +40,8 @@ const queryProject = function (variables) {
 const queryProjects = function (variables) {
   return {
     query: `
-      query Projects($first: Int, $skip: Int) {
-        projects(first: $first, skip: $skip) {
+      query Projects($first: Int, $skip: Int, $orderBy: String, $orderDirection: String) {
+        projects(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
           id
           txHash
           creator
