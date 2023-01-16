@@ -67,7 +67,7 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="innerWidth < 1440">
-          <div class="red-button">
+          <div class="symbol">
             {{ project.symbol ? project.symbol.toUpperCase() : '' }}
           </div>
           <div class="container1">
@@ -717,7 +717,7 @@ export default {
     .tab {
       padding-left: 24px;
       padding-right: 24px;
-      .red-button {
+      .symbol {
         width: 52px;
         height: 25px;
         border: 1px solid #f22e3e;
@@ -728,6 +728,8 @@ export default {
         font-size: 14px;
         color: #f22e3e;
         line-height: 25px;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
       }
       .container1 {
         display: flex;
