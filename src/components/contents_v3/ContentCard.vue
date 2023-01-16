@@ -12,8 +12,8 @@
         :member="content ? content.owner : null"
         class="content-profile"
       ></ContentsProfile>
-      <div class="price-title">현재 입찰가</div>
-      <div class="price">0.25 ETH</div>
+      <div v-show="price" class="price-title">PRICE</div>
+      <div v-show="price" class="price">{{ price }} ETH</div>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@
 <script>
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, weiToEther } from '../../util/commonFunc'
 export default {
   name: 'ContentCard',
   components: {
@@ -34,6 +34,18 @@ export default {
         this.makeS3Path(this.content.content_thumbnail_s3key) ||
         this.makeS3Path(this.content.content_s3key)
       )
+    },
+    price() {
+      let result = null
+      if (this.content.listings && this.content.listings.length > 0) {
+        const listing = this.content.listings[0]
+        if (['LISTED', 'UPDATED'].includes(listing.eventType)) {
+          result = weiToEther(listing.price)
+        }
+      } else if (this.content.price) {
+        result = weiToEther(parseInt(this.content.price).toString())
+      }
+      return result
     },
   },
   props: {
