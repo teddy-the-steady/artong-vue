@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="content-image">
-      <a :href="makeS3Path(content.content_s3key)" target="_blank">
+      <a
+        :href="content ? makeS3Path(content.content_s3key) : ''"
+        target="_blank"
+      >
         <img :src="imagePath" />
       </a>
     </div>
@@ -214,9 +217,8 @@ export default {
     },
   },
   methods: {
-    async getContents(project_address, contents_id) {
-      const [content, project, tokensByProject] = await Promise.all([
-        getContent(project_address, contents_id),
+    async getContents(project_address) {
+      const [project, tokensByProject] = await Promise.all([
         graphql(
           queryProject({
             variables: {
@@ -236,7 +238,6 @@ export default {
         ),
       ])
 
-      this.content = content
       this.project = project.project
       this.tokens = tokensByProject.tokens
     },
@@ -306,19 +307,21 @@ export default {
     },
   },
   async created() {
-    await this.getContents(
+    this.content = await getContent(
       this.$route.params.project_address,
       this.$route.params.contents_id,
     )
+    await this.getContents(this.$route.params.project_address)
 
     this.$watch(
       () => this.$route,
       async to => {
         if (to.name === 'ContentCandidateDetail') {
-          await this.getContents(
-            to.params.project_address,
-            to.params.contents_id,
+          this.content = await getContent(
+            this.$route.params.project_address,
+            this.$route.params.contents_id,
           )
+          await this.getContents(to.params.project_address)
         }
       },
     )

@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="content-image">
-      <a :href="makeS3Path(content.content_s3key)" target="_blank">
+      <a
+        :href="content ? makeS3Path(content.content_s3key) : ''"
+        target="_blank"
+      >
         <img :src="imagePath" />
       </a>
     </div>
@@ -271,19 +274,23 @@ export default {
     },
   },
   methods: {
+    async queryToken(project_address, token_id) {
+      const result = await graphql(
+        queryToken({
+          variables: {
+            id: project_address + token_id,
+          },
+          db: {
+            project_address: project_address,
+            token_id: token_id,
+          },
+        }),
+      )
+
+      return result.token
+    },
     async getContents(project_address, token_id) {
-      const [token, offers, histories, tokensByProject] = await Promise.all([
-        graphql(
-          queryToken({
-            variables: {
-              id: project_address + token_id,
-            },
-            db: {
-              project_address: project_address,
-              token_id: token_id,
-            },
-          }),
-        ),
+      const [offers, histories, tokensByProject] = await Promise.all([
         graphql(
           queryOffersByToken({
             variables: {
@@ -314,7 +321,6 @@ export default {
         ),
       ])
 
-      this.content = token.token
       this.offers = offers.offers
       this.histories = histories
       this.tokens = tokensByProject.tokens
@@ -500,6 +506,10 @@ export default {
     },
   },
   async created() {
+    this.content = await this.queryToken(
+      this.$route.params.project_address,
+      this.$route.params.token_id,
+    )
     await this.getContents(
       this.$route.params.project_address,
       this.$route.params.token_id,
@@ -509,6 +519,10 @@ export default {
       () => this.$route,
       async to => {
         if (to.name === 'ContentDetail') {
+          this.content = await this.queryToken(
+            this.$route.params.project_address,
+            this.$route.params.token_id,
+          )
           await this.getContents(to.params.project_address, to.params.token_id)
         }
       },
