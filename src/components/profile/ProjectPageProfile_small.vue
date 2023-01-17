@@ -62,7 +62,6 @@ export default {
     width: 32px;
     height: 32px;
     object-fit: cover;
-    border: 1px solid $profile-border-gray;
     border-radius: 4px;
   }
   .basicProfileImage {

@@ -71,19 +71,19 @@ export default {
   position: relative;
   overflow: hidden;
   border-radius: 15px;
-  margin: 24px 16px;
+  margin: 16px;
+  box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
 
   .background {
     position: absolute;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(45deg, #454545, transparent);
+    background: $lightgray;
     img {
-      height: 120%;
-      opacity: 0.5;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      opacity: 0.8;
       filter: blur(3px);
     }
   }

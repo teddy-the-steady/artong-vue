@@ -3,16 +3,17 @@
     <div class="profile-image-wrapper" @click="$refs.fileInput.click()">
       <ProfileImageBig
         :profileImageUrl="profileImageUrl"
+        :userWalletAddress="currentUser.wallet_address"
         :isFirstLoading="isFirstLoading"
         class="profile-image"
       ></ProfileImageBig>
     </div>
     <input ref="fileInput" type="file" @change="onFileChange" />
-    <div v-if="this.width < 1080" class="top1">
+    <div v-if="innerWidth < 1080" class="top1">
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ this.shortAddress }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -36,7 +37,7 @@
       <div class="info">
         <div class="username">@{{ currentUser.username }}</div>
 
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ this.shortAddress }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -76,6 +77,7 @@ export default {
       currentUser: state => state.user.currentUser,
       profileImageUrl: state =>
         state.user.currentUser.profile.profile_image_url,
+      innerWidth: state => state.menu.innerWidth,
     }),
   },
   data() {
@@ -85,7 +87,6 @@ export default {
       hasErrorGettingImage: false,
       address: '',
       shortAddress: '',
-      width: window.innerWidth,
     }
   },
   methods: {
@@ -120,14 +121,10 @@ export default {
           alert('주소 복사 실패')
         })
     },
-    setWidth() {
-      this.width = window.innerWidth
-    },
   },
   mounted() {
     this.isFirstLoading = false
     this.shortAddress = shortenAddress(this.currentUser.wallet_address)
-    window.addEventListener('resize', this.setWidth)
   },
 }
 </script>
