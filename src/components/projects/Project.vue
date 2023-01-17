@@ -115,6 +115,8 @@
                 <ContentsProfile
                   class="contents-profile"
                   :member="project.owner"
+                  :needUserName="true"
+                  :isFirstLoading="isFirstLoading"
                 />
               </router-link>
             </div>

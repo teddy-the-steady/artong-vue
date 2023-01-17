@@ -10,7 +10,7 @@
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
         <button class="address white-button" @click="copy">
-          {{ member ? shortenAddress(member.wallet_address) : '' }}
+          {{ shortenAddress(member.wallet_address) }}
           <img src="../../assets/icons/copy.svg" />
         </button>
       </div>
@@ -33,7 +33,7 @@
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
         <button class="address white-button" @click="copy">
-          {{ member ? shortenAddress(member.wallet_address) : '' }}
+          {{ shortenAddress(member.wallet_address) }}
           <img src="../../assets/icons/copy.svg" />
         </button>
       </div>
@@ -111,7 +111,9 @@ export default {
         : makeS3Path(member.profile_s3key)
     },
     shortenAddress(address) {
-      return shortenAddress(address)
+      if (address) {
+        return shortenAddress(address)
+      }
     },
 
     copy() {

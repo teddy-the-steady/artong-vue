@@ -63,31 +63,54 @@
           </div>
           <div class="owner">
             <div class="label">Owned by</div>
-            <div>
+            <router-link
+              :to="{
+                name: 'UserOrArtist',
+                params: { id: content ? content.owner.username : '' },
+              }"
+            >
               <ContentsProfile
                 :member="content ? content.owner : null"
                 :needUserName="true"
+                :isFirstLoading="isFirstLoading"
               ></ContentsProfile>
-            </div>
+            </router-link>
           </div>
           <div class="collection">
             <div class="info">
               <div class="label">Collection</div>
-              <div class="profile">img</div>
+              <router-link
+                :to="{
+                  name: 'Project',
+                  params: { id: content ? content.project_address : null },
+                }"
+              >
+                <ProjectPageProfile_small
+                  :project="project"
+                  :isFirstLoading="isFirstLoading"
+                ></ProjectPageProfile_small>
+              </router-link>
             </div>
             <div>
               <div class="label">Created By</div>
-              <div class="profile">img</div>
+              <router-link
+                :to="{
+                  name: 'UserOrArtist',
+                  params: { id: content ? content.owner.username : '' },
+                }"
+              >
+                <ContentsProfile
+                  :member="content ? content.owner : null"
+                  :needUserName="true"
+                  :isFirstLoading="isFirstLoading"
+                ></ContentsProfile>
+              </router-link>
             </div>
           </div>
           <div class="information">
             <div class="label">Information</div>
             <div>
               {{ content ? content.description : '' }}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
-              lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
-              tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
-              morbi sit diam arcu.
             </div>
           </div>
           <div class="price-box">
@@ -163,6 +186,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 
 export default {
   name: 'CandidateDetail',
@@ -171,6 +195,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
+    ProjectPageProfile_small,
   },
   data() {
     return {
@@ -181,6 +206,7 @@ export default {
       confirmOnProcess: false,
       cancelDisabled: false,
       buying: false,
+      isFirstLoading: true,
     }
   },
   computed: {
@@ -315,21 +341,25 @@ export default {
     },
   },
   async created() {
+    this.isFirstLoading = true
     this.content = await getContent(
       this.$route.params.project_address,
       this.$route.params.contents_id,
     )
     await this.getContents(this.$route.params.project_address)
+    this.isFirstLoading = false
 
     this.$watch(
       () => this.$route,
       async to => {
         if (to.name === 'ContentCandidateDetail') {
+          this.isFirstLoading = true
           this.content = await getContent(
             this.$route.params.project_address,
             this.$route.params.contents_id,
           )
           await this.getContents(to.params.project_address)
+          this.isFirstLoading = false
         }
       },
     )
@@ -449,9 +479,6 @@ export default {
         margin-bottom: 20px;
         font-size: 32px;
         font-weight: 600;
-      }
-      .owner {
-        display: flex;
       }
       .collection {
         display: flex;
