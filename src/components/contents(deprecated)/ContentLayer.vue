@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import InContentsProfile from '../profile/InContentsProfile.vue'
+import InContentsProfile from './InContentsProfile.vue'
 import ReactionList from '../contents(deprecated)/ReactionList.vue'
 
 export default {
