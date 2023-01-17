@@ -59,6 +59,10 @@ export default {
       type: String,
       default: null,
     },
+    isFirstLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     backgroundColor() {
@@ -67,23 +71,12 @@ export default {
   },
   data() {
     return {
-      isFirstLoading: false,
       hasErrorGettingImage: false,
     }
   },
   methods: {
     makeS3Path(path) {
       return makeS3Path(path)
-    },
-  },
-  watch: {
-    member: {
-      immediate: true,
-      handler(val) {
-        if (val) {
-          this.isFirstLoading = false
-        }
-      },
     },
   },
 }
