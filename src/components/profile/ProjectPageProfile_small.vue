@@ -4,13 +4,16 @@
       <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
     </div>
     <div v-else @error="isFirstLoading = true">
-      <!--class="image" 뺌-->
-      <img v-if="projectImageUrl" :src="projectImageUrl" class="realImage" />
-      <div v-else class="basicProfileImage"></div>
+      <img v-if="projectImage" :src="projectImage" class="realImage" />
+      <div
+        v-else
+        class="basicProfileImage"
+        :style="{ background: backgroundColor }"
+      ></div>
     </div>
     <div class="info" v-if="!isFirstLoading">
       <div class="username">
-        {{ $route.params.id }}
+        {{ project.name }}
       </div>
     </div>
     <div class="info" v-else-if="isFirstLoading">
@@ -22,20 +25,41 @@
 </template>
 
 <script>
-import { headerActivate } from '../../mixin'
+import { headerActivate, backgroundColor } from '../../mixin'
+import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
-  name: 'ProjectPageProfile',
+  name: 'ProjectPageProfile_small',
   components: {
     SkeletonBox,
   },
-  mixins: [headerActivate],
-  data() {
-    return {
-      projectImageUrl: '',
-      isFirstLoading: true,
-    }
+  mixins: [headerActivate, backgroundColor],
+  props: {
+    project: {
+      type: Object,
+      default: () => {},
+    },
+    isFirstLoading: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    projectImage() {
+      return (
+        this.makeS3Path(this.project.project_thumbnail_s3key) ||
+        this.makeS3Path(this.project.project_s3key)
+      )
+    },
+    backgroundColor() {
+      return this.generateGradientBackground(this.project.id)
+    },
+  },
+  methods: {
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
   },
 }
 </script>
@@ -45,11 +69,8 @@ export default {
 
 .project {
   display: flex;
-  //margin-left: 15%;
-  //transform: translateY(-40%);
 
   .image {
-    //display: inline-block;
     background-color: $artong-white;
     width: 32px;
     height: 32px;
@@ -70,13 +91,13 @@ export default {
     object-fit: fill;
     border: 1px solid $profile-border-gray;
     border-radius: 4px;
-    background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
   }
 
   .info {
     word-break: break-all;
     margin-left: 8px;
     height: 17px;
+    margin-top: 7.5px;
 
     .username {
       font-family: $item-font;
@@ -86,32 +107,10 @@ export default {
       line-height: 17px;
     }
     .username_box {
-      margin-top: 7.5px;
       width: 105px;
       height: 17px;
       border-radius: 4px;
       overflow: hidden;
-    }
-  }
-}
-
-@media only screen and (max-width: 599px) {
-  .project {
-    //transform: translateY(-30%);
-    align-items: center;
-    flex-direction: row;
-    margin-left: 0;
-
-    .image {
-      width: 32px;
-      height: 32px;
-    }
-
-    .info {
-      margin-left: 8px;
-      .username {
-        position: inherit;
-      }
     }
   }
 }
