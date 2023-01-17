@@ -6,55 +6,43 @@
         <div>{{ tableName }}</div>
       </div>
       <div class="table">
-        <div class="top-box">
-          <table class="top-table">
-            <tr class="fix-head">
-              <th
-                width="20%"
-                class="index"
-                v-for="(field, i) in fields"
-                :key="i"
-              >
-                {{ field.name }}
-              </th>
-            </tr>
-          </table>
-        </div>
-        <div class="middle-box">
-          <div class="box2">
-            <table class="middle-table">
-              <colgroup>
-                <col width="20%" />
-              </colgroup>
-              <tr v-for="(content, i) in contents" :key="`o-${i}`">
-                <td v-for="(field, k) in fields" :key="k">
-                  <div v-if="field.type == 'price'">
-                    {{
-                      content[field.key]
-                        ? weiToEther(content[field.key]) + ' ETH'
-                        : ''
-                    }}
-                  </div>
-                  <div v-else-if="field.type == 'date'">
-                    {{ convertDay(parseInt(content[field.key])) }}
-                    <!-- {{ content[field.key] }} -->
-                  </div>
-                  <div v-else-if="field.type == 'member'">
-                    <ContentsProfile
-                      :member="content[field.key]"
-                      :needUserName="true"
-                    ></ContentsProfile>
-                  </div>
-                </td>
-              </tr>
-            </table>
+        <div class="top-row">
+          <div v-for="(field, i) in fields" :key="i" class="field">
+            {{ field.name }}
           </div>
         </div>
-        <InfiniteLoading
-          @infinite="infiniteHandler"
-          spinner="spiral"
-          class="infinite-loading"
-        ></InfiniteLoading>
+        <div class="middle-box">
+          <div
+            class="middle-row"
+            v-for="(content, i) in contents"
+            :key="`o-${i}`"
+          >
+            <div v-for="(field, k) in fields" :key="k">
+              <div class="field" v-if="field.type == 'price'">
+                {{
+                  content[field.key]
+                    ? weiToEther(content[field.key]) + ' ETH'
+                    : ''
+                }}
+              </div>
+              <div v-else-if="field.type == 'date'">
+                {{ convertDay(parseInt(content[field.key])) }}
+                <!-- {{ content[field.key] }} -->
+              </div>
+              <div v-else-if="field.type == 'member'">
+                <ContentsProfile
+                  :member="content[field.key]"
+                  :needUserName="true"
+                ></ContentsProfile>
+              </div>
+            </div>
+          </div>
+          <InfiniteLoading
+            @infinite="infiniteHandler"
+            spinner="spiral"
+            class="infinite-loading"
+          ></InfiniteLoading>
+        </div>
       </div>
     </div>
   </div>
@@ -181,59 +169,29 @@ export default {
       margin-right: 8px;
     }
   }
-
   .table {
-    // text-align: left;
-    // font-family: 'Pretendard';
-    // font-style: normal;
-    // font-size: 14px;
-    // border-collapse: collapse;
-    // display: table;
-    // width: 100%;
-    // height: 100%;
-    text-align: center;
-    .top-box {
-      height: 54px;
-      width: 100%;
-      float: left;
-      .top-table {
-        height: 54px;
+    width: 100%;
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      .field {
         width: 100%;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-        tr {
-          display: table;
-          width: calc(100% - 18px);
-          height: 54px;
-          text-align: left;
-          th {
-            height: 52px;
-          }
-        }
+        text-align: left;
+        padding-left: 2px;
       }
     }
     .middle-box {
-      width: 100%;
-      height: 340px;
-      .box2 {
-        overflow-y: scroll;
-        margin: 0 auto;
-        width: 100%;
-        float: left;
-        height: 340px;
-      }
-      .middle-table {
-        border-collapse: collapse;
-        width: 100%;
-        tr {
-          border-bottom: 1px solid rgba(0, 0, 0, 0.14);
-          td {
-            height: 64px;
+      .middle-row {
+        display: flex;
+        justify-content: space-between;
+        div {
+          .field {
+            width: 100%;
+            text-align: left;
+            padding-left: 2px;
           }
         }
       }
-    }
-    .infinite-loading {
-      position: static;
     }
   }
 }
