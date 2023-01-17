@@ -92,31 +92,54 @@
           </div>
           <div class="owner">
             <div class="label">Owned by</div>
-            <div>
+            <router-link
+              :to="{
+                name: 'UserOrArtist',
+                params: { id: content ? content.owner.username : '' },
+              }"
+            >
               <ContentsProfile
                 :member="content ? content.owner : null"
                 :needUserName="true"
+                :isFirstLoading="isFirstLoading"
               ></ContentsProfile>
-            </div>
+            </router-link>
           </div>
           <div class="collection">
             <div class="info">
               <div class="label">Collection</div>
-              <div class="profile">img</div>
+              <router-link
+                :to="{
+                  name: 'Project',
+                  params: { id: content ? content.project.id : null },
+                }"
+              >
+                <ProjectPageProfile_small
+                  :project="content ? content.project : null"
+                  :isFirstLoading="isFirstLoading"
+                ></ProjectPageProfile_small>
+              </router-link>
             </div>
             <div>
               <div class="label">Created By</div>
-              <div class="profile">img</div>
+              <router-link
+                :to="{
+                  name: 'UserOrArtist',
+                  params: { id: content ? content.creator.username : '' },
+                }"
+              >
+                <ContentsProfile
+                  :member="content ? content.creator : null"
+                  :needUserName="true"
+                  :isFirstLoading="isFirstLoading"
+                ></ContentsProfile>
+              </router-link>
             </div>
           </div>
           <div class="information">
             <div class="label">Information</div>
             <div>
               {{ content ? content.description : '' }}
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ac sit
-              lorem vel magna id. Enim feugiat felis at ultrices a dolor amet,
-              tincidunt in. Cursus volutpat convallis turpis elementum. Fusce
-              morbi sit diam arcu.
             </div>
           </div>
           <div class="price-box">
@@ -155,7 +178,7 @@
       </div>
       <div class="collection-container">
         <div class="header">
-          <div class="title">More from this collection</div>
+          <div class="title">More from this project</div>
           <div class="url">
             <router-link
               :to="{
@@ -208,6 +231,7 @@ import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
 import TableDiv from '../table/TableDiv.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 
 export default {
   name: 'ContentDetail',
@@ -217,6 +241,7 @@ export default {
     TokensByCollection,
     PromptModal,
     TableDiv,
+    ProjectPageProfile_small,
   },
   data() {
     return {
@@ -237,6 +262,7 @@ export default {
         func: null,
         body: {},
       },
+      isFirstLoading: true,
     }
   },
   computed: {
@@ -309,10 +335,12 @@ export default {
         graphql(
           queryTokensByProject({
             variables: {
-              first: 10,
+              first: 20,
               skip: 0,
               start_num: 0,
               project: project_address,
+              orderBy: 'createdAt',
+              orderDirection: 'desc',
             },
           }),
         ),
@@ -544,6 +572,7 @@ export default {
         },
       }),
     }
+    this.isFirstLoading = true
     this.content = await this.queryToken(
       this.$route.params.project_address,
       this.$route.params.token_id,
@@ -552,16 +581,19 @@ export default {
       this.$route.params.project_address,
       this.$route.params.token_id,
     )
+    this.isFirstLoading = false
 
     this.$watch(
       () => this.$route,
       async to => {
         if (to.name === 'ContentDetail') {
+          this.isFirstLoading = true
           this.content = await this.queryToken(
             this.$route.params.project_address,
             this.$route.params.token_id,
           )
           await this.getContents(to.params.project_address, to.params.token_id)
+          this.isFirstLoading = false
         }
       },
     )
@@ -633,9 +665,6 @@ export default {
         margin-bottom: 20px;
         font-size: 32px;
         font-weight: 600;
-      }
-      .owner {
-        display: flex;
       }
       .collection {
         display: flex;
@@ -772,6 +801,11 @@ export default {
       width: 100%;
       .right-container {
         margin-bottom: 50px;
+        .collection {
+          .info {
+            flex: 0.8;
+          }
+        }
       }
       .left-container {
         margin: 0;
