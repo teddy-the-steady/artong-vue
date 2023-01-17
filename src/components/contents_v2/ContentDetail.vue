@@ -826,6 +826,11 @@ export default {
       width: 100%;
       .right-container {
         margin-bottom: 50px;
+        .collection {
+          .info {
+            flex: 0.8;
+          }
+        }
       }
       .left-container {
         margin: 0;

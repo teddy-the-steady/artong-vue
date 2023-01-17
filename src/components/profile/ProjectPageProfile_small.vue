@@ -114,24 +114,4 @@ export default {
     }
   }
 }
-
-@media only screen and (max-width: 599px) {
-  .project {
-    align-items: center;
-    flex-direction: row;
-    margin-left: 0;
-
-    .image {
-      width: 32px;
-      height: 32px;
-    }
-
-    .info {
-      margin-left: 8px;
-      .username {
-        position: inherit;
-      }
-    }
-  }
-}
 </style>
