@@ -634,6 +634,7 @@ export default {
 
     .right-container {
       text-align: initial;
+      flex: 1;
       .add-info {
         display: flex;
         .like-view {
