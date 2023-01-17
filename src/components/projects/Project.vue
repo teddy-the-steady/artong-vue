@@ -1,18 +1,31 @@
 <template>
   <div>
     <div class="header">
-      <div class="background" :style="{ background: backgroundColor }"></div>
+      <div class="background" :style="{ background: backgroundColor }">
+        <img
+          v-if="project"
+          :src="backgroundImage"
+          class="background-image"
+          :class="{ pointer: isProjectOwner }"
+          @click="backgroundClick"
+        />
+        <input ref="fileInput" type="file" @change="onFileChange" />
+      </div>
       <div class="user-info">
-        <ProjectPageProfile class="profile"></ProjectPageProfile>
+        <ProjectPageProfile
+          class="profile"
+          :project="project"
+          :isFirstLoading="isFirstLoading"
+        ></ProjectPageProfile>
         <div class="buttons">
-          <button class="round-button ripple" @click="share">
+          <button class="white-button round-button ripple" @click="share">
             <img src="../../assets/icons/share.svg" />
           </button>
-          <button class="round-button ripple" @click="toEtherscan">
+          <button class="white-button round-button ripple" @click="toEtherscan">
             <img src="../../assets/icons/launch.svg" />
           </button>
           <button
-            class="round-button ripple"
+            class="white-button round-button ripple"
             @mousedown="moreMouseDown"
             @mouseup="moreMouseUp"
             @touchstart="moreTouchStart"
@@ -40,7 +53,7 @@
             <!-- </router-link> -->
             <div slot="body">Report</div>
           </BasicDialog>
-          <div v-if="this.width >= 1080" class="creators-button">
+          <div v-if="innerWidth >= 1080" class="creators-button">
             <div class="creator">Created by</div>
             <ContentsProfileBundle
               class="profile-bundle"
@@ -53,8 +66,8 @@
     </div>
     <div class="tab-n-content">
       <div class="bottom">
-        <div class="tab" v-if="this.width < 1440">
-          <div class="red-button">
+        <div class="tab" v-if="innerWidth < 1440">
+          <div class="symbol">
             {{ project.symbol ? project.symbol.toUpperCase() : '' }}
           </div>
           <div class="container1">
@@ -115,14 +128,13 @@
           </div>
         </div>
         <LeftProjectTab
-          v-else-if="this.width >= 1440"
+          v-else-if="innerWidth >= 1440"
           :project="project"
           class="left-tab"
         />
       </div>
       <ProjectTab
         :tabs="tabs"
-        :width="width"
         :sortOptions="sortOptions"
         class="project-tab-sort"
       />
@@ -156,14 +168,16 @@
 </template>
 
 <script>
+import Storage from '@aws-amplify/storage'
 import { mapState } from 'vuex'
 import { backgroundColor } from '../../mixin'
 import { graphql, queryProject, queryTokensByProject } from '../../api/graphql'
 import {
   postProjectSubscriber,
   getProjectContributors,
+  patchProject,
 } from '../../api/projects'
-import { isSessionValid } from '../../util/commonFunc'
+import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import { getTobeApprovedContents } from '../../api/contents'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
@@ -202,10 +216,21 @@ export default {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
-
+    isProjectOwner() {
+      return (
+        this.currentUser.wallet_address === this.project?.owner?.wallet_address
+      )
+    },
     isMobile() {
       return this.$isMobile()
+    },
+    backgroundImage() {
+      return makeS3Path(
+        this.project.background_s3key ||
+          this.project.background_thumbnail_s3key,
+      )
     },
   },
   data() {
@@ -240,7 +265,6 @@ export default {
           show: false,
         },
       ],
-      width: window.innerWidth,
       steps: [
         { id: 0, title: 'stepModal0' },
         { id: 1, title: 'stepModal1' },
@@ -253,6 +277,7 @@ export default {
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
+      isFirstLoading: true,
       projectData: [],
       url: '',
       sortOptions: {
@@ -267,6 +292,7 @@ export default {
           orderDirection: 'asc',
         },
       },
+      S3_PRIVACY_LEVEL: 'public',
     }
   },
   methods: {
@@ -286,9 +312,6 @@ export default {
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
-    },
-    setWidth() {
-      this.width = window.innerWidth
     },
     setSlotData(key, val) {
       this.slotData[key] = val
@@ -457,6 +480,35 @@ export default {
         params: { project_address: this.project.id },
       })
     },
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    backgroundClick() {
+      if (!this.isProjectOwner) {
+        return
+      }
+      this.$refs.fileInput.click()
+    },
+    async onFileChange(e) {
+      const file = e.target.files[0]
+      await this.uploadProjectImage(file)
+    },
+    async uploadProjectImage(file) {
+      const result = await Storage.put(
+        `project/${this.project.txHash}/background/${file.name}`,
+        file,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: file.type,
+        },
+      )
+      if (result) {
+        const patchResult = await patchProject(this.project.txHash, {
+          background_s3key: `${this.S3_PRIVACY_LEVEL}/${result.key}`,
+        })
+        this.project.background_s3key = patchResult.background_s3key
+      }
+    },
   },
   async created() {
     this.projectAddress = this.$route.params.id
@@ -464,14 +516,19 @@ export default {
       this.$route.params.id,
     )
     this.project = await this.getProject()
+    this.isFirstLoading = false
     this.setStatistics()
     this.setTabs()
 
     this.$watch(
       () => this.$route,
       async to => {
-        if (to.name === 'Project' && (!to.query.tab || to.query.tab == 0)) {
+        if (to.name === 'Project' && !to.query.tab) {
+          this.project.background_s3key = null
+          this.project.background_thumbnail_s3key = null
+          this.isFirstLoading = true
           this.project = await this.getProject()
+          this.isFirstLoading = false
           this.setStatistics()
           this.tabs[3].show = false
 
@@ -488,7 +545,6 @@ export default {
     )
   },
   mounted() {
-    window.addEventListener('resize', this.setWidth)
     this.$root.$on('contribute', () => {
       this.toggleModal()
     })
@@ -582,6 +638,18 @@ export default {
   z-index: 2;
   .background {
     height: 330px;
+    .background-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      text-indent: -10000px;
+      &.pointer {
+        cursor: pointer;
+      }
+    }
+    input[type='file'] {
+      display: none;
+    }
   }
   .user-info {
     height: 30%;
@@ -649,7 +717,7 @@ export default {
     .tab {
       padding-left: 24px;
       padding-right: 24px;
-      .red-button {
+      .symbol {
         width: 52px;
         height: 25px;
         border: 1px solid #f22e3e;
@@ -660,6 +728,8 @@ export default {
         font-size: 14px;
         color: #f22e3e;
         line-height: 25px;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
       }
       .container1 {
         display: flex;
@@ -764,6 +834,13 @@ textarea {
   }
 }
 @media only screen and (min-width: 1440px) {
+  .header {
+    .user-info {
+      .profile {
+        margin-left: 185px;
+      }
+    }
+  }
   .tab-n-content {
     display: flex;
     margin-right: 185px;

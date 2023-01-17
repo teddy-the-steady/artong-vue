@@ -109,7 +109,7 @@ export default {
 
 .profiles {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 180px));
   justify-content: center;
   padding: initial;
 }
