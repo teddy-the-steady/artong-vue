@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="top">
+    <div class="top" @click="onContentClick">
       <img :src="contentImage" alt="" />
       <ProjectPageProfile_small
         v-if="needContentName"
@@ -8,10 +8,18 @@
       ></ProjectPageProfile_small>
     </div>
     <div class="bottom">
-      <ContentsProfile
-        :member="content ? content.owner : null"
-        class="content-profile"
-      ></ContentsProfile>
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: { id: content ? content.owner.username : '' },
+        }"
+        class="profile-link"
+      >
+        <ContentsProfile
+          :member="content ? content.owner : null"
+          class="content-profile"
+        ></ContentsProfile>
+      </router-link>
       <div v-show="price" class="price-title">PRICE</div>
       <div v-show="price" class="price">{{ price }} ETH</div>
     </div>
@@ -73,6 +81,25 @@ export default {
         return require('@/assets/images/art11.jpg')
       }
     },
+    onContentClick() {
+      if (this.content.tokenId) {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: this.content.project_address,
+            token_id: this.content.tokenId,
+          },
+        })
+      } else if (this.content.id) {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address: this.content.project_address,
+            contents_id: this.content.id,
+          },
+        })
+      }
+    },
   },
 }
 </script>
@@ -119,9 +146,13 @@ export default {
     flex-direction: column;
     margin: 16px 0;
     height: 32px;
-    .content-profile {
-      margin-left: 16px;
+    .profile-link {
+      width: fit-content;
+      .content-profile {
+        margin-left: 16px;
+      }
     }
+
     .price-title {
       margin-top: 16px;
       margin-left: 16px;
