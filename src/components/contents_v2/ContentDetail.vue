@@ -12,7 +12,7 @@
       <div class="content-info">
         <div class="left-container">
           <div class="round-box">
-            <TableWithTitle
+            <TableDiv
               :api="queryOffersByToken"
               :tableName="'Offers'"
               :iconSrc="require('@/assets/icons/100-add-folder.svg')"
@@ -34,10 +34,10 @@
                   key: 'from',
                 },
               ]"
-            ></TableWithTitle>
+            ></TableDiv>
           </div>
           <div class="round-box">
-            <TableWithTitle
+            <TableDiv
               :api="queryTokenHistory"
               :tableName="'History'"
               :iconSrc="require('@/assets/icons/history.svg')"
@@ -64,7 +64,7 @@
                   key: 'to_member',
                 },
               ]"
-            ></TableWithTitle>
+            ></TableDiv>
           </div>
         </div>
         <div class="right-container">
@@ -207,7 +207,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
-import TableWithTitle from '../table/TableWithTitle.vue'
+import TableDiv from '../table/TableDiv.vue'
 
 export default {
   name: 'ContentDetail',
@@ -216,7 +216,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
-    TableWithTitle,
+    TableDiv,
   },
   data() {
     return {
@@ -520,6 +520,30 @@ export default {
     },
   },
   async created() {
+    this.queryOffersByToken = {
+      result_key: 'offers',
+      func: graphql,
+      body: queryOffersByToken({
+        variables: {
+          first: 1,
+          skip: 0,
+          id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+      }),
+    }
+    this.queryTokenHistory = {
+      result_key: 'history',
+      func: graphql,
+      body: queryTokenHistory({
+        variables: {
+          id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+        pagination: {
+          start_num: 0,
+          count_num: 1,
+        },
+      }),
+    }
     this.content = await this.queryToken(
       this.$route.params.project_address,
       this.$route.params.token_id,
@@ -562,7 +586,7 @@ export default {
 }
 .content-wrap {
   max-width: 1440px;
-  padding: 40px 64px 0 64px;
+  padding: 40px 24px 0 24px;
   margin: 0 auto;
   .content-info {
     display: flex;
@@ -572,52 +596,7 @@ export default {
       flex: 1;
       margin-right: 40px;
       .round-box {
-        &.history {
-          margin-top: 3rem;
-        }
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-        border-radius: 24px;
-        padding: 32px 24px 32px 24px;
-
-        .title {
-          text-align: initial;
-          margin-left: 1rem;
-          font-size: 22px;
-          font-weight: 600;
-          img {
-            max-width: 1.8rem;
-            vertical-align: text-top;
-          }
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          th {
-            font-weight: 50;
-          }
-
-          td {
-            border-bottom: 1px solid #cccccc;
-            padding: 21px;
-            text-align: left;
-
-            font-family: $item-font;
-            font-style: $item-font-style;
-            font-weight: 500;
-            font-size: 14px;
-
-            &.price {
-              img {
-                margin-left: 0.5rem;
-                cursor: pointer;
-                opacity: 0.5;
-                vertical-align: middle;
-              }
-            }
-          }
-        }
+        margin-bottom: 48px;
       }
     }
 

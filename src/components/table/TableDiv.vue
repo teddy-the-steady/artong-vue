@@ -25,11 +25,11 @@
                     : ''
                 }}
               </div>
-              <div v-else-if="field.type == 'date'">
+              <div class="field" v-else-if="field.type == 'date'">
                 {{ convertDay(parseInt(content[field.key])) }}
                 <!-- {{ content[field.key] }} -->
               </div>
-              <div v-else-if="field.type == 'member'">
+              <div class="field" v-else-if="field.type == 'member'">
                 <ContentsProfile
                   :member="content[field.key]"
                   :needUserName="true"
@@ -171,24 +171,56 @@ export default {
   }
   .table {
     width: 100%;
+    overflow-y: auto;
+
     .top-row {
-      display: flex;
+      display: inline-flex;
       justify-content: space-between;
+      height: 41px;
+      border-bottom: 1px solid #cccccc;
+      line-height: 41px;
+      min-width: 100%;
+      position: sticky;
+      top: 0;
+      background-color: $artong-white;
+
       .field {
         width: 100%;
+        min-width: 174px;
         text-align: left;
-        padding-left: 2px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        color: $artong-black;
+        padding-left: 8px;
       }
     }
     .middle-box {
+      height: 299px;
       .middle-row {
-        display: flex;
+        height: 64px;
+        line-height: 64px;
+        display: inline-flex;
         justify-content: space-between;
+        border-bottom: 1px solid #cccccc;
+        min-width: 100%;
         div {
+          margin-top: 100%;
+          width: 182px;
+          padding-top: auto;
+          padding-bottom: auto;
+          line-height: inherits;
+          margin: auto;
           .field {
             width: 100%;
             text-align: left;
-            padding-left: 2px;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            padding-left: 8px;
+            color: #333333;
           }
         }
       }
