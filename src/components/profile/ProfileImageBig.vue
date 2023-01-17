@@ -12,16 +12,22 @@
         @error="hasErrorGettingImage = true"
         :class="{ error: hasErrorGettingImage }"
       />
-      <div v-else class="basicProfileImage"></div>
+      <div
+        v-else
+        class="basicProfileImage"
+        :style="{ background: backgroundColor }"
+      ></div>
     </div>
   </div>
 </template>
 
 <script>
+import { backgroundColor } from '../../mixin'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'ProfileImageBig',
+  mixins: [backgroundColor],
   components: {
     SkeletonBox,
   },
@@ -30,9 +36,18 @@ export default {
       type: String,
       default: '',
     },
+    userWalletAddress: {
+      type: String,
+      default: '',
+    },
     isFirstLoading: {
       type: Boolean,
       default: true,
+    },
+  },
+  computed: {
+    backgroundColor() {
+      return this.generateGradientBackground(this.userWalletAddress)
     },
   },
   data() {
@@ -62,7 +77,6 @@ export default {
     border-radius: 50%;
 
     &.error {
-      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
       text-indent: -10000px;
     }
   }
@@ -70,7 +84,6 @@ export default {
   .basicProfileImage {
     height: 100%;
     border-radius: 50%;
-    background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
   }
 }
 

@@ -5,13 +5,17 @@
     </div>
     <div v-else @error="isFirstLoading = true">
       <img
-        v-if="project"
+        v-if="projectImage"
         :src="projectImage"
         class="realImage"
         :class="{ pointer: isProjectOwner }"
         @click="imageClick"
       />
-      <div v-else class="basicProfileImage"></div>
+      <div
+        v-else
+        class="basicProfileImage"
+        :style="{ background: backgroundColor }"
+      ></div>
       <input ref="fileInput" type="file" @change="onFileChange" />
     </div>
     <div class="info" v-if="needProjectName && !isFirstLoading">
@@ -30,7 +34,7 @@
 <script>
 import Storage from '@aws-amplify/storage'
 import { mapState } from 'vuex'
-import { headerActivate } from '../../mixin'
+import { headerActivate, backgroundColor } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import { patchProject } from '../../api/projects'
 import SkeletonBox from '../util/SkeletonBox.vue'
@@ -40,7 +44,7 @@ export default {
   components: {
     SkeletonBox,
   },
-  mixins: [headerActivate],
+  mixins: [headerActivate, backgroundColor],
   props: {
     project: {
       type: Object,
@@ -68,6 +72,9 @@ export default {
       return makeS3Path(
         this.project.project_thumbnail_s3key || this.project.project_s3key,
       )
+    },
+    backgroundColor() {
+      return this.generateGradientBackground(this.project.id)
     },
   },
   data() {
@@ -137,10 +144,8 @@ export default {
   .basicProfileImage {
     width: 100px;
     height: 100px;
-    object-fit: fill;
-    border: 1px solid $profile-border-gray;
     border-radius: 15px;
-    background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+    border: 1px solid $profile-border-gray;
   }
   input[type='file'] {
     display: none;

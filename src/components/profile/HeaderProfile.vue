@@ -7,23 +7,29 @@
     </div>
     <div v-else class="image">
       <img
-        v-if="profileImageUrl"
-        :src="profileImageUrl"
+        v-if="currentUser.profile.profile_image_url"
+        :src="currentUser.profile.profile_image_url"
         @error="hasErrorGettingImage = true"
         class="profileImage"
         :class="{ error: hasErrorGettingImage }"
       />
-      <div v-else class="basicProfileImage"></div>
+      <div
+        v-else
+        class="basicProfileImage"
+        :style="{ background: backgroundColor }"
+      ></div>
     </div>
   </div>
 </template>
 
 <script>
 import SkeletonBox from '../util/SkeletonBox.vue'
+import { backgroundColor } from '../../mixin'
 import { mapState } from 'vuex'
 
 export default {
   name: 'HeaderProfile',
+  mixins: [backgroundColor],
   components: {
     SkeletonBox,
   },
@@ -35,9 +41,11 @@ export default {
   },
   computed: {
     ...mapState({
-      profileImageUrl: state =>
-        state.user.currentUser.profile.profile_image_url,
+      currentUser: state => state.user.currentUser,
     }),
+    backgroundColor() {
+      return this.generateGradientBackground(this.currentUser.wallet_address)
+    },
   },
   mounted() {
     this.isFirstLoading = false
@@ -70,7 +78,6 @@ export default {
     .basicProfileImage {
       height: 100%;
       border-radius: 50%;
-      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
     }
   }
 }
