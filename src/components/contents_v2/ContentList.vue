@@ -16,7 +16,10 @@
             },
           }"
         >
-          <ContentsProfile :member="val.owner"></ContentsProfile>
+          <ContentsProfile
+            :member="val.owner"
+            :price="val.price"
+          ></ContentsProfile>
         </router-link>
       </div>
     </masonry>
@@ -31,7 +34,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, weiToEther } from '../../util/commonFunc'
 import ContentBox from './ContentBox.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 
@@ -136,6 +139,7 @@ export default {
             content_thumbnail_s3key: makeS3Path(
               apiResults[i].content_thumbnail_s3key,
             ),
+            price: this.extractPrice(apiResults[i]),
             createdAt: apiResults[i].createdAt,
             updatedAt: apiResults[i].updatedAt,
           })
@@ -174,6 +178,17 @@ export default {
             contents_id: val.id,
           },
         })
+      }
+    },
+    extractPrice(result) {
+      if (result.listings && result.listings.length > 0) {
+        const listing = result.listings[0]
+        if (['LISTED', 'UPDATED'].includes(listing.eventType)) {
+          return weiToEther(listing.price)
+        }
+        return null
+      } else if (result.price) {
+        return weiToEther(parseInt(result.price).toString())
       }
     },
   },

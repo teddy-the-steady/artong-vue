@@ -6,6 +6,7 @@ import {
   TOGGLE_MODAL,
   TOGGLE_CONFIRM_MODAL,
   TOGGLE_THEME,
+  SET_INNER_WIDTH,
 } from '../actions/menu'
 
 const state = {
@@ -15,6 +16,7 @@ const state = {
   isConfirmModalOpen: false,
   isDark: false,
   waitForAnswer: null,
+  innerWidth: window.innerWidth,
 }
 
 const mutations = {
@@ -38,6 +40,9 @@ const mutations = {
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
+  },
+  [SET_INNER_WIDTH]: (state, innerWidth) => {
+    state.innerWidth = innerWidth
   },
 }
 

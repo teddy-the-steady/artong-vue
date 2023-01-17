@@ -15,14 +15,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getMemberByUsername } from '../../api/member'
+import { getMemberByUsername, postMemberFollower } from '../../api/member'
+import { getMemberContentsCandidates } from '../../api/projects'
 import {
   graphql,
   queryProjectsByCreator,
   queryTokensByCreator,
   queryTokensByOwner,
 } from '../../api/graphql'
-import { postMemberFollower } from '../../api/member'
 import ArtistPageProfile from '../profile/ArtistPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 
@@ -45,6 +45,7 @@ export default {
         { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
         { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
         { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
+        { id: 3, label: 'Candidates', type: 'CONTENTS', api: {}, sort: {} },
       ],
       sortOptions: {
         newest: {
@@ -134,6 +135,19 @@ export default {
       }),
     }
 
+    this.tabs[3].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.tabs[3].api = {
+      func: getMemberContentsCandidates,
+      pathParams: { member_id: this.member.id },
+      queryParams: {
+        start_num: 0,
+        count_num: 10,
+        orderBy: this.tabs[3].sort.orderBy,
+        orderDirection: this.tabs[3].sort.orderDirection,
+      },
+    }
+
     this.$watch(
       () => this.$route,
       async (to, from) => {
@@ -208,6 +222,18 @@ export default {
               },
             }),
             key: this.tabKey,
+          }
+          break
+        case '3':
+          this.tabs[t].api = {
+            func: getMemberContentsCandidates,
+            pathParams: { member_id: this.member.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 10,
+              orderBy: this.tabs[t].sort.orderBy,
+              orderDirection: this.tabs[t].sort.orderDirection,
+            },
           }
           break
         default:

@@ -237,7 +237,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: $backdrop;
   display: table;
   transition: opacity 0.3s ease;
@@ -253,8 +253,8 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       min-height: 300px;
-      max-height: 600px;
-      margin: 0px auto;
+      max-height: 450px;
+      margin: auto;
       padding: 20px 30px;
       background-color: $artong-white;
       border-radius: 20px;

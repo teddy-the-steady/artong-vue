@@ -2,13 +2,14 @@
   <div class="profile">
     <ProfileImageBig
       :profileImageUrl="profileImageUrl"
+      :userWalletAddress="member.wallet_address"
       :isFirstLoading="isFirstLoading"
       class="profile-image"
     ></ProfileImageBig>
-    <div v-if="this.width < 1080" class="top1">
+    <div v-if="innerWidth < 1080" class="top1">
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ member ? shortenAddress(member.wallet_address) : '' }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -31,7 +32,7 @@
     <div v-else class="top2">
       <div class="info">
         <div class="username">@{{ member ? member.username : '' }}</div>
-        <button class="address white-btn" @click="copy">
+        <button class="address white-button" @click="copy">
           {{ member ? shortenAddress(member.wallet_address) : '' }}
           <img src="../../assets/icons/copy.svg" />
         </button>
@@ -66,6 +67,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import {
   makeS3Path,
@@ -81,6 +83,11 @@ export default {
     ProfileImageBig,
   },
   mixins: [headerActivate],
+  computed: {
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
+  },
   data() {
     return {
       profileImageUrl: '',
@@ -89,7 +96,6 @@ export default {
       address: '',
       errorMessage: '',
       shortAddress: '',
-      width: window.innerWidth,
     }
   },
   props: {
@@ -119,47 +125,22 @@ export default {
           alert('주소 복사 실패')
         })
     },
-    setWidth() {
-      this.width = window.innerWidth
-    },
     async follow() {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
       this.$emit('follow')
-      // try {
-      //   this.member = await postMemberFollower({
-      //     isFollowRequest: true,
-      //     targetMemberId: this.member.id,
-      //   })
-      //   console.log(this.member)
-      //   this.$emit('changeFollower', this.member)
-      // } catch (error) {
-      //   this.errorMessage = error
-      // }
     },
     async unfollow() {
       this.$emit('unfollow')
-      // try {
-      //   this.member = await postMemberFollower({
-      //     isFollowRequest: false,
-      //     targetMemberId: this.member.id,
-      //   })
-      //   console.log(this.member)
-      //   this.$emit('changeFollower', this.member)
-      // } catch (error) {
-      //   this.errorMessage = error
-      // }
     },
-  },
-  mounted() {
-    window.addEventListener('resize', this.setWidth)
   },
   watch: {
     member: {
       deep: true,
       handler(val) {
         if (val) {
+          this.isFirstLoading = true
           this.profileImageUrl = this.getProfileImageUrl(this.member)
           this.isFirstLoading = false
         }
