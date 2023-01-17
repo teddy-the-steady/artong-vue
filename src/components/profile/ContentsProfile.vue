@@ -5,11 +5,16 @@
     </div>
     <div v-else @error="isFirstLoading = true" class="image">
       <img
-        v-if="member"
+        v-if="member ? member.profile_thumbnail_s3key : ''"
         :src="makeS3Path(member.profile_thumbnail_s3key)"
         @error="hasErrorGettingImage = true"
         class="profileImage"
         :class="{ error: hasErrorGettingImage }"
+      />
+      <div
+        v-else-if="member ? member.wallet_address : ''"
+        alt=""
+        :style="{ background: backgroundColor }"
       />
       <img v-else src="../../assets/images/profile.svg" />
     </div>
@@ -31,11 +36,13 @@
 </template>
 
 <script>
+import { backgroundColor } from '../../mixin'
 import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'ContentsProfile',
+  mixins: [backgroundColor],
   components: {
     SkeletonBox,
   },
@@ -51,6 +58,11 @@ export default {
     price: {
       type: String,
       default: null,
+    },
+  },
+  computed: {
+    backgroundColor() {
+      return this.generateGradientBackground(this.member?.wallet_address)
     },
   },
   data() {
@@ -92,13 +104,13 @@ export default {
     border-radius: 50%;
     overflow: hidden;
     background-color: $artong-white;
+    display: grid;
 
-    .profileImage {
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       &.error {
-        background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
         text-indent: -10000px;
       }
     }
@@ -132,7 +144,7 @@ export default {
     width: 20px;
     margin-left: auto;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 }
 </style>

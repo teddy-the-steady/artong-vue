@@ -3,6 +3,7 @@
     <div class="profile-image-wrapper" @click="$refs.fileInput.click()">
       <ProfileImageBig
         :profileImageUrl="profileImageUrl"
+        :userWalletAddress="currentUser.wallet_address"
         :isFirstLoading="isFirstLoading"
         class="profile-image"
       ></ProfileImageBig>
