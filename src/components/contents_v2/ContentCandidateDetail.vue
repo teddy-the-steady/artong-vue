@@ -135,7 +135,7 @@
       </div>
       <div class="collection-container">
         <div class="header">
-          <div class="title">More from this collection</div>
+          <div class="title">More from this project</div>
           <div class="url">
             <router-link
               :to="{
@@ -256,10 +256,12 @@ export default {
         graphql(
           queryTokensByProject({
             variables: {
-              first: 10,
+              first: 20,
               skip: 0,
               start_num: 0,
               project: project_address,
+              orderBy: 'createdAt',
+              orderDirection: 'desc',
             },
           }),
         ),
