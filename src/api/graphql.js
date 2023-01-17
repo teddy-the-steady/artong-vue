@@ -114,6 +114,7 @@ const queryToken = function (variables) {
           updatedAt
           project {
             id
+            name
           }
           listings (orderBy: createdAt, orderDirection: desc, first: 1) {
             id

@@ -56,18 +56,14 @@ export default {
 
 .project {
   display: flex;
-  //margin-left: 15%;
-  //transform: translateY(-40%);
 
   .image {
     display: inline-block;
-    //background-color: $artong-white;
     width: 100px;
     height: 100px;
     min-width: 100px;
     min-height: 100px;
     border-radius: 15px;
-    // border: 2px solid $profile-border-red; // TODO] 인스타 스토리처럼 new를 표현해주는 용도. 새로운 기획 후에 적용
 
     .skeleton-box {
       background-color: $lightergray;
@@ -79,18 +75,12 @@ export default {
       overflow: hidden;
       margin: 8px;
     }
-
-    // input {
-    //   display: none;
-    // }
   }
   .image2 {
     display: inline-block;
-    //background-color: $artong-white;
     width: 100px;
     height: 100px;
     border-radius: 15px;
-    // border: 2px solid $profile-border-red; // TODO] 인스타 스토리처럼 new를 표현해주는 용도. 새로운 기획 후에 적용
     img {
       width: 84px;
       height: 84px;
@@ -135,7 +125,6 @@ export default {
 
 @media only screen and (max-width: 599px) {
   .project {
-    //transform: translateY(-30%);
     align-items: center;
     flex-direction: column;
     margin-left: 0;
