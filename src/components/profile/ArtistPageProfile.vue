@@ -2,6 +2,7 @@
   <div class="profile">
     <ProfileImageBig
       :profileImageUrl="profileImageUrl"
+      :userWalletAddress="member.wallet_address"
       :isFirstLoading="isFirstLoading"
       class="profile-image"
     ></ProfileImageBig>
