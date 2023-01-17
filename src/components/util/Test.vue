@@ -1,62 +1,7 @@
 <template>
   <div>
     This is a test
-    <div class="wrapper">
-      <div class="tableBox">
-        <table class="tableData">
-          <colgroup>
-            <col width="8%" />
-            <col width="15%" />
-            <col width="25%" />
-            <col width="16%" />
-            <col width="12%" />
-            <col width="12%" />
-            <col width="12%" />
-          </colgroup>
-          <thead>
-            <tr>
-              <th class="stiky">순번</th>
-              <th class="stiky">구분</th>
-              <th class="stiky">제목</th>
-              <th class="stiky">글쓴이</th>
-              <th class="stiky">날짜</th>
-              <th class="stiky">첨부파일</th>
-              <th class="stiky">비고</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>공지사항</td>
-              <td>제목입니다.</td>
-              <td>홍길동</td>
-              <td>2020-11-26</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>공지사항</td>
-              <td>제목 "1","2","3","4","5","6","7","8","9","10","11"</td>
-              <td>홍길동</td>
-              <td>2020-11-26</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>게시판</td>
-              <td>123456789123456789123456789</td>
-              <td>홍길동</td>
-              <td>2020-11-26</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <TableWithTitle
+    <TableDiv
       :api="queryOffersByToken"
       :tableName="'Offers'"
       :iconSrc="require('@/assets/icons/100-add-folder.svg')"
@@ -78,9 +23,9 @@
           key: 'from',
         },
       ]"
-    ></TableWithTitle>
+    ></TableDiv>
     <div class="divider"></div>
-    <TableWithTitle
+    <TableDiv
       :api="queryTokenHistory"
       :tableName="'History'"
       :iconSrc="require('@/assets/icons/history.svg')"
@@ -107,7 +52,7 @@
           key: 'to_member',
         },
       ]"
-    ></TableWithTitle>
+    ></TableDiv>
   </div>
 </template>
 <script>
@@ -116,12 +61,12 @@ import {
   queryOffersByToken,
   queryTokenHistory,
 } from '../../api/graphql'
-import TableWithTitle from '../table/TableWithTitle.vue'
+import TableDiv from '../table/TableDiv.vue'
 
 export default {
   name: 'Test',
   components: {
-    TableWithTitle,
+    TableDiv,
   },
   data() {
     return {
