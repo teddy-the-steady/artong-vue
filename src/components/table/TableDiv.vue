@@ -53,7 +53,7 @@ import { weiToEther } from '../../util/commonFunc'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
-  name: 'TableWithTitle',
+  name: 'TableDiv',
   components: {
     ContentsProfile,
     InfiniteLoading,
@@ -107,7 +107,7 @@ export default {
       }
     },
     async infiniteHandler($state) {
-      if (this.noMoreDataToLoad) {
+      if (this.noMoreDataToLoad || !this.api) {
         $state.complete()
         return
       }
