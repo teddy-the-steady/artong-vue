@@ -703,4 +703,9 @@ export default {
     }
   }
 }
+@media (min-width: 1440px) {
+  .round-box {
+    width: 708px;
+  }
+}
 </style>
