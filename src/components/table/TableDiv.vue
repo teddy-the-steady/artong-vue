@@ -197,7 +197,8 @@ export default {
       }
     }
     .middle-box {
-      height: 299px;
+      min-height: 39px;
+      max-height: 299px;
       .middle-row {
         height: 64px;
         line-height: 64px;
