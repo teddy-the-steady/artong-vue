@@ -78,15 +78,29 @@
               <div>2000</div>
             </div>
             <div class="buttons">
-              <button class="white-button round-button ripple">
+              <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
               <button class="white-button round-button ripple">
                 <img src="@/assets/icons/launch.svg" />
               </button>
-              <button class="white-button round-button ripple">
+              <button
+                class="white-button round-button ripple"
+                @mousedown="moreMouseDown"
+                @mouseup="moreMouseUp"
+                @touchstart="moreTouchStart"
+                @touchend="moreTouchEnd"
+              >
                 <img src="@/assets/icons/more.svg" />
               </button>
+              <BasicDialog
+                class="dialog"
+                :class="{ active: isDialogActive }"
+                @dialog-focus-out="closeDialog"
+                ref="dialog"
+              >
+                <div slot="body">Report</div>
+              </BasicDialog>
             </div>
           </div>
           <div class="name">
@@ -109,7 +123,7 @@
           </div>
           <div class="collection">
             <div class="info">
-              <div class="label">Collection</div>
+              <div class="label">Project</div>
               <router-link
                 :to="{
                   name: 'Project',
@@ -206,6 +220,7 @@
       :cancelDisabled="cancelDisabled"
       ref="promptModal"
     ></PromptModal>
+    <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
 
@@ -234,6 +249,7 @@ import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
 import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import BasicDialog from '../dialog/BasicDialog.vue'
 
 export default {
   name: 'ContentDetail',
@@ -244,6 +260,7 @@ export default {
     PromptModal,
     TableDiv,
     ProjectPageProfile_small,
+    BasicDialog,
   },
   data() {
     return {
@@ -265,6 +282,10 @@ export default {
         body: {},
       },
       isFirstLoading: true,
+      isDialogActive: false,
+      isMouseDownOnMore: false,
+      isMouseUpOnMore: false,
+      url: '',
     }
   },
   computed: {
@@ -529,6 +550,62 @@ export default {
     generateKey() {
       return this.$route.params.project_address + this.$route.params.token_id
     },
+    closeDialog() {
+      this.isDialogActive = false
+      this.isMouseDownOnMore = false
+      this.isMouseUpOnMore = false
+    },
+    moreMouseDown() {
+      if (!this.isMobile) {
+        this.isMouseDownOnMore = true
+      }
+    },
+    moreMouseUp() {
+      if (!this.isMobile) {
+        this.isMouseUpOnMore = true
+        if (this.isMouseDownOnMore) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    moreTouchStart() {
+      if (this.isMobile) {
+        this.isMouseDownOnMore = true
+      }
+    },
+    moreTouchEnd() {
+      if (this.isMobile) {
+        this.isMouseUpOnMore = true
+        if (this.isDialogActive) {
+          this.isDialogActive = false
+          return
+        }
+        if (this.isMouseDownOnMore) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    setURL() {
+      this.url = window.location.href
+    },
+    share() {
+      if (this.isMobile) {
+        if (navigator.share) {
+          navigator.share({
+            title: 'artong',
+            url: this.url,
+          })
+        } else {
+          alert('공유하기가 지원되지 않는 환경입니다.')
+        }
+      } else {
+        this.setURL()
+        const element = this.$refs.url
+        element.select()
+        document.execCommand('copy')
+        alert('링크 복사 완료')
+      }
+    },
   },
   async created() {
     this.queryOffersByToken = {
@@ -609,6 +686,12 @@ export default {
         }),
       }
     },
+
+    isDialogActive() {
+      if (!this.isMobile) {
+        this.$nextTick(() => this.$refs.dialog.$el.focus())
+      }
+    },
   },
 }
 </script>
@@ -657,18 +740,20 @@ export default {
         .buttons {
           display: flex;
           justify-content: space-between;
+          transform: translateY(-24px);
+          margin-right: 16px;
+          width: 160px;
+          height: 100%;
 
           img {
             position: absolute;
           }
 
-          button {
-            .dialog {
-              display: none;
+          .dialog {
+            display: none;
+            &.active {
+              display: block;
               top: 110%;
-              &.active {
-                display: block;
-              }
             }
           }
         }
@@ -785,6 +870,12 @@ export default {
       }
     }
   }
+}
+
+textarea {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
 }
 
 @media (max-width: 1440px) {
