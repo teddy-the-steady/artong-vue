@@ -1,7 +1,7 @@
 <template>
   <div>
     This is a test
-    <TableWithTitle
+    <TableDiv
       :api="queryOffersByToken"
       :tableName="'Offers'"
       :iconSrc="require('@/assets/icons/100-add-folder.svg')"
@@ -23,9 +23,9 @@
           key: 'from',
         },
       ]"
-    ></TableWithTitle>
+    ></TableDiv>
     <div class="divider"></div>
-    <TableWithTitle
+    <TableDiv
       :api="queryTokenHistory"
       :tableName="'History'"
       :iconSrc="require('@/assets/icons/history.svg')"
@@ -52,7 +52,7 @@
           key: 'to_member',
         },
       ]"
-    ></TableWithTitle>
+    ></TableDiv>
   </div>
 </template>
 <script>
@@ -61,12 +61,12 @@ import {
   queryOffersByToken,
   queryTokenHistory,
 } from '../../api/graphql'
-import TableWithTitle from '../table/TableWithTitle.vue'
+import TableDiv from '../table/TableDiv.vue'
 
 export default {
   name: 'Test',
   components: {
-    TableWithTitle,
+    TableDiv,
   },
   data() {
     return {
@@ -82,10 +82,11 @@ export default {
   },
   created() {
     this.queryOffersByToken = {
+      result_key: 'offers',
       func: graphql,
       body: queryOffersByToken({
         variables: {
-          first: 10,
+          first: 1,
           skip: 0,
           id: '0x4704cf416a4c6dcb7317cd7ac8b4b9e487159eb3' + '2',
           //id: this.$route.params.project_address + this.$route.params.token_id,
@@ -93,6 +94,7 @@ export default {
       }),
     }
     this.queryTokenHistory = {
+      result_key: 'history',
       func: graphql,
       body: queryTokenHistory({
         variables: {
@@ -101,7 +103,7 @@ export default {
         },
         pagination: {
           start_num: 0,
-          count_num: 5,
+          count_num: 1,
         },
       }),
     }
@@ -110,7 +112,43 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+.wrapper {
+  width: 100%;
+  height: 100vh;
+}
+.wrapper .tableBox {
+  position: relative;
+  top: 50px;
+  left: 50px;
+  width: 700px;
+  height: 100px;
+  overflow-y: scroll;
+  border-top: 2px solid dodgerblue;
+}
+.tableData {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.tableData thead tr th {
+  position: sticky;
+  top: 0;
+  background: #ebeaea;
+}
+.tableData thead tr th,
+.tableData tbody tr td {
+  padding: 15px 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #dedede;
+  border-right: 1px solid #ddd;
+  word-break: break-all;
+}
 .divider {
   background-color: burlywood;
   width: 100%;
