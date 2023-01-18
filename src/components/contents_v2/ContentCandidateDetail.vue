@@ -13,7 +13,6 @@
         <div class="left-container">
           <div class="round-box">
             <TableDiv
-              :api="queryOffersByToken"
               :tableName="'Offers'"
               :iconSrc="require('@/assets/icons/100-add-folder.svg')"
               :showHeader="true"
@@ -38,7 +37,6 @@
           </div>
           <div class="round-box">
             <TableDiv
-              :api="queryTokenHistory"
               :tableName="'History'"
               :iconSrc="require('@/assets/icons/history.svg')"
               :showHeader="true"
@@ -197,13 +195,7 @@
 import { ethers } from 'ethers'
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
-import {
-  graphql,
-  queryTokensByProject,
-  queryProject,
-  queryOffersByToken,
-  queryTokenHistory,
-} from '../../api/graphql'
+import { graphql, queryTokensByProject, queryProject } from '../../api/graphql'
 import {
   getContent,
   patchContent,
@@ -243,14 +235,6 @@ export default {
       confirmOnProcess: false,
       cancelDisabled: false,
       buying: false,
-      queryOffersByToken: {
-        func: null,
-        body: {},
-      },
-      queryTokenHistory: {
-        func: null,
-        body: {},
-      },
       isFirstLoading: true,
     }
   },
@@ -388,30 +372,6 @@ export default {
     },
   },
   async created() {
-    this.queryOffersByToken = {
-      result_key: 'offers',
-      func: graphql,
-      body: queryOffersByToken({
-        variables: {
-          first: 1,
-          skip: 0,
-          id: this.$route.params.project_address + this.$route.params.token_id,
-        },
-      }),
-    }
-    this.queryTokenHistory = {
-      result_key: 'history',
-      func: graphql,
-      body: queryTokenHistory({
-        variables: {
-          id: this.$route.params.project_address + this.$route.params.token_id,
-        },
-        pagination: {
-          start_num: 0,
-          count_num: 1,
-        },
-      }),
-    }
     this.isFirstLoading = true
     this.content = await getContent(
       this.$route.params.project_address,
