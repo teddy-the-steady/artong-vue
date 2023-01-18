@@ -74,14 +74,24 @@
           </router-link>
         </div>
       </div>
+      <div v-show="innerWidth >= 1080" class="search-bar">
+        <img src="../../assets/icons/search-grey.svg" />
+        search
+      </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
+          <div v-show="innerWidth < 1080" class="search-icon">
+            <img src="../../assets/icons/search.svg" />
+          </div>
           <div class="before_login" v-if="!currentUser.id">
             <router-link to="/login"> CONNECT </router-link>
           </div>
           <div class="after_login" v-else>
-            <div class="contribute">
+            <div v-if="innerWidth >= 1080" class="contribute">
               <button @click="contribute" v-ripple>Contribute</button>
+            </div>
+            <div v-else class="contribute-round" @click="contribute" v-ripple>
+              <img src="../../assets/icons/add.svg" />
             </div>
             <div
               class="header-profile"
@@ -146,6 +156,7 @@ export default {
       isHeadNavOpen: state => state.menu.isHeadNavOpen,
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
     randomDelayTime() {
       return {
@@ -359,6 +370,7 @@ export default {
     width: 25%;
 
     .navbar__icons {
+      align-items: center;
       .before_login {
         height: 2rem;
         border-radius: 2rem;
@@ -401,11 +413,53 @@ export default {
           vertical-align: -webkit-baseline-middle;
         }
       }
+      .contribute-round {
+        width: 30px;
+        height: 30px;
+        background: #ffffff;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        line-height: 30px;
+        margin-right: 8px;
+        img {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+  .search-bar {
+    position: absolute;
+    width: 480px;
+    height: 30px;
+    left: calc(50% - 480px / 2);
+    top: calc(50% - 30px / 2 - 0.5px);
+    background: $artong-white;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    line-height: 30px;
+    img {
+      vertical-align: middle;
+    }
+  }
+  .search-icon {
+    width: 30px;
+    height: 30px;
+    background: $artong-white;
+    border: 1px solid #f2f2f2;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
+    line-height: 30px;
+    margin-right: 8px;
+    line-height: 30px;
+    img {
+      vertical-align: middle;
     }
   }
 
   .right {
     .navbar__icons {
+      display: flex;
       float: right;
     }
   }
