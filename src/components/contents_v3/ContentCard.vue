@@ -116,6 +116,7 @@ export default {
   .top {
     display: flex;
     height: 330px;
+    cursor: pointer;
 
     img {
       border-top-left-radius: 15px;
