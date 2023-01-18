@@ -375,11 +375,9 @@ export default {
       }
     },
     toEtherscan() {
-      if (process.env.NODE_ENV == 'production') {
-        window.open('https://etherscan.io/address/' + this.project.id)
-      } else {
-        window.open('https://goerli.etherscan.io/address/' + this.project.id)
-      }
+      window.open(
+        `${process.env.VUE_APP_ETHER_SCAN_URL}address/${this.project.id}`,
+      )
     },
     setStatistics() {
       this.projectData[0] = {
