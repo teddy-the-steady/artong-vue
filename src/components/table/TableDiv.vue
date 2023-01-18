@@ -30,10 +30,17 @@
                 <!-- {{ content[field.key] }} -->
               </div>
               <div class="field" v-else-if="field.type == 'member'">
-                <ContentsProfile
-                  :member="content[field.key]"
-                  :needUserName="true"
-                ></ContentsProfile>
+                <router-link
+                  :to="{
+                    name: 'UserOrArtist',
+                    params: { id: content ? content.owner.username : '' },
+                  }"
+                >
+                  <ContentsProfile
+                    :member="content[field.key]"
+                    :needUserName="true"
+                  ></ContentsProfile>
+                </router-link>
               </div>
             </div>
           </div>
@@ -197,7 +204,8 @@ export default {
       }
     }
     .middle-box {
-      height: 299px;
+      min-height: 39px;
+      max-height: 299px;
       .middle-row {
         height: 64px;
         line-height: 64px;
