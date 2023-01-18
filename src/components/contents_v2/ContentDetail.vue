@@ -77,12 +77,12 @@
         <div class="right-container">
           <div class="add-info">
             <div class="like-view">
-              <div><img src="@/assets/icons/share.svg" /></div>
-              <div>1,000</div>
-              <div><img src="@/assets/icons/launch.svg" /></div>
-              <div>2000</div>
+              <div><img src="@/assets/icons/like.svg" /></div>
             </div>
             <div class="buttons">
+              <button class="white-button round-button ripple">
+                <img src="@/assets/icons/like.svg" />
+              </button>
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
@@ -755,7 +755,6 @@ export default {
           justify-content: end;
           transform: translateY(-24px);
           margin-right: 16px;
-          width: 160px;
           height: 100%;
 
           button {
