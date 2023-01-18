@@ -45,6 +45,11 @@
               :showHeader="true"
               :fields="[
                 {
+                  name: 'EVENT',
+                  type: 'event',
+                  key: 'history_type',
+                },
+                {
                   name: 'PRICE',
                   type: 'price',
                   key: 'price',
@@ -81,7 +86,10 @@
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="white-button round-button ripple">
+              <button
+                class="white-button round-button ripple"
+                @click="toEtherscan"
+              >
                 <img src="@/assets/icons/launch.svg" />
               </button>
               <button
@@ -605,6 +613,11 @@ export default {
         document.execCommand('copy')
         alert('링크 복사 완료')
       }
+    },
+    toEtherscan() {
+      window.open(
+        `${process.env.VUE_APP_ETHER_SCAN_URL}nft/${this.content.project.id}/${this.content.tokenId}`,
+      )
     },
   },
   async created() {
