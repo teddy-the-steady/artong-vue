@@ -34,6 +34,7 @@
                   key: 'from',
                 },
               ]"
+              :key="generateKey()"
             ></TableDiv>
           </div>
           <div class="round-box">
@@ -64,6 +65,7 @@
                   key: 'to_member',
                 },
               ]"
+              :key="generateKey()"
             ></TableDiv>
           </div>
         </div>
@@ -312,43 +314,21 @@ export default {
 
       return result.token
     },
-    async getContents(project_address, token_id) {
-      const [offers, histories, tokensByProject] = await Promise.all([
-        graphql(
-          queryOffersByToken({
-            variables: {
-              id: project_address + token_id,
-            },
-          }),
-        ),
-        graphql(
-          queryTokenHistory({
-            variables: {
-              id: project_address + token_id,
-            },
-            pagination: {
-              start_num: 0,
-              count_num: 5,
-            },
-          }),
-        ),
-        graphql(
-          queryTokensByProject({
-            variables: {
-              first: 20,
-              skip: 0,
-              start_num: 0,
-              project: project_address,
-              orderBy: 'createdAt',
-              orderDirection: 'desc',
-            },
-          }),
-        ),
-      ])
+    async queryTokensByProject(project_address) {
+      const result = await graphql(
+        queryTokensByProject({
+          variables: {
+            first: 8,
+            skip: 0,
+            start_num: 0,
+            project: project_address,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+          },
+        }),
+      )
 
-      this.offers = offers.offers
-      this.histories = histories
-      this.tokens = tokensByProject.tokens
+      return result.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
@@ -546,6 +526,9 @@ export default {
         return await Provider.pcProvider.waitForTransaction(txHash)
       }
     },
+    generateKey() {
+      return this.$route.params.project_address + this.$route.params.token_id
+    },
   },
   async created() {
     this.queryOffersByToken = {
@@ -553,7 +536,7 @@ export default {
       func: graphql,
       body: queryOffersByToken({
         variables: {
-          first: 1,
+          first: 5,
           skip: 0,
           id: this.$route.params.project_address + this.$route.params.token_id,
         },
@@ -568,7 +551,7 @@ export default {
         },
         pagination: {
           start_num: 0,
-          count_num: 1,
+          count_num: 5,
         },
       }),
     }
@@ -577,11 +560,10 @@ export default {
       this.$route.params.project_address,
       this.$route.params.token_id,
     )
-    await this.getContents(
-      this.$route.params.project_address,
-      this.$route.params.token_id,
-    )
     this.isFirstLoading = false
+    this.tokens = await this.queryTokensByProject(
+      this.$route.params.project_address,
+    )
 
     this.$watch(
       () => this.$route,
@@ -589,14 +571,44 @@ export default {
         if (to.name === 'ContentDetail') {
           this.isFirstLoading = true
           this.content = await this.queryToken(
-            this.$route.params.project_address,
-            this.$route.params.token_id,
+            to.params.project_address,
+            to.params.token_id,
           )
-          await this.getContents(to.params.project_address, to.params.token_id)
           this.isFirstLoading = false
+          this.tokens = await this.queryTokensByProject(
+            to.params.project_address,
+          )
         }
       },
     )
+  },
+  watch: {
+    $route(to) {
+      this.queryOffersByToken = {
+        result_key: 'offers',
+        func: graphql,
+        body: queryOffersByToken({
+          variables: {
+            first: 5,
+            skip: 0,
+            id: to.params.project_address + to.params.token_id,
+          },
+        }),
+      }
+      this.queryTokenHistory = {
+        result_key: 'history',
+        func: graphql,
+        body: queryTokenHistory({
+          variables: {
+            id: to.params.project_address + to.params.token_id,
+          },
+          pagination: {
+            start_num: 0,
+            count_num: 5,
+          },
+        }),
+      }
+    },
   },
 }
 </script>
