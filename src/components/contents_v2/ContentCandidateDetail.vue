@@ -12,30 +12,57 @@
       <div class="content-info">
         <div class="left-container">
           <div class="round-box">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" /> Offers
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>DATE</td>
-                <td>FROM</td>
-              </tr>
-            </table>
+            <TableDiv
+              :tableName="'Offers'"
+              :iconSrc="require('@/assets/icons/100-add-folder.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'createdAt',
+                },
+                {
+                  name: 'FROM',
+                  type: 'member',
+                  key: 'from',
+                },
+              ]"
+            ></TableDiv>
           </div>
-          <div class="round-box history">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" />
-              History
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>FROM</td>
-                <td>TO</td>
-                <td>DATE</td>
-              </tr>
-            </table>
+          <div class="round-box">
+            <TableDiv
+              :tableName="'History'"
+              :iconSrc="require('@/assets/icons/history.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'From',
+                  type: 'member',
+                  key: 'from_member',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'block_timestamp',
+                },
+                {
+                  name: 'TO',
+                  type: 'member',
+                  key: 'to_member',
+                },
+              ]"
+            ></TableDiv>
           </div>
         </div>
         <div class="right-container">
@@ -186,6 +213,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
+import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 
 export default {
@@ -195,6 +223,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
+    TableDiv,
     ProjectPageProfile_small,
   },
   data() {
@@ -397,53 +426,7 @@ export default {
       flex: 1;
       margin-right: 40px;
       .round-box {
-        &.history {
-          margin-top: 3rem;
-        }
-        max-width: 90%;
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-        border-radius: 24px;
-        padding: 32px 24px 32px 24px;
-
-        .title {
-          text-align: initial;
-          margin-left: 1rem;
-          font-size: 22px;
-          font-weight: 600;
-          img {
-            max-width: 1.8rem;
-            vertical-align: text-top;
-          }
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          th {
-            font-weight: 50;
-          }
-
-          td {
-            border-bottom: 1px solid #cccccc;
-            padding: 21px;
-            text-align: left;
-
-            font-family: $item-font;
-            font-style: $item-font-style;
-            font-weight: 500;
-            font-size: 14px;
-
-            &.price {
-              img {
-                margin-left: 0.5rem;
-                cursor: pointer;
-                opacity: 0.5;
-                vertical-align: middle;
-              }
-            }
-          }
-        }
+        margin-bottom: 48px;
       }
     }
 

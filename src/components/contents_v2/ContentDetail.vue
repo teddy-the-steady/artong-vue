@@ -12,73 +12,61 @@
       <div class="content-info">
         <div class="left-container">
           <div class="round-box">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" /> Offers
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>DATE</td>
-                <td>FROM</td>
-              </tr>
-              <tr v-for="(val, i) in offers" :key="i">
-                <td class="price">
-                  {{ weiToEther(val.price) }}
-                  ETH
-                </td>
-                <td class="record">
-                  {{ convertDay(val.createdAt) }}
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-              </tr>
-            </table>
+            <TableDiv
+              :api="queryOffersByToken"
+              :tableName="'Offers'"
+              :iconSrc="require('@/assets/icons/100-add-folder.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'createdAt',
+                },
+                {
+                  name: 'FROM',
+                  type: 'member',
+                  key: 'from',
+                },
+              ]"
+              :key="generateKey()"
+            ></TableDiv>
           </div>
-          <div class="round-box history">
-            <div class="title">
-              <img :src="require('@/assets/icons/100-add-folder.svg')" />
-              History
-            </div>
-            <table>
-              <tr>
-                <td>PRICE</td>
-                <td>FROM</td>
-                <td>TO</td>
-                <td>DATE</td>
-              </tr>
-              <tr v-for="(val, i) in histories" :key="i">
-                <td class="price">
-                  <!--
-                  {{ weiToEther(val.price) }}
-                  ETH
-                  <img
-                    :src="require('@/assets/icons/launch.svg')"
-                    @click="action('price')"
-                  />
-                  -->
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    :member="val.from_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="recent">
-                  <ContentsProfile
-                    v-if="val.to_member"
-                    :member="val.to_member"
-                    :needUserName="true"
-                  ></ContentsProfile>
-                </td>
-                <td class="record">
-                  {{ convertDay(val.block_timestamp) }}
-                </td>
-              </tr>
-            </table>
+          <div class="round-box">
+            <TableDiv
+              :api="queryTokenHistory"
+              :tableName="'History'"
+              :iconSrc="require('@/assets/icons/history.svg')"
+              :showHeader="true"
+              :fields="[
+                {
+                  name: 'PRICE',
+                  type: 'price',
+                  key: 'price',
+                },
+                {
+                  name: 'From',
+                  type: 'member',
+                  key: 'from_member',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'block_timestamp',
+                },
+                {
+                  name: 'TO',
+                  type: 'member',
+                  key: 'to_member',
+                },
+              ]"
+              :key="generateKey()"
+            ></TableDiv>
           </div>
         </div>
         <div class="right-container">
@@ -244,6 +232,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
+import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 
 export default {
@@ -253,6 +242,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
+    TableDiv,
     ProjectPageProfile_small,
   },
   data() {
@@ -266,6 +256,14 @@ export default {
       cancelDisabled: false,
       buying: false,
       canceling: false,
+      queryOffersByToken: {
+        func: null,
+        body: {},
+      },
+      queryTokenHistory: {
+        func: null,
+        body: {},
+      },
       isFirstLoading: true,
     }
   },
@@ -316,43 +314,21 @@ export default {
 
       return result.token
     },
-    async getContents(project_address, token_id) {
-      const [offers, histories, tokensByProject] = await Promise.all([
-        graphql(
-          queryOffersByToken({
-            variables: {
-              id: project_address + token_id,
-            },
-          }),
-        ),
-        graphql(
-          queryTokenHistory({
-            variables: {
-              id: project_address + token_id,
-            },
-            pagination: {
-              start_num: 0,
-              count_num: 5,
-            },
-          }),
-        ),
-        graphql(
-          queryTokensByProject({
-            variables: {
-              first: 20,
-              skip: 0,
-              start_num: 0,
-              project: project_address,
-              orderBy: 'createdAt',
-              orderDirection: 'desc',
-            },
-          }),
-        ),
-      ])
+    async queryTokensByProject(project_address) {
+      const result = await graphql(
+        queryTokensByProject({
+          variables: {
+            first: 8,
+            skip: 0,
+            start_num: 0,
+            project: project_address,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+          },
+        }),
+      )
 
-      this.offers = offers.offers
-      this.histories = histories
-      this.tokens = tokensByProject.tokens
+      return result.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
@@ -550,18 +526,44 @@ export default {
         return await Provider.pcProvider.waitForTransaction(txHash)
       }
     },
+    generateKey() {
+      return this.$route.params.project_address + this.$route.params.token_id
+    },
   },
   async created() {
+    this.queryOffersByToken = {
+      result_key: 'offers',
+      func: graphql,
+      body: queryOffersByToken({
+        variables: {
+          first: 5,
+          skip: 0,
+          id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+      }),
+    }
+    this.queryTokenHistory = {
+      result_key: 'history',
+      func: graphql,
+      body: queryTokenHistory({
+        variables: {
+          id: this.$route.params.project_address + this.$route.params.token_id,
+        },
+        pagination: {
+          start_num: 0,
+          count_num: 5,
+        },
+      }),
+    }
     this.isFirstLoading = true
     this.content = await this.queryToken(
       this.$route.params.project_address,
       this.$route.params.token_id,
     )
-    await this.getContents(
-      this.$route.params.project_address,
-      this.$route.params.token_id,
-    )
     this.isFirstLoading = false
+    this.tokens = await this.queryTokensByProject(
+      this.$route.params.project_address,
+    )
 
     this.$watch(
       () => this.$route,
@@ -569,14 +571,44 @@ export default {
         if (to.name === 'ContentDetail') {
           this.isFirstLoading = true
           this.content = await this.queryToken(
-            this.$route.params.project_address,
-            this.$route.params.token_id,
+            to.params.project_address,
+            to.params.token_id,
           )
-          await this.getContents(to.params.project_address, to.params.token_id)
           this.isFirstLoading = false
+          this.tokens = await this.queryTokensByProject(
+            to.params.project_address,
+          )
         }
       },
     )
+  },
+  watch: {
+    $route(to) {
+      this.queryOffersByToken = {
+        result_key: 'offers',
+        func: graphql,
+        body: queryOffersByToken({
+          variables: {
+            first: 5,
+            skip: 0,
+            id: to.params.project_address + to.params.token_id,
+          },
+        }),
+      }
+      this.queryTokenHistory = {
+        result_key: 'history',
+        func: graphql,
+        body: queryTokenHistory({
+          variables: {
+            id: to.params.project_address + to.params.token_id,
+          },
+          pagination: {
+            start_num: 0,
+            count_num: 5,
+          },
+        }),
+      }
+    },
   },
 }
 </script>
@@ -597,9 +629,8 @@ export default {
   }
 }
 .content-wrap {
-  width: 100%;
   max-width: 1440px;
-  padding: 40px 64px 0 64px;
+  padding: 40px 24px 0 24px;
   margin: 0 auto;
   .content-info {
     display: flex;
@@ -609,58 +640,13 @@ export default {
       flex: 1;
       margin-right: 40px;
       .round-box {
-        &.history {
-          margin-top: 3rem;
-        }
-        border: 1px solid #f2f2f2;
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-        border-radius: 24px;
-        padding: 32px 24px 32px 24px;
-
-        .title {
-          text-align: initial;
-          margin-left: 1rem;
-          font-size: 22px;
-          font-weight: 600;
-          img {
-            max-width: 1.8rem;
-            vertical-align: text-top;
-          }
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          th {
-            font-weight: 50;
-          }
-
-          td {
-            border-bottom: 1px solid #cccccc;
-            padding: 21px;
-            text-align: left;
-
-            font-family: $item-font;
-            font-style: $item-font-style;
-            font-weight: 500;
-            font-size: 14px;
-
-            &.price {
-              img {
-                margin-left: 0.5rem;
-                cursor: pointer;
-                opacity: 0.5;
-                vertical-align: middle;
-              }
-            }
-          }
-        }
+        margin-bottom: 48px;
       }
     }
 
     .right-container {
-      flex: 1;
       text-align: initial;
+      flex: 1;
       .add-info {
         display: flex;
         .like-view {
