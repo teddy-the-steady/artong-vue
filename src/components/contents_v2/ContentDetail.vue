@@ -34,6 +34,7 @@
                   key: 'from',
                 },
               ]"
+              :key="generateKey()"
             ></TableDiv>
           </div>
           <div class="round-box">
@@ -43,6 +44,11 @@
               :iconSrc="require('@/assets/icons/history.svg')"
               :showHeader="true"
               :fields="[
+                {
+                  name: 'EVENT',
+                  type: 'event',
+                  key: 'history_type',
+                },
                 {
                   name: 'PRICE',
                   type: 'price',
@@ -64,27 +70,45 @@
                   key: 'to_member',
                 },
               ]"
+              :key="generateKey()"
             ></TableDiv>
           </div>
         </div>
         <div class="right-container">
           <div class="add-info">
             <div class="like-view">
-              <div><img src="@/assets/icons/share.svg" /></div>
-              <div>1,000</div>
-              <div><img src="@/assets/icons/launch.svg" /></div>
-              <div>2000</div>
+              <div><img src="@/assets/icons/like.svg" /></div>
             </div>
             <div class="buttons">
               <button class="white-button round-button ripple">
+                <img src="@/assets/icons/like.svg" />
+              </button>
+              <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="white-button round-button ripple">
+              <button
+                class="white-button round-button ripple"
+                @click="toEtherscan"
+              >
                 <img src="@/assets/icons/launch.svg" />
               </button>
-              <button class="white-button round-button ripple">
+              <button
+                class="white-button round-button ripple"
+                @mousedown="moreMouseDown"
+                @mouseup="moreMouseUp"
+                @touchstart="moreTouchStart"
+                @touchend="moreTouchEnd"
+              >
                 <img src="@/assets/icons/more.svg" />
               </button>
+              <BasicDialog
+                class="dialog"
+                :class="{ active: isDialogActive }"
+                @dialog-focus-out="closeDialog"
+                ref="dialog"
+              >
+                <div slot="body">Report</div>
+              </BasicDialog>
             </div>
           </div>
           <div class="name">
@@ -107,7 +131,7 @@
           </div>
           <div class="collection">
             <div class="info">
-              <div class="label">Collection</div>
+              <div class="label">Project</div>
               <router-link
                 :to="{
                   name: 'Project',
@@ -204,6 +228,7 @@
       :cancelDisabled="cancelDisabled"
       ref="promptModal"
     ></PromptModal>
+    <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
 
@@ -232,6 +257,7 @@ import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
 import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import BasicDialog from '../dialog/BasicDialog.vue'
 
 export default {
   name: 'ContentDetail',
@@ -242,6 +268,7 @@ export default {
     PromptModal,
     TableDiv,
     ProjectPageProfile_small,
+    BasicDialog,
   },
   data() {
     return {
@@ -263,6 +290,10 @@ export default {
         body: {},
       },
       isFirstLoading: true,
+      isDialogActive: false,
+      isMouseDownOnMore: false,
+      isMouseUpOnMore: false,
+      url: '',
     }
   },
   computed: {
@@ -312,43 +343,21 @@ export default {
 
       return result.token
     },
-    async getContents(project_address, token_id) {
-      const [offers, histories, tokensByProject] = await Promise.all([
-        graphql(
-          queryOffersByToken({
-            variables: {
-              id: project_address + token_id,
-            },
-          }),
-        ),
-        graphql(
-          queryTokenHistory({
-            variables: {
-              id: project_address + token_id,
-            },
-            pagination: {
-              start_num: 0,
-              count_num: 5,
-            },
-          }),
-        ),
-        graphql(
-          queryTokensByProject({
-            variables: {
-              first: 20,
-              skip: 0,
-              start_num: 0,
-              project: project_address,
-              orderBy: 'createdAt',
-              orderDirection: 'desc',
-            },
-          }),
-        ),
-      ])
+    async queryTokensByProject(project_address) {
+      const result = await graphql(
+        queryTokensByProject({
+          variables: {
+            first: 8,
+            skip: 0,
+            start_num: 0,
+            project: project_address,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+          },
+        }),
+      )
 
-      this.offers = offers.offers
-      this.histories = histories
-      this.tokens = tokensByProject.tokens
+      return result.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
@@ -546,6 +555,70 @@ export default {
         return await Provider.pcProvider.waitForTransaction(txHash)
       }
     },
+    generateKey() {
+      return this.$route.params.project_address + this.$route.params.token_id
+    },
+    closeDialog() {
+      this.isDialogActive = false
+      this.isMouseDownOnMore = false
+      this.isMouseUpOnMore = false
+    },
+    moreMouseDown() {
+      if (!this.isMobile) {
+        this.isMouseDownOnMore = true
+      }
+    },
+    moreMouseUp() {
+      if (!this.isMobile) {
+        this.isMouseUpOnMore = true
+        if (this.isMouseDownOnMore) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    moreTouchStart() {
+      if (this.isMobile) {
+        this.isMouseDownOnMore = true
+      }
+    },
+    moreTouchEnd() {
+      if (this.isMobile) {
+        this.isMouseUpOnMore = true
+        if (this.isDialogActive) {
+          this.isDialogActive = false
+          return
+        }
+        if (this.isMouseDownOnMore) {
+          this.isDialogActive = true
+        }
+      }
+    },
+    setURL() {
+      this.url = window.location.href
+    },
+    share() {
+      if (this.isMobile) {
+        if (navigator.share) {
+          navigator.share({
+            title: 'artong',
+            url: this.url,
+          })
+        } else {
+          alert('공유하기가 지원되지 않는 환경입니다.')
+        }
+      } else {
+        this.setURL()
+        const element = this.$refs.url
+        element.select()
+        document.execCommand('copy')
+        alert('링크 복사 완료')
+      }
+    },
+    toEtherscan() {
+      window.open(
+        `${process.env.VUE_APP_ETHER_SCAN_URL}nft/${this.content.project.id}/${this.content.tokenId}`,
+      )
+    },
   },
   async created() {
     this.queryOffersByToken = {
@@ -553,7 +626,7 @@ export default {
       func: graphql,
       body: queryOffersByToken({
         variables: {
-          first: 1,
+          first: 5,
           skip: 0,
           id: this.$route.params.project_address + this.$route.params.token_id,
         },
@@ -568,7 +641,7 @@ export default {
         },
         pagination: {
           start_num: 0,
-          count_num: 1,
+          count_num: 5,
         },
       }),
     }
@@ -577,11 +650,10 @@ export default {
       this.$route.params.project_address,
       this.$route.params.token_id,
     )
-    await this.getContents(
-      this.$route.params.project_address,
-      this.$route.params.token_id,
-    )
     this.isFirstLoading = false
+    this.tokens = await this.queryTokensByProject(
+      this.$route.params.project_address,
+    )
 
     this.$watch(
       () => this.$route,
@@ -589,14 +661,50 @@ export default {
         if (to.name === 'ContentDetail') {
           this.isFirstLoading = true
           this.content = await this.queryToken(
-            this.$route.params.project_address,
-            this.$route.params.token_id,
+            to.params.project_address,
+            to.params.token_id,
           )
-          await this.getContents(to.params.project_address, to.params.token_id)
           this.isFirstLoading = false
+          this.tokens = await this.queryTokensByProject(
+            to.params.project_address,
+          )
         }
       },
     )
+  },
+  watch: {
+    $route(to) {
+      this.queryOffersByToken = {
+        result_key: 'offers',
+        func: graphql,
+        body: queryOffersByToken({
+          variables: {
+            first: 5,
+            skip: 0,
+            id: to.params.project_address + to.params.token_id,
+          },
+        }),
+      }
+      this.queryTokenHistory = {
+        result_key: 'history',
+        func: graphql,
+        body: queryTokenHistory({
+          variables: {
+            id: to.params.project_address + to.params.token_id,
+          },
+          pagination: {
+            start_num: 0,
+            count_num: 5,
+          },
+        }),
+      }
+    },
+
+    isDialogActive() {
+      if (!this.isMobile) {
+        this.$nextTick(() => this.$refs.dialog.$el.focus())
+      }
+    },
   },
 }
 </script>
@@ -644,19 +752,24 @@ export default {
 
         .buttons {
           display: flex;
-          justify-content: space-between;
+          justify-content: end;
+          transform: translateY(-24px);
+          margin-right: 16px;
+          height: 100%;
+
+          button {
+            margin-left: 10px;
+          }
 
           img {
             position: absolute;
           }
 
-          button {
-            .dialog {
-              display: none;
+          .dialog {
+            display: none;
+            &.active {
+              display: block;
               top: 110%;
-              &.active {
-                display: block;
-              }
             }
           }
         }
@@ -775,6 +888,12 @@ export default {
   }
 }
 
+textarea {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+}
+
 @media (max-width: 1440px) {
   .content-wrap {
     width: 80%;
@@ -812,6 +931,12 @@ export default {
         margin: 0;
       }
     }
+  }
+}
+
+@media (min-width: 1440px) {
+  .round-box {
+    width: 708px;
   }
 }
 </style>

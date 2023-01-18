@@ -353,7 +353,7 @@ export default {
         }
       }
     },
-    getURL() {
+    setURL() {
       this.url = window.location.href
     },
     share() {
@@ -367,7 +367,7 @@ export default {
           alert('공유하기가 지원되지 않는 환경입니다.')
         }
       } else {
-        this.getURL()
+        this.setURL()
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
@@ -375,11 +375,9 @@ export default {
       }
     },
     toEtherscan() {
-      if (process.env.NODE_ENV == 'production') {
-        window.open('https://etherscan.io/address/' + this.project.id)
-      } else {
-        window.open('https://goerli.etherscan.io/address/' + this.project.id)
-      }
+      window.open(
+        `${process.env.VUE_APP_ETHER_SCAN_URL}address/${this.project.id}`,
+      )
     },
     setStatistics() {
       this.projectData[0] = {

@@ -18,22 +18,50 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="field" v-if="field.type == 'price'">
+              <div class="field" v-if="field.type == 'event'">
+                {{ content[field.key] }}
+              </div>
+              <div
+                class="field"
+                v-else-if="field.type == 'price'"
+                @click="
+                  tableName == 'Offers'
+                    ? toEtherscan(content.txHash)
+                    : toEtherscan(content.tx_hash)
+                "
+              >
                 {{
                   content[field.key]
                     ? weiToEther(content[field.key]) + ' ETH'
                     : ''
                 }}
+                <img src="../../assets/icons/launch-grey.svg" />
               </div>
               <div class="field" v-else-if="field.type == 'date'">
                 {{ convertDay(parseInt(content[field.key])) }}
                 <!-- {{ content[field.key] }} -->
               </div>
               <div class="field" v-else-if="field.type == 'member'">
-                <ContentsProfile
-                  :member="content[field.key]"
-                  :needUserName="true"
-                ></ContentsProfile>
+                <div v-if="!content[field.key]">
+                  <ContentsProfile
+                    :member="content[field.key]"
+                    :needUserName="true"
+                  ></ContentsProfile>
+                </div>
+                <router-link
+                  v-else
+                  :to="{
+                    name: 'UserOrArtist',
+                    params: {
+                      id: content[field.key] ? content[field.key].username : '',
+                    },
+                  }"
+                >
+                  <ContentsProfile
+                    :member="content[field.key]"
+                    :needUserName="true"
+                  ></ContentsProfile>
+                </router-link>
               </div>
             </div>
           </div>
@@ -53,7 +81,7 @@ import { weiToEther } from '../../util/commonFunc'
 import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
-  name: 'TableWithTitle',
+  name: 'TableDiv',
   components: {
     ContentsProfile,
     InfiniteLoading,
@@ -87,6 +115,13 @@ export default {
     },
   },
   methods: {
+    toEtherscan(tx) {
+      if (process.env.NODE_ENV == 'production') {
+        window.open('https://etherscan.io/tx/' + tx)
+      } else {
+        window.open('https://goerli.etherscan.io/tx/' + tx)
+      }
+    },
     weiToEther(wei) {
       return weiToEther(wei)
     },
@@ -107,7 +142,7 @@ export default {
       }
     },
     async infiniteHandler($state) {
-      if (this.noMoreDataToLoad) {
+      if (this.noMoreDataToLoad || !this.api) {
         $state.complete()
         return
       }
@@ -197,7 +232,8 @@ export default {
       }
     }
     .middle-box {
-      height: 299px;
+      min-height: 39px;
+      max-height: 299px;
       .middle-row {
         height: 64px;
         line-height: 64px;
@@ -221,6 +257,9 @@ export default {
             font-size: 14px;
             padding-left: 8px;
             color: #333333;
+            img {
+              transform: translateY(6px);
+            }
           }
         }
       }
