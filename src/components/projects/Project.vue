@@ -353,7 +353,7 @@ export default {
         }
       }
     },
-    getURL() {
+    setURL() {
       this.url = window.location.href
     },
     share() {
@@ -367,7 +367,7 @@ export default {
           alert('공유하기가 지원되지 않는 환경입니다.')
         }
       } else {
-        this.getURL()
+        this.setURL()
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
