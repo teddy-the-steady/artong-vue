@@ -18,6 +18,11 @@
               :showHeader="true"
               :fields="[
                 {
+                  name: 'EVENT',
+                  type: 'event',
+                  key: 'history_type',
+                },
+                {
                   name: 'PRICE',
                   type: 'price',
                   key: 'price',
@@ -76,9 +81,6 @@
             <div class="buttons">
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
-              </button>
-              <button class="white-button round-button ripple">
-                <img src="@/assets/icons/launch.svg" />
               </button>
               <button
                 class="white-button round-button ripple"
