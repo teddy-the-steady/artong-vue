@@ -30,10 +30,17 @@
                 <!-- {{ content[field.key] }} -->
               </div>
               <div class="field" v-else-if="field.type == 'member'">
-                <ContentsProfile
-                  :member="content[field.key]"
-                  :needUserName="true"
-                ></ContentsProfile>
+                <router-link
+                  :to="{
+                    name: 'UserOrArtist',
+                    params: { id: content ? content.owner.username : '' },
+                  }"
+                >
+                  <ContentsProfile
+                    :member="content[field.key]"
+                    :needUserName="true"
+                  ></ContentsProfile>
+                </router-link>
               </div>
             </div>
           </div>
