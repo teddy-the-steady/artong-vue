@@ -82,9 +82,6 @@
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="white-button round-button ripple">
-                <img src="@/assets/icons/launch.svg" />
-              </button>
               <button
                 class="white-button round-button ripple"
                 @mousedown="moreMouseDown"
@@ -531,11 +528,15 @@ export default {
 
         .buttons {
           display: flex;
-          justify-content: space-between;
+          justify-content: end;
           transform: translateY(-24px);
           margin-right: 16px;
           width: 160px;
           height: 100%;
+
+          button {
+            margin-left: 10px;
+          }
 
           img {
             position: absolute;
