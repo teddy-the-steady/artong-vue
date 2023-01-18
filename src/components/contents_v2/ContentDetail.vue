@@ -86,7 +86,10 @@
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
               </button>
-              <button class="white-button round-button ripple">
+              <button
+                class="white-button round-button ripple"
+                @click="toEtherscan"
+              >
                 <img src="@/assets/icons/launch.svg" />
               </button>
               <button
@@ -611,6 +614,11 @@ export default {
         alert('링크 복사 완료')
       }
     },
+    toEtherscan() {
+      window.open(
+        `${process.env.VUE_APP_ETHER_SCAN_URL}nft/${this.content.project.id}/${this.content.tokenId}`,
+      )
+    },
   },
   async created() {
     this.queryOffersByToken = {
@@ -744,11 +752,15 @@ export default {
 
         .buttons {
           display: flex;
-          justify-content: space-between;
+          justify-content: end;
           transform: translateY(-24px);
           margin-right: 16px;
           width: 160px;
           height: 100%;
+
+          button {
+            margin-left: 10px;
+          }
 
           img {
             position: absolute;
