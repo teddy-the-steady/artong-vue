@@ -18,12 +18,24 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="field" v-if="field.type == 'price'">
+              <div class="field" v-if="field.type == 'event'">
+                {{ content[field.key] }}
+              </div>
+              <div
+                class="field"
+                v-else-if="field.type == 'price'"
+                @click="
+                  tableName == 'Offers'
+                    ? toEtherscan(content.txHash)
+                    : toEtherscan(content.tx_hash)
+                "
+              >
                 {{
                   content[field.key]
                     ? weiToEther(content[field.key]) + ' ETH'
                     : ''
                 }}
+                <img src="../../assets/icons/launch-grey.svg" />
               </div>
               <div class="field" v-else-if="field.type == 'date'">
                 {{ convertDay(parseInt(content[field.key])) }}
@@ -103,6 +115,13 @@ export default {
     },
   },
   methods: {
+    toEtherscan(tx) {
+      if (process.env.NODE_ENV == 'production') {
+        window.open('https://etherscan.io/tx/' + tx)
+      } else {
+        window.open('https://goerli.etherscan.io/tx/' + tx)
+      }
+    },
     weiToEther(wei) {
       return weiToEther(wei)
     },

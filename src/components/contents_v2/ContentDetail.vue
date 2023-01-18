@@ -45,6 +45,11 @@
               :showHeader="true"
               :fields="[
                 {
+                  name: 'EVENT',
+                  type: 'event',
+                  key: 'history_type',
+                },
+                {
                   name: 'PRICE',
                   type: 'price',
                   key: 'price',
