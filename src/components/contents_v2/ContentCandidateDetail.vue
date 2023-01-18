@@ -393,7 +393,7 @@ export default {
       func: graphql,
       body: queryOffersByToken({
         variables: {
-          first: 1,
+          first: 5,
           skip: 0,
           id: this.$route.params.project_address + this.$route.params.token_id,
         },
@@ -408,7 +408,7 @@ export default {
         },
         pagination: {
           start_num: 0,
-          count_num: 1,
+          count_num: 5,
         },
       }),
     }
