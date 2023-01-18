@@ -257,6 +257,9 @@ export default {
             font-size: 14px;
             padding-left: 8px;
             color: #333333;
+            img {
+              transform: translateY(6px);
+            }
           }
         }
       }
