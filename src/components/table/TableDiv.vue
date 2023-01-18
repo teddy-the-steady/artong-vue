@@ -33,7 +33,9 @@
                 <router-link
                   :to="{
                     name: 'UserOrArtist',
-                    params: { id: content ? content.owner.username : '' },
+                    params: {
+                      id: content ? content[field.key].wallet_address : '',
+                    },
                   }"
                 >
                   <ContentsProfile
