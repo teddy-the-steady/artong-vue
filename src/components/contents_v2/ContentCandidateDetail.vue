@@ -528,7 +528,7 @@ export default {
     display: flex;
     justify-content: center;
     max-height: 60vh;
-    padding: 2rem 0 4rem 0;
+    padding: 4rem 0;
     background: #f2f2f2;
     img {
       object-fit: contain;
