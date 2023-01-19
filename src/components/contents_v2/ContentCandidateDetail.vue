@@ -473,6 +473,10 @@ export default {
       }
     },
     async likeToggle() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+
       let reactionCode = ''
 
       if (this.content.like) {
