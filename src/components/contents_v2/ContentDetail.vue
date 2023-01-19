@@ -77,7 +77,10 @@
         <div class="right-container">
           <div class="add-info">
             <div class="like-view">
-              <div><img src="@/assets/icons/like.svg" /></div>
+              <div>
+                <img src="@/assets/icons/like.svg" />
+                <span>{{ content ? content.total_likes : '' }}</span>
+              </div>
             </div>
             <div class="buttons">
               <button
@@ -635,6 +638,7 @@ export default {
       const result = await postContentReactions(this.content.id, reactionCode)
       if (result) {
         this.content.like = reactionCode === 'LIKE' ? true : false
+        this.content.total_likes = result.total_likes
       }
     },
     share() {
@@ -792,9 +796,18 @@ export default {
           display: flex;
           align-items: center;
 
-          img {
-            filter: invert(89%) sepia(0%) saturate(2053%) hue-rotate(317deg)
-              brightness(82%) contrast(87%);
+          div {
+            display: flex;
+
+            img {
+              filter: invert(89%) sepia(0%) saturate(2053%) hue-rotate(317deg)
+                brightness(82%) contrast(87%);
+            }
+            span {
+              margin-left: 5px;
+              font-size: 13px;
+              color: $gray;
+            }
           }
         }
 
