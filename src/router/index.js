@@ -17,7 +17,7 @@ import ContentCandidateDetail from '@/components/contents_v2/ContentCandidateDet
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
 import VueCarousel from 'vue-carousel'
-//import Test from '../components/util/Test'
+import Test from '../components/util/Test'
 
 window.popStateDetected = false
 window.addEventListener('popstate', () => {
@@ -111,11 +111,11 @@ const router = new Router({
       name: 'ProfileSettings',
       component: ProfileSettings,
     },
-    // {
-    //   path: '/test',
-    //   name: 'Test',
-    //   component: Test,
-    // },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test,
+    },
   ],
 })
 

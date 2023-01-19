@@ -443,9 +443,9 @@ export default {
   .search-bar {
     position: absolute;
     width: 480px;
-    height: 30px;
+    height: 40px;
     left: calc(50% - 480px / 2);
-    top: calc(50% - 30px / 2 - 0.5px);
+    top: calc(50% - 40px / 2 - 0.5px);
     background: $artong-white;
     border: 1px solid #e5e5e5;
     border-radius: 999px;
