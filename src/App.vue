@@ -7,7 +7,12 @@
       @click="openSearchModal"
     >
       <img src="../src/assets/icons/search-grey.svg" />
-      <input type="text" class="search-input" />
+      <input
+        @input="setSearchInput"
+        id="search-input"
+        type="text"
+        class="search-input"
+      />
     </div>
     <button
       v-show="isSearchModalOpen && innerWidth >= 1080"
@@ -31,6 +36,7 @@
     </ConfirmModal>
     <SearchModal
       :isSearchModalOpen="isSearchModalOpen"
+      :incomInput="searchInput"
       v-if="isSearchModalOpen"
       @close-modal="toggleSearchModal"
       ref="searchModal"
@@ -60,6 +66,7 @@ export default {
   data() {
     return {
       isSearchModalOpen: false,
+      searchInput: null,
     }
   },
   computed: {
@@ -80,6 +87,10 @@ export default {
     },
   },
   methods: {
+    setSearchInput() {
+      this.searchInput = document.getElementById('search-input').value
+      // console.log(this.searchInput)
+    },
     async getPcWalletOnFirstLoad() {
       if (window.ethereum && localStorage.getItem('userWalletConnectState')) {
         const metamaskSignedInAccount = await window.ethereum.request({
