@@ -51,6 +51,12 @@ const getTobeApprovedContents = async function (pathParams, queryParams) {
   )
 }
 
+const postContentReactions = async function (contents_id, reaction_code) {
+  return await instance.post(`/contents/${contents_id}/reactions`, {
+    reaction_code: reaction_code,
+  })
+}
+
 export {
   getContent,
   postContent,
@@ -60,4 +66,5 @@ export {
   getContentVoucher,
   getIpfsMetadata,
   getTobeApprovedContents,
+  postContentReactions,
 }
