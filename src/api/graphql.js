@@ -131,6 +131,7 @@ const queryToken = function (variables) {
           _db_content_thumbnail_s3key
           _db_content_s3key
           _db_like
+          _db_total_likes
         }
       }
     `,
