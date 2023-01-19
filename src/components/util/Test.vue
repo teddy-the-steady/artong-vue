@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     This is a test
-    <button @click="openModal">click here to open modal</button>
+    <button @click="toggleSearchModal">click here to open modal</button>
     <SearchModal
+      :isSearchModalOpen="isSearchModalOpen"
       v-show="isSearchModalOpen"
       @close-modal="toggleSearchModal"
       ref="searchModal"
@@ -20,10 +21,14 @@ export default {
   components: {
     SearchModal,
   },
+  data() {
+    return {
+      isSearchModalOpen: false,
+    }
+  },
   computed: {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
-      isSearchModalOpen: state => state.menu.isSearchModalOpen,
     }),
     isMobiel() {
       return this.$isMobiel()
@@ -31,17 +36,11 @@ export default {
   },
   methods: {
     toggleSearchModal() {
-      this.$store.commit('TOGGLE_SEARCH_MODAL')
+      this.isSearchModalOpen = !this.isSearchModalOpen
     },
     setWidth() {
       this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
     },
-    openModal() {
-      this.isSearchModalOpen = true
-    },
-  },
-  data() {
-    return {}
   },
   created() {},
   watch: {

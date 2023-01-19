@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <HeaderBar id="header-bar"></HeaderBar>
+    <div v-show="innerWidth >= 1080" class="search-bar">
+      <img src="../src/assets/icons/search-grey.svg" />
+      search
+    </div>
     <SideBar id="side-bar"></SideBar>
     <div class="contents">
       <keep-alive>
@@ -32,6 +36,7 @@ export default {
     SideBar,
     ConfirmModal,
   },
+
   computed: {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
@@ -40,6 +45,7 @@ export default {
       walletConnectState: state => state.wallet,
       isConfirmModalOpen: state => state.menu.isConfirmModalOpen,
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
@@ -276,6 +282,21 @@ html {
       appearance: none;
       border-radius: 6px;
     }
+  }
+}
+.search-bar {
+  z-index: 100000;
+  width: 480px;
+  height: 40px;
+  background: $artong-white;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  line-height: 30px;
+  position: absolute;
+  left: calc(50% - 480px / 2);
+  top: 15px;
+  img {
+    vertical-align: middle;
   }
 }
 </style>

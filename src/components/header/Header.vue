@@ -74,10 +74,6 @@
           </router-link>
         </div>
       </div>
-      <div v-show="innerWidth >= 1080" class="search-bar">
-        <img src="../../assets/icons/search-grey.svg" />
-        search
-      </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
           <button
@@ -436,20 +432,6 @@ export default {
           vertical-align: middle;
         }
       }
-    }
-  }
-  .search-bar {
-    position: absolute;
-    width: 480px;
-    height: 40px;
-    left: calc(50% - 480px / 2);
-    top: calc(50% - 40px / 2 - 0.5px);
-    background: $artong-white;
-    border: 1px solid #e5e5e5;
-    border-radius: 999px;
-    line-height: 30px;
-    img {
-      vertical-align: middle;
     }
   }
 
