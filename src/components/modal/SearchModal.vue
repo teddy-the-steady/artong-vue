@@ -132,11 +132,13 @@ export default {
   transform: scale(1.1);
 }
 
-@media only screen and (max-width: 599px) {
+@media (max-width: 500px) {
   .modal-mask {
     .modal-wrapper {
+      padding: auto 10px;
       .modal-container {
-        width: auto;
+        width: 100%;
+        left: auto;
       }
     }
   }

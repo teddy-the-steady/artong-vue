@@ -10,7 +10,7 @@
       <input type="text" class="search-input" />
     </div>
     <button
-      v-show="isSearchModalOpen"
+      v-show="isSearchModalOpen && innerWidth >= 1080"
       @click="toggleSearchModal"
       class="white-button clear-button"
     >
@@ -354,7 +354,7 @@ html {
   border: none !important;
   z-index: 100001;
   top: 16px;
-  right: 452px;
+  transform: translateX(190px);
   width: 30px;
   height: 30px;
 }
