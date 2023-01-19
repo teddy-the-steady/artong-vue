@@ -12,7 +12,9 @@
           </div>
 
           <div class="modal-footer">
-            <slot name="footer"></slot>
+            <slot name="footer">
+              <button @click="close">close</button>
+            </slot>
           </div>
         </div>
       </div>
@@ -23,6 +25,17 @@
 <script>
 export default {
   name: 'BasicModal',
+  props: {
+    isSearchModalOpen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    close() {
+      this.$emit('close-modal')
+    },
+  },
 }
 </script>
 
@@ -45,14 +58,17 @@ export default {
     vertical-align: middle;
 
     .modal-container {
-      width: 300px;
-      margin: 0px auto;
+      box-sizing: border-box;
+      width: 482px;
       padding: 20px 30px;
       background-color: $artong-white;
       border-radius: 2px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
       font-family: Helvetica, Arial, sans-serif;
+      position: absolute;
+      left: calc(50% - 240px);
+      top: 70px;
 
       .modal-header {
         float: right;
