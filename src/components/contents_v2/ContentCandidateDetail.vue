@@ -76,8 +76,27 @@
               <div><img src="@/assets/icons/like.svg" /></div>
             </div>
             <div class="buttons">
-              <button class="white-button round-button ripple">
-                <img src="@/assets/icons/like.svg" />
+              <button
+                class="white-button round-button ripple"
+                @click="likeToggle"
+              >
+                <svg
+                  width="20"
+                  height="18"
+                  viewBox="0 0 20 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2.42602 9.31146L10 16.8854L17.574 9.31146C19.4753 7.4101 19.4753 4.32738 17.574 2.42602C15.6726 0.52466 12.5899 0.52466 10.6885 2.42602L10 3.11456L9.31146 2.42602C7.4101 0.52466 4.32738 0.52466 2.42602 2.42602C0.52466 4.32738 0.52466 7.4101 2.42602 9.31146Z"
+                    stroke="black"
+                    stroke-width="2"
+                    stroke-linejoin="round"
+                    :class="{
+                      like: content ? (content.like ? likeStyle : '') : '',
+                    }"
+                  />
+                </svg>
               </button>
               <button class="white-button round-button ripple" @click="share">
                 <img src="@/assets/icons/share.svg" />
@@ -219,6 +238,7 @@ import {
   patchContentStatus,
   getContentVoucher,
 } from '../../api/contents'
+import { postContentReactions } from '../../api/contents'
 import {
   makeS3Path,
   weiToEther,
@@ -293,6 +313,9 @@ export default {
         this.makeS3Path(this.content?.content_thumbnail_s3key) ||
         this.makeS3Path(this.content?.content_s3key)
       )
+    },
+    likeStyle() {
+      return 'filter: invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg) brightness(106%) contrast(90%); fill: $profile-border-red;'
     },
   },
   methods: {
@@ -449,6 +472,20 @@ export default {
         alert('링크 복사 완료')
       }
     },
+    async likeToggle() {
+      let reactionCode = ''
+
+      if (this.content.like) {
+        reactionCode = 'UNLIKE'
+      } else {
+        reactionCode = 'LIKE'
+      }
+
+      const result = await postContentReactions(this.content.id, reactionCode)
+      if (result) {
+        this.content.like = reactionCode === 'LIKE' ? true : false
+      }
+    },
   },
   async created() {
     this.isFirstLoading = true
@@ -491,7 +528,7 @@ export default {
     display: flex;
     justify-content: center;
     max-height: 60vh;
-    padding: 2rem 0 4rem 0;
+    padding: 4rem 0;
     background: #f2f2f2;
     img {
       object-fit: contain;
@@ -524,14 +561,26 @@ export default {
         .like-view {
           flex: 1;
           display: flex;
+
+          img {
+            filter: invert(89%) sepia(0%) saturate(2053%) hue-rotate(317deg)
+              brightness(82%) contrast(87%);
+          }
         }
 
         .buttons {
           display: flex;
           justify-content: end;
           transform: translateY(-24px);
-          margin-right: 16px;
           height: 100%;
+
+          path {
+            &.like {
+              filter: invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg)
+                brightness(106%) contrast(90%);
+              fill: $profile-border-red;
+            }
+          }
 
           button {
             margin-left: 10px;

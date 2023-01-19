@@ -259,7 +259,7 @@ html {
       position: relative;
       background: $artong-white;
       height: 100%;
-      padding-top: 50px;
+      padding-top: $head-height;
     }
 
     input[type='text'] {
