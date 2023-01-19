@@ -249,8 +249,6 @@ export default {
 }
 
 .navbar {
-  padding-top: 10px;
-  padding-bottom: 10px;
   display: flex;
   position: fixed;
   top: 0;
