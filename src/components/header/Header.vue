@@ -74,15 +74,12 @@
           </router-link>
         </div>
       </div>
-      <div v-show="innerWidth >= 1080" class="search-bar">
-        <img src="../../assets/icons/search-grey.svg" />
-        search
-      </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
           <button
             v-show="innerWidth < 1080"
             class="round-button white-button ripple margin"
+            @click="openSearchModal"
           >
             <img src="../../assets/icons/search.svg" />
           </button>
@@ -215,6 +212,10 @@ export default {
         this.$router.push({ name: 'Projects' })
       }
     },
+    openSearchModal() {
+      console.log('open search modal')
+      this.$emit('open-search-modal')
+    },
   },
   watch: {
     isSideMenuOpen(val) {
@@ -249,8 +250,6 @@ export default {
 }
 
 .navbar {
-  padding-top: 10px;
-  padding-bottom: 10px;
   display: flex;
   position: fixed;
   top: 0;
@@ -440,20 +439,6 @@ export default {
       }
     }
   }
-  .search-bar {
-    position: absolute;
-    width: 480px;
-    height: 30px;
-    left: calc(50% - 480px / 2);
-    top: calc(50% - 30px / 2 - 0.5px);
-    background: $artong-white;
-    border: 1px solid #e5e5e5;
-    border-radius: 999px;
-    line-height: 30px;
-    img {
-      vertical-align: middle;
-    }
-  }
 
   .right {
     .navbar__icons {
@@ -492,7 +477,11 @@ export default {
 
 @media only screen and (max-width: 1080px) {
   .navbar {
+    background-color: transparent;
     box-shadow: none;
+    &.active {
+      background-color: $artong-white;
+    }
   }
 }
 </style>
