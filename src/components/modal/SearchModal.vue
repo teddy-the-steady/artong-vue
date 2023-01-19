@@ -5,7 +5,12 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
-              <input placeholder="Search" v-show="innerWidth < 1080" />
+              <input
+                id="search-input"
+                placeholder="Search"
+                v-show="innerWidth < 1080"
+                @input="setSearchInput"
+              />
             </slot>
           </div>
 
@@ -34,6 +39,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    incomInput: {
+      type: String,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      searchInput: null,
+    }
   },
   computed: {
     ...mapState({
@@ -44,7 +58,18 @@ export default {
     close() {
       this.$emit('close-modal')
     },
+    setSearchInput() {
+      // if (innerWidth >= 1080) {
+      //   this.searchInput = this.incomInput
+      // } else {
+      //   this.searchInput = document.getElementById('search-input').value
+      // }
+      this.searchInput = document.getElementById('search-input').value
+
+      console.log(this.searchInput)
+    },
   },
+  mounted() {},
 }
 </script>
 
