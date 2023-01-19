@@ -490,7 +490,11 @@ export default {
 
 @media only screen and (max-width: 1080px) {
   .navbar {
+    background-color: transparent;
     box-shadow: none;
+    &.active {
+      background-color: $artong-white;
+    }
   }
 }
 </style>
