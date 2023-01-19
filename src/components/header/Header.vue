@@ -80,9 +80,12 @@
       </div>
       <div class="navbar__side right">
         <div class="navbar__icons">
-          <div v-show="innerWidth < 1080" class="search-icon">
+          <button
+            v-show="innerWidth < 1080"
+            class="round-button white-button ripple margin"
+          >
             <img src="../../assets/icons/search.svg" />
-          </div>
+          </button>
           <div class="before_login" v-if="!currentUser.id">
             <router-link to="/login"> CONNECT </router-link>
           </div>
@@ -90,9 +93,13 @@
             <div v-if="innerWidth >= 1080" class="contribute">
               <button @click="contribute" v-ripple>Contribute</button>
             </div>
-            <div v-else class="contribute-round" @click="contribute" v-ripple>
+            <button
+              v-else
+              class="round-button white-button ripple margin"
+              @click="contribute"
+            >
               <img src="../../assets/icons/add.svg" />
-            </div>
+            </button>
             <div
               class="header-profile"
               @mousedown="profileMouseDown"
@@ -242,6 +249,8 @@ export default {
 }
 
 .navbar {
+  padding-top: 10px;
+  padding-bottom: 10px;
   display: flex;
   position: fixed;
   top: 0;
@@ -260,9 +269,9 @@ export default {
 
       .logo {
         position: absolute;
-        top: 15px;
-        left: 45px;
-        width: 100px;
+        top: 23px;
+        left: 49px;
+        width: 130px;
         overflow: visible;
 
         path:nth-child(3) {
@@ -371,6 +380,9 @@ export default {
 
     .navbar__icons {
       align-items: center;
+      .margin {
+        margin-right: 10px;
+      }
       .before_login {
         height: 2rem;
         border-radius: 2rem;
@@ -388,8 +400,8 @@ export default {
 
       .header-profile {
         display: block;
-        width: 30px;
-        height: 30px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
         box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.15);
         cursor: pointer;
@@ -442,20 +454,6 @@ export default {
       vertical-align: middle;
     }
   }
-  .search-icon {
-    width: 30px;
-    height: 30px;
-    background: $artong-white;
-    border: 1px solid #f2f2f2;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
-    border-radius: 999px;
-    line-height: 30px;
-    margin-right: 8px;
-    line-height: 30px;
-    img {
-      vertical-align: middle;
-    }
-  }
 
   .right {
     .navbar__icons {
@@ -489,6 +487,12 @@ export default {
         }
       }
     }
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  .navbar {
+    box-shadow: none;
   }
 }
 </style>
