@@ -4,7 +4,9 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <slot name="header"></slot>
+            <slot name="header">
+              <input placeholder="Search" v-show="innerWidth < 1080" />
+            </slot>
           </div>
 
           <div class="modal-body">
@@ -23,6 +25,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'BasicModal',
   props: {
@@ -30,6 +34,11 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  computed: {
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
   },
   methods: {
     close() {
@@ -59,21 +68,35 @@ export default {
 
     .modal-container {
       box-sizing: border-box;
-      width: 482px;
       padding: 20px 30px;
       background-color: $artong-white;
-      border-radius: 2px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
       font-family: Helvetica, Arial, sans-serif;
       position: absolute;
       left: calc(50% - 240px);
       top: 70px;
+      width: 480px;
+      min-height: 196px;
+      box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+      border-radius: 14px;
 
       .modal-header {
-        float: right;
         font-size: 20px;
         color: $lightgray;
+        input {
+          width: 95%;
+          border: none;
+          border-bottom: 1px solid #ccc;
+          height: calc(1.5em + 0.75rem + 2px);
+          padding: 0.375rem 0.75rem;
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+        }
+        input:focus {
+          outline: none;
+        }
       }
 
       .modal-body {
