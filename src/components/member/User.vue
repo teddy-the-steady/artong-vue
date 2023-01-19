@@ -21,7 +21,10 @@ import {
   queryTokensByCreator,
   queryTokensByOwner,
 } from '../../api/graphql'
-import { getMemberContentsCandidates } from '../../api/projects'
+import {
+  getMemberContentsCandidates,
+  getMemberContentsFavorites,
+} from '../../api/projects'
 import MyPageProfile from '../profile/MyPageProfile.vue'
 import ProfileTab from '../tabs/ProfileTab.vue'
 import UserProfileButtons from '../button_group/UserProfileButtons.vue'
@@ -47,6 +50,7 @@ export default {
         { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
         { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
         { id: 3, label: 'Candidates', type: 'CONTENTS', api: {}, sort: {} },
+        { id: 4, label: 'Favorited', type: 'CONTENTS', api: {}, sort: {} },
       ],
       sortOptions: {
         newest: {
@@ -120,6 +124,19 @@ export default {
         orderDirection: this.tabs[3].sort.orderDirection,
       },
     }
+
+    this.tabs[4].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.tabs[4].api = {
+      func: getMemberContentsFavorites,
+      pathParams: { member_id: this.currentUser.id },
+      queryParams: {
+        start_num: 0,
+        count_num: 10,
+        orderBy: this.tabs[4].sort.orderBy,
+        orderDirection: this.tabs[4].sort.orderDirection,
+      },
+    }
   },
   watch: {
     $route(to) {
@@ -172,6 +189,18 @@ export default {
         case '3':
           this.tabs[t].api = {
             func: getMemberContentsCandidates,
+            pathParams: { member_id: this.currentUser.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 10,
+              orderBy: this.tabs[t].sort.orderBy,
+              orderDirection: this.tabs[t].sort.orderDirection,
+            },
+          }
+          break
+        case '4':
+          this.tabs[t].api = {
+            func: getMemberContentsFavorites,
             pathParams: { member_id: this.currentUser.id },
             queryParams: {
               start_num: 0,
