@@ -129,6 +129,7 @@ export default {
           contentArrayToPush.push({
             id: apiResults[i].id,
             tokenId: apiResults[i].tokenId,
+            token_id: apiResults[i].token_id,
             projectAddress:
               apiResults[i].project?.id || apiResults[i].project_address,
             tokenURI: apiResults[i].tokenURI,
@@ -162,12 +163,12 @@ export default {
       return results
     },
     onContentClick(val) {
-      if (val.tokenId) {
+      if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: val.projectAddress,
-            token_id: val.tokenId,
+            token_id: val.token_id || val.tokenId,
           },
         })
       } else if (val.id) {
