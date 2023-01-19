@@ -79,6 +79,7 @@
           <button
             v-show="innerWidth < 1080"
             class="round-button white-button ripple margin"
+            @click="openSearchModal"
           >
             <img src="../../assets/icons/search.svg" />
           </button>
@@ -210,6 +211,10 @@ export default {
         alert('First, choose a project to contribute!')
         this.$router.push({ name: 'Projects' })
       }
+    },
+    openSearchModal() {
+      console.log('open search modal')
+      this.$emit('open-search-modal')
     },
   },
   watch: {
