@@ -558,9 +558,11 @@ export default {
       text-align: initial;
       .add-info {
         display: flex;
+        transform: translateY(-24px);
         .like-view {
           flex: 1;
           display: flex;
+          align-items: center;
 
           img {
             filter: invert(89%) sepia(0%) saturate(2053%) hue-rotate(317deg)
@@ -571,7 +573,6 @@ export default {
         .buttons {
           display: flex;
           justify-content: end;
-          transform: translateY(-24px);
           height: 100%;
 
           path {
