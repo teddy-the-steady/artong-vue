@@ -38,6 +38,12 @@ const postMemberFollower = async function ({
   })
 }
 
+const searchMembers = async function (searchWord) {
+  return await instance.get('/search/members', {
+    params: { searchWord: searchWord },
+  })
+}
+
 export {
   getMemberByUsername,
   getCurrentMember,
@@ -45,4 +51,5 @@ export {
   patchMemberProfileS3key,
   patchMember,
   postMemberFollower,
+  searchMembers,
 }
