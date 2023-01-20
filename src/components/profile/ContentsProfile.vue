@@ -19,9 +19,9 @@
       <img v-else src="../../assets/images/profile.svg" />
     </div>
     <div class="info" v-if="member && needUserName && !isFirstLoading">
-      <a class="username">
+      <div class="username">
         {{ member.username }}
-      </a>
+      </div>
     </div>
     <div class="info" v-else-if="member && needUserName && isFirstLoading">
       <div class="username_box">
@@ -124,7 +124,8 @@ export default {
       font-size: 14px;
       line-height: 32px;
       display: inline-block;
-      max-width: 100%;
+      width: 100%;
+      max-width: 100px;
       white-space: nowrap;
       overflow: hidden !important;
       text-overflow: ellipsis;
