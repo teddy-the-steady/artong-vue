@@ -813,7 +813,7 @@ export default {
 
         .buttons {
           display: flex;
-          justify-content: end;
+          justify-content: flex-end;
           height: 100%;
 
           path {
