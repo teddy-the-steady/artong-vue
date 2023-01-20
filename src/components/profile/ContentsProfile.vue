@@ -116,7 +116,7 @@ export default {
   .info {
     margin-left: 8px;
     height: 32px;
-    width: 45%;
+    max-width: 45%;
     .username {
       font-family: $item-font;
       font-style: $item-font-style;
@@ -140,7 +140,7 @@ export default {
   }
 
   .price {
-    width: 30%;
+    max-width: 30%;
     margin-left: auto;
     display: flex;
     justify-content: flex-end;
