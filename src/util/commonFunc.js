@@ -79,6 +79,16 @@ const shortenAddress = function (address) {
   return result
 }
 
+const shortenPrice = function (price) {
+  if (price.length > 6) {
+    return (
+      price.substr(0, 3) + '..' + price.substr(price.length - 2, price.length)
+    )
+  } else {
+    return price
+  }
+}
+
 export {
   makeS3Path,
   isSessionValid,
@@ -89,4 +99,5 @@ export {
   weiToEther,
   checkMobileWalletStatusAndGetSigner,
   shortenAddress,
+  shortenPrice,
 }
