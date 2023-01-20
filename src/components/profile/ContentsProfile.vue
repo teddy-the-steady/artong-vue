@@ -30,14 +30,14 @@
     </div>
     <div class="price" v-if="price">
       <img :src="require('@/assets/icons/ethereum.svg')" />
-      {{ price }}
+      {{ shortenPrice(price) }}
     </div>
   </div>
 </template>
 
 <script>
 import { backgroundColor } from '../../mixin'
-import { makeS3Path } from '../../util/commonFunc'
+import { makeS3Path, shortenPrice } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
@@ -78,6 +78,9 @@ export default {
     makeS3Path(path) {
       return makeS3Path(path)
     },
+    shortenPrice(price) {
+      return shortenPrice(price)
+    },
   },
 }
 </script>
@@ -93,6 +96,7 @@ export default {
 
   .image {
     width: 30px;
+    min-width: 30px;
     height: 30px;
     border-radius: 50%;
     overflow: hidden;
@@ -112,6 +116,7 @@ export default {
   .info {
     margin-left: 8px;
     height: 32px;
+    width: 45%;
     .username {
       font-family: $item-font;
       font-style: $item-font-style;
@@ -119,7 +124,7 @@ export default {
       font-size: 14px;
       line-height: 32px;
       display: inline-block;
-      max-width: 80px;
+      max-width: 100%;
       white-space: nowrap;
       overflow: hidden !important;
       text-overflow: ellipsis;
@@ -135,10 +140,13 @@ export default {
   }
 
   .price {
-    width: 20px;
+    width: 30%;
     margin-left: auto;
     display: flex;
     justify-content: flex-end;
+    img {
+      width: 20px;
+    }
   }
 }
 </style>
