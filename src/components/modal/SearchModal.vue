@@ -42,6 +42,7 @@
             <div class="modal-footer">
               <slot name="footer">
                 <button @click="closeSearchModal">close</button>
+                <button @click="callAPI">callAPI</button>
               </slot>
             </div>
           </div>
@@ -53,6 +54,9 @@
 
 <script>
 import { mapState } from 'vuex'
+import { searchContents } from '../../api/contents'
+import { searchProjects } from '../../api/projects'
+import { searchMembers } from '../../api/member'
 
 export default {
   name: 'BasicModal',
@@ -65,6 +69,10 @@ export default {
   data() {
     return {
       isSearchModalOpen: false,
+      searchWord: '',
+      contents: [],
+      projects: [],
+      members: [],
     }
   },
   computed: {
@@ -73,6 +81,39 @@ export default {
     }),
   },
   methods: {
+    async callAPI() {
+      this.contents = await searchContents('art')
+      this.projects = await searchProjects('art')
+      this.members = await searchMembers('teddy')
+
+      // console.log(this.contents)
+      // console.log(this.projects)
+      // console.log(this.members)
+    },
+    async searchContents(searchWord) {
+      try {
+        return await searchContents(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
+    async searchProjects(searchWord) {
+      try {
+        return await searchProjects(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
+    async searchMembers(searchWord) {
+      try {
+        return await searchMembers(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
     openSearchModal() {
       this.isSearchModalOpen = true
     },
