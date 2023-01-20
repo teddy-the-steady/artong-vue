@@ -20,8 +20,10 @@
           class="content-profile"
         ></ContentsProfile>
       </router-link>
-      <div v-show="price" class="price-title">PRICE</div>
-      <div v-show="price" class="price">{{ price }} ETH</div>
+      <div v-show="price">
+        <div class="price-title">PRICE</div>
+        <div class="price">{{ price }} ETH</div>
+      </div>
     </div>
   </div>
 </template>
@@ -143,12 +145,13 @@ export default {
   }
 
   .bottom {
+    position: absolute;
     display: flex;
+    width: 100%;
     flex-direction: column;
     margin: 16px 0;
     height: 32px;
     .profile-link {
-      width: fit-content;
       .content-profile {
         margin-left: 16px;
       }
