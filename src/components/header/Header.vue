@@ -77,7 +77,7 @@
       <div class="navbar__side right">
         <div class="navbar__icons">
           <button
-            v-show="innerWidth < 1080"
+            v-if="innerWidth < 1080"
             class="round-button white-button ripple margin"
             @click="openSearchModalSignal = true"
           >
@@ -112,7 +112,6 @@
         :openSearchModalSignal="openSearchModalSignal"
         @close-search-modal="openSearchModalSignal = false"
       >
-        <span slot="body">search something </span>
       </SearchModal>
       <UserDialog
         class="dialog"

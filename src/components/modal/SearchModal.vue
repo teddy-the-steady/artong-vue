@@ -1,22 +1,19 @@
 <template>
   <div>
-    <div
-      v-show="innerWidth >= 1080"
-      class="search-bar"
-      @click="openSearchModal"
-    >
+    <div v-if="innerWidth >= 1080" class="search-bar" @click="openSearchModal">
       <img src="../../assets/icons/search-grey.svg" />
       <input
         id="search-input1"
         placeholder="Search"
         type="text"
         class="search-input"
-        @keyup="syncInput($event.target.value, 'search-input2')"
+        v-model="searchWord"
+        @keyup="search"
       />
       <img
         src="../../assets/icons/clear.svg"
         class="clear-button"
-        v-show="isSearchModalOpen && innerWidth >= 1080"
+        v-if="isSearchModalOpen && innerWidth >= 1080"
         @click.stop="closeSearchModal"
       />
     </div>
@@ -29,20 +26,41 @@
                 <input
                   id="search-input2"
                   placeholder="Search"
-                  v-show="innerWidth < 1080"
-                  @keyup="syncInput($event.target.value, 'search-input1')"
+                  v-if="innerWidth < 1080"
+                  v-model="searchWord"
+                  @keyup="search"
                 />
               </slot>
             </div>
 
             <div class="modal-body">
-              <slot name="body"></slot>
+              <slot name="body">
+                <div class="contents">
+                  <div class="title">Tokens</div>
+                  <div class="results">
+                    <!-- <div
+                      class="content"
+                      v-for="(content, k) in contents"
+                      :key="k"
+                    >
+                      {{ content.id }}
+                    </div> -->
+                  </div>
+                </div>
+                <div class="projects">
+                  <div class="title">Projects</div>
+                  <div class="results"></div>
+                </div>
+                <div class="members">
+                  <div class="title">User</div>
+                  <div class="results"></div>
+                </div>
+              </slot>
             </div>
 
             <div class="modal-footer">
               <slot name="footer">
                 <button @click="closeSearchModal">close</button>
-                <button @click="callAPI">callAPI</button>
               </slot>
             </div>
           </div>
@@ -81,14 +99,16 @@ export default {
     }),
   },
   methods: {
-    async callAPI() {
-      this.contents = await searchContents('art')
-      this.projects = await searchProjects('art')
-      this.members = await searchMembers('teddy')
-
-      // console.log(this.contents)
-      // console.log(this.projects)
-      // console.log(this.members)
+    async search() {
+      const [result1, result2, result3] = await Promise.all([
+        searchContents(this.searchWord),
+        searchProjects(this.searchWord),
+        searchMembers(this.searchWord),
+      ])
+      this.contents = result1
+      this.projects = result2
+      this.members = result3
+      console.log(this.contents)
     },
     async searchContents(searchWord) {
       try {
@@ -119,22 +139,11 @@ export default {
     },
     closeSearchModal() {
       this.isSearchModalOpen = false
-      document.getElementById('search-input1').value = ''
-      document.getElementById('search-input2').value = ''
+      this.searchWord = ''
       this.$emit('close-search-modal')
     },
-    setWidth() {
-      this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
-    },
-    syncInput(value, id) {
-      document.getElementById(id).value = value
-    },
   },
-  watch: {
-    openSearchModalSignal() {
-      console.log(this.openSearchModalSignal)
-    },
-  },
+  watch: {},
 }
 </script>
 
