@@ -1,32 +1,47 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">
-              <input
-                id="search-input"
-                placeholder="Search"
-                v-show="innerWidth < 1080"
-                @input="setSearchInput"
-              />
-            </slot>
-          </div>
+  <div>
+    <div
+      v-show="innerWidth >= 1080"
+      class="search-bar"
+      @click="openSearchModal"
+    >
+      <img src="../../assets/icons/search-grey.svg" />
+      <input id="search-input" type="text" class="search-input" />
+      <img
+        src="../../assets/icons/clear.svg"
+        class="clear-button"
+        v-show="isSearchModalOpen && innerWidth >= 1080"
+        @click.stop="closeSearchModal"
+      />
+    </div>
+    <transition name="modal" v-if="isSearchModalOpen || openSearchModalSignal">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+              <slot name="header">
+                <input
+                  id="search-input"
+                  placeholder="Search"
+                  v-show="innerWidth < 1080"
+                />
+              </slot>
+            </div>
 
-          <div class="modal-body">
-            <slot name="body"></slot>
-          </div>
+            <div class="modal-body">
+              <slot name="body"></slot>
+            </div>
 
-          <div class="modal-footer">
-            <slot name="footer">
-              <button @click="close">close</button>
-            </slot>
+            <div class="modal-footer">
+              <slot name="footer">
+                <button @click="closeSearchModal">close</button>
+              </slot>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -35,18 +50,14 @@ import { mapState } from 'vuex'
 export default {
   name: 'BasicModal',
   props: {
-    isSearchModalOpen: {
+    openSearchModalSignal: {
       type: Boolean,
       default: false,
-    },
-    incomInput: {
-      type: String,
-      default: null,
     },
   },
   data() {
     return {
-      searchInput: null,
+      isSearchModalOpen: false,
     }
   },
   computed: {
@@ -55,21 +66,24 @@ export default {
     }),
   },
   methods: {
-    close() {
-      this.$emit('close-modal')
+    openSearchModal() {
+      this.isSearchModalOpen = true
     },
-    setSearchInput() {
-      // if (innerWidth >= 1080) {
-      //   this.searchInput = this.incomInput
-      // } else {
-      //   this.searchInput = document.getElementById('search-input').value
-      // }
-      this.searchInput = document.getElementById('search-input').value
-
-      console.log(this.searchInput)
+    closeSearchModal() {
+      this.isSearchModalOpen = false
+      document.getElementById('search-input').value = ''
+      this.$emit('close-search-modal')
+    },
+    setWidth() {
+      this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
+      console.log(innerWidth)
     },
   },
-  mounted() {},
+  watch: {
+    openSearchModalSignal() {
+      console.log(this.openSearchModalSignal)
+    },
+  },
 }
 </script>
 
@@ -155,6 +169,48 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+.search-bar {
+  z-index: 100000;
+  width: 480px;
+  height: 40px;
+  background: $artong-white;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  line-height: 30px;
+  position: fixed;
+  left: calc(50% - 480px / 2);
+  top: 15px;
+  display: flex;
+  padding: 11px 13px;
+  box-sizing: border-box;
+  img {
+    vertical-align: middle;
+  }
+  .search-input {
+    margin-left: 10px;
+    border: none;
+    width: 408px;
+    height: 17px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0px;
+    border-radius: 0px;
+  }
+  input:focus {
+    outline: none;
+  }
+}
+.clear-button {
+  // position: fixed;
+  // border: none !important;
+  // z-index: 100001;
+  // top: 16px;
+  // transform: translateX(190px);
+  // width: 30px;
+  // height: 30px;
 }
 
 @media (max-width: 500px) {

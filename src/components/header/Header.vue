@@ -79,7 +79,7 @@
           <button
             v-show="innerWidth < 1080"
             class="round-button white-button ripple margin"
-            @click="openSearchModal"
+            @click="openSearchModalSignal = true"
           >
             <img src="../../assets/icons/search.svg" />
           </button>
@@ -107,6 +107,13 @@
           </div>
         </div>
       </div>
+      <SearchModal
+        ref="searchModal"
+        :openSearchModalSignal="openSearchModalSignal"
+        @close-search-modal="openSearchModalSignal = false"
+      >
+        <span slot="body">search something </span>
+      </SearchModal>
       <UserDialog
         class="dialog"
         :class="{ active: isDialogActive }"
@@ -139,6 +146,7 @@ import HeaderProfile from '../profile/HeaderProfile.vue'
 import UserDialog from '../dialog/UserDialog.vue'
 import Ripple from '../../directives/ripple/Ripple'
 import { isSessionValid } from '../../util/commonFunc'
+import SearchModal from '../modal/SearchModal.vue'
 
 export default {
   name: 'Header',
@@ -146,6 +154,7 @@ export default {
     Burger,
     HeaderProfile,
     UserDialog,
+    SearchModal,
   },
   data() {
     return {
@@ -153,6 +162,7 @@ export default {
       isDialogActive: false,
       isMouseDownOnProfile: false,
       isMouseUpOnProfile: false,
+      openSearchModalSignal: false,
     }
   },
   computed: {
@@ -161,6 +171,7 @@ export default {
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
+      isModalOpen: state => state.menu.isModalOpen,
     }),
     randomDelayTime() {
       return {
@@ -212,10 +223,6 @@ export default {
         this.$router.push({ name: 'Projects' })
       }
     },
-    openSearchModal() {
-      console.log('open search modal')
-      this.$emit('open-search-modal')
-    },
   },
   watch: {
     isSideMenuOpen(val) {
@@ -227,6 +234,9 @@ export default {
       if (val) {
         this.$nextTick(() => this.$refs.dialog.$el.focus())
       }
+    },
+    isModalOpen() {
+      document.body.classList.toggle('prevent-scroll')
     },
   },
   directives: {
@@ -379,6 +389,9 @@ export default {
 
     .navbar__icons {
       align-items: center;
+      position: absolute;
+      right: 10px;
+      top: 10px;
       .margin {
         margin-right: 10px;
       }
@@ -482,6 +495,12 @@ export default {
     &.active {
       background-color: $artong-white;
     }
+  }
+}
+@media only screen and (min-width: 1080px) {
+  .before_login {
+    position: relative;
+    top: 10px;
   }
 }
 </style>
