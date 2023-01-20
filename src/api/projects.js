@@ -45,6 +45,20 @@ const getMemberContentsCandidates = async function (pathParams, queryParams) {
   )
 }
 
+const getMemberContentsFavorites = async function (pathParams, queryParams) {
+  return await instance.get(
+    `/members/${pathParams.member_id}/contents/favorites`,
+    {
+      params: {
+        start_num: queryParams.start_num,
+        count_num: queryParams.count_num,
+        order_by: queryParams.orderBy,
+        order_direction: queryParams.orderDirection,
+      },
+    },
+  )
+}
+
 export {
   postProject,
   patchProject,
@@ -52,4 +66,5 @@ export {
   postProjectSubscriber,
   getProjectContributors,
   getMemberContentsCandidates,
+  getMemberContentsFavorites,
 }
