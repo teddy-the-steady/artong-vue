@@ -6,7 +6,13 @@
       @click="openSearchModal"
     >
       <img src="../../assets/icons/search-grey.svg" />
-      <input id="search-input" type="text" class="search-input" />
+      <input
+        id="search-input1"
+        placeholder="Search"
+        type="text"
+        class="search-input"
+        @keyup="syncInput($event.target.value, 'search-input2')"
+      />
       <img
         src="../../assets/icons/clear.svg"
         class="clear-button"
@@ -21,9 +27,10 @@
             <div class="modal-header">
               <slot name="header">
                 <input
-                  id="search-input"
+                  id="search-input2"
                   placeholder="Search"
                   v-show="innerWidth < 1080"
+                  @keyup="syncInput($event.target.value, 'search-input1')"
                 />
               </slot>
             </div>
@@ -71,12 +78,15 @@ export default {
     },
     closeSearchModal() {
       this.isSearchModalOpen = false
-      document.getElementById('search-input').value = ''
+      document.getElementById('search-input1').value = ''
+      document.getElementById('search-input2').value = ''
       this.$emit('close-search-modal')
     },
     setWidth() {
       this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
-      console.log(innerWidth)
+    },
+    syncInput(value, id) {
+      document.getElementById(id).value = value
     },
   },
   watch: {
