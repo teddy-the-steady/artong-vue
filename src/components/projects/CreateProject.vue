@@ -113,8 +113,8 @@ export default {
       let result2 = null
       if (this.profileImageFile && this.backgroundImageFile) {
         ;[result1, result2] = await Promise.all([
-          await this.uploadProjectProfileImage(txHash),
-          await this.uploadProjectBackgroundImage(txHash),
+          this.uploadProjectProfileImage(txHash),
+          this.uploadProjectBackgroundImage(txHash),
         ])
       } else if (this.profileImageFile && !this.backgroundImageFile) {
         result1 = await this.uploadProjectProfileImage(txHash)
