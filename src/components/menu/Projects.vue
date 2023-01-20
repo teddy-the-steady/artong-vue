@@ -66,7 +66,11 @@ export default {
     }
   },
   watch: {
-    $route(to) {
+    $route(to, from) {
+      if (from.name !== to.name) {
+        return
+      }
+
       this.sort = this.sortOptions[to.query.sort] || this.sortOptions['newest']
       this.queryProjects = {
         func: graphql,

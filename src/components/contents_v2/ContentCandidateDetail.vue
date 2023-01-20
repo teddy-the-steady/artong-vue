@@ -156,7 +156,7 @@
                 ></ProjectPageProfile_small>
               </router-link>
             </div>
-            <div>
+            <div class="info">
               <div class="label">Created By</div>
               <router-link
                 :to="{
@@ -589,7 +589,7 @@ export default {
 
         .buttons {
           display: flex;
-          justify-content: end;
+          justify-content: flex-end;
           height: 100%;
 
           path {
@@ -626,8 +626,9 @@ export default {
       .collection {
         display: flex;
         margin-top: 30px;
+        justify-content: space-between;
         .info {
-          flex: 0.5;
+          width: 50%;
         }
       }
       .information {
@@ -764,11 +765,6 @@ textarea {
       width: 100%;
       .right-container {
         margin-bottom: 50px;
-        .collection {
-          .info {
-            flex: 0.8;
-          }
-        }
       }
       .left-container {
         margin: 0;
