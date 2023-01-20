@@ -114,6 +114,7 @@ export default {
   border-radius: 15px;
   margin: 24px 16px;
   height: 453px;
+  position: relative;
 
   .top {
     display: flex;
