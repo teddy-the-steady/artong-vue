@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="info">
-        <div class="info-title">Information</div>
+        <div class="info-title">Description</div>
         <div class="info-description">
           {{ project.description }}
         </div>
