@@ -31,7 +31,7 @@
         </div>
         <div v-show="current.type === 'INFO' && current.show" class="info">
           <div class="info-top">
-            <div class="info-name">Information</div>
+            <div class="info-name">Description</div>
             <div class="info-desc" v-if="current.data">
               {{ current.data.description }}
             </div>
