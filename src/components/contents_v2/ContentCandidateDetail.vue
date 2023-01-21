@@ -90,13 +90,22 @@
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
+                  <defs>
+                    <filter id="colorFilter">
+                      <feColorMatrix
+                        color-interpolation-filters="sRGB"
+                        type="matrix"
+                        values="0 0 0 0 0.95 0 0 0 0 0.18 0 0 0 0 0.24 0 0 0 1 0"
+                      />
+                    </filter>
+                  </defs>
+
                   <g :class="{ like: isLikeTrue }" :style="likeStyle">
                     <path
                       d="M2.42602 9.31146L10 16.8854L17.574 9.31146C19.4753 7.4101 19.4753 4.32738 17.574 2.42602C15.6726 0.52466 12.5899 0.52466 10.6885 2.42602L10 3.11456L9.31146 2.42602C7.4101 0.52466 4.32738 0.52466 2.42602 2.42602C0.52466 4.32738 0.52466 7.4101 2.42602 9.31146Z"
                       stroke="black"
                       stroke-width="2"
                       stroke-linejoin="round"
-                      :class="{ like: isLikeTrue }"
                     />
                   </g>
                 </svg>
@@ -322,8 +331,7 @@ export default {
     },
     likeStyle() {
       return {
-        '--filter':
-          'invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg) brightness(106%) contrast(90%)',
+        '--filter': 'url(#colorFilter)',
         '--fill': '#F22E3E',
       }
     },
