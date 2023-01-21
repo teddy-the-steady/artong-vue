@@ -94,15 +94,15 @@
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    d="M2.42602 9.31146L10 16.8854L17.574 9.31146C19.4753 7.4101 19.4753 4.32738 17.574 2.42602C15.6726 0.52466 12.5899 0.52466 10.6885 2.42602L10 3.11456L9.31146 2.42602C7.4101 0.52466 4.32738 0.52466 2.42602 2.42602C0.52466 4.32738 0.52466 7.4101 2.42602 9.31146Z"
-                    stroke="black"
-                    stroke-width="2"
-                    stroke-linejoin="round"
-                    :class="{
-                      like: content ? (content.like ? likeStyle : '') : '',
-                    }"
-                  />
+                  <g :class="{ like: isLikeTrue }" :style="likeStyle">
+                    <path
+                      d="M2.42602 9.31146L10 16.8854L17.574 9.31146C19.4753 7.4101 19.4753 4.32738 17.574 2.42602C15.6726 0.52466 12.5899 0.52466 10.6885 2.42602L10 3.11456L9.31146 2.42602C7.4101 0.52466 4.32738 0.52466 2.42602 2.42602C0.52466 4.32738 0.52466 7.4101 2.42602 9.31146Z"
+                      stroke="black"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      :class="{ like: isLikeTrue }"
+                    />
+                  </g>
                 </svg>
               </button>
               <button class="white-button round-button ripple" @click="share">
@@ -182,8 +182,8 @@
               </router-link>
             </div>
           </div>
-          <div class="information">
-            <div class="label">Information</div>
+          <div class="description">
+            <div class="label">Description</div>
             <div>
               {{ content ? content.description : '' }}
             </div>
@@ -349,8 +349,15 @@ export default {
         this.makeS3Path(this.content?.content_s3key)
       )
     },
+    isLikeTrue() {
+      return this.content ? (this.content.like ? true : false) : false
+    },
     likeStyle() {
-      return 'filter: invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg) brightness(106%) contrast(90%); fill: $profile-border-red;'
+      return {
+        '--filter':
+          'invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg) brightness(106%) contrast(90%)',
+        '--fill': '#F22E3E',
+      }
     },
   },
   methods: {
@@ -816,11 +823,10 @@ export default {
           justify-content: flex-end;
           height: 100%;
 
-          path {
+          g {
             &.like {
-              filter: invert(22%) sepia(38%) saturate(5871%) hue-rotate(342deg)
-                brightness(106%) contrast(90%);
-              fill: $profile-border-red;
+              filter: var(--filter);
+              fill: var(--fill);
             }
           }
 
@@ -854,7 +860,7 @@ export default {
           width: 50%;
         }
       }
-      .information {
+      .description {
         margin-top: 30px;
       }
       .price-box {
