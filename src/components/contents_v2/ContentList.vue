@@ -11,13 +11,15 @@
           :to="{
             name: 'UserOrArtist',
             params: {
-              id: val.owner.username,
-              wallet_address: val.owner.wallet_address,
+              id: val.owner ? val.owner.username : val.creator.username,
+              wallet_address: val.owner
+                ? val.owner.wallet_address
+                : val.creator.wallet_address,
             },
           }"
         >
           <ContentsProfile
-            :member="val.owner"
+            :member="val.owner || val.creator"
             :price="val.price"
           ></ContentsProfile>
         </router-link>
