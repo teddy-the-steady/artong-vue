@@ -3,7 +3,7 @@
     <div v-if="innerWidth >= 1080" class="search-bar" @click="openSearchModal">
       <img src="../../assets/icons/search-grey.svg" />
       <input
-        id="search-input1"
+        id="search-input"
         placeholder="Search"
         type="text"
         class="search-input"
@@ -24,11 +24,11 @@
             <div class="modal-header">
               <slot name="header">
                 <input
-                  id="search-input2"
+                  id="search-input"
                   placeholder="Search"
                   v-if="innerWidth < 1080"
                   v-model="searchWord"
-                  @keyup="search"
+                  @input="search"
                 />
               </slot>
             </div>
@@ -43,17 +43,39 @@
                       v-for="(content, k) in contents"
                       :key="k"
                     >
-                      {{ content.id }}
+                      <TokenProfile
+                        :token="content"
+                        :isFirstLoading="false"
+                      ></TokenProfile>
                     </div>
                   </div>
                 </div>
                 <div class="projects">
                   <div class="title">Projects</div>
-                  <div class="results"></div>
+                  <div class="results">
+                    <div
+                      class="project"
+                      v-for="(project, k) in projects"
+                      :key="k"
+                    >
+                      <ProjectPageProfile_small
+                        :project="project"
+                        :isFirstLoading="false"
+                      ></ProjectPageProfile_small>
+                    </div>
+                  </div>
                 </div>
                 <div class="members">
                   <div class="title">User</div>
-                  <div class="results"></div>
+                  <div class="results">
+                    <div class="member" v-for="(member, k) in members" :key="k">
+                      <ContentsProfile
+                        :member="member"
+                        :needUserName="true"
+                        :isFirstLoading="false"
+                      ></ContentsProfile>
+                    </div>
+                  </div>
                 </div>
               </slot>
             </div>
@@ -75,9 +97,17 @@ import { mapState } from 'vuex'
 import { searchContents } from '../../api/contents'
 import { searchProjects } from '../../api/projects'
 import { searchMembers } from '../../api/member'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
+import TokenProfile from '../profile/TokenProfile.vue'
 
 export default {
   name: 'BasicModal',
+  components: {
+    ProjectPageProfile_small,
+    ContentsProfile,
+    TokenProfile,
+  },
   props: {
     openSearchModalSignal: {
       type: Boolean,
@@ -87,10 +117,12 @@ export default {
   data() {
     return {
       isSearchModalOpen: false,
+      searchWordPast: '',
       searchWord: '',
       contents: [],
       projects: [],
       members: [],
+      pastProcessedSearchWordLength: 0,
     }
   },
   computed: {
@@ -99,17 +131,35 @@ export default {
     }),
   },
   methods: {
-    async search() {
-      console.log('searchWord: ' + this.searchWord)
+    async search(event, time = 500) {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        let processedSearchWord = this.searchWord.trimStart()
+        if (processedSearchWord) {
+          if (
+            this.pastProcessedSearchWordLength === processedSearchWord.length
+          ) {
+            return
+          }
+          this.makeApiCall(processedSearchWord)
+          this.pastProcessedSearchWordLength = processedSearchWord.length
+        } else {
+          this.contents = []
+          this.projects = []
+          this.members = []
+          this.pastProcessedSearchWordLength = 0
+        }
+      }, time)
+    },
+    async makeApiCall(searchWord) {
       const [result1, result2, result3] = await Promise.all([
-        searchContents(this.searchWord),
-        searchProjects(this.searchWord),
-        searchMembers(this.searchWord),
+        searchContents(searchWord),
+        searchProjects(searchWord),
+        searchMembers(searchWord),
       ])
       this.contents = result1
       this.projects = result2
       this.members = result3
-      console.log(this.contents)
     },
     async searchContents(searchWord) {
       try {
@@ -145,6 +195,7 @@ export default {
     },
   },
   watch: {},
+  created() {},
 }
 </script>
 
@@ -193,6 +244,7 @@ export default {
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
+          margin-bottom: 24px;
         }
         input:focus {
           outline: none;
@@ -200,7 +252,9 @@ export default {
       }
 
       .modal-body {
-        margin: 20px 0;
+        overflow-y: auto;
+        max-height: 600px;
+        margin: 0px;
         .upload {
           img {
             width: 100%;
@@ -264,14 +318,24 @@ export default {
     outline: none;
   }
 }
-.clear-button {
-  // position: fixed;
-  // border: none !important;
-  // z-index: 100001;
-  // top: 16px;
-  // transform: translateX(190px);
-  // width: 30px;
-  // height: 30px;
+.title {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  color: $artong-black;
+  display: flex;
+}
+.content,
+.project,
+.member {
+  margin-top: 8px;
+}
+.projects {
+  margin-top: 24px;
+}
+.members {
+  margin-top: 24px;
 }
 
 @media (max-width: 500px) {
