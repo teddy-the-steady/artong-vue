@@ -81,7 +81,7 @@
           <div class="after_login" v-else>
             <div v-if="innerWidth >= 1080" class="contribute">
               <button @click="contribute" v-ripple>Contribute</button>
-            </div> 
+            </div>
             <button
               v-else
               class="round-button white-button ripple margin"
