@@ -101,7 +101,7 @@ h1 {
   .sort {
     position: relative;
     display: flex;
-    align-self: end;
+    align-self: flex-end;
     margin-right: 5%;
   }
 }

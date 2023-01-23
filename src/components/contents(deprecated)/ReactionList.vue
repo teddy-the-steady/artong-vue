@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
   name: 'ReactionList',
@@ -46,15 +46,15 @@ export default {
       //   return
       // }
 
-      if (this.image.like) {
-        await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          reaction_code: 'unlike',
-        })
-      } else {
-        await axios.post(`/contents/${this.image.id_pk}/reactions`, {
-          reaction_code: 'like',
-        })
-      }
+      // if (this.image.like) {
+      //   await axios.post(`/contents/${this.image.id_pk}/reactions`, {
+      //     reaction_code: 'unlike',
+      //   })
+      // } else {
+      //   await axios.post(`/contents/${this.image.id_pk}/reactions`, {
+      //     reaction_code: 'like',
+      //   })
+      // }
       this.image.like = !this.image.like
     },
     onCommentClick() {
