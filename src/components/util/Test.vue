@@ -1,25 +1,17 @@
 <template>
   <div class="container">
     This is a test
-    <button @click="toggleSearchModal">click here to open modal</button>
-    <SearchModal
-      :isSearchModalOpen="isSearchModalOpen"
-      v-show="isSearchModalOpen"
-      @close-modal="toggleSearchModal"
-      ref="searchModal"
-    >
-      <span slot="body">search something</span>
-    </SearchModal>
+    <TokenProfile></TokenProfile>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import SearchModal from '../../components/modal/SearchModal.vue'
+import TokenProfile from '../profile/TokenProfile.vue'
 
 export default {
   name: 'Test',
   components: {
-    SearchModal,
+    TokenProfile,
   },
   data() {
     return {
