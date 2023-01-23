@@ -38,13 +38,13 @@
                 <div class="contents">
                   <div class="title">Tokens</div>
                   <div class="results">
-                    <!-- <div
+                    <div
                       class="content"
                       v-for="(content, k) in contents"
                       :key="k"
                     >
                       {{ content.id }}
-                    </div> -->
+                    </div>
                   </div>
                 </div>
                 <div class="projects">
@@ -100,6 +100,7 @@ export default {
   },
   methods: {
     async search() {
+      console.log('searchWord: ' + this.searchWord)
       const [result1, result2, result3] = await Promise.all([
         searchContents(this.searchWord),
         searchProjects(this.searchWord),
