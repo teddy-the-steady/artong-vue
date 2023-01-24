@@ -41,7 +41,8 @@
               ]"
               :key="generateKey()"
               :isCurrentUserTokenOwner="isCurrentUserTokenOwner"
-              @accept="makeTransaction(accept)"
+              :accepting="accepting"
+              @accept="acceptEmitted"
             ></TableDiv>
           </div>
           <div class="round-box">
@@ -320,6 +321,7 @@ export default {
       cancelDisabled: false,
       buying: false,
       canceling: false,
+      accepting: false,
       queryOffersByToken: {
         func: null,
         body: {},
@@ -410,7 +412,7 @@ export default {
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
     },
-    async makeTransaction(which) {
+    async makeTransaction(which, acceptParam) {
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -520,15 +522,15 @@ export default {
           this.toggleModal()
           break
         }
-        // TODO] table 완성시 accept offer 버튼 추가하기
         case 'accept': {
-          // const tx = await contract.acceptOffer(
-          //   this.content.project.id,
-          //   this.content.tokenId,
-          //   //acceptParam,
-          // )
-          // await tx.wait()
-          alert('accepted!')
+          try {
+            this.accepting = true
+            const txHash = await this.accept(contract, acceptParam)
+            await this.wait(txHash)
+            alert('accepted!')
+          } finally {
+            this.accepting = false
+          }
           break
         }
         default:
@@ -583,6 +585,18 @@ export default {
       )
       const txHash = await this.signer.sendUncheckedTransaction(tx)
       return txHash
+    },
+    async accept(contract, offeror_address) {
+      const tx = await contract.populateTransaction.acceptOffer(
+        this.content.project.id,
+        this.content.tokenId,
+        offeror_address,
+      )
+      const txHash = await this.signer.sendUncheckedTransaction(tx)
+      return txHash
+    },
+    acceptEmitted(offeror_address) {
+      this.makeTransaction('accept', offeror_address)
     },
     makeS3Path(path) {
       return makeS3Path(path)
