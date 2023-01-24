@@ -14,8 +14,8 @@
     </div>
     <transition name="modal" v-if="isSearchModalOpen || openSearchModalSignal">
       <div class="modal-mask">
-        <div class="modal-wrapper">
-          <div class="modal-container" v-click-outside="closeSearchModal">
+        <div class="modal-wrapper" @click.self="closeSearchModal">
+          <div class="modal-container">
             <div class="modal-header">
               <slot name="header">
                 <input
@@ -212,9 +212,10 @@ export default {
     openSearchModal() {
       this.isSearchModalOpen = true
     },
-    closeSearchModal() {
+    closeSearchModal(event) {
       this.isSearchModalOpen = false
       this.$emit('close-search-modal')
+      event.stopPropagation()
     },
     onContentClick(val) {
       console.log('project address: ' + val.project_address)
