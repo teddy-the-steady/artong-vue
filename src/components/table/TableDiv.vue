@@ -42,7 +42,7 @@
               </div>
               <CountDownTimer
                 class="field"
-                v-else-if="field.type == 'deadline'"
+                v-else-if="field.type == 'countdown'"
                 :endDate="new Date(content[field.key] * 1000)"
                 :isFirstLoading="true"
               />
