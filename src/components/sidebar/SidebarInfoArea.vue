@@ -20,7 +20,11 @@
         <span v-show="!withdrawing">WITHDRAW</span>
       </button>
     </div>
-    <button class="round-button white-button ripple refresh" @click="refresh">
+    <button
+      class="round-button white-button ripple refresh"
+      :class="{ refreshing: refreshing }"
+      @click="refresh"
+    >
       <img src="@/assets/icons/refresh.svg" />
     </button>
   </div>
@@ -50,6 +54,7 @@ export default {
       artongBalance: 0,
       offerBalance: 0,
       withdrawing: false,
+      refreshing: false,
     }
   },
   methods: {
@@ -71,13 +76,18 @@ export default {
         this.signer,
       )
 
-      const [artongBalance, offerBalance] = await Promise.all([
-        this.getArtongBalance(contract),
-        this.getOfferBalance(contract),
-      ])
+      try {
+        this.refreshing = true
+        const [artongBalance, offerBalance] = await Promise.all([
+          this.getArtongBalance(contract),
+          this.getOfferBalance(contract),
+        ])
 
-      this.artongBalance = weiToEther(artongBalance._hex)
-      this.offerBalance = weiToEther(offerBalance._hex)
+        this.artongBalance = weiToEther(artongBalance._hex)
+        this.offerBalance = weiToEther(offerBalance._hex)
+      } finally {
+        this.refreshing = false
+      }
     },
     getArtongBalance(contract) {
       return contract.getArtongBalance(
@@ -197,6 +207,11 @@ export default {
 
   .refresh {
     top: -24px;
+    &.refreshing {
+      img {
+        animation: rotation 0.6s infinite linear;
+      }
+    }
   }
 }
 </style>
