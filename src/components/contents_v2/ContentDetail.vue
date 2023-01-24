@@ -29,8 +29,8 @@
                   key: 'from',
                 },
                 {
-                  name: 'DEADLINE',
-                  type: 'deadline',
+                  name: 'TIME',
+                  type: 'countdown',
                   key: 'deadline',
                 },
               ]"
