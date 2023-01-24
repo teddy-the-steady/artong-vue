@@ -1,18 +1,16 @@
 <template>
   <div class="container">
     This is a test
-    <TokenProfile></TokenProfile>
+    <div class="box" v-click-outside="print">click outside of this box</div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import TokenProfile from '../profile/TokenProfile.vue'
+import vClickOutside from 'v-click-outside'
 
 export default {
   name: 'Test',
-  components: {
-    TokenProfile,
-  },
+  components: {},
   data() {
     return {
       isSearchModalOpen: false,
@@ -33,12 +31,18 @@ export default {
     setWidth() {
       this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
     },
+    print() {
+      console.log('clicked outside')
+    },
   },
   created() {},
   watch: {
     isModalOepn() {
       document.body.classList.toggle('prevent-scroll')
     },
+  },
+  directives: {
+    clickOutside: vClickOutside.directive,
   },
 }
 </script>
@@ -47,5 +51,10 @@ export default {
 
 .container {
   padding-top: 70px;
+  .box {
+    width: 100%;
+    height: 30px;
+    background-color: red;
+  }
 }
 </style>
