@@ -349,7 +349,7 @@ export default {
     },
     isCurrentUserTokenOwner() {
       return (
-        this.currentUser.wallet_address === this.content.owner.wallet_address
+        this.currentUser.wallet_address === this.content?.owner.wallet_address
       )
     },
     price() {
