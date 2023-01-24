@@ -17,6 +17,7 @@
               {{ field.name }}
             </div>
           </div>
+          <!-- <div v-if="tableName === 'Offers'"></div> -->
         </div>
         <div class="middle-box">
           <div
@@ -25,10 +26,7 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="accept-button" v-if="field.type == 'accept-button'">
-                <button @click="accept">Accept</button>
-              </div>
-              <div class="field" v-else-if="field.type == 'event'">
+              <div class="field" v-if="field.type == 'event'">
                 {{ content[field.key] }}
               </div>
               <div
@@ -79,6 +77,19 @@
                 </router-link>
               </div>
             </div>
+            <div
+              v-if="
+                tableName === 'Offers' &&
+                new Date(content.deadline * 1000) > new Date() &&
+                isCurrentUserTokenOwner
+              "
+              class="accept-button"
+            >
+              <button @click="accept(content.from.wallet_address)">
+                <div class="spinner" :class="{ active: accepting }"></div>
+                <span v-show="!accepting">Accept</span>
+              </button>
+            </div>
           </div>
           <InfiniteLoading
             @infinite="infiniteHandler"
@@ -107,6 +118,7 @@ export default {
     return {
       contents: [],
       noMoreDataToLoad: false,
+      now: new Date(),
     }
   },
   props: {
@@ -134,11 +146,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    accepting: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
-    accept() {
-      console.log('accept')
-      this.$emit('accept')
+    accept(offeror_address) {
+      this.$emit('accept', offeror_address)
     },
     toEtherscan(tx) {
       if (process.env.NODE_ENV == 'production') {
@@ -248,7 +263,6 @@ export default {
       position: sticky;
       top: 0;
       background-color: $artong-white;
-
       .field {
         width: 100%;
         min-width: 174px;
@@ -290,6 +304,42 @@ export default {
             img {
               transform: translateY(6px);
             }
+          }
+        }
+        .accept-button {
+          position: sticky;
+          right: 0;
+          .spinner {
+            display: none;
+
+            &.active {
+              display: inline-block;
+              position: relative;
+              width: 2px;
+              margin: 0px auto;
+              animation: rotation 0.6s infinite linear;
+              border-left: 6px solid rgba(0, 174, 239, 0.15);
+              border-right: 6px solid rgba(0, 174, 239, 0.15);
+              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+              border-top: 6px solid $artong-white;
+              border-radius: 100%;
+            }
+          }
+
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+          button {
+            width: 100%;
+          }
+
+          & > span:nth-child(2) {
+            align-self: center;
           }
         }
       }

@@ -1,11 +1,7 @@
 <template>
   <div class="box">
     <img
-      :src="
-        image.content_thumbnail_s3key ||
-        image.content_s3key ||
-        this.image.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
-      "
+      :src="image.content_thumbnail_s3key || image.content_s3key"
       @error="replaceImage"
     />
   </div>
