@@ -17,6 +17,7 @@
               {{ field.name }}
             </div>
           </div>
+          <!-- <div v-if="tableName === 'Offers'"></div> -->
         </div>
         <div class="middle-box">
           <div
@@ -25,10 +26,7 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="accept-button" v-if="field.type == 'accept-button'">
-                <button @click="accept">Accept</button>
-              </div>
-              <div class="field" v-else-if="field.type == 'event'">
+              <div class="field" v-if="field.type == 'event'">
                 {{ content[field.key] }}
               </div>
               <div
@@ -79,6 +77,15 @@
                 </router-link>
               </div>
             </div>
+            <div
+              v-if="
+                tableName === 'Offers' &&
+                new Date(content.deadline * 1000) - new Date() > 0
+              "
+              class="accept-button"
+            >
+              <button @click="accept">Accept</button>
+            </div>
           </div>
           <InfiniteLoading
             @infinite="infiniteHandler"
@@ -107,6 +114,7 @@ export default {
     return {
       contents: [],
       noMoreDataToLoad: false,
+      now: new Date(),
     }
   },
   props: {
@@ -248,7 +256,6 @@ export default {
       position: sticky;
       top: 0;
       background-color: $artong-white;
-
       .field {
         width: 100%;
         min-width: 174px;
@@ -291,6 +298,10 @@ export default {
               transform: translateY(6px);
             }
           }
+        }
+        .accept-button {
+          position: sticky;
+          right: 0;
         }
       }
     }
