@@ -18,24 +18,19 @@
               :showHeader="true"
               :fields="[
                 {
-                  name: 'EVENT',
-                  type: 'event',
-                  key: 'history_type',
-                },
-                {
                   name: 'PRICE',
                   type: 'price',
                   key: 'price',
                 },
                 {
-                  name: 'DATE',
-                  type: 'date',
-                  key: 'createdAt',
-                },
-                {
                   name: 'FROM',
                   type: 'member',
                   key: 'from',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'createdAt',
                 },
               ]"
             ></TableDiv>
@@ -47,6 +42,11 @@
               :showHeader="true"
               :fields="[
                 {
+                  name: 'EVENT',
+                  type: 'event',
+                  key: 'history_type',
+                },
+                {
                   name: 'PRICE',
                   type: 'price',
                   key: 'price',
@@ -57,14 +57,14 @@
                   key: 'from_member',
                 },
                 {
-                  name: 'DATE',
-                  type: 'date',
-                  key: 'block_timestamp',
-                },
-                {
                   name: 'TO',
                   type: 'member',
                   key: 'to_member',
+                },
+                {
+                  name: 'DATE',
+                  type: 'date',
+                  key: 'block_timestamp',
                 },
               ]"
             ></TableDiv>
@@ -419,13 +419,6 @@ export default {
     },
     weiToEther(wei) {
       return weiToEther(wei)
-    },
-    convertDay(date) {
-      const toDay = new Date()
-      const now = toDay.getTime()
-      const deadLine = date * 1000
-
-      return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
     },
     async wait(txHash) {
       if (this.isMobile) {
