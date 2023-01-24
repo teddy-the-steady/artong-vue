@@ -33,8 +33,15 @@
                   type: 'countdown',
                   key: 'deadline',
                 },
+                {
+                  name: '',
+                  type: 'accept-button',
+                  key: 'isAccepted',
+                },
               ]"
               :key="generateKey()"
+              :isCurrentUserTokenOwner="isCurrentUserTokenOwner"
+              @accept="makeTransaction(accept)"
             ></TableDiv>
           </div>
           <div class="round-box">
@@ -514,16 +521,16 @@ export default {
           break
         }
         // TODO] table 완성시 accept offer 버튼 추가하기
-        // case 'accept': {
-        //   const tx = await contract.acceptOffer(
-        //     this.content.project.id,
-        //     this.content.tokenId,
-        //     acceptParam,
-        //   )
-        //   await tx.wait()
-        //   alert('accepted!')
-        //   break
-        // }
+        case 'accept': {
+          // const tx = await contract.acceptOffer(
+          //   this.content.project.id,
+          //   this.content.tokenId,
+          //   //acceptParam,
+          // )
+          // await tx.wait()
+          alert('accepted!')
+          break
+        }
         default:
           break
       }
