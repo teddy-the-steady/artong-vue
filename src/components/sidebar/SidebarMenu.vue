@@ -7,6 +7,7 @@
     <slot name="header" />
     <div class="art--scroll-wrapper">
       <div class="art--list">
+        <SidebarInfoArea />
         <SidebarMenuItem
           v-for="(item, index) in menu"
           :key="index"
@@ -28,12 +29,14 @@
 
 <script>
 import SidebarMenuItem from './SidebarMenuItem.vue'
+import SidebarInfoArea from './SidebarInfoArea.vue'
 // import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 
 export default {
   name: 'SidebarMenu',
   components: {
     SidebarMenuItem,
+    SidebarInfoArea,
     // LightDarkSwitch,
   },
   props: {
