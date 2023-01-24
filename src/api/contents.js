@@ -57,6 +57,14 @@ const postContentReactions = async function (contents_id, reaction_code) {
   })
 }
 
+const searchContents = async function (searchWord) {
+  return await instance.get('/search/contents', {
+    params: {
+      searchWord: searchWord,
+    },
+  })
+}
+
 export {
   getContent,
   postContent,
@@ -67,4 +75,5 @@ export {
   getIpfsMetadata,
   getTobeApprovedContents,
   postContentReactions,
+  searchContents,
 }
