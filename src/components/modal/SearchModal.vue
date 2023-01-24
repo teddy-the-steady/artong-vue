@@ -9,6 +9,7 @@
         class="search-input"
         v-model="searchWord"
         @keyup="search"
+        autocomplete="off"
       />
       <img
         src="../../assets/icons/clear.svg"
@@ -29,12 +30,16 @@
                   v-if="innerWidth < 1080"
                   v-model="searchWord"
                   @input="search"
+                  autocomplete="off"
                 />
               </slot>
             </div>
 
             <div class="modal-body">
-              <slot name="body">
+              <slot v-if="this.searchWord.trimStart().length === 0" name="body">
+                <div class="nullSearch">Search Something</div>
+              </slot>
+              <slot v-else name="body">
                 <div class="contents">
                   <div class="title">Tokens</div>
                   <div class="results">
@@ -159,6 +164,7 @@ export default {
   methods: {
     async search(event, time = 500) {
       clearTimeout(this.timeout)
+      this.finishedLoading = false
       this.timeout = setTimeout(() => {
         let processedSearchWord = this.searchWord.trimStart()
         if (processedSearchWord) {
@@ -175,6 +181,7 @@ export default {
           this.members = []
           this.pastProcessedSearchWordLength = 0
         }
+        this.finishedLoading = true
       }, time)
     },
     async makeApiCall(searchWord) {
@@ -217,6 +224,10 @@ export default {
     closeSearchModal() {
       this.isSearchModalOpen = false
       this.searchWord = ''
+      this.contents = []
+      this.projects = []
+      this.members = []
+      this.pastProcessedSearchWordLength = 0
       this.$emit('close-search-modal')
     },
     onContentClick(val) {
@@ -384,6 +395,11 @@ export default {
 }
 .members {
   margin-top: 24px;
+}
+.nullSearch {
+  margin-bottom: 50px;
+  margin-top: 50px;
+  font-size: 18px;
 }
 
 @media (max-width: 500px) {
