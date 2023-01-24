@@ -17,6 +17,7 @@
               {{ field.name }}
             </div>
           </div>
+          <div></div>
           <!-- <div v-if="tableName === 'Offers'"></div> -->
         </div>
         <div class="middle-box">
@@ -26,7 +27,11 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="field" v-if="field.type == 'event'">
+              <div
+                class="accept-button-none"
+                v-if="field.type === 'accept-button'"
+              ></div>
+              <div class="field" v-else-if="field.type == 'event'">
                 {{ content[field.key] }}
               </div>
               <div
@@ -307,6 +312,7 @@ export default {
           }
         }
         .accept-button {
+          background-color: red;
           position: sticky;
           right: 0;
           .spinner {
@@ -344,6 +350,10 @@ export default {
         }
       }
     }
+  }
+  .accept-button-none {
+    display: none;
+    background-color: blue;
   }
 }
 </style>
