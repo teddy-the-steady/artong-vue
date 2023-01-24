@@ -112,9 +112,7 @@
             </div>
 
             <div class="modal-footer">
-              <slot name="footer">
-                <button @click="closeSearchModal">close</button>
-              </slot>
+              <slot name="footer"> </slot>
             </div>
           </div>
         </div>
@@ -399,8 +397,7 @@ export default {
   margin-top: 24px;
 }
 .nullSearch {
-  margin-bottom: 50px;
-  margin-top: 50px;
+  margin-top: 60px;
   font-size: 18px;
 }
 
@@ -409,8 +406,9 @@ export default {
     .modal-wrapper {
       padding: auto 10px;
       .modal-container {
-        width: 100%;
+        width: 90%;
         left: auto;
+        margin-left: 5%;
       }
     }
   }
