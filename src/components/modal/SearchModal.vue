@@ -1,39 +1,152 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">
-              <input placeholder="Search" v-show="innerWidth < 1080" />
-            </slot>
-          </div>
+  <div>
+    <div v-if="innerWidth >= 1080" class="search-bar" @click="openSearchModal">
+      <img src="../../assets/icons/search-grey.svg" />
+      <input
+        id="search-input"
+        placeholder="Search"
+        type="text"
+        class="search-input"
+        v-model="searchWord"
+        @keyup="search"
+        autocomplete="off"
+      />
+    </div>
+    <transition name="modal" v-if="isSearchModalOpen || openSearchModalSignal">
+      <div class="modal-mask">
+        <div class="modal-wrapper" @click.self="closeSearchModal">
+          <div class="modal-container">
+            <div class="modal-header">
+              <slot name="header">
+                <input
+                  id="search-input"
+                  placeholder="Search"
+                  v-if="innerWidth < 1080"
+                  v-model="searchWord"
+                  @input="search"
+                  autocomplete="off"
+                />
+              </slot>
+            </div>
 
-          <div class="modal-body">
-            <slot name="body"></slot>
-          </div>
+            <div class="modal-body">
+              <slot v-if="this.searchWord.trimStart().length === 0" name="body">
+                <div class="nullSearch">Search Something</div>
+              </slot>
+              <slot v-else name="body">
+                <div class="contents">
+                  <div class="title">Tokens</div>
+                  <div class="results">
+                    <div
+                      @click="closeSearchModal"
+                      class="content"
+                      v-for="(content, k) in contents"
+                      :key="k"
+                    >
+                      <TokenProfile
+                        :token="content"
+                        :isFirstLoading="false"
+                        @click.native="onContentClick(content)"
+                      ></TokenProfile>
+                    </div>
+                  </div>
+                </div>
+                <div class="projects">
+                  <div class="title">Projects</div>
+                  <div class="results">
+                    <div
+                      @click="closeSearchModal"
+                      class="project"
+                      v-for="(project, k) in projects"
+                      :key="k"
+                    >
+                      <router-link
+                        :to="{
+                          name: 'Project',
+                          params: {
+                            id: project.address,
+                          },
+                        }"
+                      >
+                        <ProjectPageProfile_small
+                          :project="project"
+                          :isFirstLoading="false"
+                        ></ProjectPageProfile_small>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+                <div class="members">
+                  <div class="title">User</div>
+                  <div class="results">
+                    <div
+                      @click="closeSearchModal"
+                      class="member"
+                      v-for="(member, k) in members"
+                      :key="k"
+                    >
+                      <router-link
+                        :to="{
+                          name: 'UserOrArtist',
+                          params: {
+                            id: member.username,
+                          },
+                        }"
+                      >
+                        <ContentsProfile
+                          :member="member"
+                          :needUserName="true"
+                          :isFirstLoading="false"
+                        ></ContentsProfile>
+                      </router-link>
+                    </div>
+                  </div>
+                </div>
+              </slot>
+            </div>
 
-          <div class="modal-footer">
-            <slot name="footer">
-              <button @click="close">close</button>
-            </slot>
+            <div class="modal-footer">
+              <slot name="footer"> </slot>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { searchContents } from '../../api/contents'
+import { searchProjects } from '../../api/projects'
+import { searchMembers } from '../../api/member'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import ContentsProfile from '../profile/ContentsProfile.vue'
+import TokenProfile from '../profile/TokenProfile.vue'
 
 export default {
   name: 'BasicModal',
+  components: {
+    ProjectPageProfile_small,
+    ContentsProfile,
+    TokenProfile,
+  },
   props: {
-    isSearchModalOpen: {
+    openSearchModalSignal: {
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      isSearchModalOpen: false,
+      searchWordPast: '',
+      searchWord: '',
+      contents: [],
+      projects: [],
+      members: [],
+      pastProcessedSearchWordLength: 0,
+    }
   },
   computed: {
     ...mapState({
@@ -41,10 +154,93 @@ export default {
     }),
   },
   methods: {
-    close() {
-      this.$emit('close-modal')
+    async search(event, time = 500) {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        let processedSearchWord = this.searchWord.trimStart()
+        if (processedSearchWord) {
+          if (
+            this.pastProcessedSearchWordLength === processedSearchWord.length
+          ) {
+            return
+          }
+          this.makeApiCall(processedSearchWord)
+          this.pastProcessedSearchWordLength = processedSearchWord.length
+        } else {
+          this.contents = []
+          this.projects = []
+          this.members = []
+          this.pastProcessedSearchWordLength = 0
+        }
+      }, time)
+    },
+    async makeApiCall(searchWord) {
+      const [result1, result2, result3] = await Promise.all([
+        searchContents(searchWord),
+        searchProjects(searchWord),
+        searchMembers(searchWord),
+      ])
+      this.contents = result1
+      this.projects = result2
+      this.members = result3
+    },
+    async searchContents(searchWord) {
+      try {
+        return await searchContents(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
+    async searchProjects(searchWord) {
+      try {
+        return await searchProjects(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
+    async searchMembers(searchWord) {
+      try {
+        return await searchMembers(searchWord)
+      } catch {
+        console.log('검색 결과 없음')
+        return null
+      }
+    },
+    openSearchModal() {
+      this.isSearchModalOpen = true
+    },
+    closeSearchModal(event) {
+      this.isSearchModalOpen = false
+      this.$emit('close-search-modal')
+      event.stopPropagation()
+    },
+    onContentClick(val) {
+      console.log('project address: ' + val.project_address)
+      console.log('token id: ' + val.token_id)
+      console.log('id: ' + val.id)
+      if (val.token_id) {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: val.project_address,
+            token_id: val.token_id,
+          },
+        })
+      } else if (val.id) {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address: val.project_address,
+            contents_id: val.id,
+          },
+        })
+      }
     },
   },
+  watch: {},
+  created() {},
 }
 </script>
 
@@ -93,6 +289,7 @@ export default {
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
+          margin-bottom: 24px;
         }
         input:focus {
           outline: none;
@@ -100,7 +297,9 @@ export default {
       }
 
       .modal-body {
-        margin: 20px 0;
+        overflow-y: auto;
+        max-height: 600px;
+        margin: 0px;
         .upload {
           img {
             width: 100%;
@@ -131,16 +330,81 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+.search-bar {
+  z-index: 100000;
+  width: 480px;
+  height: 40px;
+  background: $artong-white;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  line-height: 30px;
+  position: fixed;
+  left: calc(50% - 480px / 2);
+  top: 15px;
+  display: flex;
+  padding: 11px 13px;
+  box-sizing: border-box;
+  img {
+    vertical-align: middle;
+  }
+  .search-input {
+    margin-left: 10px;
+    border: none;
+    width: 408px;
+    height: 17px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    padding: 0px;
+    border-radius: 0px;
+  }
+  input:focus {
+    outline: none;
+  }
+}
+.title {
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  color: $artong-black;
+  display: flex;
+}
+.content,
+.project,
+.member {
+  margin-top: 8px;
+}
+.projects {
+  margin-top: 24px;
+}
+.members {
+  margin-top: 24px;
+}
+.nullSearch {
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 @media (max-width: 500px) {
   .modal-mask {
     .modal-wrapper {
       padding: auto 10px;
       .modal-container {
-        width: 100%;
+        width: 90%;
         left: auto;
+        margin-left: 5%;
       }
     }
+  }
+}
+@media (max-width: 1080px) {
+  .nullSearch {
+    top: 65%;
   }
 }
 </style>

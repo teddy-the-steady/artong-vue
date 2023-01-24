@@ -1,26 +1,15 @@
 <template>
   <div class="container">
     This is a test
-    <button @click="toggleSearchModal">click here to open modal</button>
-    <SearchModal
-      :isSearchModalOpen="isSearchModalOpen"
-      v-show="isSearchModalOpen"
-      @close-modal="toggleSearchModal"
-      ref="searchModal"
-    >
-      <span slot="body">search something</span>
-    </SearchModal>
+    <div class="box">click outside of this box</div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import SearchModal from '../../components/modal/SearchModal.vue'
 
 export default {
   name: 'Test',
-  components: {
-    SearchModal,
-  },
+  components: {},
   data() {
     return {
       isSearchModalOpen: false,
@@ -41,6 +30,9 @@ export default {
     setWidth() {
       this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
     },
+    print() {
+      console.log('clicked outside')
+    },
   },
   created() {},
   watch: {
@@ -55,5 +47,10 @@ export default {
 
 .container {
   padding-top: 70px;
+  .box {
+    width: 100%;
+    height: 30px;
+    background-color: red;
+  }
 }
 </style>

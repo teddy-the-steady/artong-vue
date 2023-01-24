@@ -8,7 +8,7 @@
       ></div>
     </transition>
     <transition name="slide">
-      <div class="sidebar-panel" v-if="isSideMenuOpen">
+      <div class="sidebar-panel" v-show="isSideMenuOpen">
         <SidebarMenu
           :menu="menu"
           :theme="selectedTheme"

@@ -1,21 +1,6 @@
 <template>
   <div id="app">
-    <HeaderBar id="header-bar" @open-search-modal="openSearchModal"></HeaderBar>
-    <div
-      v-show="innerWidth >= 1080"
-      class="search-bar"
-      @click="openSearchModal"
-    >
-      <img src="../src/assets/icons/search-grey.svg" />
-      <input type="text" class="search-input" />
-    </div>
-    <button
-      v-show="isSearchModalOpen && innerWidth >= 1080"
-      @click="toggleSearchModal"
-      class="white-button clear-button"
-    >
-      <img src="../src/assets/icons/clear.svg" />
-    </button>
+    <HeaderBar id="header-bar"></HeaderBar>
     <SideBar id="side-bar"></SideBar>
     <div class="contents">
       <keep-alive>
@@ -29,14 +14,6 @@
     >
       <span slot="body">Continue with your wallet</span>
     </ConfirmModal>
-    <SearchModal
-      :isSearchModalOpen="isSearchModalOpen"
-      v-if="isSearchModalOpen"
-      @close-modal="toggleSearchModal"
-      ref="searchModal"
-    >
-      <span slot="body">search something </span>
-    </SearchModal>
   </div>
 </template>
 
@@ -47,7 +24,6 @@ import { getCurrentMember } from './api/member'
 import HeaderBar from './components/header/Header.vue'
 import SideBar from './components/sidebar/SideBar.vue'
 import ConfirmModal from './components/modal/ConfirmModal.vue'
-import SearchModal from './components/modal/SearchModal.vue'
 
 export default {
   name: 'App',
@@ -55,12 +31,9 @@ export default {
     HeaderBar,
     SideBar,
     ConfirmModal,
-    SearchModal,
   },
   data() {
-    return {
-      isSearchModalOpen: false,
-    }
+    return {}
   },
   computed: {
     ...mapState({
@@ -134,15 +107,8 @@ export default {
     toggleConfirmModal() {
       this.$store.commit('TOGGLE_CONFIRM_MODAL')
     },
-    toggleSearchModal() {
-      this.isSearchModalOpen = !this.isSearchModalOpen
-      console.log(this.isSearchModalOpen)
-    },
     setWidth() {
       this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
-    },
-    openSearchModal() {
-      this.isSearchModalOpen = true
     },
   },
   async created() {
@@ -318,47 +284,5 @@ html {
       border-radius: 6px;
     }
   }
-}
-.search-bar {
-  z-index: 100000;
-  width: 480px;
-  height: 40px;
-  background: $artong-white;
-  border: 1px solid #e5e5e5;
-  border-radius: 999px;
-  line-height: 30px;
-  position: fixed;
-  left: calc(50% - 480px / 2);
-  top: 15px;
-  display: flex;
-  padding: 11px 13px;
-  box-sizing: border-box;
-  img {
-    vertical-align: middle;
-  }
-  .search-input {
-    margin-left: 10px;
-    border: none;
-    width: 408px;
-    height: 17px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    padding: 0px;
-    border-radius: 0px;
-  }
-  input:focus {
-    outline: none;
-  }
-}
-.clear-button {
-  position: fixed;
-  border: none !important;
-  z-index: 100001;
-  top: 16px;
-  transform: translateX(190px);
-  width: 30px;
-  height: 30px;
 }
 </style>

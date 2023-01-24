@@ -59,6 +59,12 @@ const getMemberContentsFavorites = async function (pathParams, queryParams) {
   )
 }
 
+const searchProjects = async function (searchWord) {
+  return await instance.get('/search/projects', {
+    params: { searchWord: searchWord },
+  })
+}
+
 export {
   postProject,
   patchProject,
@@ -67,4 +73,5 @@ export {
   getProjectContributors,
   getMemberContentsCandidates,
   getMemberContentsFavorites,
+  searchProjects,
 }
