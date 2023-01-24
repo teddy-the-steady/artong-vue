@@ -1,18 +1,12 @@
 <template>
   <div>
-    <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
     <div>{{ hour + ':' + min + ':' + sec }}</div>
   </div>
 </template>
 
 <script>
-import SkeletonBox from './SkeletonBox.vue'
-
 export default {
   name: 'CountDownTimer',
-  components: {
-    SkeletonBox,
-  },
   props: {
     endDate: {
       type: Date,
@@ -32,14 +26,23 @@ export default {
   computed: {
     hour() {
       let h = Math.trunc((this.endDate - this.now) / 1000 / 3600)
+      if (h < 0) {
+        return '00'
+      }
       return h > 9 ? h : '0' + h
     },
     min() {
       let m = Math.trunc((this.endDate - this.now) / 1000 / 60) % 60
+      if (m < 0) {
+        return '00'
+      }
       return m > 9 ? m : '0' + m
     },
     sec() {
       let s = Math.trunc((this.endDate - this.now) / 1000) % 60
+      if (s < 0) {
+        return '00'
+      }
       return s > 9 ? s : '0' + s
     },
   },
