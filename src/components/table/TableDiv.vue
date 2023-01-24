@@ -8,7 +8,14 @@
       <div class="table">
         <div class="top-row">
           <div v-for="(field, i) in fields" :key="i" class="field">
-            {{ field.name }}
+            <div
+              v-if="field.type === 'accept-button' && isCurrentUserTokenOwner"
+            >
+              {{ field.name }}
+            </div>
+            <div v-else-if="field.type != 'accept-button'">
+              {{ field.name }}
+            </div>
           </div>
         </div>
         <div class="middle-box">
@@ -18,7 +25,10 @@
             :key="`o-${i}`"
           >
             <div v-for="(field, k) in fields" :key="k">
-              <div class="field" v-if="field.type == 'event'">
+              <div class="accept-button" v-if="field.type == 'accept-button'">
+                <button @click="accept">Accept</button>
+              </div>
+              <div class="field" v-else-if="field.type == 'event'">
                 {{ content[field.key] }}
               </div>
               <div
@@ -120,8 +130,16 @@ export default {
       type: Array,
       default: null,
     },
+    isCurrentUserTokenOwner: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
+    accept() {
+      console.log('accept')
+      this.$emit('accept')
+    },
     toEtherscan(tx) {
       if (process.env.NODE_ENV == 'production') {
         window.open('https://etherscan.io/tx/' + tx)
