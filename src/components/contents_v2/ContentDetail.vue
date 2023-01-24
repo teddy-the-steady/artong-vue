@@ -33,11 +33,11 @@
                   type: 'countdown',
                   key: 'deadline',
                 },
-                {
-                  name: '',
-                  type: 'accept-button',
-                  key: 'isAccepted',
-                },
+                // {
+                //   name: '',
+                //   type: 'accept-button',
+                //   key: 'isAccepted',
+                // },
               ]"
               :key="generateKey()"
               :isCurrentUserTokenOwner="isCurrentUserTokenOwner"
