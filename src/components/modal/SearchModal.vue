@@ -123,7 +123,6 @@ import { searchMembers } from '../../api/member'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokenProfile from '../profile/TokenProfile.vue'
-import vClickOutside from 'v-click-outside'
 
 export default {
   name: 'BasicModal',
@@ -242,9 +241,6 @@ export default {
   },
   watch: {},
   created() {},
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
 }
 </script>
 
