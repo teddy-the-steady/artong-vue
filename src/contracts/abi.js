@@ -20,12 +20,6 @@ export const MARKETPLACE_ABI = [
         name: 'balance',
         type: 'uint256',
       },
-      {
-        indexed: false,
-        internalType: 'string',
-        name: 'reason',
-        type: 'string',
-      },
     ],
     name: 'ArtongBalanceUpdated',
     type: 'event',
@@ -495,6 +489,11 @@ export const MARKETPLACE_ABI = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_moment',
+        type: 'uint256',
+      },
+      {
         internalType: 'address',
         name: 'user',
         type: 'address',
@@ -556,30 +555,6 @@ export const MARKETPLACE_ABI = [
       },
     ],
     name: 'getOfferBalance',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '_moment',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: 'user',
-        type: 'address',
-      },
-    ],
-    name: 'getWithdrawableBalance',
     outputs: [
       {
         internalType: 'uint256',

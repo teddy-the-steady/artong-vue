@@ -85,7 +85,10 @@
               "
               class="accept-button"
             >
-              <button @click="accept">Accept</button>
+              <button @click="accept(content.from.wallet_address)">
+                <div class="spinner" :class="{ active: accepting }"></div>
+                <span v-show="!accepting">Accept</span>
+              </button>
             </div>
           </div>
           <InfiniteLoading
@@ -143,11 +146,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    accepting: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
-    accept() {
-      console.log('accept')
-      this.$emit('accept')
+    accept(offeror_address) {
+      this.$emit('accept', offeror_address)
     },
     toEtherscan(tx) {
       if (process.env.NODE_ENV == 'production') {
@@ -303,6 +309,38 @@ export default {
         .accept-button {
           position: sticky;
           right: 0;
+          .spinner {
+            display: none;
+
+            &.active {
+              display: inline-block;
+              position: relative;
+              width: 2px;
+              margin: 0px auto;
+              animation: rotation 0.6s infinite linear;
+              border-left: 6px solid rgba(0, 174, 239, 0.15);
+              border-right: 6px solid rgba(0, 174, 239, 0.15);
+              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+              border-top: 6px solid $artong-white;
+              border-radius: 100%;
+            }
+          }
+
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+          button {
+            width: 100%;
+          }
+
+          & > span:nth-child(2) {
+            align-self: center;
+          }
         }
       }
     }

@@ -76,8 +76,7 @@ export default {
       if (content) {
         return (
           this.makeS3Path(content.content_thumbnail_s3key) ||
-          this.makeS3Path(content.content_s3key) ||
-          this.content.contentURI.replace('ipfs://', 'https://ipfs.io/ipfs/')
+          this.makeS3Path(content.content_s3key)
         )
       } else {
         return require('@/assets/images/art11.jpg')
