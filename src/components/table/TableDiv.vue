@@ -80,7 +80,8 @@
             <div
               v-if="
                 tableName === 'Offers' &&
-                new Date(content.deadline * 1000) - new Date() > 0
+                new Date(content.deadline * 1000) > new Date() &&
+                isCurrentUserTokenOwner
               "
               class="accept-button"
             >
