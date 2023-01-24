@@ -1,12 +1,11 @@
 <template>
   <div class="container">
     This is a test
-    <div class="box" v-click-outside="print">click outside of this box</div>
+    <div class="box">click outside of this box</div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import vClickOutside from 'v-click-outside'
 
 export default {
   name: 'Test',
@@ -40,9 +39,6 @@ export default {
     isModalOepn() {
       document.body.classList.toggle('prevent-scroll')
     },
-  },
-  directives: {
-    clickOutside: vClickOutside.directive,
   },
 }
 </script>
