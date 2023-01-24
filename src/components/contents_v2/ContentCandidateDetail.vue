@@ -228,13 +228,6 @@
         </div>
       </div>
     </div>
-    <PromptModal
-      v-if="isModalOpen"
-      @close-modal="toggleModal"
-      :confirmOnProcess="confirmOnProcess"
-      :cancelDisabled="cancelDisabled"
-      ref="promptModal"
-    ></PromptModal>
     <textarea v-model="url" ref="url"></textarea>
   </div>
 </template>
@@ -261,7 +254,6 @@ import { ERC721_ABI } from '../../contracts'
 import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
-import PromptModal from '../modal/PromptModal.vue'
 import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
@@ -272,7 +264,6 @@ export default {
   components: {
     ContentsProfile,
     TokensByCollection,
-    PromptModal,
     TableDiv,
     ProjectPageProfile_small,
     BasicDialog,
@@ -283,8 +274,6 @@ export default {
       tokens: [],
       project: null,
       signer: null,
-      confirmOnProcess: false,
-      cancelDisabled: false,
       buying: false,
       isFirstLoading: true,
       isDialogActive: false,
@@ -296,7 +285,6 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isModalOpen: state => state.menu.isModalOpen,
     }),
     isMobile() {
       return this.$isMobile()
@@ -362,9 +350,6 @@ export default {
 
       this.project = project.project
       this.tokens = tokensByProject.tokens
-    },
-    toggleModal() {
-      this.$store.commit('TOGGLE_MODAL')
     },
     async approve() {
       await patchContentStatus(this.project.id, this.content.id, {
