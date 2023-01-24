@@ -39,8 +39,13 @@
               </div>
               <div class="field" v-else-if="field.type == 'date'">
                 {{ convertDay(parseInt(content[field.key])) }}
-                <!-- {{ content[field.key] }} -->
               </div>
+              <CountDownTimer
+                class="field"
+                v-else-if="field.type == 'countdown'"
+                :endDate="new Date(content[field.key] * 1000)"
+                :isFirstLoading="true"
+              />
               <div class="field" v-else-if="field.type == 'member'">
                 <div v-if="!content[field.key]">
                   <ContentsProfile
@@ -76,15 +81,17 @@
   </div>
 </template>
 <script>
-import ContentsProfile from '../profile/ContentsProfile.vue'
-import { weiToEther } from '../../util/commonFunc'
 import InfiniteLoading from 'vue-infinite-loading'
+import { weiToEther } from '../../util/commonFunc'
+import ContentsProfile from '../profile/ContentsProfile.vue'
+import CountDownTimer from '../util/CountDownTimer.vue'
 
 export default {
   name: 'TableDiv',
   components: {
     ContentsProfile,
     InfiniteLoading,
+    CountDownTimer,
   },
   data() {
     return {
@@ -129,7 +136,12 @@ export default {
       const toDay = new Date()
       const now = toDay.getTime()
       const deadLine = date * 1000
-      return Math.ceil((now - deadLine) / (1000 * 3600 * 24)) + 'Day'
+      const result = Math.ceil((now - deadLine) / (1000 * 3600 * 24))
+      if (result > 1) {
+        return result + 'Days'
+      } else {
+        return result + 'Day'
+      }
     },
     async getContents() {
       const results = await this.api.func(this.api.body)
@@ -247,7 +259,7 @@ export default {
           padding-top: auto;
           padding-bottom: auto;
           line-height: inherits;
-          margin: auto;
+          margin: auto auto auto 0;
           .field {
             width: 100%;
             text-align: left;
