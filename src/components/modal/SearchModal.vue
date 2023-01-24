@@ -11,12 +11,6 @@
         @keyup="search"
         autocomplete="off"
       />
-      <img
-        src="../../assets/icons/clear.svg"
-        class="clear-button"
-        v-if="isSearchModalOpen && innerWidth >= 1080"
-        @click.stop="closeSearchModal"
-      />
     </div>
     <transition name="modal" v-if="isSearchModalOpen || openSearchModalSignal">
       <div class="modal-mask">
@@ -220,11 +214,6 @@ export default {
     },
     closeSearchModal() {
       this.isSearchModalOpen = false
-      this.searchWord = ''
-      this.contents = []
-      this.projects = []
-      this.members = []
-      this.pastProcessedSearchWordLength = 0
       this.$emit('close-search-modal')
     },
     onContentClick(val) {
@@ -397,8 +386,11 @@ export default {
   margin-top: 24px;
 }
 .nullSearch {
-  margin-top: 60px;
   font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 500px) {
@@ -411,6 +403,11 @@ export default {
         margin-left: 5%;
       }
     }
+  }
+}
+@media (max-width: 1080px) {
+  .nullSearch {
+    top: 65%;
   }
 }
 </style>
