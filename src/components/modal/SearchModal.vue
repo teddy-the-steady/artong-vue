@@ -21,7 +21,7 @@
     <transition name="modal" v-if="isSearchModalOpen || openSearchModalSignal">
       <div class="modal-mask">
         <div class="modal-wrapper">
-          <div class="modal-container">
+          <div class="modal-container" v-click-outside="closeSearchModal">
             <div class="modal-header">
               <slot name="header">
                 <input
@@ -131,6 +131,7 @@ import { searchMembers } from '../../api/member'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokenProfile from '../profile/TokenProfile.vue'
+import vClickOutside from 'v-click-outside'
 
 export default {
   name: 'BasicModal',
@@ -164,7 +165,6 @@ export default {
   methods: {
     async search(event, time = 500) {
       clearTimeout(this.timeout)
-      this.finishedLoading = false
       this.timeout = setTimeout(() => {
         let processedSearchWord = this.searchWord.trimStart()
         if (processedSearchWord) {
@@ -181,7 +181,6 @@ export default {
           this.members = []
           this.pastProcessedSearchWordLength = 0
         }
-        this.finishedLoading = true
       }, time)
     },
     async makeApiCall(searchWord) {
@@ -255,6 +254,9 @@ export default {
   },
   watch: {},
   created() {},
+  directives: {
+    clickOutside: vClickOutside.directive,
+  },
 }
 </script>
 
