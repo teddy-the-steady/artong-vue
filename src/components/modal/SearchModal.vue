@@ -39,6 +39,7 @@
                   <div class="title">Tokens</div>
                   <div class="results">
                     <div
+                      @click="closeSearchModal"
                       class="content"
                       v-for="(content, k) in contents"
                       :key="k"
@@ -46,6 +47,7 @@
                       <TokenProfile
                         :token="content"
                         :isFirstLoading="false"
+                        @click.native="onContentClick(content)"
                       ></TokenProfile>
                     </div>
                   </div>
@@ -54,26 +56,50 @@
                   <div class="title">Projects</div>
                   <div class="results">
                     <div
+                      @click="closeSearchModal"
                       class="project"
                       v-for="(project, k) in projects"
                       :key="k"
                     >
-                      <ProjectPageProfile_small
-                        :project="project"
-                        :isFirstLoading="false"
-                      ></ProjectPageProfile_small>
+                      <router-link
+                        :to="{
+                          name: 'Project',
+                          params: {
+                            id: project.address,
+                          },
+                        }"
+                      >
+                        <ProjectPageProfile_small
+                          :project="project"
+                          :isFirstLoading="false"
+                        ></ProjectPageProfile_small>
+                      </router-link>
                     </div>
                   </div>
                 </div>
                 <div class="members">
                   <div class="title">User</div>
                   <div class="results">
-                    <div class="member" v-for="(member, k) in members" :key="k">
-                      <ContentsProfile
-                        :member="member"
-                        :needUserName="true"
-                        :isFirstLoading="false"
-                      ></ContentsProfile>
+                    <div
+                      @click="closeSearchModal"
+                      class="member"
+                      v-for="(member, k) in members"
+                      :key="k"
+                    >
+                      <router-link
+                        :to="{
+                          name: 'UserOrArtist',
+                          params: {
+                            id: member.username,
+                          },
+                        }"
+                      >
+                        <ContentsProfile
+                          :member="member"
+                          :needUserName="true"
+                          :isFirstLoading="false"
+                        ></ContentsProfile>
+                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -192,6 +218,28 @@ export default {
       this.isSearchModalOpen = false
       this.searchWord = ''
       this.$emit('close-search-modal')
+    },
+    onContentClick(val) {
+      console.log('project address: ' + val.project_address)
+      console.log('token id: ' + val.token_id)
+      console.log('id: ' + val.id)
+      if (val.token_id) {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: val.project_address,
+            token_id: val.token_id,
+          },
+        })
+      } else if (val.id) {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address: val.project_address,
+            contents_id: val.id,
+          },
+        })
+      }
     },
   },
   watch: {},
