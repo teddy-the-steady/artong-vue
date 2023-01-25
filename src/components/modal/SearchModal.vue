@@ -298,7 +298,7 @@ export default {
 
       .modal-body {
         overflow-y: auto;
-        max-height: 600px;
+        max-height: 50vh;
         margin: 0px;
         .upload {
           img {
