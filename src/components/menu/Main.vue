@@ -11,7 +11,12 @@
             eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum
             dolor sit amet,
           </div>
-          <button class="start-btn" v-ripple>Start contributing</button>
+          <router-link class="start-btn" to="/login" v-if="!currentUser.id">
+            <button v-ripple>Start contributing</button>
+          </router-link>
+          <button class="start-btn" v-ripple @click="contribute" v-else>
+            Start contributing
+          </button>
         </div>
         <div class="container1-2">
           <img
@@ -20,23 +25,30 @@
             width="67px"
             height="22px"
           />
-          <div class="nft-name">NFT Name</div>
-          <div class="nft-name-img"></div>
+          <div class="nft-name">{{ this.mainToken.name }}</div>
+          <div class="nft-name-img">
+            <img :src="contentImagePath(this.mainToken)" />
+          </div>
           <div class="container1-2-bottom">
             <div class="container1-2-bottom-left">
-              <div class="container1-2-bottom-title">Collection</div>
+              <div class="container1-2-bottom-title">Project</div>
               <div class="container1-2-bottom-content">
-                <div class="container1-2-bottom-left-content-img"></div>
+                <div class="container1-2-bottom-left-content-img">
+                  <img :src="projectImagePath(this.mainToken.project)" />
+                </div>
                 <div class="container1-2-bottom-content-name">
-                  Collection Name
+                  {{ this.mainToken.project.name }}
                 </div>
               </div>
             </div>
             <div class="container1-2-bottom-right">
               <div class="container1-2-bottom-title">Created by</div>
               <div class="container1-2-bottom-content">
-                <div class="container1-2-bottom-right-content-img"></div>
-                <div class="container1-2-bottom-content-name">@Nickname</div>
+                <ContentsProfile
+                  :member="this.mainToken ? this.mainToken.owner : null"
+                  :needUserName="true"
+                  :isFirstLoading="isFirstLoading"
+                ></ContentsProfile>
               </div>
             </div>
           </div>
@@ -99,17 +111,7 @@
     </div>
     <!--this is the end of container2-->
     <div class="container3">
-      <div class="button-block">
-        <img
-          class="button-block-img"
-          src="../../assets/icons/folder-plus.svg"
-        />
-        <div class="button-block-title">Create new collection</div>
-        <div class="button-block-description">
-          Create Your Own NFT Collection
-        </div>
-      </div>
-      <div class="button-block">
+      <div class="button-block" @click="createProject">
         <img
           class="button-block-img"
           src="../../assets/icons/plus-circle.svg"
@@ -124,8 +126,7 @@
     <div class="container4">
       <div class="container4-box">
         <div class="top-container">
-          <div class="curated-collection-title">Curated Collections</div>
-          <div class="url" href="">View more</div>
+          <div class="curated-collection-title">Highlighted Projects</div>
         </div>
         <CuratedCollection
           v-if="innerWidth < 1080"
@@ -146,8 +147,7 @@
           ></CuratedCollectionWide>
         </div>
         <div class="top-container top-container3">
-          <div class="featured-creator-title">Featured Creators</div>
-          <div class="url" href="">View more</div>
+          <div class="featured-creator-title">Featured Contributors</div>
         </div>
         <FeaturedCreator class="featured-creator"></FeaturedCreator>
       </div>
@@ -155,24 +155,15 @@
     <!--end of container4-->
     <div class="container5">
       <div class="top-container top-container3">
-        <div class="buy-and-sell">Buy And Sell</div>
-        <div class="url" href="">View more</div>
+        <div class="buy-and-sell">Artong's Pick</div>
       </div>
       <BuyAndSell class="container5-component-margin"></BuyAndSell>
       <div class="top-container top-container3">
-        <div class="recent-contribution">Recent Contributionl</div>
-        <div class="url" href="">View more</div>
+        <div class="recent-contribution">Recent Contribution</div>
       </div>
       <RecentContribution
         class="container5-component-margin"
       ></RecentContribution>
-      <div class="top-container top-container3">
-        <div class="recent-contribution">Recent Contributionll</div>
-        <div class="url" href="">View more</div>
-      </div>
-      <div class="recent-contribution2-bottom container5-component-margin">
-        <Table></Table>
-      </div>
     </div>
     <!--end of container5-->
     <div class="container6">
@@ -247,9 +238,16 @@ import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import BuyAndSell from '../collection_card/BuyAndSell.vue'
 import RecentContribution from '../collection_card/RecentContribution.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
-import Table from '../table/Table.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
+import { isSessionValid, makeS3Path } from '../../util/commonFunc'
+import {
+  graphql,
+  queryToken,
+  queryHighlightedProjects,
+} from '../../api/graphql'
+import { getMainContents } from '../../api/contents'
+import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
   name: 'Main',
@@ -259,16 +257,96 @@ export default {
     BuyAndSell,
     RecentContribution,
     FeaturedCreator,
-    Table,
     CuratedCollectionWide,
+    ContentsProfile,
   },
   computed: {
     ...mapState({
       innerWidth: state => state.menu.innerWidth,
+      currentUser: state => state.user.currentUser,
     }),
+  },
+  data() {
+    return {
+      mainContents: {},
+      mainToken: {},
+      highlightedProjects: [],
+    }
   },
   directives: {
     ripple: Ripple,
+  },
+  methods: {
+    async contribute() {
+      if (this.$router.currentRoute.name === 'Project') {
+        if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+          return
+        }
+        this.$root.$emit('contribute')
+      } else if (this.$router.currentRoute.name === 'Projects') {
+        alert('First, choose a project to contribute!')
+      } else {
+        alert('First, choose a project to contribute!')
+        this.$router.push({ name: 'Projects' })
+      }
+    },
+    createProject() {
+      if (!this.currentUser.id) {
+        this.$router.push({
+          name: 'Login',
+        })
+      } else {
+        this.$router.push({
+          name: 'CreateProject',
+        })
+      }
+    },
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    contentImagePath(content) {
+      return (
+        this.makeS3Path(content?.content_thumnail_s3key) ||
+        this.makeS3Path(content?.content_s3key)
+      )
+    },
+    projectImagePath(project) {
+      return (
+        this.makeS3Path(project?.project_thumnail_s3key) ||
+        this.makeS3Path(project?.project_s3key)
+      )
+    },
+    memberImagePath(member) {
+      return (
+        this.makeS3Path(member?.profile_thumnail_s3key) ||
+        this.makeS3Path(member?.profile_s3key)
+      )
+    },
+  },
+  async created() {
+    this.mainContents = await getMainContents()
+    this.mainToken = await graphql(
+      queryToken({
+        variables: {
+          id:
+            this.mainContents.mainToken.project_address +
+            this.mainContents.mainToken.token_id,
+        },
+        db: {
+          project_address: this.mainContents.mainToken.project_address,
+          token_id: this.mainContents.mainToken.token_id,
+        },
+      }),
+    )
+    this.mainToken = this.mainToken.token
+    this.highlightedProjects = await graphql(
+      queryHighlightedProjects({
+        variables: {
+          idArray: this.mainContents.highlightedProjects,
+        },
+      }),
+    )
+    this.highlightedProjects = this.highlightedProjects.projects
   },
 }
 </script>
@@ -482,22 +560,6 @@ export default {
   margin-left: 16px;
   text-align: left;
 }
-.url {
-  width: 58px;
-  height: 14px;
-
-  margin-right: 16px;
-  margin-left: auto;
-  margin-top: 16px;
-
-  font-family: $item-font;
-  font-style: $item-font-style;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-  text-decoration-line: underline;
-  color: $profile-border-red;
-}
 .curated-collection-wide1 {
   margin-bottom: 24px;
   margin-left: auto;
@@ -563,10 +625,6 @@ export default {
       margin-left: 16px;
       text-align: left;
     }
-  }
-  .recent-contribution2-bottom {
-    padding-left: 16px;
-    padding-right: 16px;
   }
 }
 .container6 {
@@ -672,6 +730,13 @@ export default {
     border-radius: 14px;
 
     margin-bottom: 6px;
+
+    overflow: hidden;
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
   }
   .container1-2-bottom {
     display: flex;
@@ -709,12 +774,12 @@ export default {
     border-radius: 4px;
 
     background-color: $artong-black;
-  }
-  .container1-2-bottom-right-content-img {
-    width: 32px;
-    height: 32px;
-    background-color: $artong-black;
-    border-radius: 999px;
+    overflow: hidden;
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
   }
   .container1-2-bottom-content-name {
     font-family: $item-font;
@@ -781,7 +846,7 @@ export default {
     margin-bottom: 96px;
   }
   .button-block {
-    width: 328px;
+    width: 560px;
   }
   .container6 {
     padding-top: 72px;
@@ -822,7 +887,6 @@ export default {
     flex-direction: column;
     flex-basis: 420px;
     gap: 10px;
-    //
     height: 553px;
   }
   .nft-name {
@@ -845,6 +909,12 @@ export default {
     border-radius: 14px;
 
     margin-bottom: 6px;
+    overflow: hidden;
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
   }
   .container1-2-bottom {
     display: flex;
@@ -853,13 +923,11 @@ export default {
   .container1-2-bottom-left {
     display: flex;
     flex-direction: column;
-    //gap: 8px;
     flex-basis: 200px;
   }
   .conatiner1-2-bottom-right {
     display: flex;
     flex-direction: column;
-    //gap: 8px;
     flex-basis: 200px;
   }
   .container1-2-bottom-title {
@@ -884,12 +952,12 @@ export default {
     border-radius: 4px;
 
     background-color: $artong-black;
-  }
-  .container1-2-bottom-right-content-img {
-    width: 32px;
-    height: 32px;
-    background-color: $artong-black;
-    border-radius: 999px;
+    overflow: hidden;
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
   }
   .container1-2-bottom-content-name {
     font-family: $item-font;
@@ -912,7 +980,7 @@ export default {
     gap: 80px;
 
     width: 1200px;
-    height: 304px; // 필요없을수도
+    height: 304px;
 
     margin-left: auto;
     margin-right: auto;
@@ -953,9 +1021,6 @@ export default {
       margin-left: auto;
       margin-right: auto;
     }
-  }
-  .url {
-    margin-right: 16px;
   }
   // top-container3 : 화면 너비 1080 이상일 때 margin-bottom 더 주는 용도
   .top-container3 {
