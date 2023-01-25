@@ -23,7 +23,7 @@
                   placeholder="Search"
                   v-if="innerWidth < 1080"
                   v-model="searchWord"
-                  @input="search"
+                  @keyup="search"
                   autocomplete="off"
                 />
               </slot>
