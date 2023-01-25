@@ -249,6 +249,7 @@ const queryOffersByToken = function (variables) {
           isAccepted
           createdAt
           updatedAt
+          txHash
           sale {
               id
           }

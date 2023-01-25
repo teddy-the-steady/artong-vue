@@ -8,15 +8,11 @@
       <div class="table">
         <div class="top-row">
           <div v-for="(field, i) in fields" :key="i" class="field">
-            <div
-              v-if="field.type === 'accept-button' && isCurrentUserTokenOwner"
-            >
-              {{ field.name }}
-            </div>
-            <div v-else-if="field.type != 'accept-button'">
+            <div>
               {{ field.name }}
             </div>
           </div>
+          <div class="accept-button-header"></div>
           <!-- <div v-if="tableName === 'Offers'"></div> -->
         </div>
         <div class="middle-box">
@@ -24,6 +20,10 @@
             class="middle-row"
             v-for="(content, i) in contents"
             :key="`o-${i}`"
+            :style="{
+              'border-bottom':
+                i === contents.length - 1 ? 'solid 1px #cccccc' : 'none',
+            }"
           >
             <div v-for="(field, k) in fields" :key="k">
               <div class="field" v-if="field.type == 'event'">
@@ -119,6 +119,7 @@ export default {
       contents: [],
       noMoreDataToLoad: false,
       now: new Date(),
+      borderBottom: '1px solid #cccccc',
     }
   },
   props: {
@@ -257,7 +258,7 @@ export default {
       display: inline-flex;
       justify-content: space-between;
       height: 41px;
-      border-bottom: 1px solid #cccccc;
+      //border-bottom: 1px solid #cccccc;
       line-height: 41px;
       min-width: 100%;
       position: sticky;
@@ -283,7 +284,7 @@ export default {
         line-height: 64px;
         display: inline-flex;
         justify-content: space-between;
-        border-bottom: 1px solid #cccccc;
+        border-top: 1px solid #cccccc;
         min-width: 100%;
         div {
           margin-top: 100%;
@@ -309,6 +310,8 @@ export default {
         .accept-button {
           position: sticky;
           right: 0;
+          display: flex;
+          justify-content: flex-end;
           .spinner {
             display: none;
 
@@ -335,7 +338,7 @@ export default {
             }
           }
           button {
-            width: 100%;
+            width: 50%;
           }
 
           & > span:nth-child(2) {
@@ -344,6 +347,9 @@ export default {
         }
       }
     }
+  }
+  .accept-button-header {
+    width: 100%;
   }
 }
 </style>
