@@ -23,7 +23,7 @@
                   placeholder="Search"
                   v-if="innerWidth < 1080"
                   v-model="searchWord"
-                  @input="search"
+                  @keyup="search"
                   autocomplete="off"
                 />
               </slot>
@@ -253,7 +253,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: $backdrop;
   display: table;
   transition: opacity 0.3s ease;
@@ -298,7 +298,7 @@ export default {
 
       .modal-body {
         overflow-y: auto;
-        max-height: 600px;
+        max-height: 50vh;
         margin: 0px;
         .upload {
           img {
