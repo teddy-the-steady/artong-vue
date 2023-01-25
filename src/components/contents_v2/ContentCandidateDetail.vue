@@ -325,7 +325,7 @@ export default {
     },
   },
   methods: {
-    async getContents(project_address) {
+    async getData(project_address) {
       const [project, tokensByProject] = await Promise.all([
         graphql(
           queryProject({
@@ -494,7 +494,7 @@ export default {
       this.$route.params.project_address,
       this.$route.params.contents_id,
     )
-    await this.getContents(this.$route.params.project_address)
+    await this.getData(this.$route.params.project_address)
     this.isFirstLoading = false
 
     this.$watch(
@@ -506,7 +506,7 @@ export default {
             this.$route.params.project_address,
             this.$route.params.contents_id,
           )
-          await this.getContents(to.params.project_address)
+          await this.getData(to.params.project_address)
           this.isFirstLoading = false
         }
       },
