@@ -16,7 +16,6 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { makeS3Path } from '../../util/commonFunc'
 import ProjectCard from '../projects/ProjectCard.vue'
 
 export default {
@@ -73,14 +72,10 @@ export default {
               // status: results[i].status,
               policy: results[i].policy,
               max_amount: results[i].maxAmount,
-              background_s3key: makeS3Path(results[i].background_s3key),
-              background_thumbnail_s3key: makeS3Path(
-                results[i].background_thumbnail_s3key,
-              ),
-              project_s3key: makeS3Path(results[i].project_s3key),
-              project_thumbnail_s3key: makeS3Path(
-                results[i].project_thumbnail_s3key,
-              ),
+              background_s3key: results[i].background_s3key,
+              background_thumbnail_s3key: results[i].background_thumbnail_s3key,
+              project_s3key: results[i].project_s3key,
+              project_thumbnail_s3key: results[i].project_thumbnail_s3key,
               contributors: results[i].contributors,
               created_at: results[i].createdAt,
               updated_at: results[i].updatedAt,

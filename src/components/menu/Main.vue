@@ -131,9 +131,10 @@
         ></CuratedCollection>
         <div v-else-if="innerWidth < 1440">
           <CuratedCollectionWide
-            v-for="i in 8"
+            v-for="(project, i) in highlightedProjects"
             :key="i"
             class="curated-collection-wide1"
+            :project="project"
           ></CuratedCollectionWide>
         </div>
         <div v-else class="curated-collection-wide-box">
