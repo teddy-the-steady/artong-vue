@@ -30,7 +30,7 @@ import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
-  name: 'ProjectPageProfile_small',
+  name: 'TokenProfile',
   components: {
     SkeletonBox,
   },
