@@ -1,21 +1,26 @@
 <template>
   <div class="wrapper">
     <div class="top">
-      <ProjectPageProfile_wrapped></ProjectPageProfile_wrapped>
+      <ProjectPageProfile_wrapped
+        :projectImageUrl="
+          project.project_thumnaiil_s3key || project.project_s3key
+        "
+      ></ProjectPageProfile_wrapped>
       <div class="collection-name">Collection Name</div>
     </div>
     <div class="middle">
-      <ContentsProfileBundle></ContentsProfileBundle>
-      <div class="nickName">@NickName +4</div>
-      <div class="category">category</div>
+      <ContentsProfileBundle
+        :members="project.contributors"
+      ></ContentsProfileBundle>
+      <div class="nickName">
+        @{{ project.contributors[0].username }} +{{
+          project.contributors.length
+        }}
+      </div>
+      <div class="category">{{ project.symbol }}</div>
     </div>
     <div class="description">
-      From Dominican Republic and the web. Their work includes computer
-      drawings, installations and audiovisuals. Founder of From Dominican
-      Republic and the web. Their work includes computer drawings, installations
-      and audiovisuals. Founder ofFrom Dominican Republic and the web. Their
-      work includes computer drawinthe web. Their work includes cothe web. Their
-      work includes computer drawinthe web. Their work includes computer ...
+      {{ project.description }}
     </div>
   </div>
 </template>
@@ -28,6 +33,15 @@ export default {
   components: {
     ProjectPageProfile_wrapped,
     ContentsProfileBundle,
+  },
+  props: {
+    project: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  created() {
+    console.log(this.project)
   },
 }
 </script>

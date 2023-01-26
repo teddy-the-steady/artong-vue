@@ -45,9 +45,6 @@ export default {
   //         console.log(dataset.index, dataset.name)
   //     }
   // }
-  created() {
-    console.log(this.projects)
-  },
 }
 </script>
 

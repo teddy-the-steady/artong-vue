@@ -26,8 +26,8 @@
 
 <script>
 import { headerActivate, backgroundColor } from '../../mixin'
-import { makeS3Path } from '../../util/commonFunc'
 import SkeletonBox from '../util/SkeletonBox.vue'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ProjectPageProfile_small',
@@ -47,9 +47,8 @@ export default {
   },
   computed: {
     projectImage() {
-      return (
-        this.makeS3Path(this.project.project_thumbnail_s3key) ||
-        this.makeS3Path(this.project.project_s3key)
+      return this.makeS3Path(
+        this.project.project_thumbnail_s3key || this.project.project_s3key,
       )
     },
     backgroundColor() {
