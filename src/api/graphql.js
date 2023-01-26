@@ -30,6 +30,7 @@ const queryProject = function (variables) {
           _db_max_token_id
           _db_is_subscriber
           _db_is_contributor
+          _db_slug
         }
       }
     `,
@@ -61,6 +62,7 @@ const queryProjects = function (variables) {
           _db_description
           _db_status
           _db_member_id
+          _db_slug
         }
       }
     `,

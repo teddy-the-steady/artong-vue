@@ -1,5 +1,6 @@
 <template>
   <div>
+    URL slug: <input type="text" v-model="project.slug" /><br />
     Description: <input type="text" v-model="project.description" /><br />
     Instragram: <input type="text" v-model="project.sns.instagram" /><br />
     Twitter: <input type="text" v-model="project.sns.twitter" /><br />
@@ -21,6 +22,7 @@ export default {
   data() {
     return {
       project: {
+        slug: '',
         description: '',
         sns: {
           instagram: '',
