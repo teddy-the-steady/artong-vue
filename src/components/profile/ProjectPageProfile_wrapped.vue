@@ -44,6 +44,8 @@ export default {
       return makeS3Path(path)
     },
     projectImagePath(projectImageUrl) {
+      console.log(projectImageUrl)
+      console.log(this.makeS3Path(projectImageUrl))
       return this.makeS3Path(projectImageUrl)
     },
   },
