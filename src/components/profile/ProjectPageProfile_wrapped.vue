@@ -9,7 +9,7 @@
     <div v-else @error="isFirstLoading = true" class="image2">
       <img
         v-if="projectImageUrl"
-        :src="projectImageUrl"
+        :src="projectImagePath(projectImageUrl)"
         @error="hasErrorGettingImage = true"
         :class="{ error: hasErrorGettingImage }"
       />
@@ -20,6 +20,7 @@
 
 <script>
 import SkeletonBox from '../util/SkeletonBox.vue'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ProjectPageProfile_wrapped',
@@ -37,6 +38,14 @@ export default {
       isFirstLoading: true,
       hasErrorGettingImage: false,
     }
+  },
+  methods: {
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    projectImagePath(projectImageUrl) {
+      return this.makeS3Path(projectImageUrl)
+    },
   },
   watch: {
     projectImageUrl: {

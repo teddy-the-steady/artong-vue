@@ -37,12 +37,6 @@
                   :project="this.mainToken.project"
                   :isFirstLoading="isFirstLoading"
                 ></ProjectPageProfile_small>
-                <!-- <div class="container1-2-bottom-left-content-img">
-                  <img :src="projectImagePath(this.mainToken.project)" />
-                </div>
-                <div class="container1-2-bottom-content-name">
-                  {{ this.mainToken.project.name }}
-                </div> -->
               </div>
             </div>
             <div class="container1-2-bottom-right">
@@ -120,10 +114,8 @@
           class="button-block-img"
           src="../../assets/icons/plus-circle.svg"
         />
-        <div class="button-block-title">Create new collection</div>
-        <div class="button-block-description">
-          Create Your Own NFT Collection
-        </div>
+        <div class="button-block-title">Create new project</div>
+        <div class="button-block-description">Create Your Own NFT Project</div>
       </div>
     </div>
     <!--end of container3-->
@@ -135,6 +127,7 @@
         <CuratedCollection
           v-if="innerWidth < 1080"
           class="curated-collection"
+          :projects="highlightedProjects"
         ></CuratedCollection>
         <div v-else-if="innerWidth < 1440">
           <CuratedCollectionWide
@@ -276,7 +269,7 @@ export default {
     return {
       mainContents: {},
       mainToken: {},
-      highlightedProjects: [],
+      highlightedProjects: {},
       isFirstLoading: true,
     }
   },
@@ -776,29 +769,6 @@ export default {
     flex-direction: row;
     gap: 8px;
   }
-  .container1-2-bottom-left-content-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-
-    background-color: $artong-black;
-    overflow: hidden;
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .container1-2-bottom-content-name {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: left;
-    margin-top: auto;
-    margin-bottom: auto;
-    color: $artong-black;
-  }
   //show your creativity
   .container2 {
     margin-top: 192px;
@@ -953,29 +923,6 @@ export default {
     display: flex;
     flex-direction: row;
     gap: 8px;
-  }
-  .container1-2-bottom-left-content-img {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-
-    background-color: $artong-black;
-    overflow: hidden;
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .container1-2-bottom-content-name {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 500;
-    font-size: 14px;
-    text-align: left;
-    margin-top: auto;
-    margin-bottom: auto;
-    color: $artong-black;
   }
   //show your creativity
   .container2 {

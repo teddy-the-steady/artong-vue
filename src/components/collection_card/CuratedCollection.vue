@@ -15,8 +15,8 @@
     paginationColor="#B3B3B3"
     paginationActiveColor="#F22E3E"
   >
-    <slide v-for="i in testNumber" :key="i">
-      <ProjectCard></ProjectCard>
+    <slide v-for="(project, i) in projects" :key="i">
+      <ProjectCard :project="project"></ProjectCard>
     </slide>
   </carousel>
 </template>
@@ -29,9 +29,13 @@ export default {
     ProjectCard,
   },
   data() {
-    return {
-      testNumber: 10, // slide의 개수
-    }
+    return {}
+  },
+  props: {
+    projects: {
+      type: Object,
+      default: null,
+    },
   },
   methods: {
     getTestNumber() {},
@@ -41,6 +45,9 @@ export default {
   //         console.log(dataset.index, dataset.name)
   //     }
   // }
+  created() {
+    console.log(this.projects)
+  },
 }
 </script>
 
