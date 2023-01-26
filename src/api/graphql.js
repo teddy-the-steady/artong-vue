@@ -169,6 +169,35 @@ const queryToken = function (variables) {
   }
 }
 
+const queryTokens = function (variables) {
+  return {
+    query: `
+    query Tokens($idArray: [String]) {
+      tokens(where: {id_in: $idArray}) {
+        id
+        tokenId
+        tokenURI
+        contentURI
+        creator
+        owner
+        createdAt
+        updatedAt
+        project {
+          id
+        }
+        _db_member_id
+        _db_voucher
+        _db_name
+        _db_description
+        _db_content_thumbnail_s3key
+        _db_content_s3key
+      }
+    }
+    `,
+    ...variables,
+  }
+}
+
 const queryTokensByProject = function (variables) {
   return {
     query: `
@@ -348,6 +377,7 @@ export {
   queryHighlightedProjects,
   queryProjectsByCreator,
   queryToken,
+  queryTokens,
   queryTokensByProject,
   queryTokensByCreator,
   queryTokensByOwner,
