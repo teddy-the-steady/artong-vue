@@ -188,7 +188,6 @@ export default {
       try {
         return await searchContents(searchWord)
       } catch {
-        console.log('검색 결과 없음')
         return null
       }
     },
@@ -196,7 +195,6 @@ export default {
       try {
         return await searchProjects(searchWord)
       } catch {
-        console.log('검색 결과 없음')
         return null
       }
     },
@@ -204,7 +202,6 @@ export default {
       try {
         return await searchMembers(searchWord)
       } catch {
-        console.log('검색 결과 없음')
         return null
       }
     },
@@ -217,9 +214,6 @@ export default {
       event.stopPropagation()
     },
     onContentClick(val) {
-      console.log('project address: ' + val.project_address)
-      console.log('token id: ' + val.token_id)
-      console.log('id: ' + val.id)
       if (val.token_id) {
         this.$router.push({
           name: 'ContentDetail',
@@ -375,6 +369,7 @@ export default {
 .project,
 .member {
   margin-top: 8px;
+  cursor: pointer;
 }
 .projects {
   margin-top: 24px;
