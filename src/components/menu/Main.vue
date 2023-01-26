@@ -33,12 +33,16 @@
             <div class="container1-2-bottom-left">
               <div class="container1-2-bottom-title">Project</div>
               <div class="container1-2-bottom-content">
-                <div class="container1-2-bottom-left-content-img">
+                <ProjectPageProfile_small
+                  :project="this.mainToken.project"
+                  :isFirstLoading="isFirstLoading"
+                ></ProjectPageProfile_small>
+                <!-- <div class="container1-2-bottom-left-content-img">
                   <img :src="projectImagePath(this.mainToken.project)" />
                 </div>
                 <div class="container1-2-bottom-content-name">
                   {{ this.mainToken.project.name }}
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="container1-2-bottom-right">
@@ -248,6 +252,7 @@ import {
 } from '../../api/graphql'
 import { getMainContents } from '../../api/contents'
 import ContentsProfile from '../profile/ContentsProfile.vue'
+import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 
 export default {
   name: 'Main',
@@ -259,6 +264,7 @@ export default {
     FeaturedCreator,
     CuratedCollectionWide,
     ContentsProfile,
+    ProjectPageProfile_small,
   },
   computed: {
     ...mapState({
@@ -271,6 +277,7 @@ export default {
       mainContents: {},
       mainToken: {},
       highlightedProjects: [],
+      isFirstLoading: true,
     }
   },
   directives: {
@@ -347,6 +354,7 @@ export default {
       }),
     )
     this.highlightedProjects = this.highlightedProjects.projects
+    this.isFirstLoading = false
   },
 }
 </script>
