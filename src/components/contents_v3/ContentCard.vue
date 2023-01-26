@@ -5,6 +5,7 @@
       <ProjectPageProfile_small
         v-if="needContentName"
         class="project-profile"
+        :project="content.project"
       ></ProjectPageProfile_small>
     </div>
     <div class="bottom">
@@ -32,6 +33,8 @@
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import { makeS3Path, weiToEther } from '../../util/commonFunc'
+import { graphql, queryProject } from '../../api/graphql'
+
 export default {
   name: 'ContentCard',
   components: {
@@ -101,6 +104,16 @@ export default {
         })
       }
     },
+  },
+  async created() {
+    this.content.project = await graphql(
+      queryProject({
+        variables: {
+          id: this.content.id,
+        },
+      }),
+    )
+    this.content.project = this.content.project.project
   },
 }
 </script>

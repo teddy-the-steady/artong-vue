@@ -40,9 +40,6 @@ export default {
       default: () => {},
     },
   },
-  created() {
-    console.log(this.project)
-  },
 }
 </script>
 

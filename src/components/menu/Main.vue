@@ -156,7 +156,10 @@
       <div class="top-container top-container3">
         <div class="buy-and-sell">Artong's Pick</div>
       </div>
-      <BuyAndSell class="container5-component-margin"></BuyAndSell>
+      <BuyAndSell
+        class="container5-component-margin"
+        :tokens="artongsPickTokens"
+      ></BuyAndSell>
       <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contribution</div>
       </div>
@@ -243,6 +246,7 @@ import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import {
   graphql,
   queryToken,
+  queryTokens,
   queryHighlightedProjects,
 } from '../../api/graphql'
 import { getMainContents } from '../../api/contents'
@@ -272,6 +276,7 @@ export default {
       mainContents: {},
       mainToken: {},
       highlightedProjects: {},
+      artongsPickTokens: {},
       isFirstLoading: true,
     }
   },
@@ -349,6 +354,14 @@ export default {
       }),
     )
     this.highlightedProjects = this.highlightedProjects.projects
+    this.artongsPickTokens = await graphql(
+      queryTokens({
+        variables: {
+          idArray: this.mainContents.artongsPick,
+        },
+      }),
+    )
+    this.artongsPickTokens = this.artongsPickTokens.tokens
     this.isFirstLoading = false
   },
 }

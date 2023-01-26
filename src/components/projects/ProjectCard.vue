@@ -72,11 +72,6 @@ export default {
       return makeS3Path(path)
     },
     backgroundImagePath(backgroudnImageUrl) {
-      console.log('background url before processing: ' + backgroudnImageUrl)
-      console.log(
-        'background url after processing: ' +
-          this.makeS3Path(backgroudnImageUrl),
-      )
       return this.makeS3Path(backgroudnImageUrl)
     },
   },

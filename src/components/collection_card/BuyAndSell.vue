@@ -18,8 +18,8 @@
     paginationColor="#B3B3B3"
     paginationActiveColor="#000000"
   >
-    <slide v-for="i in testNumber" :key="i">
-      <ContentCard></ContentCard>
+    <slide v-for="(token, i) in tokens" :key="i">
+      <ContentCard :content="token"></ContentCard>
     </slide>
   </carousel>
 </template>
@@ -32,9 +32,13 @@ export default {
     ContentCard,
   },
   data() {
-    return {
-      testNumber: 10, // slide의 개수
-    }
+    return {}
+  },
+  props: {
+    tokens: {
+      type: Object,
+      default: null,
+    },
   },
 }
 </script>
