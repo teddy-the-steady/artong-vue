@@ -237,7 +237,7 @@ export default {
   },
   data() {
     return {
-      projectAddress: '',
+      projectAddressOrSlug: '',
       backgroundColor: null,
       project: {},
       tabs: [
@@ -302,7 +302,7 @@ export default {
       const result = await graphql(
         queryProject({
           variables: {
-            id: this.projectAddress,
+            id: this.projectAddressOrSlug,
           },
         }),
       )
@@ -511,11 +511,9 @@ export default {
     },
   },
   async created() {
-    this.projectAddress = this.$route.params.id
-    this.backgroundColor = this.generateGradientBackground(
-      this.$route.params.id,
-    )
+    this.projectAddressOrSlug = this.$route.params.id
     this.project = await this.getProject()
+    this.backgroundColor = this.generateGradientBackground(this.project.id)
     this.isFirstLoading = false
     this.setStatistics()
     this.setTabs()
@@ -551,8 +549,8 @@ export default {
   },
   watch: {
     $route(to) {
-      if (this.projectAddress !== to.params.id) {
-        this.projectAddress = to.params.id
+      if (this.projectAddressOrSlug !== to.params.id) {
+        this.projectAddressOrSlug = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
         this.tabs[3].show = false
       }
