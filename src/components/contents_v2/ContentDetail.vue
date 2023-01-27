@@ -704,6 +704,8 @@ export default {
           first: 5,
           skip: 0,
           id: this.$route.params.project_address + this.$route.params.token_id,
+          project_address: this.$route.params.project_address,
+          token_id: this.$route.params.token_id,
         },
       }),
     }
@@ -713,6 +715,8 @@ export default {
       body: queryTokenHistory({
         variables: {
           id: this.$route.params.project_address + this.$route.params.token_id,
+          project_address: this.$route.params.project_address,
+          token_id: this.$route.params.token_id,
         },
         pagination: {
           start_num: 0,
@@ -757,6 +761,8 @@ export default {
             first: 5,
             skip: 0,
             id: to.params.project_address + to.params.token_id,
+            project_address: to.params.project_address,
+            token_id: to.params.token_id,
           },
         }),
       }
@@ -766,6 +772,8 @@ export default {
         body: queryTokenHistory({
           variables: {
             id: to.params.project_address + to.params.token_id,
+            project_address: to.params.project_address,
+            token_id: to.params.token_id,
           },
           pagination: {
             start_num: 0,
