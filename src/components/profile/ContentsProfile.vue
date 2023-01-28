@@ -124,6 +124,7 @@ export default {
       font-size: 14px;
       line-height: 32px;
       display: inline-block;
+      width: 100%;
       max-width: 100px;
       white-space: nowrap;
       overflow: hidden !important;
