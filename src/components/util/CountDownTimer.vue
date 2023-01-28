@@ -14,6 +14,10 @@ export default {
         return new Date()
       },
     },
+    isAccepted: {
+      type: Boolean,
+      default: false,
+    },
     negative: {
       type: Boolean,
       default: false,
@@ -26,21 +30,21 @@ export default {
   computed: {
     hour() {
       let h = Math.trunc((this.endDate - this.now) / 1000 / 3600)
-      if (h < 0) {
+      if (h < 0 || this.isAccepted) {
         return '00'
       }
       return h > 9 ? h : '0' + h
     },
     min() {
       let m = Math.trunc((this.endDate - this.now) / 1000 / 60) % 60
-      if (m < 0) {
+      if (m < 0 || this.isAccepted) {
         return '00'
       }
       return m > 9 ? m : '0' + m
     },
     sec() {
       let s = Math.trunc((this.endDate - this.now) / 1000) % 60
-      if (s < 0) {
+      if (s < 0 || this.isAccepted) {
         return '00'
       }
       return s > 9 ? s : '0' + s
