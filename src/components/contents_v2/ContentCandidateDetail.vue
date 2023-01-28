@@ -385,14 +385,21 @@ export default {
       }
 
       const contract = new ethers.Contract(
-        this.$router.currentRoute.params.project_address,
+        this.content.project_address,
         ERC721_ABI,
         this.signer,
       )
 
       try {
         this.buying = true
-        await this.redeem(contract)
+        const tokenId = await this.redeem(contract)
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: this.content.slug || this.content.project_address,
+            token_id: tokenId,
+          },
+        })
       } finally {
         this.buying = false
       }
@@ -414,6 +421,8 @@ export default {
         tokenId: tokenId,
         isRedeemed: true,
       })
+
+      return tokenId
     },
     makeS3Path(path) {
       return makeS3Path(path)
