@@ -373,6 +373,10 @@ export default {
       })
     },
     async buy() {
+      if (this.buying) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
