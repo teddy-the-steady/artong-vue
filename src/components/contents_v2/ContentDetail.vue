@@ -424,6 +424,10 @@ export default {
       this.$store.commit('TOGGLE_MODAL')
     },
     async makeTransaction(which, acceptParam) {
+      if (this.canceling || this.buying || this.accepting) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
