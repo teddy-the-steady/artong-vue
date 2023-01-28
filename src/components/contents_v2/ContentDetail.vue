@@ -156,6 +156,8 @@
           <div class="owner">
             <div class="label">Owned by</div>
             <router-link
+              tag="div"
+              class="profile-link"
               :to="{
                 name: 'UserOrArtist',
                 params: { id: content ? content.owner.username : '' },
@@ -172,6 +174,8 @@
             <div class="info">
               <div class="label">Project</div>
               <router-link
+                tag="div"
+                class="profile-link"
                 :to="{
                   name: 'Project',
                   params: { id: content ? content.project.id : null },
@@ -186,6 +190,8 @@
             <div class="info">
               <div class="label">Created By</div>
               <router-link
+                tag="div"
+                class="profile-link"
                 :to="{
                   name: 'UserOrArtist',
                   params: { id: content ? content.creator.username : '' },
@@ -259,6 +265,14 @@
           ></TokensByCollection>
         </div>
       </div>
+      <div class="collection-container">
+        <div class="header">
+          <div class="title">Discover projects</div>
+        </div>
+        <div>
+          <CuratedCollection />
+        </div>
+      </div>
     </div>
     <PromptModal
       v-if="isModalOpen"
@@ -298,6 +312,7 @@ import PromptModal from '../modal/PromptModal.vue'
 import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
+import CuratedCollection from '../collection_card/CuratedCollection.vue'
 
 export default {
   name: 'ContentDetail',
@@ -309,6 +324,7 @@ export default {
     TableDiv,
     ProjectPageProfile_small,
     BasicDialog,
+    CuratedCollection,
   },
   data() {
     return {
@@ -953,6 +969,10 @@ export default {
         font-size: 18px;
         font-weight: 600;
         line-height: 22px;
+      }
+      .profile-link {
+        cursor: pointer;
+        width: fit-content;
       }
     }
   }
