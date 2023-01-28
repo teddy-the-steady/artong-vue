@@ -59,6 +59,10 @@ export default {
   },
   methods: {
     async refresh() {
+      if (this.refreshing) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -102,6 +106,10 @@ export default {
       )
     },
     async withdraw() {
+      if (this.withdrawing) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
