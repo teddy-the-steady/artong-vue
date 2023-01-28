@@ -7,8 +7,8 @@
         placeholder="Search"
         type="text"
         class="search-input"
-        v-model="searchWord"
-        @keyup="search"
+        :value="searchWord"
+        @input="search"
         autocomplete="off"
       />
     </div>
@@ -22,8 +22,8 @@
                   id="search-input"
                   placeholder="Search"
                   v-if="innerWidth < 1080"
-                  v-model="searchWord"
-                  @keyup="search"
+                  :value="searchWord"
+                  @input="search"
                   autocomplete="off"
                 />
               </slot>
@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     async search(event, time = 500) {
+      this.searchWord = event.target.value
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         let processedSearchWord = this.searchWord.trimStart()
