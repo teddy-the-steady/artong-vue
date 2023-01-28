@@ -718,6 +718,7 @@ export default {
       .profile-link {
         cursor: pointer;
         width: fit-content;
+        min-width: 100px;
       }
     }
   }
