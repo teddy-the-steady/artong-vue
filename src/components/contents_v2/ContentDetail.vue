@@ -5,7 +5,10 @@
         :href="content ? makeS3Path(content.content_s3key) : ''"
         target="_blank"
       >
-        <img :src="imagePath" />
+        <div v-if="isFirstLoading" :style="{ height: skeletonHeight }">
+          <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
+        </div>
+        <img v-else :src="imagePath" />
       </a>
     </div>
     <div class="content-wrap">
@@ -308,6 +311,7 @@ import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'ContentDetail',
@@ -320,6 +324,7 @@ export default {
     ProjectPageProfile_small,
     BasicDialog,
     CuratedCollection,
+    SkeletonBox,
   },
   data() {
     return {
@@ -346,12 +351,14 @@ export default {
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
       url: '',
+      skeletonHeight: '100px',
     }
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
       isModalOpen: state => state.menu.isModalOpen,
+      innerWidth: state => state.menu.innerWidth,
     }),
     isListed() {
       const eventType = this.content?.listings[0]?.eventType
@@ -711,6 +718,8 @@ export default {
     },
   },
   async created() {
+    this.skeletonHeight =
+      this.innerWidth * this.$route.params.image_ratio + 'px'
     this.queryOffersByToken = {
       result_key: 'offers',
       func: graphql,
@@ -768,6 +777,7 @@ export default {
   },
   watch: {
     $route(to) {
+      this.skeletonHeight = this.innerWidth * to.params.image_ratio + 'px'
       this.queryOffersByToken = {
         result_key: 'offers',
         func: graphql,
@@ -816,6 +826,9 @@ export default {
     max-height: 60vh;
     padding: 4rem 0;
     background: #f2f2f2;
+    div {
+      width: 100%;
+    }
     img {
       object-fit: contain;
       max-width: 100%;
