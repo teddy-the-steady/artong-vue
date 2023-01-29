@@ -594,6 +594,7 @@ export default {
     div {
       width: 100%;
       max-height: 60vh;
+      overflow: hidden;
     }
     img {
       object-fit: contain;
