@@ -166,14 +166,14 @@ export default {
       return results
     },
     onContentClick(event, val) {
-      const imageRatio = event.target.height / event.target.width
       if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: val.slug || val.projectAddress,
             token_id: val.token_id || val.tokenId,
-            image_ratio: imageRatio,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       } else if (val.id) {
@@ -182,7 +182,8 @@ export default {
           params: {
             project_address: val.slug || val.projectAddress,
             contents_id: val.id,
-            image_ratio: imageRatio,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       }
