@@ -5,8 +5,17 @@
         :href="content ? makeS3Path(content.content_s3key) : ''"
         target="_blank"
       >
-        <div v-if="isFirstLoading" :style="{ height: skeletonHeight }">
-          <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
+        <div
+          v-if="isFirstLoading"
+          :style="{
+            height: innerWidth < 500 ? skeletonHeight : skeletonBoxHeight,
+            width: skeletonBoxWidth,
+          }"
+        >
+          <SkeletonBox
+            :height="innerWidth < 500 ? '100%' : skeletonBoxHeight"
+            :width="innerWidth < 500 ? '100%' : skeletonBoxWidth"
+          />
         </div>
         <img v-else :src="imagePath" />
       </a>
@@ -302,6 +311,8 @@ export default {
       isMouseUpOnMore: false,
       url: '',
       skeletonHeight: '100px',
+      skeletonBoxWidth: '100%',
+      skeletonBoxHeight: '100%',
     }
   },
   computed: {
@@ -525,8 +536,13 @@ export default {
     },
   },
   async created() {
-    this.skeletonHeight =
-      this.innerWidth * this.$route.params.image_ratio + 'px'
+    this.skeletonBoxWidth = this.$route.params.image_width + 'px'
+    this.skeletonBoxHeight = this.$route.params.image_height + 'px'
+
+    const ratio =
+      this.$route.params.image_height / this.$route.params.image_width
+    this.skeletonHeight = this.innerWidth * ratio + 'px'
+
     this.isFirstLoading = true
     this.content = await getContent(
       this.$route.params.project_address,
@@ -539,7 +555,12 @@ export default {
       () => this.$route,
       async to => {
         if (to.name === 'ContentCandidateDetail') {
-          this.skeletonHeight = this.innerWidth * to.params.image_ratio + 'px'
+          this.skeletonBoxWidth = to.params.image_width + 'px'
+          this.skeletonBoxHeight = to.params.image_height + 'px'
+
+          const ratio = to.params.image_height / to.params.image_width
+          this.skeletonHeight = this.innerWidth * ratio + 'px'
+
           this.isFirstLoading = true
           this.content = await getContent(
             this.$route.params.project_address,
@@ -572,6 +593,7 @@ export default {
     background: #f2f2f2;
     div {
       width: 100%;
+      max-height: 60vh;
     }
     img {
       object-fit: contain;

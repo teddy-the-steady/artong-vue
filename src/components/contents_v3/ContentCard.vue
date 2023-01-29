@@ -82,13 +82,15 @@ export default {
         return require('@/assets/images/art11.jpg')
       }
     },
-    onContentClick() {
+    onContentClick(event) {
       if (this.content.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: this.content.project_address,
             token_id: this.content.tokenId,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       } else if (this.content.id) {
@@ -97,6 +99,8 @@ export default {
           params: {
             project_address: this.content.project_address,
             contents_id: this.content.id,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       }
