@@ -4,7 +4,7 @@
       <div class="content" v-for="(val, i) in contentList" :key="i">
         <ContentBox
           :image="val"
-          @click.native="onContentClick(val)"
+          @click.native="onContentClick($event, val)"
         ></ContentBox>
         <router-link
           class="profileBox"
@@ -165,13 +165,15 @@ export default {
       )
       return results
     },
-    onContentClick(val) {
+    onContentClick(event, val) {
+      const imageRatio = event.target.height / event.target.width
       if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: val.slug || val.projectAddress,
             token_id: val.token_id || val.tokenId,
+            image_ratio: imageRatio,
           },
         })
       } else if (val.id) {
@@ -180,6 +182,7 @@ export default {
           params: {
             project_address: val.slug || val.projectAddress,
             contents_id: val.id,
+            image_ratio: imageRatio,
           },
         })
       }
