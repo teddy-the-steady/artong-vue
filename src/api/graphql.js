@@ -190,6 +190,7 @@ const queryTokensByCreator = function (variables) {
           updatedAt
           _db_voucher
           _db_content_s3key
+          _db_content_thumbnail_s3key
           project {
             id
           }
@@ -222,6 +223,7 @@ const queryTokensByOwner = function (variables) {
           updatedAt
           _db_voucher
           _db_content_s3key
+          _db_content_thumbnail_s3key
           project {
             id
           }
