@@ -21,7 +21,6 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import { makeS3Path } from '../../util/commonFunc'
 import ProfileCard from '../profile/ProfileCard.vue'
 
 export default {
@@ -78,10 +77,8 @@ export default {
             id: apiResults[i].member_id,
             username: apiResults[i].username,
             wallet_address: apiResults[i].wallet_address,
-            profile_s3key: makeS3Path(apiResults[i].profile_s3key),
-            profile_thumbnail_s3key: makeS3Path(
-              apiResults[i].profile_thumbnail_s3key,
-            ),
+            profile_s3key: apiResults[i].profile_s3key,
+            profile_thumbnail_s3key: apiResults[i].profile_thumbnail_s3key,
             contributions: apiResults[i].contributions,
             created_at: apiResults[i].created_at,
             updated_at: apiResults[i].updated_at,
