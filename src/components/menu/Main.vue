@@ -177,6 +177,7 @@
       <TokensByCollection
         class="container5-component-margin"
         :tokens="artongsPickTokens"
+        :needContentName="true"
       ></TokensByCollection>
       <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contribution</div>
@@ -184,6 +185,7 @@
       <TokensByCollection
         class="container5-component-margin"
         :tokens="recentTokens"
+        :needContentName="true"
       ></TokensByCollection>
     </div>
     <!--end of container5-->
@@ -224,24 +226,35 @@
       </div>
       <div class="bottom-link">
         <div class="bottom-table">
-          <ol class="column first-column">
-            <li>Learn</li>
-            <li>Create</li>
-            <li>Collect</li>
-            <li>Sell</li>
-          </ol>
-          <ol class="column second-column">
-            <li>Company</li>
-            <li>About</li>
-            <li>Careers</li>
-            <li>Help Center</li>
-          </ol>
-          <ol class="column third-column">
-            <li>Connect</li>
-            <li>Twitter</li>
-            <li>Instagram</li>
-            <li>Discord</li>
-          </ol>
+          <ul style="list-style: none" class="column second-column">
+            <li style="list-style: none">Company</li>
+            <li
+              style="list-style: none"
+              @click="
+                moveToAnotherSite(
+                  'https://www.notion.so/artong/Artong-b97ff2cfe0434a3eaf111eb76b5d4bed',
+                )
+              "
+            >
+              About
+            </li>
+            <li style="list-style: none">Careers</li>
+          </ul>
+          <ul style="list-style: none" class="column third-column">
+            <li style="list-style: none">Connect</li>
+            <li
+              style="list-style: none"
+              @click="moveToAnotherSite('https://twitter.com/4rtong')"
+            >
+              Twitter
+            </li>
+            <li
+              style="list-style: none"
+              @click="moveToAnotherSite('https://www.instagram.com/artong.io/')"
+            >
+              Instagram
+            </li>
+          </ul>
         </div>
         <div class="bottom-left">
           <div class="bottom-word">Privacy Info</div>
@@ -372,6 +385,9 @@ export default {
           },
         })
       }
+    },
+    moveToAnotherSite(url) {
+      window.open(url)
     },
   },
   async created() {
@@ -675,13 +691,6 @@ export default {
   font-size: 22px;
   color: #b3b3b3;
   text-align: left;
-}
-.featured-creator {
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  color: #ffffff;
 }
 .container5-component-margin {
   margin-bottom: 48px;

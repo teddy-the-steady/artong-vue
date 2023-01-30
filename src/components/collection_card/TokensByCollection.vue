@@ -14,7 +14,10 @@
     paginationActiveColor="#000000"
   >
     <slide v-for="(content, i) in tokens" :key="i">
-      <ContentCard :content="content" :needContentName="false"></ContentCard>
+      <ContentCard
+        :content="content"
+        :needContentName="needContentName"
+      ></ContentCard>
     </slide>
   </carousel>
 </template>
@@ -30,6 +33,10 @@ export default {
     tokens: {
       type: Array,
       default: null,
+    },
+    needContentName: {
+      type: Boolean,
+      default: false,
     },
   },
 }
