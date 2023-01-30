@@ -4,7 +4,7 @@
       <div class="content" v-for="(val, i) in contentList" :key="i">
         <ContentBox
           :image="val"
-          @click.native="onContentClick(val)"
+          @click.native="onContentClick($event, val)"
         ></ContentBox>
         <router-link
           class="profileBox"
@@ -134,6 +134,7 @@ export default {
             token_id: apiResults[i].token_id,
             projectAddress:
               apiResults[i].project?.id || apiResults[i].project_address,
+            slug: apiResults[i].slug,
             tokenURI: apiResults[i].tokenURI,
             contentURI: apiResults[i].contentURI,
             creator: apiResults[i].creator,
@@ -164,21 +165,25 @@ export default {
       )
       return results
     },
-    onContentClick(val) {
+    onContentClick(event, val) {
       if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: val.projectAddress,
+            project_address: val.slug || val.projectAddress,
             token_id: val.token_id || val.tokenId,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       } else if (val.id) {
         this.$router.push({
           name: 'ContentCandidateDetail',
           params: {
-            project_address: val.projectAddress,
+            project_address: val.slug || val.projectAddress,
             contents_id: val.id,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       }

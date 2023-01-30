@@ -59,6 +59,10 @@ export default {
   },
   methods: {
     async refresh() {
+      if (this.refreshing) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -102,6 +106,10 @@ export default {
       )
     },
     async withdraw() {
+      if (this.withdrawing) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -123,8 +131,9 @@ export default {
         this.withdrawing = true
         const tx = await contract.populateTransaction.withdraw()
         const txHash = await this.signer.sendUncheckedTransaction(tx)
-        const approveReceipt = await this.wait(txHash)
-        console.log(approveReceipt)
+        await this.wait(txHash)
+        alert('Withdraw complete! Please go check your wallet')
+        this.refresh()
       } finally {
         this.withdrawing = false
       }

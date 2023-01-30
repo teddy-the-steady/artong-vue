@@ -15,6 +15,7 @@
             <ContentsProfile
               :needUserName="needUserName"
               :member="val"
+              :isFirstLoading="isFirstLoading"
             ></ContentsProfile>
           </router-link>
         </li>
@@ -53,6 +54,10 @@ export default {
     members: {
       type: Array,
       default: () => [],
+    },
+    isFirstLoading: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="header">
-      <div class="background" :style="{ background: backgroundColor }">
+      <div v-if="isFirstLoading" class="background">
+        <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
+      </div>
+      <div v-else class="background" :style="{ background: backgroundColor }">
         <img
           v-if="project"
           :src="backgroundImage"
@@ -58,6 +61,7 @@
             <ContentsProfileBundle
               class="profile-bundle"
               :members="project.contributors"
+              :isFirstLoading="isFirstLoading"
             />
             <div class="viewAll" @click="gotoContributorTab">View all</div>
           </div>
@@ -125,6 +129,7 @@
               <ContentsProfileBundle
                 class="profile-bundle"
                 :members="project.contributors"
+                :isFirstLoading="isFirstLoading"
               />
             </div>
           </div>
@@ -181,6 +186,7 @@ import {
 } from '../../api/projects'
 import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import { getTobeApprovedContents } from '../../api/contents'
+import Ripple from '../../directives/ripple/Ripple'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
 import MintStep0 from '../modal/mint_steps/MintStep0.vue'
@@ -194,7 +200,7 @@ import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
-import Ripple from '../../directives/ripple/Ripple'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'Project',
@@ -213,6 +219,7 @@ export default {
     LeftProjectTab,
     ContentsProfile,
     BasicDialog,
+    SkeletonBox,
   },
   computed: {
     ...mapState({
@@ -237,7 +244,7 @@ export default {
   },
   data() {
     return {
-      projectAddress: '',
+      projectAddressOrSlug: '',
       backgroundColor: null,
       project: {},
       tabs: [
@@ -302,7 +309,7 @@ export default {
       const result = await graphql(
         queryProject({
           variables: {
-            id: this.projectAddress,
+            id: this.projectAddressOrSlug,
           },
         }),
       )
@@ -511,11 +518,9 @@ export default {
     },
   },
   async created() {
-    this.projectAddress = this.$route.params.id
-    this.backgroundColor = this.generateGradientBackground(
-      this.$route.params.id,
-    )
+    this.projectAddressOrSlug = this.$route.params.id
     this.project = await this.getProject()
+    this.backgroundColor = this.generateGradientBackground(this.project.id)
     this.isFirstLoading = false
     this.setStatistics()
     this.setTabs()
@@ -551,8 +556,8 @@ export default {
   },
   watch: {
     $route(to) {
-      if (this.projectAddress !== to.params.id) {
-        this.projectAddress = to.params.id
+      if (this.projectAddressOrSlug !== to.params.id) {
+        this.projectAddressOrSlug = to.params.id
         this.backgroundColor = this.generateGradientBackground(to.params.id)
         this.tabs[3].show = false
       }

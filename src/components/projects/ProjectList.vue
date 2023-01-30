@@ -2,7 +2,12 @@
   <div>
     <div class="projects">
       <div v-for="(val, i) in projectList" :key="i">
-        <router-link :to="{ name: 'Project', params: { id: val.address } }">
+        <router-link
+          :to="{
+            name: 'Project',
+            params: { id: val.slug || val.address },
+          }"
+        >
           <ProjectCard :project="val"></ProjectCard>
         </router-link>
       </div>
@@ -66,6 +71,7 @@ export default {
           for (let i = 0; i < results.length; i++) {
             projectArrayToPush.push({
               address: results[i].id,
+              slug: results[i].slug,
               creator: results[i].creator,
               name: results[i].name,
               symbol: results[i].symbol,
