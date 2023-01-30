@@ -33,7 +33,6 @@
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import { makeS3Path, weiToEther } from '../../util/commonFunc'
-import { graphql, queryProject } from '../../api/graphql'
 
 export default {
   name: 'ContentCard',
@@ -85,39 +84,32 @@ export default {
         return require('@/assets/images/art11.jpg')
       }
     },
-    onContentClick(event) {
+    onContentClick() {
       if (this.content.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: this.content.project_address,
+            project_address: this.content.project.id,
             token_id: this.content.tokenId,
-            image_width: event.target.naturalWidth,
-            image_height: event.target.naturalHeight,
+            // image_width: event.target.naturalWidth,
+            // image_height: event.target.naturalHeight,
           },
         })
       } else if (this.content.id) {
         this.$router.push({
           name: 'ContentCandidateDetail',
           params: {
-            project_address: this.content.project_address,
+            project_address: this.content.project.id,
             contents_id: this.content.id,
-            image_width: event.target.naturalWidth,
-            image_height: event.target.naturalHeight,
+            // image_width: event.target.naturalWidth,
+            // image_height: event.target.naturalHeight,
           },
         })
       }
     },
   },
   async created() {
-    this.content.project = await graphql(
-      queryProject({
-        variables: {
-          id: this.content.id,
-        },
-      }),
-    )
-    this.content.project = this.content.project.project
+    console.log(this.content)
   },
 }
 </script>
