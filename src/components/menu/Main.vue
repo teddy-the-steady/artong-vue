@@ -148,7 +148,10 @@
         <div class="top-container top-container3">
           <div class="featured-creator-title">Featured Contributors</div>
         </div>
-        <FeaturedCreator class="featured-creator"></FeaturedCreator>
+        <FeaturedCreator
+          :profiles="mainContributors"
+          class="featured-creator"
+        ></FeaturedCreator>
       </div>
     </div>
     <!--end of container4-->
@@ -251,6 +254,7 @@ import { getMainContents } from '../../api/contents'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
+import { getMainContributors } from '../../api/member'
 
 export default {
   name: 'Main',
@@ -276,6 +280,7 @@ export default {
       highlightedProjects: {},
       artongsPickTokens: {},
       isFirstLoading: true,
+      mainContributors: {},
     }
   },
   directives: {
@@ -360,7 +365,8 @@ export default {
       }),
     )
     this.artongsPickTokens = this.artongsPickTokens.tokens
-    this.isFirstLoading = false
+    this.mainContributors = await getMainContributors()
+    this.this.isFirstLoading = false
   },
 }
 </script>
