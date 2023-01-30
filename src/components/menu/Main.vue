@@ -168,6 +168,7 @@
       </div>
       <TokensByCollection
         class="container5-component-margin"
+        :tokens="recentTokens"
       ></TokensByCollection>
     </div>
     <!--end of container5-->
@@ -247,8 +248,9 @@ import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import {
   graphql,
   queryToken,
-  queryTokens,
+  queryTokensInIdArray,
   queryHighlightedProjects,
+  queryTokens,
 } from '../../api/graphql'
 import { getMainContents } from '../../api/contents'
 import ContentsProfile from '../profile/ContentsProfile.vue'
@@ -281,6 +283,7 @@ export default {
       artongsPickTokens: {},
       isFirstLoading: true,
       mainContributors: {},
+      recentTokens: {},
     }
   },
   directives: {
@@ -358,7 +361,7 @@ export default {
     )
     this.highlightedProjects = this.highlightedProjects.projects
     this.artongsPickTokens = await graphql(
-      queryTokens({
+      queryTokensInIdArray({
         variables: {
           idArray: this.mainContents.artongsPick,
         },
@@ -366,6 +369,15 @@ export default {
     )
     this.artongsPickTokens = this.artongsPickTokens.tokens
     this.mainContributors = await getMainContributors()
+    this.recentTokens = await graphql(
+      queryTokens({
+        variables: {
+          first: 10,
+          skip: 0,
+        },
+      }),
+    )
+    this.recentTokens = this.recentTokens.tokens
     this.this.isFirstLoading = false
   },
 }
