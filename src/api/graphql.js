@@ -171,7 +171,7 @@ const queryToken = function (variables) {
   }
 }
 
-const queryTokens = function (variables) {
+const queryTokensInIdArray = function (variables) {
   return {
     query: `
     query Tokens($idArray: [String]) {
@@ -196,6 +196,34 @@ const queryTokens = function (variables) {
       }
     }
     `,
+    ...variables,
+  }
+}
+
+const queryTokens = function (variables) {
+  return {
+    query: `
+    query Tokens($first: Int, $skip: Int) {
+      tokens(first: $first, skip: $skip) {
+        id
+        tokenId
+        tokenURI
+        contentURI
+        creator
+        owner
+        createdAt
+        updatedAt
+        project {
+          id
+        }
+        _db_member_id
+        _db_voucher
+        _db_name
+        _db_description
+        _db_content_thumbnail_s3key
+        _db_content_s3key
+      }
+    }`,
     ...variables,
   }
 }
@@ -381,6 +409,7 @@ export {
   queryHighlightedProjects,
   queryProjectsByCreator,
   queryToken,
+  queryTokensInIdArray,
   queryTokens,
   queryTokensByProject,
   queryTokensByCreator,
