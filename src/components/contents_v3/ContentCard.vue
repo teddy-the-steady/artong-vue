@@ -34,7 +34,6 @@
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import { makeS3Path, weiToEther } from '../../util/commonFunc'
-import { graphql, queryProject } from '../../api/graphql'
 
 export default {
   name: 'ContentCard',
@@ -114,21 +113,18 @@ export default {
         })
       }
     },
+    makeProject() {
+      this.project = {
+        id: this.content.project.id,
+        name: this.content.project.name,
+        project_s3key: this.content.project_s3key,
+        project_thumbnail_s3key: this.content.project_thumbnail_s3key,
+      }
+    },
   },
-  async created() {
-    try {
-      this.project = await graphql(
-        queryProject({
-          variables: {
-            id: this.content.project.id,
-          },
-        }),
-      )
-      this.project = this.project.project
-      this.isFirstLoading = false
-    } catch (error) {
-      this.isFirstLoading = true
-    }
+  created() {
+    this.makeProject()
+    console.log('project' + this.project)
   },
 }
 </script>
