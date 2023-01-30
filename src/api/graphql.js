@@ -30,6 +30,7 @@ const queryProject = function (variables) {
           _db_max_token_id
           _db_is_subscriber
           _db_is_contributor
+          _db_slug
         }
       }
     `,
@@ -61,6 +62,7 @@ const queryProjects = function (variables) {
           _db_description
           _db_status
           _db_member_id
+          _db_slug
         }
       }
     `,
@@ -247,6 +249,7 @@ const queryTokensByCreator = function (variables) {
           updatedAt
           _db_voucher
           _db_content_s3key
+          _db_content_thumbnail_s3key
           project {
             id
           }
@@ -279,6 +282,7 @@ const queryTokensByOwner = function (variables) {
           updatedAt
           _db_voucher
           _db_content_s3key
+          _db_content_thumbnail_s3key
           project {
             id
           }

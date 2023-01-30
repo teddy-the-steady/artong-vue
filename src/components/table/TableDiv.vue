@@ -13,7 +13,6 @@
             </div>
           </div>
           <div class="accept-button-header"></div>
-          <!-- <div v-if="tableName === 'Offers'"></div> -->
         </div>
         <div class="middle-box">
           <div
@@ -52,6 +51,7 @@
                 class="field"
                 v-else-if="field.type == 'countdown'"
                 :endDate="new Date(content[field.key] * 1000)"
+                :isAccepted="content.isAccepted"
                 :isFirstLoading="true"
               />
               <div class="field" v-else-if="field.type == 'member'">
@@ -81,7 +81,8 @@
               v-if="
                 tableName === 'Offers' &&
                 new Date(content.deadline * 1000) > new Date() &&
-                isCurrentUserTokenOwner
+                isCurrentUserTokenOwner &&
+                !content.isAccepted
               "
               class="accept-button"
             >

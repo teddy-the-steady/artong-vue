@@ -2,11 +2,9 @@
   <carousel
     :perPageCustom="[
       [360, 1],
-      [400, 1.2],
-      [500, 1.5],
-      [600, 1.8],
-      [700, 2],
-      [840, 2.2],
+      [600, 2],
+      [1080, 3],
+      [1440, 4],
     ]"
     :autoplay="true"
     :autoplayHoverPause="true"

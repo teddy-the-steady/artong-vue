@@ -7,8 +7,8 @@
         placeholder="Search"
         type="text"
         class="search-input"
-        v-model="searchWord"
-        @keyup="search"
+        :value="searchWord"
+        @input="search"
         autocomplete="off"
       />
     </div>
@@ -22,8 +22,8 @@
                   id="search-input"
                   placeholder="Search"
                   v-if="innerWidth < 1080"
-                  v-model="searchWord"
-                  @keyup="search"
+                  :value="searchWord"
+                  @input="search"
                   autocomplete="off"
                 />
               </slot>
@@ -46,7 +46,7 @@
                       <TokenProfile
                         :token="content"
                         :isFirstLoading="false"
-                        @click.native="onContentClick(content)"
+                        @click.native="onContentClick($event, content)"
                       ></TokenProfile>
                     </div>
                   </div>
@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     async search(event, time = 500) {
+      this.searchWord = event.target.value
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         let processedSearchWord = this.searchWord.trimStart()
@@ -213,13 +214,30 @@ export default {
       this.$emit('close-search-modal')
       event.stopPropagation()
     },
-    onContentClick(val) {
+    onContentClick(event, val) {
+      let imageWidth = 0
+      let imageHeight = 0
+      if (event.target.className === 'token') {
+        const node = event.target.firstChild.firstChild
+        imageWidth = node.naturalWidth
+        imageHeight = node.naturalHeight
+      } else if (event.target.className === 'username') {
+        const node = event.target.parentNode.parentNode
+        imageWidth = node.firstChild.firstChild.naturalWidth
+        imageHeight = node.firstChild.firstChild.naturalHeight
+      } else if (event.target.className === 'realImage') {
+        imageWidth = event.target.naturalWidth
+        imageHeight = event.target.naturalHeight
+      }
+
       if (val.token_id) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: val.project_address,
             token_id: val.token_id,
+            image_width: imageWidth,
+            image_height: imageHeight,
           },
         })
       } else if (val.id) {
@@ -228,6 +246,8 @@ export default {
           params: {
             project_address: val.project_address,
             contents_id: val.id,
+            image_width: imageWidth,
+            image_height: imageHeight,
           },
         })
       }

@@ -53,6 +53,7 @@ import {
   etherToWei,
   checkMobileWalletStatusAndGetSigner,
   makeS3Path,
+  isSessionValid,
 } from '../../util/commonFunc'
 import Provider from '../../util/walletConnectProvider'
 
@@ -126,6 +127,10 @@ export default {
       this.currentStep.id--
     },
     async mint() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+
       this.signer = await checkMobileWalletStatusAndGetSigner()
       if (!this.signer) {
         return
