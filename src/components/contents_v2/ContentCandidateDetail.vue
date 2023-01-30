@@ -5,7 +5,19 @@
         :href="content ? makeS3Path(content.content_s3key) : ''"
         target="_blank"
       >
-        <img :src="imagePath" />
+        <div
+          v-if="isFirstLoading"
+          :style="{
+            height: innerWidth < 500 ? skeletonHeight : skeletonBoxHeight,
+            width: skeletonBoxWidth,
+          }"
+        >
+          <SkeletonBox
+            :height="innerWidth < 500 ? '100%' : skeletonBoxHeight"
+            :width="innerWidth < 500 ? '100%' : skeletonBoxWidth"
+          />
+        </div>
+        <img v-else :src="imagePath" />
       </a>
     </div>
     <div class="content-wrap">
@@ -272,6 +284,7 @@ import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'CandidateDetail',
@@ -283,6 +296,7 @@ export default {
     ProjectPageProfile_small,
     BasicDialog,
     CuratedCollection,
+    SkeletonBox,
   },
   data() {
     return {
@@ -296,11 +310,15 @@ export default {
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
       url: '',
+      skeletonHeight: '100px',
+      skeletonBoxWidth: '100%',
+      skeletonBoxHeight: '100%',
     }
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
+      innerWidth: state => state.menu.innerWidth,
     }),
     isMobile() {
       return this.$isMobile()
@@ -373,6 +391,10 @@ export default {
       })
     },
     async buy() {
+      if (this.buying) {
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -514,6 +536,13 @@ export default {
     },
   },
   async created() {
+    this.skeletonBoxWidth = this.$route.params.image_width + 'px'
+    this.skeletonBoxHeight = this.$route.params.image_height + 'px'
+
+    const ratio =
+      this.$route.params.image_height / this.$route.params.image_width
+    this.skeletonHeight = this.innerWidth * ratio + 'px'
+
     this.isFirstLoading = true
     this.content = await getContent(
       this.$route.params.project_address,
@@ -526,6 +555,12 @@ export default {
       () => this.$route,
       async to => {
         if (to.name === 'ContentCandidateDetail') {
+          this.skeletonBoxWidth = to.params.image_width + 'px'
+          this.skeletonBoxHeight = to.params.image_height + 'px'
+
+          const ratio = to.params.image_height / to.params.image_width
+          this.skeletonHeight = this.innerWidth * ratio + 'px'
+
           this.isFirstLoading = true
           this.content = await getContent(
             this.$route.params.project_address,
@@ -556,6 +591,11 @@ export default {
     max-height: 60vh;
     padding: 4rem 0;
     background: #f2f2f2;
+    div {
+      width: 100%;
+      max-height: 60vh;
+      overflow: hidden;
+    }
     img {
       object-fit: contain;
       max-width: 100%;
@@ -714,6 +754,7 @@ export default {
       .profile-link {
         cursor: pointer;
         width: fit-content;
+        min-width: 100px;
       }
     }
   }
