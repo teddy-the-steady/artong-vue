@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
-    <div class="top" @click="onContentClick">
-      <img :src="contentImage" alt="" />
+    <div class="top">
+      <img :src="contentImage" alt="" @click.stop="onContentClick" />
+
       <ProjectPageProfile_small
         v-if="needContentName"
         class="project-profile"
-        :project="content.project"
+        :project="project"
       ></ProjectPageProfile_small>
     </div>
     <div class="bottom">
@@ -33,12 +34,18 @@
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import { makeS3Path, weiToEther } from '../../util/commonFunc'
+import { graphql, queryProject } from '../../api/graphql'
 
 export default {
   name: 'ContentCard',
   components: {
     ProjectPageProfile_small,
     ContentsProfile,
+  },
+  data() {
+    return {
+      project: {},
+    }
   },
   computed: {
     contentImage() {
@@ -67,7 +74,7 @@ export default {
     },
     needContentName: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   methods: {
@@ -108,6 +115,21 @@ export default {
       }
     },
   },
+  async created() {
+    try {
+      this.project = await graphql(
+        queryProject({
+          variables: {
+            id: this.content.project.id,
+          },
+        }),
+      )
+      this.project = this.project.project
+      this.isFirstLoading = false
+    } catch (error) {
+      this.isFirstLoading = true
+    }
+  },
 }
 </script>
 
@@ -115,8 +137,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
-  border: 1px solid #333333;
-  border-radius: 15px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
   margin: 24px 16px;
   height: 453px;
   position: relative;
@@ -127,8 +150,8 @@ export default {
     cursor: pointer;
 
     img {
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
       width: 100%;
       object-fit: cover;
     }

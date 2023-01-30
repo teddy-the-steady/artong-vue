@@ -57,8 +57,13 @@ export default {
   margin-left: 16px;
   margin-right: 8px;
   height: 214px;
-  background-color: #333333;
+  background-color: #1a1a1a;
 
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #ffffff;
   .top {
     div {
       font-family: $item-font;
