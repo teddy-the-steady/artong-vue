@@ -17,8 +17,8 @@
     :scrollPerPage="false"
     :paginationEnabled="false"
   >
-    <slide v-for="i in testNumber" :key="i" class="slide">
-      <ProfileCard></ProfileCard>
+    <slide v-for="(profile, i) in profiles" :key="i" class="slide">
+      <ProfileCard :profile="profile"></ProfileCard>
     </slide>
   </carousel>
 </template>
@@ -30,10 +30,11 @@ export default {
   components: {
     ProfileCard,
   },
-  data() {
-    return {
-      testNumber: 10, // slide 개수
-    }
+  props: {
+    profiles: {
+      type: Object,
+      default: null,
+    },
   },
 }
 </script>
