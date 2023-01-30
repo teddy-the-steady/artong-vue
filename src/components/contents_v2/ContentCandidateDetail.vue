@@ -250,7 +250,7 @@
           <div class="title">Discover projects</div>
         </div>
         <div>
-          <CuratedCollection />
+          <CuratedCollection :projects="projects" />
         </div>
       </div>
     </div>
@@ -270,6 +270,7 @@ import {
   getContentVoucher,
 } from '../../api/contents'
 import { postContentReactions } from '../../api/contents'
+import { getProjectsPrevNext } from '../../api/projects'
 import {
   makeS3Path,
   weiToEther,
@@ -303,6 +304,7 @@ export default {
       content: null,
       tokens: [],
       project: null,
+      projects: [],
       signer: null,
       buying: false,
       isFirstLoading: true,
@@ -360,7 +362,7 @@ export default {
   },
   methods: {
     async getData(project_address) {
-      const [project, tokensByProject] = await Promise.all([
+      const [project, tokensByProject, prevNextProjects] = await Promise.all([
         graphql(
           queryProject({
             variables: {
@@ -371,7 +373,7 @@ export default {
         graphql(
           queryTokensByProject({
             variables: {
-              first: 20,
+              first: 8,
               skip: 0,
               start_num: 0,
               project: project_address,
@@ -380,10 +382,12 @@ export default {
             },
           }),
         ),
+        getProjectsPrevNext(project_address, 4),
       ])
 
       this.project = project.project
       this.tokens = tokensByProject.tokens
+      this.projects = prevNextProjects
     },
     async approve() {
       await patchContentStatus(this.project.id, this.content.id, {
