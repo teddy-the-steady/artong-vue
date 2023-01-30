@@ -277,7 +277,7 @@
           <div class="title">Discover projects</div>
         </div>
         <div>
-          <CuratedCollection />
+          <CuratedCollection :projects="projects" />
         </div>
       </div>
     </div>
@@ -304,6 +304,7 @@ import {
   queryTokensByProject,
 } from '../../api/graphql'
 import { postContentReactions } from '../../api/contents'
+import { getProjectsPrevNext } from '../../api/projects'
 import {
   makeS3Path,
   etherToWei,
@@ -338,9 +339,8 @@ export default {
   data() {
     return {
       content: null,
-      offers: [],
-      histories: [],
       tokens: [],
+      projects: [],
       signer: null,
       confirmOnProcess: false,
       cancelDisabled: false,
@@ -422,21 +422,25 @@ export default {
 
       return result.token
     },
-    async queryTokensByProject(project_address) {
-      const result = await graphql(
-        queryTokensByProject({
-          variables: {
-            first: 8,
-            skip: 0,
-            start_num: 0,
-            project: project_address,
-            orderBy: 'createdAt',
-            orderDirection: 'desc',
-          },
-        }),
-      )
+    async getCarouselData(project_address) {
+      const [prevNextProjects, tokensByProject] = await Promise.all([
+        getProjectsPrevNext(project_address, 4),
+        graphql(
+          queryTokensByProject({
+            variables: {
+              first: 8,
+              skip: 0,
+              start_num: 0,
+              project: project_address,
+              orderBy: 'createdAt',
+              orderDirection: 'desc',
+            },
+          }),
+        ),
+      ])
 
-      return result.tokens
+      this.projects = prevNextProjects
+      this.tokens = tokensByProject.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
@@ -770,9 +774,7 @@ export default {
       this.$route.params.token_id,
     )
     this.isFirstLoading = false
-    this.tokens = await this.queryTokensByProject(
-      this.$route.params.project_address,
-    )
+    await this.getCarouselData(this.$route.params.project_address)
 
     this.$watch(
       () => this.$route,
@@ -784,9 +786,7 @@ export default {
             to.params.token_id,
           )
           this.isFirstLoading = false
-          this.tokens = await this.queryTokensByProject(
-            to.params.project_address,
-          )
+          await this.getCarouselData(to.params.project_address)
         }
       },
     )

@@ -31,18 +31,10 @@ export default {
   },
   props: {
     projects: {
-      type: Object,
-      default: null,
+      type: Array,
+      default: () => [],
     },
   },
-  methods: {
-    getTestNumber() {},
-  },
-  // methods: {
-  //     handleSlideClick(dataset)=>{
-  //         console.log(dataset.index, dataset.name)
-  //     }
-  // }
 }
 </script>
 
