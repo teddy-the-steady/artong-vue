@@ -18,7 +18,16 @@
     :paginationEnabled="false"
   >
     <slide v-for="(profile, i) in profiles" :key="i" class="slide">
-      <ProfileCard :profile="profile"></ProfileCard>
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: {
+            id: profile.username,
+          },
+        }"
+      >
+        <ProfileCard :profile="profile"></ProfileCard>
+      </router-link>
     </slide>
   </carousel>
 </template>
@@ -43,7 +52,7 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
-  border: 1px solid #333333;
+  //border: 1px solid #333333;
   border-radius: 15px;
   margin-left: 16px;
   margin-right: 8px;

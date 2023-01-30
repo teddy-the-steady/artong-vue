@@ -147,6 +147,7 @@ const queryToken = function (variables) {
           project {
             id
             name
+            symbol
           }
           listings (orderBy: createdAt, orderDirection: desc, first: 1) {
             id

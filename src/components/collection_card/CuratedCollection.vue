@@ -14,7 +14,16 @@
     paginationActiveColor="#F22E3E"
   >
     <slide v-for="(project, i) in projects" :key="i">
-      <ProjectCard :project="project"></ProjectCard>
+      <router-link
+        :to="{
+          name: 'Project',
+          params: {
+            id: project.id,
+          },
+        }"
+      >
+        <ProjectCard :project="project"></ProjectCard>
+      </router-link>
     </slide>
   </carousel>
 </template>

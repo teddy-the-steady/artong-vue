@@ -1,27 +1,35 @@
 <template>
-  <div class="wrapper">
-    <div class="top">
-      <ProjectPageProfile_wrapped
-        :projectImageUrl="
-          project.project_thumnaiil_s3key || project.project_s3key
-        "
-      ></ProjectPageProfile_wrapped>
-      <div class="collection-name">Collection Name</div>
-    </div>
-    <div class="middle">
-      <ContentsProfileBundle
-        :members="project.contributors"
-      ></ContentsProfileBundle>
-      <div class="nickName">
-        @{{ project.contributors[0].username }} +{{
-          project.contributors.length
-        }}
+  <div>
+    <router-link
+      :to="{
+        name: 'Project',
+        params: {
+          id: project.id,
+        },
+      }"
+    >
+      <div class="wrapper">
+        <div class="top">
+          <ProjectPageProfile_wrapped
+            :projectImageUrl="
+              project.project_thumnaiil_s3key || project.project_s3key
+            "
+          ></ProjectPageProfile_wrapped>
+          <div class="collection-name">{{ project.name }}</div>
+        </div>
+        <div class="middle">
+          <ContentsProfileBundle
+            :members="project.contributors"
+          ></ContentsProfileBundle>
+          <div class="nickName">
+            @{{ project.contributors[0].username }} +{{
+              project.contributors.length
+            }}
+          </div>
+          <div class="category">{{ project.symbol }}</div>
+        </div>
       </div>
-      <div class="category">{{ project.symbol }}</div>
-    </div>
-    <div class="description">
-      {{ project.description }}
-    </div>
+    </router-link>
   </div>
 </template>
 <script>
@@ -68,6 +76,7 @@ export default {
   .middle {
     margin-left: 24px;
     margin-top: 16px;
+    margin-bottom: 24px;
     display: flex;
     flex-direction: row;
     position: relative;
@@ -95,13 +104,6 @@ export default {
       line-height: 25px;
       color: $profile-border-red;
     }
-  }
-  .description {
-    width: 660px;
-    margin-left: 24px;
-    margin-bottom: 24px;
-    text-align: left;
-    color: $artong-white;
   }
 }
 @media (min-width: 1440px) {
