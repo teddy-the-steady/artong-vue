@@ -65,6 +65,10 @@ const searchContents = async function (searchWord) {
   })
 }
 
+const getMainContents = async function () {
+  return await instance.get('/main/contents')
+}
+
 export {
   getContent,
   postContent,
@@ -76,4 +80,5 @@ export {
   getTobeApprovedContents,
   postContentReactions,
   searchContents,
+  getMainContents,
 }

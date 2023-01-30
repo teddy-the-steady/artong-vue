@@ -65,6 +65,15 @@ const searchProjects = async function (searchWord) {
   })
 }
 
+const getProjectsPrevNext = async function (project_address, prev_next_count) {
+  return await instance.get('/projects', {
+    params: {
+      basis_project_address: project_address,
+      prev_next_count: prev_next_count,
+    },
+  })
+}
+
 export {
   postProject,
   patchProject,
@@ -74,4 +83,5 @@ export {
   getMemberContentsCandidates,
   getMemberContentsFavorites,
   searchProjects,
+  getProjectsPrevNext,
 }

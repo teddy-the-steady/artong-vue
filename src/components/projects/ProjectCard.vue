@@ -3,7 +3,11 @@
     <div class="background">
       <img
         ref="backgroundImage"
-        :src="project.background_thumbnail_s3key || project.background_s3key"
+        :src="
+          backgroundImagePath(
+            project.background_thumbnail_s3key || project.background_s3key,
+          )
+        "
       />
     </div>
     <div class="top">
@@ -46,6 +50,8 @@
 <script>
 import ProjectPageProfile_wrapped from '../profile/ProjectPageProfile_wrapped.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
+import { makeS3Path } from '../../util/commonFunc'
+
 export default {
   name: 'ProjectCard',
   components: { ProjectPageProfile_wrapped, ContentsProfileBundle },
@@ -59,6 +65,14 @@ export default {
           symbol: '',
         }
       },
+    },
+  },
+  methods: {
+    makeS3Path(path) {
+      return makeS3Path(path)
+    },
+    backgroundImagePath(backgroudnImageUrl) {
+      return this.makeS3Path(backgroudnImageUrl)
     },
   },
 }
