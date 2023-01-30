@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <router-link
       :to="{
         name: 'Project',
@@ -8,26 +8,24 @@
         },
       }"
     >
-      <div class="wrapper">
-        <div class="top">
-          <ProjectPageProfile_wrapped
-            :projectImageUrl="
-              project.project_thumnaiil_s3key || project.project_s3key
-            "
-          ></ProjectPageProfile_wrapped>
-          <div class="collection-name">{{ project.name }}</div>
+      <div class="top">
+        <ProjectPageProfile_wrapped
+          :projectImageUrl="
+            project.project_thumnaiil_s3key || project.project_s3key
+          "
+        ></ProjectPageProfile_wrapped>
+        <div class="collection-name">{{ project.name }}</div>
+      </div>
+      <div class="middle">
+        <ContentsProfileBundle
+          :members="project.contributors"
+        ></ContentsProfileBundle>
+        <div class="nickName">
+          @{{ project.contributors[0].username }} +{{
+            project.contributors.length - 1
+          }}
         </div>
-        <div class="middle">
-          <ContentsProfileBundle
-            :members="project.contributors"
-          ></ContentsProfileBundle>
-          <div class="nickName">
-            @{{ project.contributors[0].username }} +{{
-              project.contributors.length
-            }}
-          </div>
-          <div class="category">{{ project.symbol }}</div>
-        </div>
+        <div class="category">{{ project.symbol }}</div>
       </div>
     </router-link>
   </div>
