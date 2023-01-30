@@ -444,6 +444,8 @@ export default {
           variables: {
             first: 10,
             skip: 0,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
           },
         }),
       )

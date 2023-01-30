@@ -187,6 +187,7 @@ const queryTokensInIdArray = function (variables) {
         updatedAt
         project {
           id
+          name
         }
         _db_member_id
         _db_voucher
@@ -204,8 +205,8 @@ const queryTokensInIdArray = function (variables) {
 const queryTokens = function (variables) {
   return {
     query: `
-    query Tokens($first: Int, $skip: Int) {
-      tokens(first: $first, skip: $skip) {
+    query Tokens($first: Int, $skip: Int, $orderBy: String, $orderDirection: String) {
+      tokens(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
         id
         tokenId
         tokenURI
@@ -216,6 +217,7 @@ const queryTokens = function (variables) {
         updatedAt
         project {
           id
+          name
         }
         _db_member_id
         _db_voucher
