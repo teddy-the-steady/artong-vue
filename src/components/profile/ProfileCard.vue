@@ -33,9 +33,6 @@ export default {
       return this.profile.profile_thumbnail_s3key || this.profile.profile_s3key
     },
   },
-  created() {
-    console.log(this.profile)
-  },
   methods: {
     makeS3Path() {
       return makeS3Path
