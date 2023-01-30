@@ -60,11 +60,11 @@ export default {
       width: 80px;
       overflow: hidden !important;
       text-overflow: ellipsis;
-      font-family: 'Pretendard';
-      font-style: normal;
-      font-weight: 500;
-      font-size: 14px;
-      color: #ffffff;
+      // font-family: 'Pretendard';
+      // font-style: normal;
+      // font-weight: 500;
+      // font-size: 14px;
+      // color: #ffffff;
       margin-bottom: 12px;
       margin-top: 24px;
     }

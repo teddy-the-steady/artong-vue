@@ -42,12 +42,12 @@ export default {
     },
     isFirstLoading: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   computed: {
     projectImage() {
-      return this.makeS3Path(
+      return makeS3Path(
         this.project.project_thumbnail_s3key || this.project.project_s3key,
       )
     },
