@@ -70,6 +70,36 @@ const queryProjects = function (variables) {
   }
 }
 
+const queryHighlightedProjects = function (variables) {
+  return {
+    query: `
+    query Projects($idArray: [String]) {
+      projects(where: {id_in: $idArray}) {
+        id
+        txHash
+        creator
+        owner
+        name
+        symbol
+        maxAmount
+        policy
+        isDisabled
+        createdAt
+        updatedAt
+        _db_project_s3key
+        _db_project_thumbnail_s3key
+        _db_background_s3key
+        _db_background_thumbnail_s3key
+        _db_create_tx_hash
+        _db_description
+        _db_status
+        _db_member_id
+      }
+    }`,
+    ...variables,
+  }
+}
+
 const queryProjectsByCreator = function (variables) {
   return {
     query: `
@@ -136,6 +166,35 @@ const queryToken = function (variables) {
           _db_total_likes
         }
       }
+    `,
+    ...variables,
+  }
+}
+
+const queryTokens = function (variables) {
+  return {
+    query: `
+    query Tokens($idArray: [String]) {
+      tokens(where: {id_in: $idArray}) {
+        id
+        tokenId
+        tokenURI
+        contentURI
+        creator
+        owner
+        createdAt
+        updatedAt
+        project {
+          id
+        }
+        _db_member_id
+        _db_voucher
+        _db_name
+        _db_description
+        _db_content_thumbnail_s3key
+        _db_content_s3key
+      }
+    }
     `,
     ...variables,
   }
@@ -319,8 +378,10 @@ export {
   graphql,
   queryProject,
   queryProjects,
+  queryHighlightedProjects,
   queryProjectsByCreator,
   queryToken,
+  queryTokens,
   queryTokensByProject,
   queryTokensByCreator,
   queryTokensByOwner,
