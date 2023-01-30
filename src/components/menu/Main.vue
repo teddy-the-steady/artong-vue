@@ -156,16 +156,16 @@
       <div class="top-container top-container3">
         <div class="buy-and-sell">Artong's Pick</div>
       </div>
-      <BuyAndSell
+      <TokensByCollection
         class="container5-component-margin"
         :tokens="artongsPickTokens"
-      ></BuyAndSell>
+      ></TokensByCollection>
       <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contribution</div>
       </div>
-      <RecentContribution
+      <TokensByCollection
         class="container5-component-margin"
-      ></RecentContribution>
+      ></TokensByCollection>
     </div>
     <!--end of container5-->
     <div class="container6">
@@ -237,8 +237,6 @@
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
-import BuyAndSell from '../collection_card/BuyAndSell.vue'
-import RecentContribution from '../collection_card/RecentContribution.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
@@ -252,14 +250,14 @@ import {
 import { getMainContents } from '../../api/contents'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
+import TokensByCollection from '../collection_card/TokensByCollection.vue'
 
 export default {
   name: 'Main',
   mixins: [headerActivate],
   components: {
     CuratedCollection,
-    BuyAndSell,
-    RecentContribution,
+    TokensByCollection,
     FeaturedCreator,
     CuratedCollectionWide,
     ContentsProfile,
