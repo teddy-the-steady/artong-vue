@@ -3,7 +3,7 @@
     :to="{
       name: 'Project',
       params: {
-        id: project.id,
+        id: project ? project.id : '',
       },
     }"
   >
@@ -21,7 +21,7 @@
       </div>
       <div class="info" v-if="!isFirstLoading">
         <div class="username">
-          {{ project.name }}
+          {{ project ? project.name : '' }}
         </div>
       </div>
       <div class="info" v-else-if="isFirstLoading">

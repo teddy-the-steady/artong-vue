@@ -95,7 +95,7 @@ export default {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: this.content.project.id,
+            project_address: this.content.slug || this.content.project.id,
             token_id: this.content.tokenId,
             image_width: event.target.naturalWidth,
             image_height: event.target.naturalHeight,
@@ -105,7 +105,7 @@ export default {
         this.$router.push({
           name: 'ContentCandidateDetail',
           params: {
-            project_address: this.content.project.id,
+            project_address: this.content.slug || this.content.project_address,
             contents_id: this.content.id,
             image_width: event.target.naturalWidth,
             image_height: event.target.naturalHeight,
@@ -115,8 +115,8 @@ export default {
     },
     makeProject() {
       this.project = {
-        id: this.content.project.id,
-        name: this.content.project.name,
+        id: this.content.project?.id,
+        name: this.content.project?.name,
         project_s3key: this.content.project_s3key,
         project_thumbnail_s3key: this.content.project_thumbnail_s3key,
       }
@@ -124,7 +124,6 @@ export default {
   },
   created() {
     this.makeProject()
-    console.log('project' + this.project)
   },
 }
 </script>
