@@ -18,7 +18,7 @@
         :to="{
           name: 'Project',
           params: {
-            id: project.id,
+            id: project.slug || project.id || project.address,
           },
         }"
       >
@@ -39,10 +39,7 @@ export default {
     return {}
   },
   props: {
-    projects: {
-      type: Array,
-      default: () => [],
-    },
+    projects: {},
   },
 }
 </script>

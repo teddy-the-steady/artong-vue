@@ -234,7 +234,7 @@ export default {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: val.project_address,
+            project_address: val.slug || val.project_address,
             token_id: val.token_id,
             image_width: imageWidth,
             image_height: imageHeight,
@@ -244,7 +244,7 @@ export default {
         this.$router.push({
           name: 'ContentCandidateDetail',
           params: {
-            project_address: val.project_address,
+            project_address: val.slug || val.project_address,
             contents_id: val.id,
             image_width: imageWidth,
             image_height: imageHeight,

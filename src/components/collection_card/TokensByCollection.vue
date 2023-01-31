@@ -30,10 +30,7 @@ export default {
     ContentCard,
   },
   props: {
-    tokens: {
-      type: Array,
-      default: null,
-    },
+    tokens: {},
     needContentName: {
       type: Boolean,
       default: false,

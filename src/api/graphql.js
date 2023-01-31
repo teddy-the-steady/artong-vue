@@ -94,6 +94,7 @@ const queryHighlightedProjects = function (variables) {
         _db_description
         _db_status
         _db_member_id
+        _db_slug
       }
     }`,
     ...variables,
