@@ -39,8 +39,40 @@ export default {
     }
   },
   methods: {
+    findFileType(file) {
+      let fileType = file.type
+      let fileLength = file.length
+      let fileSlash = file.type.lastIndexOf('/')
+      fileType = file.type.substring(fileSlash + 1, fileLength)
+      return fileType
+    },
+    checkFileTypeValidity(fileType) {
+      switch (fileType) {
+        case 'apng':
+        case 'avif':
+        case 'gif':
+        case 'jpg':
+        case 'jpeg':
+        case 'jfif':
+        case 'pjpeg':
+        case 'pjp':
+        case 'png':
+        case 'svg':
+        case 'webp':
+          return true
+        default:
+          return false
+      }
+    },
     async onFileChange(e) {
       this.file = e.target.files[0]
+      let fileType = this.findFileType(this.file)
+      let fileTypeValidity = this.checkFileTypeValidity(fileType)
+      if (!fileTypeValidity) {
+        alert('only allows .gif .jpg .jpeg .png')
+        return
+      }
+      this.$emit('is-loading', true)
       this.image = URL.createObjectURL(this.file)
       URL.revokeObjectURL(this.file)
 
@@ -48,13 +80,12 @@ export default {
         project_address: this.project.id,
         content_s3key: `${this.S3_PRIVACY_LEVEL}/nft/${this.project.id}/${this.currentUser.id}/${this.file.name}`,
       })
-
       const s3Result = await this.uploadToS3(
         this.project.id,
         this.currentUser.id,
         this.file.name,
       )
-
+      this.$emit('is-loading', false)
       this.$emit('data-from-step0', 'postResult', postResult)
       this.$emit('data-from-step0', 's3Result', s3Result)
     },

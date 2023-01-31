@@ -27,7 +27,8 @@
               @click="nextStep()"
               v-show="currentStep.id < steps.length - 2"
             >
-              Next
+              <div class="spinner" :class="{ active: isLoading }"></div>
+              <span v-show="!isLoading"> Next </span>
             </button>
             <button
               @click="mint()"
@@ -68,6 +69,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     currentTitle() {
@@ -96,6 +101,7 @@ export default {
     nextStep() {
       switch (this.currentStep.id) {
         case 0:
+          if (this.isLoading) return
           if (!this.slotData.s3Result) {
             alert('Please add image')
             return
@@ -281,8 +287,42 @@ export default {
 
       .modal-footer {
         align-self: flex-end;
+        display: flex;
         button {
+          width: 100%;
           margin-left: 10px;
+          .spinner {
+            display: none;
+
+            &.active {
+              display: inline-block;
+              position: relative;
+              width: 2px;
+              margin: 0px auto;
+              animation: rotation 0.6s infinite linear;
+              border-left: 6px solid rgba(0, 174, 239, 0.15);
+              border-right: 6px solid rgba(0, 174, 239, 0.15);
+              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+              border-top: 6px solid $artong-white;
+              border-radius: 100%;
+            }
+          }
+
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+          button {
+            width: 100%;
+          }
+
+          & > span:nth-child(2) {
+            align-self: center;
+          }
         }
       }
     }

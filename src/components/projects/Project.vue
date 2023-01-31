@@ -146,15 +146,25 @@
         class="project-tab-sort"
       />
     </div>
-    <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
+    <MintModal
+      v-if="isModalOpen"
+      :steps="steps"
+      :slotData="slotData"
+      :isLoading="isLoading"
+    >
       <span slot="header" @click="close">X</span>
       <MintStep0
         slot="body_step_0"
         @data-from-step0="setSlotData"
+        @is-loading="setIsLoading"
         :project="project"
       ></MintStep0>
       <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
-      <MintStep2 slot="body_step_2" @data-from-step2="setSlotData"></MintStep2>
+      <MintStep2
+        slot="body_step_2"
+        @data-from-step2="setSlotData"
+        :needMoreInfo="needMoreInfo"
+      ></MintStep2>
       <MintStep3
         slot="body_step_3"
         @data-from-step3="setSlotData"
@@ -221,6 +231,7 @@ export default {
     BasicDialog,
     SkeletonBox,
   },
+  props: {},
   computed: {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
@@ -244,6 +255,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       projectAddressOrSlug: '',
       backgroundColor: null,
       project: {},
@@ -305,6 +317,9 @@ export default {
     }
   },
   methods: {
+    setIsLoading(val) {
+      this.isLoading = val
+    },
     async getProject() {
       const result = await graphql(
         queryProject({
