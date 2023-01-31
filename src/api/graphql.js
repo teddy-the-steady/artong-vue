@@ -94,6 +94,7 @@ const queryHighlightedProjects = function (variables) {
         _db_description
         _db_status
         _db_member_id
+        _db_slug
       }
     }`,
     ...variables,
@@ -147,6 +148,7 @@ const queryToken = function (variables) {
           project {
             id
             name
+            symbol
           }
           listings (orderBy: createdAt, orderDirection: desc, first: 1) {
             id
@@ -171,7 +173,7 @@ const queryToken = function (variables) {
   }
 }
 
-const queryTokens = function (variables) {
+const queryTokensInIdArray = function (variables) {
   return {
     query: `
     query Tokens($idArray: [String]) {
@@ -186,6 +188,7 @@ const queryTokens = function (variables) {
         updatedAt
         project {
           id
+          name
         }
         _db_member_id
         _db_voucher
@@ -196,6 +199,35 @@ const queryTokens = function (variables) {
       }
     }
     `,
+    ...variables,
+  }
+}
+
+const queryTokens = function (variables) {
+  return {
+    query: `
+    query Tokens($first: Int, $skip: Int, $orderBy: String, $orderDirection: String) {
+      tokens(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+        id
+        tokenId
+        tokenURI
+        contentURI
+        creator
+        owner
+        createdAt
+        updatedAt
+        project {
+          id
+          name
+        }
+        _db_member_id
+        _db_voucher
+        _db_name
+        _db_description
+        _db_content_thumbnail_s3key
+        _db_content_s3key
+      }
+    }`,
     ...variables,
   }
 }
@@ -381,6 +413,7 @@ export {
   queryHighlightedProjects,
   queryProjectsByCreator,
   queryToken,
+  queryTokensInIdArray,
   queryTokens,
   queryTokensByProject,
   queryTokensByCreator,

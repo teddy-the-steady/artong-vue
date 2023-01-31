@@ -1,27 +1,36 @@
 <template>
-  <div class="project">
-    <div v-if="isFirstLoading" class="image">
-      <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
-    </div>
-    <div v-else @error="isFirstLoading = true">
-      <img v-if="projectImage" :src="projectImage" class="realImage" />
-      <div
-        v-else
-        class="basicProfileImage"
-        :style="{ background: backgroundColor }"
-      ></div>
-    </div>
-    <div class="info" v-if="!isFirstLoading">
-      <div class="username">
-        {{ project.name }}
-      </div>
-    </div>
-    <div class="info" v-else-if="isFirstLoading">
-      <div class="username_box">
+  <router-link
+    :to="{
+      name: 'Project',
+      params: {
+        id: project ? project.id : '',
+      },
+    }"
+  >
+    <div class="project">
+      <div v-if="isFirstLoading" class="image">
         <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
       </div>
+      <div v-else @error="isFirstLoading = true">
+        <img v-if="projectImage" :src="projectImage" class="realImage" />
+        <div
+          v-else
+          class="basicProfileImage"
+          :style="{ background: backgroundColor }"
+        ></div>
+      </div>
+      <div class="info" v-if="!isFirstLoading">
+        <div class="username">
+          {{ project ? project.name : '' }}
+        </div>
+      </div>
+      <div class="info" v-else-if="isFirstLoading">
+        <div class="username_box">
+          <SkeletonBox style="width: 100%; height: 100%"></SkeletonBox>
+        </div>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -42,12 +51,12 @@ export default {
     },
     isFirstLoading: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   computed: {
     projectImage() {
-      return this.makeS3Path(
+      return makeS3Path(
         this.project.project_thumbnail_s3key || this.project.project_s3key,
       )
     },

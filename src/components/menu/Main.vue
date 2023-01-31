@@ -19,34 +19,55 @@
           </button>
         </div>
         <div class="container1-2">
-          <img
-            class="category-img"
-            src="../../assets/icons/category.svg"
-            width="67px"
-            height="22px"
-          />
-          <div class="nft-name">{{ this.mainToken.name }}</div>
-          <div class="nft-name-img">
-            <img :src="contentImagePath(this.mainToken)" />
+          <div class="container1-2-top">
+            <div class="category">
+              {{ mainToken.project ? mainToken.project.symbol : '' }}
+            </div>
+            <div class="nft-name">{{ mainToken.name }}</div>
+          </div>
+          <div class="nft-name-img" @click="onContentClick($event, mainToken)">
+            <img :src="contentImagePath(mainToken)" />
           </div>
           <div class="container1-2-bottom">
             <div class="container1-2-bottom-left">
               <div class="container1-2-bottom-title">Project</div>
               <div class="container1-2-bottom-content">
-                <ProjectPageProfile_small
-                  :project="this.mainToken.project"
-                  :isFirstLoading="isFirstLoading"
-                ></ProjectPageProfile_small>
+                <router-link
+                  :to="{
+                    name: 'Project',
+                    params: {
+                      id: this.mainToken.project
+                        ? this.mainToken.project.id
+                        : '',
+                    },
+                  }"
+                >
+                  <ProjectPageProfile_small
+                    :project="this.mainToken.project"
+                    :isFirstLoading="isFirstLoading"
+                  ></ProjectPageProfile_small>
+                </router-link>
               </div>
             </div>
             <div class="container1-2-bottom-right">
               <div class="container1-2-bottom-title">Created by</div>
               <div class="container1-2-bottom-content">
-                <ContentsProfile
-                  :member="this.mainToken ? this.mainToken.owner : null"
-                  :needUserName="true"
-                  :isFirstLoading="isFirstLoading"
-                ></ContentsProfile>
+                <router-link
+                  :to="{
+                    name: 'UserOrArtist',
+                    params: {
+                      id: this.mainToken.owner
+                        ? this.mainToken.owner.username
+                        : '',
+                    },
+                  }"
+                >
+                  <ContentsProfile
+                    :member="this.mainToken ? this.mainToken.owner : null"
+                    :needUserName="true"
+                    :isFirstLoading="isFirstLoading"
+                  ></ContentsProfile>
+                </router-link>
               </div>
             </div>
           </div>
@@ -148,7 +169,10 @@
         <div class="top-container top-container3">
           <div class="featured-creator-title">Featured Contributors</div>
         </div>
-        <FeaturedCreator class="featured-creator"></FeaturedCreator>
+        <FeaturedCreator
+          :profiles="mainContributors"
+          class="featured-creator"
+        ></FeaturedCreator>
       </div>
     </div>
     <!--end of container4-->
@@ -159,12 +183,15 @@
       <TokensByCollection
         class="container5-component-margin"
         :tokens="artongsPickTokens"
+        :needContentName="true"
       ></TokensByCollection>
       <div class="top-container top-container3">
         <div class="recent-contribution">Recent Contribution</div>
       </div>
       <TokensByCollection
         class="container5-component-margin"
+        :tokens="recentTokens"
+        :needContentName="true"
       ></TokensByCollection>
     </div>
     <!--end of container5-->
@@ -205,24 +232,35 @@
       </div>
       <div class="bottom-link">
         <div class="bottom-table">
-          <ol class="column first-column">
-            <li>Learn</li>
-            <li>Create</li>
-            <li>Collect</li>
-            <li>Sell</li>
-          </ol>
-          <ol class="column second-column">
-            <li>Company</li>
-            <li>About</li>
-            <li>Careers</li>
-            <li>Help Center</li>
-          </ol>
-          <ol class="column third-column">
-            <li>Connect</li>
-            <li>Twitter</li>
-            <li>Instagram</li>
-            <li>Discord</li>
-          </ol>
+          <ul style="list-style: none" class="column second-column">
+            <li style="list-style: none">Company</li>
+            <li
+              style="list-style: none"
+              @click="
+                moveToAnotherSite(
+                  'https://www.notion.so/artong/Artong-b97ff2cfe0434a3eaf111eb76b5d4bed',
+                )
+              "
+            >
+              About
+            </li>
+            <li style="list-style: none">Careers</li>
+          </ul>
+          <ul style="list-style: none" class="column third-column">
+            <li style="list-style: none">Connect</li>
+            <li
+              style="list-style: none"
+              @click="moveToAnotherSite('https://twitter.com/4rtong')"
+            >
+              Twitter
+            </li>
+            <li
+              style="list-style: none"
+              @click="moveToAnotherSite('https://www.instagram.com/artong.io/')"
+            >
+              Instagram
+            </li>
+          </ul>
         </div>
         <div class="bottom-left">
           <div class="bottom-word">Privacy Info</div>
@@ -244,13 +282,15 @@ import { isSessionValid, makeS3Path } from '../../util/commonFunc'
 import {
   graphql,
   queryToken,
-  queryTokens,
+  queryTokensInIdArray,
   queryHighlightedProjects,
+  queryTokens,
 } from '../../api/graphql'
 import { getMainContents } from '../../api/contents'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
+import { getMainContributors } from '../../api/member'
 
 export default {
   name: 'Main',
@@ -276,6 +316,8 @@ export default {
       highlightedProjects: {},
       artongsPickTokens: {},
       isFirstLoading: true,
+      mainContributors: {},
+      recentTokens: {},
     }
   },
   directives: {
@@ -327,40 +369,97 @@ export default {
         this.makeS3Path(member?.profile_s3key)
       )
     },
+    onContentClick(event, val) {
+      if (val.tokenId) {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address: val.project.id,
+            token_id: val.tokenId,
+            image_width: event.target.imageWidth,
+            image_height: event.target.imageHeight,
+          },
+        })
+      } else if (val.id) {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address: val.project.id,
+            contents_id: val.id,
+            image_width: event.target.imageWidth,
+            image_height: event.target.imageHeight,
+          },
+        })
+      }
+    },
+    moveToAnotherSite(url) {
+      window.open(url)
+    },
   },
   async created() {
     this.mainContents = await getMainContents()
-    this.mainToken = await graphql(
-      queryToken({
-        variables: {
-          id:
-            this.mainContents.mainToken.project_address +
-            this.mainContents.mainToken.token_id,
-        },
-        db: {
-          project_address: this.mainContents.mainToken.project_address,
-          token_id: this.mainContents.mainToken.token_id,
-        },
-      }),
-    )
-    this.mainToken = this.mainToken.token
-    this.highlightedProjects = await graphql(
-      queryHighlightedProjects({
-        variables: {
-          idArray: this.mainContents.highlightedProjects,
-        },
-      }),
-    )
-    this.highlightedProjects = this.highlightedProjects.projects
-    this.artongsPickTokens = await graphql(
-      queryTokens({
-        variables: {
-          idArray: this.mainContents.artongsPick,
-        },
-      }),
-    )
-    this.artongsPickTokens = this.artongsPickTokens.tokens
-    this.isFirstLoading = false
+    try {
+      this.mainToken = await graphql(
+        queryToken({
+          variables: {
+            id:
+              this.mainContents.mainToken.project_address +
+              this.mainContents.mainToken.token_id,
+          },
+          db: {
+            project_address: this.mainContents.mainToken.project_address,
+            token_id: this.mainContents.mainToken.token_id,
+          },
+        }),
+      )
+      this.mainToken = this.mainToken.token
+      this.isFirstLoading = false
+    } catch (error) {
+      this.isFirstLoading = true
+    }
+    try {
+      this.highlightedProjects = await graphql(
+        queryHighlightedProjects({
+          variables: {
+            idArray: this.mainContents.highlightedProjects,
+          },
+        }),
+      )
+      this.highlightedProjects = this.highlightedProjects.projects
+      this.isFirstLoading = false
+    } catch (error) {
+      this.isFirstLoading = true
+    }
+    try {
+      this.artongsPickTokens = await graphql(
+        queryTokensInIdArray({
+          variables: {
+            idArray: this.mainContents.artongsPick,
+          },
+        }),
+      )
+      this.artongsPickTokens = this.artongsPickTokens.tokens
+      this.isFirstLoading = false
+    } catch (error) {
+      this.isFirstLoading = true
+    }
+    try {
+      this.mainContributors = await getMainContributors()
+      this.recentTokens = await graphql(
+        queryTokens({
+          variables: {
+            first: 10,
+            skip: 0,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
+          },
+        }),
+      )
+      this.recentTokens = this.recentTokens.tokens
+      this.isFirstLoading = false
+    } catch (error) {
+      this.isFirstLoading = true
+    }
   },
 }
 </script>
@@ -724,6 +823,19 @@ export default {
     gap: 10px;
     height: 553px;
   }
+  .category {
+    width: 67px;
+    height: 22px;
+    border: 1px solid #f22e3e;
+    border-radius: 999px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    color: #f22e3e;
+    margin-bottom: 8px;
+  }
   .nft-name {
     font-family: $item-font;
     font-style: $item-font-style;
@@ -879,6 +991,19 @@ export default {
     flex-basis: 420px;
     gap: 10px;
     height: 553px;
+  }
+  .category {
+    width: 67px;
+    height: 22px;
+    border: 1px solid #f22e3e;
+    border-radius: 999px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    color: #f22e3e;
+    margin-bottom: 8px;
   }
   .nft-name {
     font-family: $item-font;

@@ -4,7 +4,7 @@
       <div class="name">@{{ profile.username }}</div>
       <div class="profileImg">
         <ProfileImageBig
-          :profileImageUrl="profileImageUrl"
+          :profileImageUrl="processImageUrl(profileImageUrl)"
           :isFirstLoading="profileImageUrl ? false : true"
         ></ProfileImageBig>
       </div>
@@ -17,6 +17,7 @@
 
 <script>
 import ProfileImageBig from './ProfileImageBig.vue'
+import { makeS3Path } from '../../util/commonFunc'
 
 export default {
   name: 'ProfileCard',
@@ -30,6 +31,14 @@ export default {
   computed: {
     profileImageUrl() {
       return this.profile.profile_thumbnail_s3key || this.profile.profile_s3key
+    },
+  },
+  methods: {
+    makeS3Path() {
+      return makeS3Path
+    },
+    processImageUrl(url) {
+      return makeS3Path(url)
     },
   },
 }
@@ -51,7 +60,22 @@ export default {
       width: 80px;
       overflow: hidden !important;
       text-overflow: ellipsis;
+      // font-family: 'Pretendard';
+      // font-style: normal;
+      // font-weight: 500;
+      // font-size: 14px;
+      // color: #ffffff;
+      margin-bottom: 12px;
+      margin-top: 24px;
     }
+  }
+  .bottom {
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    color: #808080;
+    margin-top: 12px;
   }
 }
 </style>
