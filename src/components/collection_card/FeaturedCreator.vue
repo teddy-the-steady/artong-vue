@@ -40,10 +40,7 @@ export default {
     ProfileCard,
   },
   props: {
-    profiles: {
-      type: Object,
-      default: null,
-    },
+    profiles: {},
   },
 }
 </script>
