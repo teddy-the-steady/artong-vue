@@ -20,7 +20,9 @@
         </div>
         <div class="container1-2">
           <div class="container1-2-top">
-            <div class="category">{{ mainToken.project.symbol }}</div>
+            <div class="category">
+              {{ mainToken.project ? mainToken.project.symbol : '' }}
+            </div>
             <div class="nft-name">{{ mainToken.name }}</div>
           </div>
           <div class="nft-name-img" @click="onContentClick($event, mainToken)">
@@ -34,7 +36,9 @@
                   :to="{
                     name: 'Project',
                     params: {
-                      id: this.mainToken.project.id,
+                      id: this.mainToken.project
+                        ? this.mainToken.project.id
+                        : '',
                     },
                   }"
                 >
@@ -52,7 +56,9 @@
                   :to="{
                     name: 'UserOrArtist',
                     params: {
-                      id: this.mainToken.owner.username,
+                      id: this.mainToken.owner
+                        ? this.mainToken.owner.username
+                        : '',
                     },
                   }"
                 >
