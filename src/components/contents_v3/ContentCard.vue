@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
-    <div class="top" @click="onContentClick">
-      <img :src="contentImage" alt="" />
+    <div class="top">
+      <img :src="contentImage" alt="" @click.stop="onContentClick" />
+
       <ProjectPageProfile_small
         v-if="needContentName"
         class="project-profile"
-        :project="content.project"
+        :project="project"
       ></ProjectPageProfile_small>
     </div>
     <div class="bottom">
@@ -40,6 +41,11 @@ export default {
     ProjectPageProfile_small,
     ContentsProfile,
   },
+  data() {
+    return {
+      project: {},
+    }
+  },
   computed: {
     contentImage() {
       return (
@@ -67,7 +73,7 @@ export default {
     },
     needContentName: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   methods: {
@@ -84,32 +90,40 @@ export default {
         return require('@/assets/images/art11.jpg')
       }
     },
-    onContentClick() {
+    onContentClick(event) {
       if (this.content.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: this.content.project.id,
+            project_address: this.content.slug || this.content.project.id,
             token_id: this.content.tokenId,
-            // image_width: event.target.naturalWidth,
-            // image_height: event.target.naturalHeight,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       } else if (this.content.id) {
         this.$router.push({
           name: 'ContentCandidateDetail',
           params: {
-            project_address: this.content.project.id,
+            project_address: this.content.slug || this.content.project_address,
             contents_id: this.content.id,
-            // image_width: event.target.naturalWidth,
-            // image_height: event.target.naturalHeight,
+            image_width: event.target.naturalWidth,
+            image_height: event.target.naturalHeight,
           },
         })
       }
     },
+    makeProject() {
+      this.project = {
+        id: this.content.project?.id,
+        name: this.content.project?.name,
+        project_s3key: this.content.project_s3key,
+        project_thumbnail_s3key: this.content.project_thumbnail_s3key,
+      }
+    },
   },
-  async created() {
-    console.log(this.content)
+  created() {
+    this.makeProject()
   },
 }
 </script>
@@ -118,8 +132,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
-  border: 1px solid #333333;
-  border-radius: 15px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
   margin: 24px 16px;
   height: 453px;
   position: relative;
@@ -130,8 +145,8 @@ export default {
     cursor: pointer;
 
     img {
-      border-top-left-radius: 15px;
-      border-top-right-radius: 15px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
       width: 100%;
       object-fit: cover;
     }

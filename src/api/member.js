@@ -44,6 +44,10 @@ const searchMembers = async function (searchWord) {
   })
 }
 
+const getMainContributors = async function () {
+  return await instance.get('/main/contributors')
+}
+
 export {
   getMemberByUsername,
   getCurrentMember,
@@ -52,4 +56,5 @@ export {
   patchMember,
   postMemberFollower,
   searchMembers,
+  getMainContributors,
 }

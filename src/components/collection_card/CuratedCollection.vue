@@ -14,7 +14,16 @@
     paginationActiveColor="#F22E3E"
   >
     <slide v-for="(project, i) in projects" :key="i">
-      <ProjectCard :project="project"></ProjectCard>
+      <router-link
+        :to="{
+          name: 'Project',
+          params: {
+            id: project.slug || project.id || project.address,
+          },
+        }"
+      >
+        <ProjectCard :project="project"></ProjectCard>
+      </router-link>
     </slide>
   </carousel>
 </template>
@@ -30,10 +39,7 @@ export default {
     return {}
   },
   props: {
-    projects: {
-      type: Array,
-      default: () => [],
-    },
+    projects: {},
   },
 }
 </script>

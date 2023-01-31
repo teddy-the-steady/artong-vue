@@ -17,8 +17,17 @@
     :scrollPerPage="false"
     :paginationEnabled="false"
   >
-    <slide v-for="i in testNumber" :key="i" class="slide">
-      <ProfileCard></ProfileCard>
+    <slide v-for="(profile, i) in profiles" :key="i" class="slide">
+      <router-link
+        :to="{
+          name: 'UserOrArtist',
+          params: {
+            id: profile.username,
+          },
+        }"
+      >
+        <ProfileCard :profile="profile"></ProfileCard>
+      </router-link>
     </slide>
   </carousel>
 </template>
@@ -30,10 +39,8 @@ export default {
   components: {
     ProfileCard,
   },
-  data() {
-    return {
-      testNumber: 10, // slide 개수
-    }
+  props: {
+    profiles: {},
   },
 }
 </script>
@@ -42,13 +49,18 @@ export default {
 @import '../../assets/scss/variables';
 
 .wrapper {
-  border: 1px solid #333333;
+  //border: 1px solid #333333;
   border-radius: 15px;
   margin-left: 16px;
   margin-right: 8px;
   height: 214px;
-  background-color: #333333;
+  background-color: #1a1a1a;
 
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  color: #ffffff;
   .top {
     div {
       font-family: $item-font;
