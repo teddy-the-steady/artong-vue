@@ -986,6 +986,19 @@ export default {
     gap: 10px;
     height: 553px;
   }
+  .category {
+    width: 67px;
+    height: 22px;
+    border: 1px solid #f22e3e;
+    border-radius: 999px;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    color: #f22e3e;
+    margin-bottom: 8px;
+  }
   .nft-name {
     font-family: $item-font;
     font-style: $item-font-style;
