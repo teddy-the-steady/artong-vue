@@ -167,19 +167,10 @@
           <div class="collection">
             <div class="info">
               <div class="label">Project</div>
-              <router-link
-                tag="div"
-                class="profile-link"
-                :to="{
-                  name: 'Project',
-                  params: { id: content ? content.project_address : null },
-                }"
-              >
-                <ProjectPageProfile_small
-                  :project="project"
-                  :isFirstLoading="isFirstLoading"
-                ></ProjectPageProfile_small>
-              </router-link>
+              <ProjectPageProfile_small
+                :project="project"
+                :isFirstLoading="isFirstLoading"
+              ></ProjectPageProfile_small>
             </div>
             <div class="info">
               <div class="label">Created By</div>
