@@ -160,14 +160,14 @@
         :project="project"
       ></MintStep0>
       <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
-      <MintStep2 slot="body_step_2" @data-from-step2="setSlotData"></MintStep2>
-      <MintStep3
-        slot="body_step_3"
-        @data-from-step3="setSlotData"
+      <MintStep2
+        slot="body_step_2"
+        @data-from-step2="setSlotData"
         :project="project"
         :slotData="slotData"
         slot-scope="slotData"
-      ></MintStep3>
+      ></MintStep2>
+      <MintStep3 slot="body_step_3" @data-from-step3="setSlotData"></MintStep3>
       <MintStepFinal
         slot="body_step_4"
         :project="project"
