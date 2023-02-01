@@ -393,6 +393,12 @@ export default {
       await patchContentStatus(this.project.id, this.content.id, {
         status: 'APPROVED',
       })
+      this.$router.push({
+        name: 'Project',
+        params: {
+          id: this.content.slug || this.content.project_address,
+        },
+      })
     },
     async buy() {
       if (this.buying) {
