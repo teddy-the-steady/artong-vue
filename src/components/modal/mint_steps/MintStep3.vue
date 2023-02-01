@@ -1,61 +1,26 @@
 <template>
   <div>
-    <span>WHEN?</span>
+    <span>Token royalty</span>
     <input
-      type="radio"
-      id="r1"
-      v-model="lazyMint"
-      value="0"
-      :disabled="project.policy === 1"
-      @change="onLazyMintChange"
+      type="text"
+      v-model="tokenRoyalty"
+      placeholder="token royalty 1% = 100"
+      @input="onInputTokenRoyalty"
     />
-    <label for="r1">Mint Now</label>
-    <input
-      type="radio"
-      id="r2"
-      v-model="lazyMint"
-      value="1"
-      :disabled="project.policy === 1"
-      @change="onLazyMintChange"
-    />
-    <label for="r2">Lazy Mint</label>
-    <div v-show="lazyMint == 1">
-      <span>Price</span>
-      <input
-        type="text"
-        v-model="price"
-        placeholder="Price in ETH"
-        @input="onInputPrice"
-      />
-    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MintStep3',
-  props: {
-    project: {
-      type: Object,
-      default: () => {},
-    },
-    slotData: {
-      type: Object,
-      default: () => {},
-    },
-  },
+  name: 'MintStep2',
   data() {
     return {
-      lazyMint: this.slotData.slotData.lazyMint,
-      price: null,
+      tokenRoyalty: null,
     }
   },
   methods: {
-    onLazyMintChange() {
-      this.$emit('data-from-step3', 'lazyMint', this.lazyMint)
-    },
-    onInputPrice() {
-      this.$emit('data-from-step3', 'price', this.price)
+    onInputTokenRoyalty() {
+      this.$emit('data-from-step3', 'tokenRoyalty', this.tokenRoyalty)
     },
   },
 }
