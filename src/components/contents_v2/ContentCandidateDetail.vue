@@ -215,7 +215,7 @@
           <div class="trade-buttons">
             <div v-if="checkPolicyAndStatus">
               <button @click="buy()">
-                <div class="spinner" :class="{ active: buying }"></div>
+                <span class="spinner" :class="{ active: buying }"></span>
                 <span v-show="!buying">Buy</span>
               </button>
             </div>
@@ -715,34 +715,6 @@ export default {
           width: 100%;
           button {
             width: 100%;
-            .spinner {
-              display: none;
-
-              &.active {
-                display: inline-block;
-                position: relative;
-                width: 2px;
-                margin: 0px auto;
-                animation: rotation 0.6s infinite linear;
-                border-left: 6px solid rgba(0, 174, 239, 0.15);
-                border-right: 6px solid rgba(0, 174, 239, 0.15);
-                border-bottom: 6px solid rgba(0, 174, 239, 0.15);
-                border-top: 6px solid $artong-white;
-                border-radius: 100%;
-              }
-            }
-
-            @keyframes rotation {
-              from {
-                transform: rotate(0deg);
-              }
-              to {
-                transform: rotate(359deg);
-              }
-            }
-            button {
-              width: 100%;
-            }
 
             & > span:nth-child(2) {
               align-self: center;
