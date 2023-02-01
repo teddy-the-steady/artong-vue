@@ -87,7 +87,7 @@
               class="accept-button"
             >
               <button @click="accept(content.from.wallet_address)">
-                <div class="spinner" :class="{ active: accepting }"></div>
+                <span class="spinner" :class="{ active: accepting }"></span>
                 <span v-show="!accepting">Accept</span>
               </button>
             </div>
@@ -313,31 +313,7 @@ export default {
           right: 0;
           display: flex;
           justify-content: flex-end;
-          .spinner {
-            display: none;
 
-            &.active {
-              display: inline-block;
-              position: relative;
-              width: 2px;
-              margin: 0px auto;
-              animation: rotation 0.6s infinite linear;
-              border-left: 6px solid rgba(0, 174, 239, 0.15);
-              border-right: 6px solid rgba(0, 174, 239, 0.15);
-              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
-              border-top: 6px solid $artong-white;
-              border-radius: 100%;
-            }
-          }
-
-          @keyframes rotation {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(359deg);
-            }
-          }
           button {
             width: 50%;
           }
