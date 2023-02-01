@@ -48,17 +48,10 @@ export default {
     },
     checkFileTypeValidity(fileType) {
       switch (fileType) {
-        case 'apng':
-        case 'avif':
         case 'gif':
         case 'jpg':
         case 'jpeg':
-        case 'jfif':
-        case 'pjpeg':
-        case 'pjp':
         case 'png':
-        case 'svg':
-        case 'webp':
           return true
         default:
           return false
