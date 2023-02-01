@@ -83,6 +83,7 @@ export default {
     },
     ...mapState({
       currentUser: state => state.user.currentUser,
+      isModalOpen: state => state.menu.isModalOpen,
     }),
   },
   data() {
@@ -118,11 +119,30 @@ export default {
           break
         case 2:
           if (this.slotData.lazyMint == 1) {
+            if (this.slotData.price && isNaN(parseFloat(this.slotData.price))) {
+              alert('price should be number')
+              return
+            }
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
               return
             } else {
               this.currentStep.id++
+            }
+          }
+          break
+        case 3:
+          if (isNaN(parseFloat(this.slotData.tokenRoyalty))) {
+            alert('token royalty should be number')
+            return
+          } else {
+            this.slotData.tokenRoyalty *= 100
+            if (
+              this.slotData.tokenRoyalty < 0 ||
+              this.slotData.tokenRoyalty > 10000
+            ) {
+              alert('token royalty should be number between 0~100')
+              return
             }
           }
           break
@@ -155,12 +175,11 @@ export default {
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
         content_id: this.slotData.postResult.id,
       })
-
+      this.$emit('finishedUploading', true)
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok =
           await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-
         if (ok) {
           const lazyMint = this.slotData.lazyMint == 1
 
@@ -203,8 +222,17 @@ export default {
             })
           }
         }
+        this.$emit('finishedMinting', true)
       } catch (error) {
-        console.log(error)
+        // console.log(error)
+        console.dir(error)
+        if (error.message === 'Cancelled signing message') {
+          this.$store.commit('TOGGLE_MODAL')
+          return
+        } else if (error.code === 'ACTION_REJECTED') {
+          this.$store.commit('TOGGLE_MODAL')
+          return
+        }
         alert('Oops, something went wrong! Please try again')
       }
     },

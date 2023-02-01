@@ -1,12 +1,15 @@
 <template>
   <div>
-    <span>Token royalty</span>
-    <input
-      type="text"
-      v-model="tokenRoyalty"
-      placeholder="token royalty 1% = 100"
-      @input="onInputTokenRoyalty"
-    />
+    <span class="title">Token royalty</span>
+    <div class="main-text">
+      <input
+        type="text"
+        v-model="tokenRoyalty"
+        placeholder="token royalty"
+        @input="onInputTokenRoyalty"
+      />
+      <div class="unit">%</div>
+    </div>
   </div>
 </template>
 
@@ -25,3 +28,18 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+@import '../../../assets/scss/variables';
+.title {
+  margin-bottom: 5px;
+  display: block;
+}
+.main-text {
+  display: flex;
+  justify-content: center;
+  .unit {
+    line-height: 40px;
+    margin-left: 5px;
+  }
+}
+</style>
