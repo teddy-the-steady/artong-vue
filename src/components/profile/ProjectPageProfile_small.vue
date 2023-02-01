@@ -3,7 +3,7 @@
     :to="{
       name: 'Project',
       params: {
-        id: project ? project.id : '',
+        id: project ? project.slug || project.id : '',
       },
     }"
   >
