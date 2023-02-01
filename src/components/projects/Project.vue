@@ -151,6 +151,8 @@
       :steps="steps"
       :slotData="slotData"
       :isLoading="isLoading"
+      @finishedUploading="setFinishedUploading"
+      @finishedMinting="setFinishedMinting"
     >
       <span slot="header" @click="close">X</span>
       <MintStep0
@@ -174,7 +176,11 @@
         :slotData="slotData"
         slot-scope="slotData"
       ></MintStepFinal>
-      <MintStepMinting slot="body_step_5"></MintStepMinting>
+      <MintStepMinting
+        slot="body_step_5"
+        :finishedUploading="finishedUploading"
+        :finishedMinting="finishedMinting"
+      ></MintStepMinting>
     </MintModal>
     <textarea v-model="url" ref="url"></textarea>
   </div>
@@ -310,9 +316,17 @@ export default {
         },
       },
       S3_PRIVACY_LEVEL: 'public',
+      finishedUploading: false,
+      finishedMinting: false,
     }
   },
   methods: {
+    setFinishedMinting(val) {
+      this.finishedMinting = val
+    },
+    setFinishedUploading(val) {
+      this.finishedUploading = val
+    },
     setIsLoading(val) {
       this.isLoading = val
     },
