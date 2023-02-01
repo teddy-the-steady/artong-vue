@@ -3,7 +3,7 @@
     <div class="info">
       <div>
         <span class="label">Artong balance</span>
-        <span class="balance">{{ `${'??'} ETH` }}</span>
+        <span class="balance">{{ `${artongBalance} ETH` }}</span>
       </div>
       <div>
         <span class="label">Offer balance</span>
@@ -12,7 +12,7 @@
       <div>
         <span class="label">Withdrawable</span>
         <span class="balance">
-          {{ `${artongBalance} ETH` }}
+          {{ `${withdrawableBalance} ETH` }}
         </span>
       </div>
       <button v-ripple @click="withdraw">
@@ -53,6 +53,7 @@ export default {
     return {
       artongBalance: 0,
       offerBalance: 0,
+      withdrawableBalance: 0,
       withdrawing: false,
       refreshing: false,
     }
@@ -82,26 +83,29 @@ export default {
 
       try {
         this.refreshing = true
-        const [artongBalance, offerBalance] = await Promise.all([
+        const now = parseInt(Date.now() / 1000)
+        const [artongBalance, offerBalance, withdrawable] = await Promise.all([
           this.getArtongBalance(contract),
-          this.getOfferBalance(contract),
+          this.getOfferBalance(now, contract),
+          this.getWithdrawableBalance(now, contract),
         ])
 
         this.artongBalance = weiToEther(artongBalance._hex)
         this.offerBalance = weiToEther(offerBalance._hex)
+        this.withdrawableBalance = weiToEther(withdrawable._hex)
       } finally {
         this.refreshing = false
       }
     },
     getArtongBalance(contract) {
-      return contract.getArtongBalance(
-        parseInt(Date.now() / 1000),
-        this.currentUser.wallet_address,
-      )
+      return contract.getArtongBalance(this.currentUser.wallet_address)
     },
-    getOfferBalance(contract) {
-      return contract.getOfferBalance(
-        parseInt(Date.now() / 1000),
+    getOfferBalance(now, contract) {
+      return contract.getOfferBalance(now, this.currentUser.wallet_address)
+    },
+    getWithdrawableBalance(now, contract) {
+      return contract.getWithdrawableBalance(
+        now,
         this.currentUser.wallet_address,
       )
     },
