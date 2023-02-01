@@ -160,11 +160,7 @@
         :project="project"
       ></MintStep0>
       <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
-      <MintStep2
-        slot="body_step_2"
-        @data-from-step2="setSlotData"
-        :needMoreInfo="needMoreInfo"
-      ></MintStep2>
+      <MintStep2 slot="body_step_2" @data-from-step2="setSlotData"></MintStep2>
       <MintStep3
         slot="body_step_3"
         @data-from-step3="setSlotData"
