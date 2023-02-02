@@ -175,7 +175,7 @@ export default {
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
         content_id: this.slotData.postResult.id,
       })
-      this.$emit('finishedUploading', true)
+      this.$emit('finishedUploading', 'finishedUploading', true)
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok =
@@ -222,16 +222,13 @@ export default {
             })
           }
         }
-        this.$emit('finishedMinting', true)
+        this.$emit('finishedMinting', 'finishedMinting', true)
       } catch (error) {
-        // console.log(error)
         if (error.message === 'Cancelled signing message') {
-          this.$emit('finishedUpLoading', false)
-          this.$store.commit('TOGGLE_MODAL')
+          this.$emit('close')
           return
         } else if (error.code === 'ACTION_REJECTED') {
-          this.$emit('finishedUpLoading', false)
-          this.$store.commit('TOGGLE_MODAL')
+          this.$emit('close')
           return
         }
         alert('Oops, something went wrong! Please try again')

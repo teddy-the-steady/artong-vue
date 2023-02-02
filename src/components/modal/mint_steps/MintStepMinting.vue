@@ -13,7 +13,9 @@
     <div>
       <div
         class="spinner"
-        :class="{ active: !finishedUploading || !finishedMinting }"
+        :class="{
+          active: !finishedUploading || !finishedMinting,
+        }"
       ></div>
     </div>
   </div>
