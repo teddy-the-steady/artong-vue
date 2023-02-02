@@ -32,12 +32,18 @@ export default {
       type: String,
       default: 'SYMBOL',
     },
+    creating: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     backgroundClick() {
+      if (this.creating) return
       this.$emit('project-background-click')
     },
     profileClick() {
+      if (this.creating) return
       this.$emit('project-profile-click')
     },
   },
@@ -92,6 +98,7 @@ export default {
         height: 100%;
         object-fit: cover;
         border-radius: 15px;
+        text-indent: -10000px;
       }
     }
     .symbol {

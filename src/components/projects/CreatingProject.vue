@@ -1,5 +1,8 @@
 <template>
-  <div>ing..</div>
+  <div>
+    <div v-if="created">created!</div>
+    <div v-else>ing..</div>
+  </div>
 </template>
 
 <script>
@@ -13,6 +16,7 @@ export default {
   data() {
     return {
       txHash: this.$router.currentRoute.query.txHash,
+      created: false,
     }
   },
   methods: {
@@ -33,6 +37,7 @@ export default {
         }
         await this.wait(3000)
       }
+      this.created = true
     },
   },
   async mounted() {
