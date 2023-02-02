@@ -27,7 +27,11 @@
               @click="nextStep()"
               v-show="currentStep.id < steps.length - 2"
             >
-              Next
+              <div
+                class="spinner"
+                :class="{ active: slotData.uploadingToS3 }"
+              ></div>
+              <span v-show="!slotData.uploadingToS3"> Next </span>
             </button>
             <button
               @click="mint()"
@@ -78,6 +82,7 @@ export default {
     },
     ...mapState({
       currentUser: state => state.user.currentUser,
+      isModalOpen: state => state.menu.isModalOpen,
     }),
   },
   data() {
@@ -96,6 +101,7 @@ export default {
     nextStep() {
       switch (this.currentStep.id) {
         case 0:
+          if (this.slotData.uploadingToS3) return
           if (!this.slotData.s3Result) {
             alert('Please add image')
             return
@@ -110,10 +116,31 @@ export default {
             return
           }
           break
-        case 3:
+        case 2:
           if (this.slotData.lazyMint == 1) {
+            if (this.slotData.price && isNaN(parseFloat(this.slotData.price))) {
+              alert('price should be number')
+              return
+            }
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
+              return
+            } else {
+              this.currentStep.id++
+            }
+          }
+          break
+        case 3:
+          if (isNaN(parseFloat(this.slotData.tokenRoyalty))) {
+            alert('token royalty should be number')
+            return
+          } else {
+            this.slotData.tokenRoyalty *= 100
+            if (
+              this.slotData.tokenRoyalty < 0 ||
+              this.slotData.tokenRoyalty > 10000
+            ) {
+              alert('token royalty should be number between 0~100')
               return
             }
           }
@@ -124,6 +151,9 @@ export default {
       this.currentStep.id++
     },
     previousStep() {
+      if (this.currentStep.id === 4 && this.slotData.lazyMint == 1) {
+        this.currentStep.id--
+      }
       this.currentStep.id--
     },
     async mint() {
@@ -144,12 +174,11 @@ export default {
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
         content_id: this.slotData.postResult.id,
       })
-
+      this.$emit('data-from-mint-modal', 'uploadedToIPFS', true)
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok =
           await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-
         if (ok) {
           const lazyMint = this.slotData.lazyMint == 1
 
@@ -192,8 +221,15 @@ export default {
             })
           }
         }
+        this.$emit('data-from-mint-modal', 'minted', true)
       } catch (error) {
-        console.log(error)
+        if (error.message === 'Cancelled signing message') {
+          this.$emit('close')
+          return
+        } else if (error.code === 'ACTION_REJECTED') {
+          this.$emit('close')
+          return
+        }
         alert('Oops, something went wrong! Please try again')
       }
     },
@@ -281,8 +317,42 @@ export default {
 
       .modal-footer {
         align-self: flex-end;
+        display: flex;
         button {
+          width: 100%;
           margin-left: 10px;
+          .spinner {
+            display: none;
+
+            &.active {
+              display: inline-block;
+              position: relative;
+              width: 2px;
+              margin: 0px auto;
+              animation: rotation 0.6s infinite linear;
+              border-left: 6px solid rgba(0, 174, 239, 0.15);
+              border-right: 6px solid rgba(0, 174, 239, 0.15);
+              border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+              border-top: 6px solid $artong-white;
+              border-radius: 100%;
+            }
+          }
+
+          @keyframes rotation {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(359deg);
+            }
+          }
+          button {
+            width: 100%;
+          }
+
+          & > span:nth-child(2) {
+            align-self: center;
+          }
         }
       }
     }
