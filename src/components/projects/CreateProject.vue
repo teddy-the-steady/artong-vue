@@ -16,11 +16,11 @@
       <div class="info">
         <div>
           <span>Name</span>
-          <input type="text" v-model="name" />
+          <input type="text" v-model="name" maxlength="100" />
         </div>
         <div>
           <span>Symbol</span>
-          <input type="text" class="symbol" v-model="symbol" />
+          <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
           <span>Max Token amount</span>
@@ -90,15 +90,46 @@ export default {
     }
   },
   methods: {
-    async createProject() {
+    hasNull() {
+      let nullField = []
+      if (!this.name) {
+        nullField.push('name')
+      }
+      if (!this.symbol) {
+        nullField.push('symbol')
+      }
+      if (!this.maxAmount) {
+        nullField.push('max token amount')
+      }
+      if (nullField.length !== 0) {
+        let message = 'Enter '
+        for (let i = 0; i < nullField.length; i++) {
+          message += nullField[i]
+          if (i !== nullField.length - 1) {
+            message += ', '
+          }
+        }
+        message += '!'
+        alert(message)
+        return true
+      } else {
+        return false
+      }
+    },
+    isPosInt() {
       if (
         isNaN(parseInt(this.maxAmount)) ||
         this.maxAmount <= 0 ||
         this.maxAmount % 1 != 0
       ) {
         alert('Max Token Amount should be positive integer')
-        return
+        return false
       }
+      return true
+    },
+    async createProject() {
+      if (this.hasNull()) return
+      if (!this.isPosInt()) return
       if (this.creating === true) {
         return
       }
