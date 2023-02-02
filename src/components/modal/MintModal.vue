@@ -27,8 +27,11 @@
               @click="nextStep()"
               v-show="currentStep.id < steps.length - 2"
             >
-              <div class="spinner" :class="{ active: isLoading }"></div>
-              <span v-show="!isLoading"> Next </span>
+              <div
+                class="spinner"
+                :class="{ active: slotData.uploadingToS3 }"
+              ></div>
+              <span v-show="!slotData.uploadingToS3"> Next </span>
             </button>
             <button
               @click="mint()"
@@ -69,10 +72,6 @@ export default {
       type: Object,
       default: () => {},
     },
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
   },
   computed: {
     currentTitle() {
@@ -102,7 +101,7 @@ export default {
     nextStep() {
       switch (this.currentStep.id) {
         case 0:
-          if (this.isLoading) return
+          if (this.slotData.uploadingToS3) return
           if (!this.slotData.s3Result) {
             alert('Please add image')
             return
@@ -175,7 +174,7 @@ export default {
         imageKey: `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
         content_id: this.slotData.postResult.id,
       })
-      this.$emit('finishedUploading', 'finishedUploading', true)
+      this.$emit('data-from-mint-modal', 'uploadedToIPFS', true)
       try {
         this.$store.commit('TOGGLE_CONFIRM_MODAL')
         const ok =
@@ -222,7 +221,7 @@ export default {
             })
           }
         }
-        this.$emit('finishedMinting', 'finishedMinting', true)
+        this.$emit('data-from-mint-modal', 'minted', true)
       } catch (error) {
         if (error.message === 'Cancelled signing message') {
           this.$emit('close')

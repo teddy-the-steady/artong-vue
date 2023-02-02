@@ -1,20 +1,15 @@
 <template>
   <div>
-    <div class="text inProgress" v-if="!finishedUploading">
-      Uploading to IPFS
-    </div>
-    <div
-      class="text inProgress"
-      v-else-if="finishedUploading && !finishedMinting"
-    >
+    <div class="text inProgress" v-if="!uploadedToIPFS">Uploading to IPFS</div>
+    <div class="text inProgress" v-else-if="uploadedToIPFS && !minted">
       Minting
     </div>
-    <div class="text" v-else-if="finishedMinting">Completed!</div>
+    <div class="text" v-else-if="minted">Completed!</div>
     <div>
       <div
         class="spinner"
         :class="{
-          active: !finishedUploading || !finishedMinting,
+          active: !uploadedToIPFS || !minted,
         }"
       ></div>
     </div>
@@ -25,11 +20,11 @@
 export default {
   name: 'MintStepMinting',
   props: {
-    finishedUploading: {
+    uploadedToIPFS: {
       type: Boolean,
       default: false,
     },
-    finishedMinting: {
+    minted: {
       type: Boolean,
       default: false,
     },
