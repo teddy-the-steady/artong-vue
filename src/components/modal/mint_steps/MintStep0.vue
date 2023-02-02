@@ -65,7 +65,7 @@ export default {
         alert('only allows .gif .jpg .jpeg .png')
         return
       }
-      this.$emit('is-loading', true)
+      this.$emit('data-from-step0', 'uploadingToS3', true)
       this.image = URL.createObjectURL(this.file)
       URL.revokeObjectURL(this.file)
 
@@ -78,7 +78,7 @@ export default {
         this.currentUser.id,
         this.file.name,
       )
-      this.$emit('is-loading', false)
+      this.$emit('data-from-step0', 'uploadingToS3', false)
       this.$emit('data-from-step0', 'postResult', postResult)
       this.$emit('data-from-step0', 's3Result', s3Result)
     },

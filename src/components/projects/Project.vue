@@ -151,15 +151,12 @@
       :steps="steps"
       :slotData="slotData"
       @close="close"
-      :isLoading="isLoading"
-      @finishedUploading="setLoadingData"
-      @finishedMinting="setLoadingData"
+      @data-from-mint-modal="setSlotData"
     >
       <span slot="header" @click="close">X</span>
       <MintStep0
         slot="body_step_0"
         @data-from-step0="setSlotData"
-        @is-loading="setIsLoading"
         :project="project"
       ></MintStep0>
       <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
@@ -179,8 +176,8 @@
       ></MintStepFinal>
       <MintStepMinting
         slot="body_step_5"
-        :finishedUploading="loadingData.finishedUploading"
-        :finishedMinting="loadingData.finishedMinting"
+        :uploadedToIPFS="slotData.uploadedToIPFS"
+        :minted="slotData.minted"
       ></MintStepMinting>
     </MintModal>
     <textarea v-model="url" ref="url"></textarea>
@@ -258,7 +255,6 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
       projectAddressOrSlug: '',
       backgroundColor: null,
       project: {},
@@ -297,7 +293,12 @@ export default {
         { id: 4, title: 'stepModalFinal' },
         { id: 5, title: 'stepModalMinting' },
       ],
-      slotData: { lazyMint: 1 },
+      slotData: {
+        lazyMint: 1,
+        uploadingToS3: false,
+        uploadedToIPFS: false,
+        minted: false,
+      },
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
@@ -327,9 +328,6 @@ export default {
     setLoadingData(key, value) {
       this.loadingData[key] = value
     },
-    setIsLoading(val) {
-      this.isLoading = val
-    },
     async getProject() {
       const result = await graphql(
         queryProject({
@@ -341,10 +339,11 @@ export default {
       return result.project
     },
     close() {
-      this.slotData = { lazyMint: 1 }
-      this.loadingData = {
-        finishedUploading: false,
-        finishedMinting: false,
+      this.slotData = {
+        lazyMint: 1,
+        uploadingToS3: false,
+        uploadedToIPFS: false,
+        minted: false,
       }
       this.toggleModal()
     },
