@@ -316,16 +316,16 @@ export default {
         },
       },
       S3_PRIVACY_LEVEL: 'public',
-      finishedUploading: false,
-      finishedMinting: false,
     }
   },
   methods: {
     setFinishedMinting(val) {
       this.finishedMinting = val
+      console.log('finished minting')
     },
     setFinishedUploading(val) {
       this.finishedUploading = val
+      console.log('finished uploading')
     },
     setIsLoading(val) {
       this.isLoading = val
@@ -342,6 +342,7 @@ export default {
     },
     close() {
       this.slotData = { lazyMint: 1 }
+      this.$emit('finishedMinting', false)
       this.toggleModal()
     },
     toggleModal() {
@@ -580,6 +581,12 @@ export default {
     })
   },
   watch: {
+    finishedUplaoding(val) {
+      this.setFinishedUploading(val)
+    },
+    finishedMinting(val) {
+      this.setFinishedMinting(val)
+    },
     $route(to) {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id

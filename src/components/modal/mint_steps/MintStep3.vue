@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <span class="title">Token royalty</span>
     <div class="main-text">
       <input
@@ -30,16 +30,23 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../../assets/scss/variables';
-.title {
-  margin-bottom: 5px;
-  display: block;
-}
-.main-text {
+
+.container {
+  text-align: left;
   display: flex;
-  justify-content: center;
-  .unit {
+  .title {
+    margin-bottom: 5px;
     line-height: 40px;
-    margin-left: 5px;
+    display: block;
+  }
+  .main-text {
+    display: flex;
+    justify-content: center;
+    margin-left: 23px;
+    .unit {
+      line-height: 40px;
+      margin-left: 5px;
+    }
   }
 }
 </style>

@@ -225,11 +225,12 @@ export default {
         this.$emit('finishedMinting', true)
       } catch (error) {
         // console.log(error)
-        console.dir(error)
         if (error.message === 'Cancelled signing message') {
+          this.$emit('finishedUpLoading', false)
           this.$store.commit('TOGGLE_MODAL')
           return
         } else if (error.code === 'ACTION_REJECTED') {
+          this.$emit('finishedUpLoading', false)
           this.$store.commit('TOGGLE_MODAL')
           return
         }

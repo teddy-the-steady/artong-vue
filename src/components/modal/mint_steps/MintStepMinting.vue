@@ -1,8 +1,15 @@
 <template>
   <div>
-    <div v-if="!finishedUploading">Uploading to IPFS</div>
-    <div v-else-if="finishedUploading && !finishedMinting">Minting</div>
-    <div v-else-if="finishedMinting">Completed!</div>
+    <div class="text inProgress" v-if="!finishedUploading">
+      Uploading to IPFS
+    </div>
+    <div
+      class="text inProgress"
+      v-else-if="finishedUploading && !finishedMinting"
+    >
+      Minting
+    </div>
+    <div class="text" v-else-if="finishedMinting">Completed!</div>
     <div>
       <div
         class="spinner"
@@ -32,6 +39,15 @@ export default {
 
 div {
   width: 100%;
+  .text {
+    font-family: $item-font;
+    font-style: $item-font-style;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .inProgress {
+    margin-bottom: 10px;
+  }
   .spinner {
     display: none;
 
@@ -41,9 +57,9 @@ div {
       width: 3px;
       margin: 0px auto;
       animation: rotation 0.6s infinite linear;
-      border-left: 6px solid $artong-black;
-      border-right: 6px solid $artong-black;
-      border-bottom: 6px solid $artong-black;
+      border-left: 6px solid rgb(191, 191, 191);
+      border-right: 6px solid rgb(191, 191, 191);
+      border-bottom: 6px solid rgb(191, 191, 191);
       border-top: 6px solid $artong-white;
       border-radius: 100%;
     }
