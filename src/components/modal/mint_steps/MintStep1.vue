@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div>
       <span>Name</span>
       <input
@@ -58,7 +58,16 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../../assets/scss/variables';
-
+.container {
+  text-align: left;
+  #name {
+    margin-left: 85px;
+    margin-bottom: 20px;
+  }
+  #text {
+    margin-left: 52px;
+  }
+}
 .noVal:focus {
   border-color: red;
 }
