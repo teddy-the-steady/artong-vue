@@ -150,9 +150,10 @@
       v-if="isModalOpen"
       :steps="steps"
       :slotData="slotData"
+      @close="close"
       :isLoading="isLoading"
-      @finishedUploading="setFinishedUploading"
-      @finishedMinting="setFinishedMinting"
+      @finishedUploading="setLoadingData"
+      @finishedMinting="setLoadingData"
     >
       <span slot="header" @click="close">X</span>
       <MintStep0
@@ -178,8 +179,8 @@
       ></MintStepFinal>
       <MintStepMinting
         slot="body_step_5"
-        :finishedUploading="finishedUploading"
-        :finishedMinting="finishedMinting"
+        :finishedUploading="loadingData.finishedUploading"
+        :finishedMinting="loadingData.finishedMinting"
       ></MintStepMinting>
     </MintModal>
     <textarea v-model="url" ref="url"></textarea>
@@ -316,16 +317,15 @@ export default {
         },
       },
       S3_PRIVACY_LEVEL: 'public',
+      loadingData: {
+        finishedUploading: false,
+        finishedMinting: false,
+      },
     }
   },
   methods: {
-    setFinishedMinting(val) {
-      this.finishedMinting = val
-      console.log('finished minting')
-    },
-    setFinishedUploading(val) {
-      this.finishedUploading = val
-      console.log('finished uploading')
+    setLoadingData(key, value) {
+      this.loadingData[key] = value
     },
     setIsLoading(val) {
       this.isLoading = val
@@ -342,7 +342,10 @@ export default {
     },
     close() {
       this.slotData = { lazyMint: 1 }
-      this.$emit('finishedMinting', false)
+      this.loadingData = {
+        finishedUploading: false,
+        finishedMinting: false,
+      }
       this.toggleModal()
     },
     toggleModal() {
@@ -581,12 +584,6 @@ export default {
     })
   },
   watch: {
-    finishedUplaoding(val) {
-      this.setFinishedUploading(val)
-    },
-    finishedMinting(val) {
-      this.setFinishedMinting(val)
-    },
     $route(to) {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id
