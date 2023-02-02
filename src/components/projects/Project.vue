@@ -146,7 +146,13 @@
         class="project-tab-sort"
       />
     </div>
-    <MintModal v-if="isModalOpen" :steps="steps" :slotData="slotData">
+    <MintModal
+      v-if="isModalOpen"
+      :steps="steps"
+      :slotData="slotData"
+      @close="close"
+      @data-from-mint-modal="setSlotData"
+    >
       <span slot="header" @click="close">X</span>
       <MintStep0
         slot="body_step_0"
@@ -154,21 +160,25 @@
         :project="project"
       ></MintStep0>
       <MintStep1 slot="body_step_1" @data-from-step1="setSlotData"></MintStep1>
-      <MintStep2 slot="body_step_2" @data-from-step2="setSlotData"></MintStep2>
-      <MintStep3
-        slot="body_step_3"
-        @data-from-step3="setSlotData"
+      <MintStep2
+        slot="body_step_2"
+        @data-from-step2="setSlotData"
         :project="project"
         :slotData="slotData"
         slot-scope="slotData"
-      ></MintStep3>
+      ></MintStep2>
+      <MintStep3 slot="body_step_3" @data-from-step3="setSlotData"></MintStep3>
       <MintStepFinal
         slot="body_step_4"
         :project="project"
         :slotData="slotData"
         slot-scope="slotData"
       ></MintStepFinal>
-      <MintStepMinting slot="body_step_5"></MintStepMinting>
+      <MintStepMinting
+        slot="body_step_5"
+        :uploadedToIPFS="slotData.uploadedToIPFS"
+        :minted="slotData.minted"
+      ></MintStepMinting>
     </MintModal>
     <textarea v-model="url" ref="url"></textarea>
   </div>
@@ -221,6 +231,7 @@ export default {
     BasicDialog,
     SkeletonBox,
   },
+  props: {},
   computed: {
     ...mapState({
       isModalOpen: state => state.menu.isModalOpen,
@@ -282,7 +293,12 @@ export default {
         { id: 4, title: 'stepModalFinal' },
         { id: 5, title: 'stepModalMinting' },
       ],
-      slotData: { lazyMint: 1 },
+      slotData: {
+        lazyMint: 1,
+        uploadingToS3: false,
+        uploadedToIPFS: false,
+        minted: false,
+      },
       isDialogActive: false,
       isMouseDownOnMore: false,
       isMouseUpOnMore: false,
@@ -302,9 +318,16 @@ export default {
         },
       },
       S3_PRIVACY_LEVEL: 'public',
+      loadingData: {
+        finishedUploading: false,
+        finishedMinting: false,
+      },
     }
   },
   methods: {
+    setLoadingData(key, value) {
+      this.loadingData[key] = value
+    },
     async getProject() {
       const result = await graphql(
         queryProject({
@@ -316,7 +339,12 @@ export default {
       return result.project
     },
     close() {
-      this.slotData = { lazyMint: 1 }
+      this.slotData = {
+        lazyMint: 1,
+        uploadingToS3: false,
+        uploadedToIPFS: false,
+        minted: false,
+      }
       this.toggleModal()
     },
     toggleModal() {

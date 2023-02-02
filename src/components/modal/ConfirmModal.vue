@@ -13,11 +13,11 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-button" @click="confirm()">
-                {{ okButton }}
-              </button>
               <button class="modal-button" @click="cancel()">
                 {{ cancelButton }}
+              </button>
+              <button class="modal-button" @click="confirm()">
+                {{ okButton }}
               </button>
             </slot>
           </div>
