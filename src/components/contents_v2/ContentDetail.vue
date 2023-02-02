@@ -180,19 +180,10 @@
           <div class="collection">
             <div class="info">
               <div class="label">Project</div>
-              <router-link
-                tag="div"
-                class="profile-link"
-                :to="{
-                  name: 'Project',
-                  params: { id: content ? content.project.id : null },
-                }"
-              >
-                <ProjectPageProfile_small
-                  :project="content ? content.project : null"
-                  :isFirstLoading="isFirstLoading"
-                ></ProjectPageProfile_small>
-              </router-link>
+              <ProjectPageProfile_small
+                :project="content ? content.project : null"
+                :isFirstLoading="isFirstLoading"
+              ></ProjectPageProfile_small>
             </div>
             <div class="info">
               <div class="label">Created By</div>
@@ -235,14 +226,14 @@
                   Update Listing
                 </button>
                 <button @click="makeTransaction('cancel')" class="white-button">
-                  <div class="spinner" :class="{ active: canceling }"></div>
+                  <span class="spinner" :class="{ active: canceling }"></span>
                   <span v-show="!canceling">Cancel Listing</span>
                 </button>
               </div>
             </div>
             <div v-else>
               <button v-if="isListed" @click="makeTransaction('buy')">
-                <div class="spinner" :class="{ active: buying }"></div>
+                <span class="spinner" :class="{ active: buying }"></span>
                 <span v-show="!buying">Buy</span>
               </button>
               <button @click="makeTransaction('offer')" class="white-button">
@@ -965,34 +956,6 @@ export default {
           width: 100%;
           button {
             width: 100%;
-            .spinner {
-              display: none;
-
-              &.active {
-                display: inline-block;
-                position: relative;
-                width: 2px;
-                margin: 0px auto;
-                animation: rotation 0.6s infinite linear;
-                border-left: 6px solid rgba(0, 174, 239, 0.15);
-                border-right: 6px solid rgba(0, 174, 239, 0.15);
-                border-bottom: 6px solid rgba(0, 174, 239, 0.15);
-                border-top: 6px solid $artong-white;
-                border-radius: 100%;
-              }
-            }
-
-            @keyframes rotation {
-              from {
-                transform: rotate(0deg);
-              }
-              to {
-                transform: rotate(359deg);
-              }
-            }
-            button {
-              width: 100%;
-            }
 
             & > span:nth-child(2) {
               align-self: center;

@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="comment" v-if="isCommentActive">
-      <div class="spinner" :class="{ active: isSpinnerActive }"></div>
+      <span class="spinner" :class="{ active: isSpinnerActive }"></span>
       <ul class="comment-list" :class="{ active: isCommentListActive }">
         <li>user1: 훌륭한 작품이네요!</li>
         <li>user2: 잘봤습니다.</li>
@@ -104,34 +104,6 @@ export default {
       display: block;
       text-align: left;
       margin: 0;
-    }
-  }
-
-  .spinner {
-    display: none;
-
-    &.active {
-      display: block;
-      position: relative;
-      top: 9px;
-      height: 30px;
-      width: 30px;
-      margin: 0px auto;
-      animation: rotation 0.6s infinite linear;
-      border-left: 6px solid rgba(0, 174, 239, 0.15);
-      border-right: 6px solid rgba(0, 174, 239, 0.15);
-      border-bottom: 6px solid rgba(0, 174, 239, 0.15);
-      border-top: 6px solid rgba(0, 174, 239, 0.8);
-      border-radius: 100%;
-    }
-  }
-
-  @keyframes rotation {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(359deg);
     }
   }
 }
