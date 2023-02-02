@@ -125,8 +125,6 @@ export default {
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
               return
-            } else {
-              this.currentStep.id++
             }
           }
           break
@@ -151,9 +149,6 @@ export default {
       this.currentStep.id++
     },
     previousStep() {
-      if (this.currentStep.id === 4 && this.slotData.lazyMint == 1) {
-        this.currentStep.id--
-      }
       this.currentStep.id--
     },
     async mint() {
