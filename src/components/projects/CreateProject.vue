@@ -251,8 +251,12 @@ export default {
       this.$children[0].$refs.projectProfileImage.src = ''
       this.$children[0].$refs.backgroundImage.src = ''
     },
-    onMaxAmtFocusout() {
-      this.maxAmount = Math.trunc(this.maxAmount)
+    onMaxAmtFocusout(event) {
+      if (!event.target.value || event.target.valueAsNumber <= 0) {
+        this.maxAmount = null
+      } else {
+        this.maxAmount = Math.trunc(this.maxAmount)
+      }
     },
   },
   watch: {
