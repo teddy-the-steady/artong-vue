@@ -219,7 +219,7 @@
             </div>
             <div>
               <label class="label">Creator Royalty</label>
-              <div>{{ content.royalty / 100 }} %</div>
+              <div>{{ content ? content.royalty / 100 : '' }} %</div>
             </div>
           </div>
           <div class="trade-buttons">
@@ -279,7 +279,7 @@
       </div>
     </div>
     <PromptModal
-      v-if="isModalOpen"
+      v-if="isPromptModalOpen"
       @close-modal="toggleModal"
       :confirmOnProcess="confirmOnProcess"
       :cancelDisabled="cancelDisabled"
@@ -365,7 +365,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isModalOpen: state => state.menu.isModalOpen,
+      isPromptModalOpen: state => state.menu.isPromptModalOpen,
       innerWidth: state => state.menu.innerWidth,
     }),
     isListed() {
@@ -404,20 +404,32 @@ export default {
     },
   },
   methods: {
+    sleep(timeToDelay) {
+      return new Promise(resolve => setTimeout(resolve, timeToDelay))
+    },
     async queryToken(project_address, token_id) {
-      const result = await graphql(
-        queryToken({
-          variables: {
-            id: project_address + token_id,
-          },
-          db: {
-            project_address: project_address,
-            token_id: token_id,
-          },
-        }),
-      )
-
-      return result.token
+      for (;;) {
+        const result = await graphql(
+          queryToken({
+            variables: {
+              id: project_address + token_id,
+            },
+            db: {
+              project_address: project_address,
+              token_id: token_id,
+            },
+          }),
+        )
+        if (result.token) {
+          return result.token
+        }
+        if (this.$router.currentRoute.name !== 'ContentDetail') {
+          break
+        }
+        if (result.retry) {
+          await this.sleep(3000)
+        }
+      }
     },
     async getCarouselData(project_address) {
       const [prevNextProjects, tokensByProject] = await Promise.all([
@@ -440,7 +452,7 @@ export default {
       this.tokens = tokensByProject.tokens
     },
     toggleModal() {
-      this.$store.commit('TOGGLE_MODAL')
+      this.$store.commit('TOGGLE_PROMPT_MODAL')
     },
     async makeTransaction(which, acceptParam) {
       if (this.canceling || this.buying || this.accepting) {
