@@ -936,7 +936,7 @@ export default {
       .description {
         margin-top: 30px;
         :nth-child(2) {
-          white-space: pre;
+          white-space: pre-line;
           max-height: 300px;
           overflow: auto;
         }
