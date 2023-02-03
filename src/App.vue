@@ -296,6 +296,7 @@ html {
     }
 
     input[type='text'],
+    input[type='number'],
     textarea {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
