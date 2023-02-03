@@ -125,7 +125,11 @@ export default {
           }
           break
         case 3:
-          this.slotData.tokenRoyalty *= 100
+          if (this.slotData.tokenRoyalty) {
+            this.slotData.tokenRoyalty *= 100
+          } else {
+            this.slotData.tokenRoyalty = 0
+          }
           if (
             this.slotData.tokenRoyalty < 0 ||
             this.slotData.tokenRoyalty > 10000
