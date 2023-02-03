@@ -4,7 +4,7 @@
     <div class="text inProgress" v-else-if="uploadedToIPFS && !minted">
       Minting
     </div>
-    <div class="text" v-else-if="minted">Completed!</div>
+    <div class="text" v-else-if="minted">Complete!</div>
     <div>
       <div
         class="spinner"
