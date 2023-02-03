@@ -144,6 +144,7 @@ const queryToken = function (variables) {
           contentURI
           creator
           owner
+          royalty
           createdAt
           updatedAt
           project {

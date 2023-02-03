@@ -125,8 +125,6 @@ export default {
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
               return
-            } else {
-              this.currentStep.id++
             }
           }
           break
@@ -151,9 +149,6 @@ export default {
       this.currentStep.id++
     },
     previousStep() {
-      if (this.currentStep.id === 4 && this.slotData.lazyMint == 1) {
-        this.currentStep.id--
-      }
       this.currentStep.id--
     },
     async mint() {
@@ -189,6 +184,7 @@ export default {
               makeS3Path(
                 `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
               ),
+              this.slotData.tokenRoyalty,
             )
 
             await patchContent(this.slotData.postResult.id, {
@@ -233,7 +229,12 @@ export default {
         alert('Oops, something went wrong! Please try again')
       }
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
+    async makeLazyMintingVoucher(
+      projectAddress,
+      tokenUri,
+      contentUri,
+      royalty,
+    ) {
       const lazyMinter = new LazyMinter({
         contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
         signer: this.signer,
@@ -243,6 +244,7 @@ export default {
         tokenUri,
         contentUri,
         etherToWei(this.slotData.price),
+        royalty,
       )
       return voucher
     },

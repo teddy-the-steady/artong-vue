@@ -1,29 +1,27 @@
 <template>
   <div class="container">
-    <div>
-      <span>Name</span>
+    <span class="float-label">
       <input
         id="name"
         type="text"
+        :class="{ filled: name }"
         v-model="name"
-        placeholder="name"
         maxlength="100"
         @input="onInputName"
-        @focusout="focusout('name')"
       />
-    </div>
-    <div>
-      <span>Description</span>
-      <input
+      <label for="name">Name</label>
+    </span>
+    <span class="float-label">
+      <textarea
         id="text"
         type="text"
+        :class="{ filled: description }"
         v-model="description"
-        placeholder="description"
-        maxlength="100"
+        maxlength="1000"
         @input="onInputDescription"
-        @focusout="focusout('text')"
       />
-    </div>
+      <label for="text">Description</label>
+    </span>
   </div>
 </template>
 
@@ -44,15 +42,6 @@ export default {
     onInputDescription() {
       this.$emit('data-from-step1', 'description', this.description)
     },
-    focusout(id) {
-      if (id === 'name' && this.name.length === 0) {
-        document.getElementById('name').placeholder = 'should enter name'
-        document.getElementById('name').focus()
-      } else if (id === 'text' && this.description.length === 0) {
-        document.getElementById('text').placeholder = 'should enter description'
-        document.getElementById('text').focus()
-      }
-    },
   },
 }
 </script>
@@ -60,12 +49,18 @@ export default {
 @import '../../../assets/scss/variables';
 .container {
   text-align: left;
-  #name {
-    margin-left: 85px;
-    margin-bottom: 20px;
-  }
-  #text {
-    margin-left: 52px;
+  margin-top: 20px;
+  .float-label {
+    margin-bottom: 30px;
+
+    :first-child {
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+      max-height: 200px;
+    }
   }
 }
 .noVal:focus {
