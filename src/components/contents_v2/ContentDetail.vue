@@ -210,10 +210,16 @@
             </div>
           </div>
           <div class="price-box">
-            <div class="label">Price</div>
             <div>
-              {{ price ? weiToEther(price) : '' }}
-              ETH
+              <label class="label">Price</label>
+              <div>
+                {{ price ? weiToEther(price) : '' }}
+                ETH
+              </div>
+            </div>
+            <div>
+              <label class="label">Creator Royalty</label>
+              <div>{{ content.royalty / 100 }} %</div>
             </div>
           </div>
           <div class="trade-buttons">
@@ -948,6 +954,10 @@ export default {
         background: #f2f2f2;
         border: 1px solid #cccccc;
         border-radius: 24px;
+        display: flex;
+        :first-child {
+          flex: 0.5;
+        }
         input {
           border: none;
           background: #f2f2f2;
