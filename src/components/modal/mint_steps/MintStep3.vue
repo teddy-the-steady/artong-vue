@@ -1,15 +1,16 @@
 <template>
   <div class="container">
-    <span class="title">Token royalty</span>
-    <div class="main-text">
+    <span class="float-label">
       <input
-        type="text"
+        id="royalty"
+        type="number"
+        :class="{ filled: tokenRoyalty }"
         v-model="tokenRoyalty"
-        placeholder="token royalty"
         @input="onInputTokenRoyalty"
       />
-      <div class="unit">%</div>
-    </div>
+      <label for="royalty">Token royalty</label>
+    </span>
+    <div class="unit">%</div>
   </div>
 </template>
 
@@ -23,6 +24,10 @@ export default {
   },
   methods: {
     onInputTokenRoyalty() {
+      if (this.tokenRoyalty > 100) {
+        this.tokenRoyalty = 100
+      }
+      this.tokenRoyalty = this.tokenRoyalty.match(/^\d+\.?\d{0,2}/)
       this.$emit('data-from-step3', 'tokenRoyalty', this.tokenRoyalty)
     },
   },
@@ -33,20 +38,12 @@ export default {
 
 .container {
   text-align: left;
+  height: 100px;
   display: flex;
-  .title {
-    margin-bottom: 5px;
-    line-height: 40px;
-    display: block;
-  }
-  .main-text {
-    display: flex;
-    justify-content: center;
-    margin-left: 23px;
-    .unit {
-      line-height: 40px;
-      margin-left: 5px;
-    }
+  justify-content: center;
+  align-items: center;
+  .unit {
+    margin-left: 5px;
   }
 }
 </style>
