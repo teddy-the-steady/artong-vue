@@ -295,7 +295,8 @@ html {
       padding-top: $head-height;
     }
 
-    input[type='text'] {
+    input[type='text'],
+    textarea {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol';
@@ -308,6 +309,35 @@ html {
         box-shadow 0.2s;
       appearance: none;
       border-radius: 6px;
+    }
+
+    .float-label {
+      display: flex;
+      position: relative;
+
+      label {
+        line-height: 1;
+        margin-top: -0.5rem;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transition-property: all;
+        transition-timing-function: ease;
+      }
+
+      & > label {
+        left: 0.75rem;
+        color: #6c757d;
+        transition-duration: 0.2s;
+      }
+
+      & input:focus ~ label,
+      & input.filled ~ label,
+      & textarea:focus ~ label,
+      & textarea.filled ~ label {
+        top: -0.75rem;
+        font-size: 12px;
+      }
     }
   }
 }
