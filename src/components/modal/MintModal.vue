@@ -118,10 +118,6 @@ export default {
           break
         case 2:
           if (this.slotData.lazyMint == 1) {
-            if (this.slotData.price && isNaN(parseFloat(this.slotData.price))) {
-              alert('price should be number')
-              return
-            }
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
               return
@@ -129,18 +125,13 @@ export default {
           }
           break
         case 3:
-          if (isNaN(parseFloat(this.slotData.tokenRoyalty))) {
-            alert('token royalty should be number')
+          this.slotData.tokenRoyalty *= 100
+          if (
+            this.slotData.tokenRoyalty < 0 ||
+            this.slotData.tokenRoyalty > 10000
+          ) {
+            alert('token royalty should be number between 0~100')
             return
-          } else {
-            this.slotData.tokenRoyalty *= 100
-            if (
-              this.slotData.tokenRoyalty < 0 ||
-              this.slotData.tokenRoyalty > 10000
-            ) {
-              alert('token royalty should be number between 0~100')
-              return
-            }
           }
           break
         default:
@@ -156,7 +147,9 @@ export default {
         return
       }
 
-      this.signer = await checkMobileWalletStatusAndGetSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
       if (!this.signer) {
         return
       }
