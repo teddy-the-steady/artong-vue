@@ -95,9 +95,6 @@ export default {
     }
   },
   methods: {
-    close() {
-      this.$emit('close')
-    },
     nextStep() {
       switch (this.currentStep.id) {
         case 0:
@@ -212,6 +209,8 @@ export default {
             await patchContent(this.slotData.postResult.id, {
               tokenId: tokenId,
             })
+
+            this.$emit('data-from-mint-modal', 'tokenId', tokenId)
           }
         }
         this.$emit('data-from-mint-modal', 'minted', true)

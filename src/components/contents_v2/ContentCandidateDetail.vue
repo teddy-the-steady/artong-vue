@@ -206,7 +206,7 @@
             </div>
             <div>
               <label class="label">Creator Royalty</label>
-              <div>{{ content.royalty / 100 }} %</div>
+              <div>{{ content ? content.royalty / 100 : '' }} %</div>
             </div>
           </div>
           <div class="trade-buttons">
