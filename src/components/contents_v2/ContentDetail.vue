@@ -935,6 +935,11 @@ export default {
       }
       .description {
         margin-top: 30px;
+        :nth-child(2) {
+          white-space: pre;
+          max-height: 300px;
+          overflow: auto;
+        }
       }
       .price-box {
         margin-top: 30px;
