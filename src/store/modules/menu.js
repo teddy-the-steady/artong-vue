@@ -5,6 +5,7 @@ import {
   SET_SIDE_MENU_FALSE,
   TOGGLE_MODAL,
   TOGGLE_CONFIRM_MODAL,
+  TOGGLE_PROMPT_MODAL,
   TOGGLE_THEME,
   SET_INNER_WIDTH,
 } from '../actions/menu'
@@ -14,6 +15,7 @@ const state = {
   isHeadNavOpen: true,
   isModalOpen: false,
   isConfirmModalOpen: false,
+  isPromptModalOpen: false,
   isDark: false,
   waitForAnswer: null,
   innerWidth: window.innerWidth,
@@ -40,6 +42,9 @@ const mutations = {
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
+  },
+  [TOGGLE_PROMPT_MODAL]: state => {
+    state.isPromptModalOpen = !state.isPromptModalOpen
   },
   [SET_INNER_WIDTH]: (state, innerWidth) => {
     state.innerWidth = innerWidth
