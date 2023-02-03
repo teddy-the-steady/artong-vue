@@ -6,6 +6,7 @@
         <ProjectPrototypeCard
           :name="name"
           :symbol="symbol"
+          :creating="creating"
           @project-background-click="projectBackgroundClick"
           @project-profile-click="projectProfileClick"
         ></ProjectPrototypeCard>
@@ -15,11 +16,11 @@
       <div class="info">
         <div>
           <span>Name</span>
-          <input type="text" v-model="name" />
+          <input type="text" v-model="name" maxlength="100" />
         </div>
         <div>
           <span>Symbol</span>
-          <input type="text" class="symbol" v-model="symbol" />
+          <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
           <span>Max Token amount</span>
@@ -38,7 +39,10 @@
             <label for="r2">Approved</label>
           </div>
         </div>
-        <button @click="createProject">CREATE PROJECT</button>
+        <button @click="createProject">
+          <div class="spinner" :class="{ active: creating }"></div>
+          <span v-show="!creating">CREATE PROJECT</span>
+        </button>
       </div>
     </div>
   </div>
@@ -82,10 +86,54 @@ export default {
       backgroundImageFile: null,
       S3_PRIVACY_LEVEL: 'public',
       signer: null,
+      creating: false,
     }
   },
   methods: {
+    hasNull() {
+      let nullField = []
+      if (!this.name) {
+        nullField.push('name')
+      }
+      if (!this.symbol) {
+        nullField.push('symbol')
+      }
+      if (!this.maxAmount) {
+        nullField.push('max token amount')
+      }
+      if (nullField.length !== 0) {
+        let message = 'Enter '
+        for (let i = 0; i < nullField.length; i++) {
+          message += nullField[i]
+          if (i !== nullField.length - 1) {
+            message += ', '
+          }
+        }
+        message += '!'
+        alert(message)
+        return true
+      } else {
+        return false
+      }
+    },
+    isPosInt() {
+      if (
+        isNaN(parseInt(this.maxAmount)) ||
+        this.maxAmount <= 0 ||
+        this.maxAmount % 1 != 0
+      ) {
+        alert('Max Token Amount should be positive integer')
+        return false
+      }
+      return true
+    },
     async createProject() {
+      if (this.hasNull()) return
+      if (!this.isPosInt()) return
+      if (this.creating === true) {
+        return
+      }
+      this.creating = true
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -103,9 +151,15 @@ export default {
         const tx = await this._createNFTContract(contract)
         txHash = await this.signer.sendUncheckedTransaction(tx)
       } catch (error) {
+        if (error.code == 'ACTION_REJECTED') {
+          alert('creating project stopped!')
+          this.creating = false
+          return
+        }
         if (error.message.indexOf('Invalid parameters') > -1) {
           await this.$store.dispatch('AUTH_LOGOUT')
           loginAndRedirectBack(this.$router.currentRoute.fullPath)
+          return
         }
       }
 
@@ -141,6 +195,7 @@ export default {
           query: { txHash: txHash },
         })
       }
+      this.setDefault()
     },
     async _createNFTContract(contract) {
       const tx = await contract.populateTransaction.createNFTContract(
@@ -174,9 +229,11 @@ export default {
       return result
     },
     projectBackgroundClick() {
+      if (this.creating) return
       this.$refs.backgroundInput.click()
     },
     projectProfileClick() {
+      if (this.creating) return
       this.$refs.profileInput.click()
     },
     onProfileChange(e) {
@@ -193,6 +250,20 @@ export default {
       )
       URL.revokeObjectURL(this.backgroundImageFile)
     },
+    setDefault() {
+      this.name = ''
+      this.symbol = ''
+      this.maxAmount = null
+      this.profileImageFile = null
+      this.backgroundImageFile = null
+      this.signer = null
+      this.creating = false
+      this.$children[0].$refs.projectProfileImage.src = ''
+      this.$children[0].$refs.backgroundImage.src = ''
+    },
+  },
+  watch: {
+    creating() {},
   },
 }
 </script>
@@ -235,6 +306,42 @@ export default {
         display: block;
       }
     }
+    button {
+      width: 100%;
+      margin-left: 10px;
+      .spinner {
+        display: none;
+
+        &.active {
+          display: inline-block;
+          position: relative;
+          width: 2px;
+          margin: 0px auto;
+          animation: rotation 0.6s infinite linear;
+          border-left: 6px solid rgba(0, 174, 239, 0.15);
+          border-right: 6px solid rgba(0, 174, 239, 0.15);
+          border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+          border-top: 6px solid $artong-white;
+          border-radius: 100%;
+        }
+      }
+
+      @keyframes rotation {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(359deg);
+        }
+      }
+      button {
+        width: 100%;
+      }
+
+      & > span:nth-child(2) {
+        align-self: center;
+      }
+    }
   }
 }
 
@@ -246,6 +353,42 @@ export default {
       border: none;
       div {
         padding-bottom: 10px;
+      }
+      button {
+        width: 100%;
+        margin-left: 10px;
+        .spinner {
+          display: none;
+
+          &.active {
+            display: inline-block;
+            position: relative;
+            width: 2px;
+            margin: 0px auto;
+            animation: rotation 0.6s infinite linear;
+            border-left: 6px solid rgba(0, 174, 239, 0.15);
+            border-right: 6px solid rgba(0, 174, 239, 0.15);
+            border-bottom: 6px solid rgba(0, 174, 239, 0.15);
+            border-top: 6px solid $artong-white;
+            border-radius: 100%;
+          }
+        }
+
+        @keyframes rotation {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(359deg);
+          }
+        }
+        button {
+          width: 100%;
+        }
+
+        & > span:nth-child(2) {
+          align-self: center;
+        }
       }
     }
   }
