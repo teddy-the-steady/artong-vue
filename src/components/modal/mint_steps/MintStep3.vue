@@ -25,7 +25,7 @@ export default {
   methods: {
     onInputTokenRoyalty() {
       if (this.tokenRoyalty > 100) {
-        this.tokenRoyalty = 100
+        this.tokenRoyalty = '100'
       }
       this.tokenRoyalty = this.tokenRoyalty.match(/^\d+\.?\d{0,2}/)
       this.$emit('data-from-step3', 'tokenRoyalty', this.tokenRoyalty)
