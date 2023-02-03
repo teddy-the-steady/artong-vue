@@ -61,7 +61,9 @@ export default {
       )
     },
     backgroundColor() {
-      return this.generateGradientBackground(this.project.id)
+      return this.generateGradientBackground(
+        this.project.id || this.project.address,
+      )
     },
   },
   methods: {
