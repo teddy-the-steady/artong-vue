@@ -835,14 +835,11 @@ export default {
   .nft-name-img {
     width: 400px;
     height: 400px;
-
     background-color: $artong-black;
-
     border-radius: 14px;
-
     margin-bottom: 6px;
-
     overflow: hidden;
+    cursor: pointer;
     img {
       object-fit: cover;
       width: 100%;
