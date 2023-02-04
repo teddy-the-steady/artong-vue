@@ -111,6 +111,14 @@
         @dialog-focus-out="closeDialog"
         ref="dialog"
       >
+        <div
+          v-if="walletConnectState.chainId !== 1"
+          slot="body"
+          class="network"
+          :style="{ background: 'orange', 'text-align': 'center' }"
+        >
+          ON TESTNET
+        </div>
         <router-link
           slot="body"
           tag="div"
@@ -163,6 +171,7 @@ export default {
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
       isModalOpen: state => state.menu.isModalOpen,
+      walletConnectState: state => state.wallet,
     }),
     randomDelayTime() {
       return {
