@@ -29,6 +29,7 @@
       <input
         class="price-input"
         type="number"
+        pattern="\d*"
         v-model="price"
         placeholder="Price in ETH"
         @input="onInputPrice"
