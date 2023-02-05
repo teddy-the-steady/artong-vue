@@ -11,7 +11,7 @@
             <slot name="body">
               <input
                 type="number"
-                pattern="\d*"
+                inputmode="decimal"
                 v-model="price"
                 placeholder="Price in ETH"
               />
