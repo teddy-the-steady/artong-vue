@@ -9,7 +9,12 @@
 
           <div class="modal-body">
             <slot name="body">
-              <input type="number" v-model="price" placeholder="Price in ETH" />
+              <input
+                type="number"
+                pattern="\d*"
+                v-model="price"
+                placeholder="Price in ETH"
+              />
             </slot>
           </div>
 
