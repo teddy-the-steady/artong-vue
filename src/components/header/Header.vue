@@ -117,7 +117,7 @@
           class="network"
           :style="{ background: 'orange', 'text-align': 'center' }"
         >
-          ON TESTNET
+          WRONG NETWORK
         </div>
         <router-link
           slot="body"
