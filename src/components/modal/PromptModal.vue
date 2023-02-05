@@ -9,7 +9,7 @@
 
           <div class="modal-body">
             <slot name="body">
-              <input type="text" v-model="price" placeholder="Price in ETH" />
+              <input type="number" v-model="price" placeholder="Price in ETH" />
             </slot>
           </div>
 
@@ -112,7 +112,11 @@ export default {
       }
 
       .modal-body {
-        margin: 20px 0;
+        display: flex;
+        margin: 20px;
+        input {
+          width: 100%;
+        }
       }
 
       .modal-footer {
