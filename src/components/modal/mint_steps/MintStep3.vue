@@ -4,6 +4,7 @@
       <input
         id="royalty"
         type="number"
+        pattern="\d*"
         :class="{ filled: tokenRoyalty }"
         v-model="tokenRoyalty"
         @input="onInputTokenRoyalty"

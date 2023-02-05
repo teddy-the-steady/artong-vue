@@ -26,6 +26,7 @@
           <span>Max Token amount</span>
           <input
             type="number"
+            pattern="\d*"
             min="0"
             v-model="maxAmount"
             placeholder="positive number"
