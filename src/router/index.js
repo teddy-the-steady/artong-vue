@@ -102,7 +102,7 @@ const router = new Router({
       },
     },
     {
-      path: '/create/project',
+      path: '/creating/project',
       name: 'CreatingProject',
       component: CreatingProject,
     },
