@@ -5,7 +5,7 @@ import { Auth } from '@aws-amplify/auth'
 import Main from '@/components/menu/Main'
 import Project from '@/components/projects/Project'
 import Projects from '@/components/menu/Projects'
-import Following from '@/components/menu/Following'
+import Feed from '@/components/menu/Feed'
 import Login from '@/components/member/Login'
 import User from '@/components/member/User'
 import Artist from '@/components/member/Artist'
@@ -66,9 +66,9 @@ const router = new Router({
       component: Contents,
     },
     {
-      path: '/following',
-      name: 'Following',
-      component: Following,
+      path: '/feed',
+      name: 'Feed',
+      component: Feed,
       meta: { requiresAuth: true },
     },
     {
