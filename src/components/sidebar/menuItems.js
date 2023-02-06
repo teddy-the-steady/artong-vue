@@ -41,7 +41,7 @@ export default [
     icon: 'fa fa-image',
   },
   {
-    href: '/following',
+    href: '/feed',
     title: 'Feed',
     icon: 'fa fa-bolt',
   },
