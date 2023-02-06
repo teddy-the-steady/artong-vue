@@ -564,6 +564,9 @@ export default {
           this.project.background_thumbnail_s3key = null
           this.isFirstLoading = true
           this.project = await this.getProject()
+          this.backgroundColor = this.generateGradientBackground(
+            this.project.id,
+          )
           this.isFirstLoading = false
           this.setStatistics()
           this.tabs[3].show = false
@@ -589,7 +592,6 @@ export default {
     $route(to) {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id
-        this.backgroundColor = this.generateGradientBackground(to.params.id)
         this.tabs[3].show = false
       }
 
