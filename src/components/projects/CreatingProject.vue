@@ -2,6 +2,7 @@
   <div>
     <div v-if="created">created!</div>
     <div v-else>ing..</div>
+    <progress id="progress" :value="progress" min="0" max="100"></progress>
   </div>
 </template>
 
@@ -17,9 +18,15 @@ export default {
     return {
       txHash: this.$router.currentRoute.query.txHash,
       created: false,
+      progress: 0,
     }
   },
   methods: {
+    updateValue() {
+      setTimeout(() => {
+        this.progress += 5
+      }, 1000)
+    },
     wait(timeToDelay) {
       return new Promise(resolve => setTimeout(resolve, timeToDelay))
     },
@@ -44,11 +51,18 @@ export default {
     await this.getProject()
   },
   watch: {
+    progress(val) {
+      this.updateValue()
+      console.log(val)
+    },
     async $route(val) {
       if (val.name === 'CreatingProject') {
         await this.getProject()
       }
     },
+  },
+  created() {
+    this.progress = 5
   },
 }
 </script>
