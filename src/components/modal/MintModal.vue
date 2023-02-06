@@ -95,9 +95,6 @@ export default {
     }
   },
   methods: {
-    close() {
-      this.$emit('close')
-    },
     nextStep() {
       switch (this.currentStep.id) {
         case 0:
@@ -118,10 +115,6 @@ export default {
           break
         case 2:
           if (this.slotData.lazyMint == 1) {
-            if (this.slotData.price && isNaN(parseFloat(this.slotData.price))) {
-              alert('price should be number')
-              return
-            }
             if (!this.slotData.price || this.slotData.price < 0.001) {
               alert('Least price is 0.001 ETH')
               return
@@ -129,18 +122,17 @@ export default {
           }
           break
         case 3:
-          if (isNaN(parseFloat(this.slotData.tokenRoyalty))) {
-            alert('token royalty should be number')
-            return
-          } else {
+          if (this.slotData.tokenRoyalty) {
             this.slotData.tokenRoyalty *= 100
-            if (
-              this.slotData.tokenRoyalty < 0 ||
-              this.slotData.tokenRoyalty > 10000
-            ) {
-              alert('token royalty should be number between 0~100')
-              return
-            }
+          } else {
+            this.slotData.tokenRoyalty = 0
+          }
+          if (
+            this.slotData.tokenRoyalty < 0 ||
+            this.slotData.tokenRoyalty > 10000
+          ) {
+            alert('token royalty should be number between 0~100')
+            return
           }
           break
         default:
@@ -156,7 +148,9 @@ export default {
         return
       }
 
-      this.signer = await checkMobileWalletStatusAndGetSigner()
+      this.signer = await checkMobileWalletStatusAndGetSigner(
+        this.$router.currentRoute.fullPath,
+      )
       if (!this.signer) {
         return
       }
@@ -184,6 +178,7 @@ export default {
               makeS3Path(
                 `${this.S3_PRIVACY_LEVEL}/${this.slotData.s3Result.key}`,
               ),
+              this.slotData.tokenRoyalty,
             )
 
             await patchContent(this.slotData.postResult.id, {
@@ -214,6 +209,8 @@ export default {
             await patchContent(this.slotData.postResult.id, {
               tokenId: tokenId,
             })
+
+            this.$emit('data-from-mint-modal', 'tokenId', tokenId)
           }
         }
         this.$emit('data-from-mint-modal', 'minted', true)
@@ -228,7 +225,12 @@ export default {
         alert('Oops, something went wrong! Please try again')
       }
     },
-    async makeLazyMintingVoucher(projectAddress, tokenUri, contentUri) {
+    async makeLazyMintingVoucher(
+      projectAddress,
+      tokenUri,
+      contentUri,
+      royalty,
+    ) {
       const lazyMinter = new LazyMinter({
         contract: new ethers.Contract(projectAddress, ERC721_ABI, this.signer),
         signer: this.signer,
@@ -238,6 +240,7 @@ export default {
         tokenUri,
         contentUri,
         etherToWei(this.slotData.price),
+        royalty,
       )
       return voucher
     },

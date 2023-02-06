@@ -197,10 +197,16 @@
             </div>
           </div>
           <div class="price-box">
-            <div class="label">Price</div>
             <div>
-              {{ content ? weiToEther(price) : '' }}
-              ETH
+              <label class="label">Price</label>
+              <div>
+                {{ content ? weiToEther(price) : '' }}
+                ETH
+              </div>
+            </div>
+            <div>
+              <label class="label">Creator Royalty</label>
+              <div>{{ content ? content.royalty / 100 : '' }} %</div>
             </div>
           </div>
           <div class="trade-buttons">
@@ -691,6 +697,11 @@ export default {
       }
       .description {
         margin-top: 30px;
+        :nth-child(2) {
+          white-space: pre;
+          max-height: 300px;
+          overflow: auto;
+        }
       }
       .price-box {
         margin-top: 30px;
@@ -699,6 +710,10 @@ export default {
         background: #f2f2f2;
         border: 1px solid #cccccc;
         border-radius: 24px;
+        display: flex;
+        :first-child {
+          flex: 0.5;
+        }
         input {
           border: none;
           background: #f2f2f2;

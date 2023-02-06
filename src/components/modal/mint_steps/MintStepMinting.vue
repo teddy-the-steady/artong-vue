@@ -4,7 +4,10 @@
     <div class="text inProgress" v-else-if="uploadedToIPFS && !minted">
       Minting
     </div>
-    <div class="text" v-else-if="minted">Completed!</div>
+    <div class="text" v-else-if="minted">
+      <div>Complete!</div>
+      <button @click="redirectToMintResult">Click</button> to see result
+    </div>
     <div>
       <div
         class="spinner"
@@ -27,6 +30,43 @@ export default {
     minted: {
       type: Boolean,
       default: false,
+    },
+    slotData: {
+      type: Object,
+      default: () => {},
+    },
+    project: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  methods: {
+    redirectToMintResult() {
+      if (this.slotData.lazyMint === '0') {
+        this.$router.push({
+          name: 'ContentDetail',
+          params: {
+            project_address:
+              this.project.slug || this.slotData.postResult.project_address,
+            token_id: this.slotData.tokenId,
+            image_width: 500,
+            image_height: 500,
+          },
+        })
+      } else {
+        this.$router.push({
+          name: 'ContentCandidateDetail',
+          params: {
+            project_address:
+              this.project.slug || this.slotData.postResult.project_address,
+            contents_id: this.slotData.postResult.id,
+            image_width: 500,
+            image_height: 500,
+          },
+        })
+      }
+
+      this.$emit('close')
     },
   },
 }

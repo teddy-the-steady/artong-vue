@@ -2,10 +2,12 @@
   <div class="mint-final">
     <div class="imagebox">
       <img
+        v-if="project.project_thumbnail_s3key || project.project_s3key"
         :src="
           makeS3Path(project.project_thumbnail_s3key || project.project_s3key)
         "
       />
+      <div v-else :style="{ background: backgroundColor }"></div>
     </div>
     <img src="../../../assets/icons/double-arrow-left.svg" />
     <div class="imagebox">
@@ -16,9 +18,11 @@
 
 <script>
 import { makeS3Path } from '../../../util/commonFunc'
+import { backgroundColor } from '../../../mixin'
 
 export default {
   name: 'MintStepFinal',
+  mixins: [backgroundColor],
   props: {
     project: {
       type: Object,
@@ -27,6 +31,11 @@ export default {
     slotData: {
       type: Object,
       default: () => {},
+    },
+  },
+  computed: {
+    backgroundColor() {
+      return this.generateGradientBackground(this.project.id)
     },
   },
   methods: {
@@ -53,6 +62,11 @@ export default {
     img {
       width: 100%;
       object-fit: cover;
+    }
+
+    div {
+      width: 100%;
+      height: 100%;
     }
   }
 }

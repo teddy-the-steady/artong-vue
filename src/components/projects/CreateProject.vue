@@ -25,9 +25,12 @@
         <div>
           <span>Max Token amount</span>
           <input
-            type="text"
+            type="number"
+            inputmode="decimal"
+            min="0"
             v-model="maxAmount"
             placeholder="positive number"
+            @focusout="onMaxAmtFocusout"
           />
         </div>
         <div>
@@ -116,20 +119,8 @@ export default {
         return false
       }
     },
-    isPosInt() {
-      if (
-        isNaN(parseInt(this.maxAmount)) ||
-        this.maxAmount <= 0 ||
-        this.maxAmount % 1 != 0
-      ) {
-        alert('Max Token Amount should be positive integer')
-        return false
-      }
-      return true
-    },
     async createProject() {
       if (this.hasNull()) return
-      if (!this.isPosInt()) return
       if (this.creating === true) {
         return
       }
@@ -260,6 +251,13 @@ export default {
       this.creating = false
       this.$children[0].$refs.projectProfileImage.src = ''
       this.$children[0].$refs.backgroundImage.src = ''
+    },
+    onMaxAmtFocusout(event) {
+      if (!event.target.value || event.target.valueAsNumber <= 0) {
+        this.maxAmount = null
+      } else {
+        this.maxAmount = Math.trunc(this.maxAmount)
+      }
     },
   },
   watch: {
