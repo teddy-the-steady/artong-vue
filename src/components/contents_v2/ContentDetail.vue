@@ -210,10 +210,16 @@
             </div>
           </div>
           <div class="price-box">
-            <div class="label">Price</div>
             <div>
-              {{ price ? weiToEther(price) : '' }}
-              ETH
+              <label class="label">Price</label>
+              <div>
+                {{ price ? weiToEther(price) : '' }}
+                ETH
+              </div>
+            </div>
+            <div>
+              <label class="label">Creator Royalty</label>
+              <div>{{ content ? content.royalty / 100 : '' }} %</div>
             </div>
           </div>
           <div class="trade-buttons">
@@ -273,7 +279,7 @@
       </div>
     </div>
     <PromptModal
-      v-if="isModalOpen"
+      v-if="isPromptModalOpen"
       @close-modal="toggleModal"
       :confirmOnProcess="confirmOnProcess"
       :cancelDisabled="cancelDisabled"
@@ -359,7 +365,7 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isModalOpen: state => state.menu.isModalOpen,
+      isPromptModalOpen: state => state.menu.isPromptModalOpen,
       innerWidth: state => state.menu.innerWidth,
     }),
     isListed() {
@@ -398,20 +404,32 @@ export default {
     },
   },
   methods: {
+    sleep(timeToDelay) {
+      return new Promise(resolve => setTimeout(resolve, timeToDelay))
+    },
     async queryToken(project_address, token_id) {
-      const result = await graphql(
-        queryToken({
-          variables: {
-            id: project_address + token_id,
-          },
-          db: {
-            project_address: project_address,
-            token_id: token_id,
-          },
-        }),
-      )
-
-      return result.token
+      for (;;) {
+        const result = await graphql(
+          queryToken({
+            variables: {
+              id: project_address + token_id,
+            },
+            db: {
+              project_address: project_address,
+              token_id: token_id,
+            },
+          }),
+        )
+        if (result.token) {
+          return result.token
+        }
+        if (this.$router.currentRoute.name !== 'ContentDetail') {
+          break
+        }
+        if (result.retry) {
+          await this.sleep(3000)
+        }
+      }
     },
     async getCarouselData(project_address) {
       const [prevNextProjects, tokensByProject] = await Promise.all([
@@ -434,7 +452,7 @@ export default {
       this.tokens = tokensByProject.tokens
     },
     toggleModal() {
-      this.$store.commit('TOGGLE_MODAL')
+      this.$store.commit('TOGGLE_PROMPT_MODAL')
     },
     async makeTransaction(which, acceptParam) {
       if (this.canceling || this.buying || this.accepting) {
@@ -935,6 +953,11 @@ export default {
       }
       .description {
         margin-top: 30px;
+        :nth-child(2) {
+          white-space: pre-line;
+          max-height: 300px;
+          overflow: auto;
+        }
       }
       .price-box {
         margin-top: 30px;
@@ -943,6 +966,10 @@ export default {
         background: #f2f2f2;
         border: 1px solid #cccccc;
         border-radius: 24px;
+        display: flex;
+        :first-child {
+          flex: 0.5;
+        }
         input {
           border: none;
           background: #f2f2f2;

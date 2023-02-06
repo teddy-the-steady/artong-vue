@@ -6,7 +6,7 @@
       <ProjectPageProfile_small
         v-if="needContentName"
         class="project-profile"
-        :project="project"
+        :project="projectWithAdditionals"
       ></ProjectPageProfile_small>
     </div>
     <div class="bottom">
@@ -41,11 +41,6 @@ export default {
     ProjectPageProfile_small,
     ContentsProfile,
   },
-  data() {
-    return {
-      project: {},
-    }
-  },
   computed: {
     contentImage() {
       return (
@@ -64,6 +59,17 @@ export default {
         result = weiToEther(parseInt(this.content.price).toString())
       }
       return result
+    },
+    projectWithAdditionals() {
+      const slug = this.content.slug
+      const projectS3key = this.content.project_s3key
+      const projectThumbnailS3key = this.content.project_thumbnail_s3key
+      return {
+        ...this.content.project,
+        slug,
+        projectS3key,
+        projectThumbnailS3key,
+      }
     },
   },
   props: {
@@ -91,12 +97,15 @@ export default {
       }
     },
     onContentClick(event) {
-      if (this.content.tokenId) {
+      if (this.content.token_id) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
-            project_address: this.content.slug || this.content.project.id,
-            token_id: this.content.tokenId,
+            project_address:
+              this.content.slug ||
+              this.content.project_address ||
+              this.content.project.id,
+            token_id: this.content.token_id,
             image_width: event.target.naturalWidth,
             image_height: event.target.naturalHeight,
           },
@@ -113,17 +122,6 @@ export default {
         })
       }
     },
-    makeProject() {
-      this.project = {
-        id: this.content.project?.id,
-        name: this.content.project?.name,
-        project_s3key: this.content.project_s3key,
-        project_thumbnail_s3key: this.content.project_thumbnail_s3key,
-      }
-    },
-  },
-  created() {
-    this.makeProject()
   },
 }
 </script>

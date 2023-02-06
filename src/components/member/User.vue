@@ -39,7 +39,6 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      walletConnectState: state => state.wallet,
     }),
   },
   data() {
