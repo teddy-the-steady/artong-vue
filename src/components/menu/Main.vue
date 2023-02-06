@@ -11,10 +11,7 @@
             eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum
             dolor sit amet,
           </div>
-          <router-link class="start-btn" to="/login" v-if="!currentUser.id">
-            <button v-ripple>Start contributing</button>
-          </router-link>
-          <button class="start-btn" v-ripple @click="contribute" v-else>
+          <button class="start-btn" v-ripple @click="contribute">
             Start contributing
           </button>
         </div>
@@ -232,30 +229,26 @@
       </div>
       <div class="bottom-link">
         <div class="bottom-table">
-          <ul style="list-style: none" class="column second-column">
-            <li style="list-style: none">Company</li>
+          <ul class="column second-column">
+            <li>Company</li>
             <li
-              style="list-style: none"
-              @click="
-                moveToAnotherSite(
-                  'https://www.notion.so/artong/Artong-b97ff2cfe0434a3eaf111eb76b5d4bed',
-                )
-              "
+              class="clickable"
+              @click="moveToAnotherSite('https://www.4rtong.com')"
             >
               About
             </li>
-            <li style="list-style: none">Careers</li>
+            <li class="clickable">Careers</li>
           </ul>
-          <ul style="list-style: none" class="column third-column">
-            <li style="list-style: none">Connect</li>
+          <ul class="column third-column">
+            <li>Connect</li>
             <li
-              style="list-style: none"
+              class="clickable"
               @click="moveToAnotherSite('https://twitter.com/4rtong')"
             >
               Twitter
             </li>
             <li
-              style="list-style: none"
+              class="clickable"
               @click="moveToAnotherSite('https://www.instagram.com/artong.io/')"
             >
               Instagram
@@ -263,8 +256,8 @@
           </ul>
         </div>
         <div class="bottom-left">
-          <div class="bottom-word">Privacy Info</div>
-          <div class="bottom-word">Terms of Service</div>
+          <div class="bottom-word clickable">Privacy Info</div>
+          <div class="bottom-word clickable">Terms of Service</div>
         </div>
       </div>
     </div>
@@ -278,7 +271,7 @@ import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
-import { isSessionValid, makeS3Path } from '../../util/commonFunc'
+import { makeS3Path } from '../../util/commonFunc'
 import {
   graphql,
   queryToken,
@@ -325,17 +318,7 @@ export default {
   },
   methods: {
     async contribute() {
-      if (this.$router.currentRoute.name === 'Project') {
-        if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
-          return
-        }
-        this.$root.$emit('contribute')
-      } else if (this.$router.currentRoute.name === 'Projects') {
-        alert('First, choose a project to contribute!')
-      } else {
-        alert('First, choose a project to contribute!')
-        this.$router.push({ name: 'Projects' })
-      }
+      this.$router.push({ name: 'Projects' })
     },
     createProject() {
       if (!this.currentUser.id) {
@@ -580,6 +563,7 @@ export default {
   row-gap: 40px;
   margin-top: 48px;
   margin-bottom: 48px;
+  cursor: pointer;
 }
 .button-block {
   width: 91.1%;
@@ -780,6 +764,7 @@ export default {
     }
     .second-column {
       margin-right: 25px;
+      list-style: none;
     }
   }
   .bottom-word {
@@ -850,14 +835,11 @@ export default {
   .nft-name-img {
     width: 400px;
     height: 400px;
-
     background-color: $artong-black;
-
     border-radius: 14px;
-
     margin-bottom: 6px;
-
     overflow: hidden;
+    cursor: pointer;
     img {
       object-fit: cover;
       width: 100%;
@@ -962,11 +944,16 @@ export default {
         margin-top: 57px;
         .third-column {
           margin-right: 61px;
+          list-style: none;
         }
       }
       .bottom-left {
         margin-right: auto;
         margin-top: 124px;
+      }
+
+      .clickable {
+        cursor: pointer;
       }
     }
   }
@@ -1149,6 +1136,10 @@ export default {
       .bottom-left {
         margin-right: auto;
         margin-top: 124px;
+      }
+
+      .clickable {
+        cursor: pointer;
       }
     }
   }

@@ -107,7 +107,7 @@ export default {
       object-fit: fill;
       border-radius: 15px;
       margin: 8px;
-      background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
+      background: $lightergray;
     }
   }
   .info {

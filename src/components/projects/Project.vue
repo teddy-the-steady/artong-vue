@@ -178,6 +178,9 @@
         slot="body_step_5"
         :uploadedToIPFS="slotData.uploadedToIPFS"
         :minted="slotData.minted"
+        :slotData="slotData"
+        :project="project"
+        @close="close"
       ></MintStepMinting>
     </MintModal>
     <textarea v-model="url" ref="url"></textarea>

@@ -8,8 +8,14 @@ class LazyMinter {
     this.signer = signer
   }
 
-  async createVoucher(creator, tokenUri, contentUri, minPrice = 0) {
-    const voucher = { creator, tokenUri, contentUri, minPrice }
+  async createVoucher(
+    creator,
+    tokenUri,
+    contentUri,
+    minPrice = 0,
+    royalty = 0,
+  ) {
+    const voucher = { creator, tokenUri, contentUri, minPrice, royalty }
     const domain = await this._signingDomain()
     const types = {
       NFTVoucher: [
@@ -17,6 +23,7 @@ class LazyMinter {
         { name: 'minPrice', type: 'uint256' },
         { name: 'tokenUri', type: 'string' },
         { name: 'contentUri', type: 'string' },
+        { name: 'royalty', type: 'uint16' },
       ],
     }
     const signature = await this.signer._signTypedData(domain, types, voucher)
