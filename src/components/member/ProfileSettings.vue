@@ -1,8 +1,26 @@
 <template>
-  <div>
-    Username: <input type="text" v-model="member.username" /><br />
-    Intro: <input type="text" v-model="member.introduction" /><br />
-    <div>
+  <div class="settings">
+    <h1>User Settings</h1>
+    <div class="input-group">
+      <span class="float-label">
+        <input
+          id="username"
+          type="text"
+          :class="{ filled: member.username }"
+          v-model="member.username"
+          maxlength="100"
+        />
+        <label for="username">Username</label>
+      </span>
+      <span class="float-label">
+        <textarea
+          id="intro"
+          :class="{ filled: member.introduction }"
+          v-model="member.introduction"
+          maxlength="400"
+        />
+        <label for="intro">Intro</label>
+      </span>
       <button @click="save">SAVE</button>
     </div>
     {{ errorMessage }}
@@ -55,4 +73,42 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.settings {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .input-group {
+    padding: 40px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+    .float-label {
+      margin-bottom: 30px;
+
+      :first-child {
+        width: 100%;
+      }
+
+      textarea {
+        resize: vertical;
+        max-height: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .settings {
+    .input-group {
+      border: none;
+      margin: 0px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+</style>
