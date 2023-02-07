@@ -643,9 +643,6 @@ export default {
   margin-top: 48px;
 }
 .curated-collection-title {
-  width: 200px;
-  height: 30px;
-
   font-family: 'Mustica Pro';
   font-style: $item-font-style;
   font-weight: 600;
