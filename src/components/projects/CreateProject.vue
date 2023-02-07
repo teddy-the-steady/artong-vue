@@ -23,7 +23,10 @@
           />
         </div>
         <div>
-          <span class="contribution-policy">Contribution Policy</span>
+          <div class="contribution-policy-title">
+            <span class="contribution-policy">Contribution Policy</span>
+            <Info class="info-icon"></Info>
+          </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
             <label for="r1">Immediate</label>
@@ -66,10 +69,11 @@ import {
   isSessionValid,
   loginAndRedirectBack,
 } from '../../util/commonFunc'
+import Info from '../util/Info.vue'
 
 export default {
   name: 'CreateProject',
-  components: { ProjectPrototypeCard },
+  components: { ProjectPrototypeCard, Info },
   mixins: [headerActivate],
   computed: {
     ...mapState({
@@ -307,6 +311,22 @@ export default {
         display: block;
       }
     }
+    .contribution-policy-title {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 10px;
+      height: 29px;
+      .contribution-policy {
+        line-height: 29px;
+        margin-bottom: 0px;
+      }
+      .info-icon {
+        width: 19px;
+        margin-left: 2px;
+        transform: translateY(-55px);
+      }
+    }
+
     button {
       width: 100%;
       .spinner {
