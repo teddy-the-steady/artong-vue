@@ -1128,6 +1128,7 @@ export default {
         margin-top: 57px;
         .third-column {
           margin-right: 61px;
+          list-style: none;
         }
       }
       .bottom-left {
