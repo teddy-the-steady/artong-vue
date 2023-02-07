@@ -1,40 +1,104 @@
 <template>
   <div>
-    <ContentList></ContentList>
+    <h1>Explore Contents</h1>
+    <div class="contents">
+      <div class="sort">
+        <SortDropdown
+          :sortOptions="sortOptions"
+          :sortSelected="sort"
+        ></SortDropdown>
+      </div>
+      <ContentList
+        :queryContents="queryContents"
+        :key="sort.name"
+      ></ContentList>
+    </div>
   </div>
 </template>
 
 <script>
 import { headerActivate } from '../../mixin'
+import { getContents } from '../../api/contents'
 import ContentList from '../contents_v2/ContentList.vue'
+import SortDropdown from '../util/SortDropdown.vue'
 
 export default {
   name: 'Contents',
   mixins: [headerActivate],
   components: {
     ContentList,
+    SortDropdown,
+  },
+  data() {
+    return {
+      queryContents: {
+        func: null,
+        queryParams: {},
+      },
+      sort: {},
+      sortOptions: {
+        newest: {
+          name: 'Newest',
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: 'Oldest',
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      },
+    }
+  },
+  created() {
+    this.sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.queryContents = {
+      func: getContents,
+      queryParams: {
+        start_num: 0,
+        count_num: 10,
+        orderBy: this.sort.orderBy,
+        orderDirection: this.sort.orderDirection,
+      },
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name !== to.name) {
+        return
+      }
+
+      this.sort = this.sortOptions[to.query.sort] || this.sortOptions['newest']
+      this.queryContents = {
+        func: getContents,
+        queryParams: {
+          start_num: 0,
+          count_num: 10,
+          orderBy: this.sort.orderBy,
+          orderDirection: this.sort.orderDirection,
+        },
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-// .container {
-//   display: flex;
-//   flex-wrap: wrap;
-//   justify-content: center;
-// }
 
-// .content {
-//     background-color: $artong-white;
-//     padding: 35px 40px;
-//     text-align: left;
-//     display: inline-block;
-//     border-radius: 10px;
-//     width: 20%;
-//     min-width: 50px;
-//     min-height: 150px;
-//     margin: 0.5rem;
-//     box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
-// }
+h1 {
+  color: $artong-black;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  .sort {
+    position: relative;
+    display: flex;
+    align-self: flex-end;
+    margin-right: 5%;
+  }
+}
 </style>
