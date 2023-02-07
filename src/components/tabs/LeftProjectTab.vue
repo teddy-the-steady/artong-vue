@@ -1,8 +1,11 @@
 <template>
   <div>
     <div class="box">
-      <div class="symbol">
-        {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+      <div class="symbol-and-slug">
+        <div class="symbol">
+          {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+        </div>
+        <div class="slug">{{ project.slug ? `@${project.slug}` : '' }}</div>
       </div>
       <div class="collection-name">{{ project.name }}</div>
       <router-link
@@ -119,19 +122,28 @@ export default {
   background: #ffffff;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
   border-radius: 8px;
-  .symbol {
-    width: 52px;
-    height: 25px;
-    border: 1px solid #f22e3e;
-    border-radius: 999px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    color: #f22e3e;
-    line-height: 25px;
-    overflow: hidden !important;
-    text-overflow: ellipsis;
+  .symbol-and-slug {
+    display: flex;
+    align-items: center;
+    .symbol {
+      width: 52px;
+      height: 25px;
+      border: 1px solid #f22e3e;
+      border-radius: 999px;
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      color: #f22e3e;
+      line-height: 25px;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+    }
+    .slug {
+      margin-left: 5px;
+      color: $darkgray;
+      font-style: italic;
+    }
   }
   .collection-name {
     font-family: 'Pretendard';

@@ -18,6 +18,7 @@ const queryProject = function (variables) {
           maxAmount
           policy
           isDisabled
+          royalty
           createdAt
           updatedAt
           _db_project_s3key
