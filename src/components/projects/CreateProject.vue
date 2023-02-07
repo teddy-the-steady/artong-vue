@@ -1,19 +1,8 @@
 <template>
   <div>
-    <h1>Create Your Project</h1>
     <div class="create-project">
-      <div class="card">
-        <ProjectPrototypeCard
-          :name="name"
-          :symbol="symbol"
-          :creating="creating"
-          @project-background-click="projectBackgroundClick"
-          @project-profile-click="projectProfileClick"
-        ></ProjectPrototypeCard>
-        <input ref="profileInput" type="file" @change="onProfileChange" />
-        <input ref="backgroundInput" type="file" @change="onBackgroundChange" />
-      </div>
       <div class="info">
+        <h1 class="h1">Create Your Project</h1>
         <div>
           <span>Name</span>
           <input type="text" v-model="name" maxlength="100" />
@@ -34,7 +23,7 @@
           />
         </div>
         <div>
-          <span>Contribution Policy</span>
+          <span class="contribution-policy">Contribution Policy</span>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
             <label for="r1">Immediate</label>
@@ -46,6 +35,17 @@
           <div class="spinner" :class="{ active: creating }"></div>
           <span v-show="!creating">CREATE PROJECT</span>
         </button>
+      </div>
+      <div class="card">
+        <ProjectPrototypeCard
+          :name="name"
+          :symbol="symbol"
+          :creating="creating"
+          @project-background-click="projectBackgroundClick"
+          @project-profile-click="projectProfileClick"
+        ></ProjectPrototypeCard>
+        <input ref="profileInput" type="file" @change="onProfileChange" />
+        <input ref="backgroundInput" type="file" @change="onBackgroundChange" />
       </div>
     </div>
   </div>
@@ -124,11 +124,10 @@ export default {
       if (this.creating === true) {
         return
       }
-      this.creating = true
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
-
+      this.creating = true
       this.signer = await checkMobileWalletStatusAndGetSigner(
         this.$router.currentRoute.fullPath,
       )
@@ -278,20 +277,24 @@ export default {
       display: none;
     }
   }
-
   .info {
-    border: 1px solid $lightgray;
     padding: 20px;
     margin: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 25%;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+    .h1 {
+      margin-bottom: 40px;
+      text-align: left;
+    }
 
     div {
       display: flex;
       flex-direction: column;
       text-align: left;
-
+      margin-bottom: 30px;
       span {
         margin-bottom: 10px;
       }
@@ -306,7 +309,6 @@ export default {
     }
     button {
       width: 100%;
-      margin-left: 10px;
       .spinner {
         display: none;
 
@@ -343,18 +345,20 @@ export default {
   }
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 690px) {
   .create-project {
     display: block;
 
     .info {
       border: none;
+      margin: 0px;
+      width: 100%;
+      box-sizing: border-box;
       div {
         padding-bottom: 10px;
       }
       button {
         width: 100%;
-        margin-left: 10px;
         .spinner {
           display: none;
 

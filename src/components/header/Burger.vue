@@ -84,6 +84,7 @@ export default {
       transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1),
         opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1),
         background-color 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      box-shadow: 1px 1px 3px rgb(255 255 255 / 50%);
     }
 
     .burger-bar__1 {
