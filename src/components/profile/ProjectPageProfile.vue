@@ -14,7 +14,9 @@
       <div
         v-else
         class="basicProfileImage"
+        :class="{ pointer: isProjectOwner }"
         :style="{ background: backgroundColor }"
+        @click="imageClick"
       ></div>
       <input ref="fileInput" type="file" @change="onFileChange" />
     </div>
@@ -146,6 +148,9 @@ export default {
     height: 100px;
     border-radius: 15px;
     border: 1px solid $profile-border-gray;
+    &.pointer {
+      cursor: pointer;
+    }
   }
   input[type='file'] {
     display: none;
