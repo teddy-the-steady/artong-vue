@@ -60,19 +60,10 @@
                       v-for="(project, k) in projects"
                       :key="k"
                     >
-                      <router-link
-                        :to="{
-                          name: 'Project',
-                          params: {
-                            id: project.address,
-                          },
-                        }"
-                      >
-                        <ProjectPageProfile_small
-                          :project="project"
-                          :isFirstLoading="false"
-                        ></ProjectPageProfile_small>
-                      </router-link>
+                      <ProjectPageProfile_small
+                        :project="project"
+                        :isFirstLoading="false"
+                      ></ProjectPageProfile_small>
                     </div>
                   </div>
                 </div>
