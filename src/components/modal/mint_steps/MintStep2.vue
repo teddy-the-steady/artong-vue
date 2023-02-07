@@ -24,10 +24,9 @@
       <label for="r2">Lazy Mint</label>
     </div>
 
-    <div v-show="lazyMint == 1">
+    <div v-show="lazyMint == 1" class="price-input">
       <span>Price</span>
       <input
-        class="price-input"
         type="number"
         inputmode="decimal"
         v-model="price"
@@ -81,7 +80,9 @@ export default {
     }
   }
   .price-input {
-    margin-left: 91px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>
