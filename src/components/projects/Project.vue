@@ -331,15 +331,28 @@ export default {
     setLoadingData(key, value) {
       this.loadingData[key] = value
     },
+    sleep(timeToDelay) {
+      return new Promise(resolve => setTimeout(resolve, timeToDelay))
+    },
     async getProject() {
-      const result = await graphql(
-        queryProject({
-          variables: {
-            id: this.projectAddressOrSlug,
-          },
-        }),
-      )
-      return result.project
+      for (;;) {
+        const result = await graphql(
+          queryProject({
+            variables: {
+              id: this.projectAddressOrSlug,
+            },
+          }),
+        )
+        if (result.project) {
+          return result.project
+        }
+        if (this.$router.currentRoute.name !== 'Project') {
+          break
+        }
+        if (result.retry) {
+          await this.sleep(3000)
+        }
+      }
     },
     close() {
       this.slotData = {
