@@ -89,7 +89,7 @@ export default {
       await this.pushData()
       setTimeout(function () {
         $state.loaded()
-      }, 500)
+      }, 100)
     },
     async pushData() {
       let contentArrayToPush = []
