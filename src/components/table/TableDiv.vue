@@ -196,7 +196,7 @@ export default {
       await this.pushData()
       setTimeout(function () {
         $state.loaded()
-      }, 1000)
+      }, 100)
     },
     async pushData() {
       const contentArrayToPush = await this.makeContentArray()
