@@ -25,7 +25,6 @@
         <div>
           <div class="contribution-policy-title">
             <span class="contribution-policy">Contribution Policy</span>
-            <Info class="info-icon"></Info>
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
@@ -69,11 +68,10 @@ import {
   isSessionValid,
   loginAndRedirectBack,
 } from '../../util/commonFunc'
-import Info from '../util/Info.vue'
 
 export default {
   name: 'CreateProject',
-  components: { ProjectPrototypeCard, Info },
+  components: { ProjectPrototypeCard },
   mixins: [headerActivate],
   computed: {
     ...mapState({
