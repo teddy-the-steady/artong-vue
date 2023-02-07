@@ -296,6 +296,7 @@ export default {
         }
 
         path {
+          filter: drop-shadow(1px 1px 50px rgba(255, 255, 255, 0.3));
           &.active {
             animation: bounce 0.2s ease 7.5 alternate;
           }

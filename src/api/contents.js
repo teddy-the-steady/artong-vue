@@ -80,6 +80,17 @@ const getFeedContents = async function (pathParams, queryParams) {
   })
 }
 
+const getContents = async function (pathParams, queryParams) {
+  return await instance.get('/contents', {
+    params: {
+      start_num: queryParams.start_num,
+      count_num: queryParams.count_num,
+      order_by: queryParams.orderBy,
+      order_direction: queryParams.orderDirection,
+    },
+  })
+}
+
 export {
   getContent,
   postContent,
@@ -93,4 +104,5 @@ export {
   searchContents,
   getMainContents,
   getFeedContents,
+  getContents,
 }
