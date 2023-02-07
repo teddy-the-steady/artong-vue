@@ -27,7 +27,6 @@
                     flood-opacity="0.3"
                     flood-color="white"
                   />
-                  <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
                 </filter>
               </defs>
 
