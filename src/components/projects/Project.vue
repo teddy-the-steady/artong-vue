@@ -71,8 +71,11 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="innerWidth < 1440">
-          <div class="symbol">
-            {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+          <div class="symbol-and-slug">
+            <div class="symbol">
+              {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+            </div>
+            <div class="slug">{{ project.slug ? `@${project.slug}` : '' }}</div>
           </div>
           <div class="container1">
             <div class="collection-name">{{ project.name }}</div>
@@ -768,20 +771,30 @@ export default {
     .tab {
       padding-left: 24px;
       padding-right: 24px;
-      .symbol {
-        width: 52px;
-        height: 25px;
-        border: 1px solid #f22e3e;
-        border-radius: 999px;
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        color: #f22e3e;
-        line-height: 25px;
-        overflow: hidden !important;
-        text-overflow: ellipsis;
+      .symbol-and-slug {
+        display: flex;
+        align-items: center;
+        .symbol {
+          width: 52px;
+          height: 25px;
+          border: 1px solid #f22e3e;
+          border-radius: 999px;
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          color: #f22e3e;
+          line-height: 25px;
+          overflow: hidden !important;
+          text-overflow: ellipsis;
+        }
+        .slug {
+          margin-left: 5px;
+          color: $darkgray;
+          font-style: italic;
+        }
       }
+
       .container1 {
         display: flex;
         .collection-name {
