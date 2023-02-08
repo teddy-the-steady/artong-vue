@@ -152,6 +152,7 @@ const queryToken = function (variables) {
             id
             name
             symbol
+            royalty
           }
           listings (orderBy: createdAt, orderDirection: desc, first: 1) {
             id
