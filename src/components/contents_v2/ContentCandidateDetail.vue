@@ -212,11 +212,10 @@
                 <label class="label">Creator Royalty</label>
                 <div>{{ content ? content.royalty / 100 : '' }} %</div>
               </div>
-              <!-- <div
+              <div
                 v-show="project ? project.royalty > 0 : false"
                 class="price-box-content"
-              > -->
-              <div v-show="true" class="price-box-content">
+              >
                 <label class="label">Project Royalty</label>
                 <div>{{ project ? project.royalty / 100 : '' }} %</div>
               </div>
