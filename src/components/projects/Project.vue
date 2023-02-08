@@ -490,7 +490,13 @@ export default {
         sns: this.project.sns,
       }
 
-      if (this.tabs[3]) {
+      if (
+        this.tabs[3] &&
+        this.project.policy === 1 &&
+        (this.currentUser.wallet_address ===
+          this.project.owner.wallet_address ||
+          this.project.is_contributor)
+      ) {
         this.tabs[3].sort =
           this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
         this.tabs[3].api = {
@@ -503,6 +509,8 @@ export default {
             orderDirection: this.tabs[3].sort.orderDirection,
           },
         }
+      } else {
+        this.tabs[3].api = null
       }
     },
     gotoContributorTab() {
@@ -633,17 +641,26 @@ export default {
           }
           break
         case '3':
-          this.tabs[t].sort =
-            this.sortOptions[to.query.sort] || this.sortOptions['newest']
-          this.tabs[t].api = {
-            func: getTobeApprovedContents,
-            pathParams: { address: to.params.id },
-            queryParams: {
-              start_num: 0,
-              count_num: 5,
-              orderBy: this.tabs[t].sort.orderBy,
-              orderDirection: this.tabs[t].sort.orderDirection,
-            },
+          if (
+            this.project.policy === 1 &&
+            (this.currentUser.wallet_address ===
+              this.project.owner.wallet_address ||
+              this.project.is_contributor)
+          ) {
+            this.tabs[t].sort =
+              this.sortOptions[to.query.sort] || this.sortOptions['newest']
+            this.tabs[t].api = {
+              func: getTobeApprovedContents,
+              pathParams: { address: to.params.id },
+              queryParams: {
+                start_num: 0,
+                count_num: 5,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }
+          } else {
+            this.tabs[t].api = null
           }
           break
         default:
