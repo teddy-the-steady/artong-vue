@@ -62,13 +62,13 @@ export default {
     },
     projectWithAdditionals() {
       const slug = this.content.slug
-      const projectS3key = this.content.project_s3key
-      const projectThumbnailS3key = this.content.project_thumbnail_s3key
+      const project_s3key = this.content.project_s3key
+      const project_thumbnail_s3key = this.content.project_thumbnail_s3key
       return {
         ...this.content.project,
         slug,
-        projectS3key,
-        projectThumbnailS3key,
+        project_s3key,
+        project_thumbnail_s3key,
       }
     },
   },

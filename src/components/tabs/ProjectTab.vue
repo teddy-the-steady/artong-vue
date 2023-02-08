@@ -13,23 +13,22 @@
         v-model="currentId"
         @tabClick="tabClick"
         v-show="
-          (tab.show && tab.type !== 'INFO') ||
-          (tab.type === 'INFO' && innerWidth < 1440)
+          tab.type !== 'INFO' || (tab.type === 'INFO' && innerWidth < 1440)
         "
       />
     </div>
     <div class="items">
       <section class="item" :key="generateKey()">
-        <div v-show="current.type === 'CONTENTS' && current.show">
+        <div v-show="current.type === 'CONTENTS'">
           <ContentList
             :queryContents="current.api"
             :windowWide="false"
           ></ContentList>
         </div>
-        <div v-show="current.type === 'PROFILES' && current.show">
+        <div v-show="current.type === 'PROFILES'">
           <ProfileList :apiProfiles="current.api"></ProfileList>
         </div>
-        <div v-show="current.type === 'INFO' && current.show" class="info">
+        <div v-show="current.type === 'INFO'" class="info">
           <div class="info-top">
             <div class="info-name">Description</div>
             <div class="info-desc" v-if="current.data">
