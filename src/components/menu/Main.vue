@@ -5,11 +5,8 @@
         <div class="container1">
           <div class="intro-title">Open Art NFT Marketplace</div>
           <div class="intro-content">
-            Lorem ipsum dolor sit amet, consectetur Arcu fames nisi malesuada
-            vitae accumsan egestas. Quis sed pharetra lacus sed malesuada dui
-            augue egestas. Arcu nisl egestas massa morbi fringilla facilisis
-            eget. Eleifend tempus in ultricies suspendisse egestas.Lorem ipsum
-            dolor sit amet,
+            Become a contributor to any project you want and navigate freely on
+            web3.0
           </div>
           <button class="start-btn" v-ripple @click="contribute">
             Start contributing
@@ -84,10 +81,7 @@
           />
           <div class="subtitle">Wallet connection</div>
           <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Arcu fames
-            nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed
-            malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla
-            facilisis eget. Eleifend tempus in ultricies suspendisse egestas.
+            Connect your wallet and start your journey in ARTONG
           </div>
         </div>
         <!-- Create your collection -->
@@ -95,32 +89,21 @@
           <img class="intro-img" src="../../assets/icons/100-add-folder.svg" />
           <div class="subtitle">Create your project</div>
           <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Arcu fames
-            nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed
-            malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla
-            facilisis eget. Eleifend tempus in ultricies suspendisse egestas.
+            Create an open art project and build a vessel for your creativity
           </div>
         </div>
         <!-- Add you NFTs -->
         <div class="container2-component">
           <img class="intro-img" src="../../assets/icons/fine-arts1.svg" />
-          <div class="subtitle">Add you NFTs</div>
-          <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Arcu fames
-            nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed
-            malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla
-            facilisis eget. Eleifend tempus in ultricies suspendisse egestas.
-          </div>
+          <div class="subtitle">Add your NFTs</div>
+          <div class="content">Add your creation to any project you want</div>
         </div>
         <!-- Share the collection -->
         <div class="container2-component">
           <img class="intro-img" src="../../assets/icons/102-blockchain.svg" />
           <div class="subtitle">Share the collection</div>
           <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Arcu fames
-            nisi malesuada vitae accumsan egestas. Quis sed pharetra lacus sed
-            malesuada dui augue egestas. Arcu nisl egestas massa morbi fringilla
-            facilisis eget. Eleifend tempus in ultricies suspendisse egestas.
+            Share your collection and invite the talents to your community
           </div>
         </div>
       </div>
@@ -478,13 +461,12 @@ export default {
 }
 .intro-content {
   width: 91.1%;
-  //height: 133px;
 
   font-family: $item-font;
   font-style: $item-font-style;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
+  font-size: 20px;
+  line-height: 25px;
 
   color: #4d4d4d; //
   align-self: stretch;
@@ -663,7 +645,7 @@ export default {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
   transform: translate(12px, 0px);
 }
@@ -884,7 +866,6 @@ export default {
     gap: 80px;
 
     width: 560px;
-    height: 688px;
 
     margin-left: auto;
     margin-right: auto;
