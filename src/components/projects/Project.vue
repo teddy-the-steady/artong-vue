@@ -271,7 +271,6 @@ export default {
           label: 'Tokens',
           api: {},
           sort: {},
-          show: true,
         },
         {
           id: 1,
@@ -279,17 +278,8 @@ export default {
           label: 'Contributors',
           api: {},
           sort: {},
-          show: true,
         },
-        { id: 2, type: 'INFO', label: 'Info', data: {}, show: true },
-        {
-          id: 3,
-          type: 'CONTENTS',
-          label: 'Waiting for Approval',
-          api: {},
-          sort: {},
-          show: false,
-        },
+        { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       steps: [
         { id: 0, title: 'stepModal0' },
@@ -512,15 +502,6 @@ export default {
           orderDirection: this.tabs[3].sort.orderDirection,
         },
       }
-
-      if (
-        this.project.policy === 1 &&
-        (this.currentUser.wallet_address ===
-          this.project.owner.wallet_address ||
-          this.project.is_contributor)
-      ) {
-        this.tabs[3].show = true
-      }
     },
     gotoContributorTab() {
       this.$router.push({
@@ -563,10 +544,24 @@ export default {
         this.project.background_s3key = patchResult.background_s3key
       }
     },
+    setWaitingForApprovalTab() {
+      if (this.project.policy === 1) {
+        this.$set(this.tabs, 3, {
+          id: 3,
+          type: 'CONTENTS',
+          label: 'Waiting for Approval',
+          api: {},
+          sort: {},
+        })
+      } else {
+        this.$delete(this.tabs, 3)
+      }
+    },
   },
   async created() {
     this.projectAddressOrSlug = this.$route.params.id
     this.project = await this.getProject()
+    this.setWaitingForApprovalTab()
     this.backgroundColor = this.generateGradientBackground(this.project.id)
     this.isFirstLoading = false
     this.setStatistics()
@@ -580,21 +575,12 @@ export default {
           this.project.background_thumbnail_s3key = null
           this.isFirstLoading = true
           this.project = await this.getProject()
+          this.setWaitingForApprovalTab()
           this.backgroundColor = this.generateGradientBackground(
             this.project.id,
           )
           this.isFirstLoading = false
           this.setStatistics()
-          this.tabs[3].show = false
-
-          if (
-            this.project.policy === 1 &&
-            (this.currentUser.wallet_address ===
-              this.project.owner.wallet_address ||
-              this.project.is_contributor)
-          ) {
-            this.tabs[3].show = true
-          }
         }
       },
     )
@@ -608,16 +594,6 @@ export default {
     $route(to) {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id
-        this.tabs[3].show = false
-      }
-
-      if (
-        this.project.policy === 1 &&
-        (this.currentUser.wallet_address ===
-          this.project.owner.wallet_address ||
-          this.project.is_contributor)
-      ) {
-        this.tabs[3].show = true
       }
 
       const t = to.query.tab || '0'
@@ -659,7 +635,7 @@ export default {
             this.sortOptions[to.query.sort] || this.sortOptions['newest']
           this.tabs[t].api = {
             func: getTobeApprovedContents,
-            pathParams: { address: this.project.id },
+            pathParams: { address: to.params.id },
             queryParams: {
               start_num: 0,
               count_num: 5,
