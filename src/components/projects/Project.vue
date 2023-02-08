@@ -490,27 +490,29 @@ export default {
         sns: this.project.sns,
       }
 
-      if (
-        this.tabs[3] &&
-        this.project.policy === 1 &&
-        (this.currentUser.wallet_address ===
-          this.project.owner.wallet_address ||
-          this.project.is_contributor)
-      ) {
-        this.tabs[3].sort =
-          this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-        this.tabs[3].api = {
-          func: getTobeApprovedContents,
-          pathParams: { address: this.project.id },
-          queryParams: {
-            start_num: 0,
-            count_num: 5,
-            orderBy: this.tabs[3].sort.orderBy,
-            orderDirection: this.tabs[3].sort.orderDirection,
-          },
+      if (this.tabs[3]) {
+        if (
+          this.project.policy === 1 &&
+          (this.currentUser.wallet_address ===
+            this.project.owner.wallet_address ||
+            this.project.is_contributor)
+        ) {
+          this.tabs[3].sort =
+            this.sortOptions[this.$route.query.sort] ||
+            this.sortOptions['newest']
+          this.tabs[3].api = {
+            func: getTobeApprovedContents,
+            pathParams: { address: this.project.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 5,
+              orderBy: this.tabs[3].sort.orderBy,
+              orderDirection: this.tabs[3].sort.orderDirection,
+            },
+          }
+        } else {
+          this.tabs[3].api = null
         }
-      } else {
-        this.tabs[3].api = null
       }
     },
     gotoContributorTab() {
