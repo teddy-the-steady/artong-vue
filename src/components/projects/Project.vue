@@ -490,17 +490,19 @@ export default {
         sns: this.project.sns,
       }
 
-      this.tabs[3].sort =
-        this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-      this.tabs[3].api = {
-        func: getTobeApprovedContents,
-        pathParams: { address: this.project.id },
-        queryParams: {
-          start_num: 0,
-          count_num: 5,
-          orderBy: this.tabs[3].sort.orderBy,
-          orderDirection: this.tabs[3].sort.orderDirection,
-        },
+      if (this.tabs[3]) {
+        this.tabs[3].sort =
+          this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+        this.tabs[3].api = {
+          func: getTobeApprovedContents,
+          pathParams: { address: this.project.id },
+          queryParams: {
+            start_num: 0,
+            count_num: 5,
+            orderBy: this.tabs[3].sort.orderBy,
+            orderDirection: this.tabs[3].sort.orderDirection,
+          },
+        }
       }
     },
     gotoContributorTab() {
