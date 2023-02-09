@@ -1,0 +1,16 @@
+{
+  "title": {
+    "first": "Open Art",
+    "second": "NFT marketplace"
+  },
+  "intro-content": {
+    "first": "Artong is an open art NFT marketplace",
+    "second": "We support freely contributable NFT projects and creators💪",
+    "third": "Contribute to any project you want and explore easily in web3.0"
+  },
+  "start-btn": "Click to Start",
+  "main-token-bottom-title": {
+    "project": "Project",
+    "created-by": "Created By"
+  }
+}
