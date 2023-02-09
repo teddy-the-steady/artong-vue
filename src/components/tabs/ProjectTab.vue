@@ -19,7 +19,13 @@
     </div>
     <div class="items">
       <section class="item" :key="generateKey()">
-        <div v-show="current.type === 'CONTENTS'">
+        <div v-show="current.type === 'CONTENTS' && !current.api" class="info">
+          <div>
+            <button @click="contribute">Contribute</button>
+            to see contents waiting for approval
+          </div>
+        </div>
+        <div v-show="current.type === 'CONTENTS' && current.api">
           <ContentList
             :queryContents="current.api"
             :windowWide="false"
@@ -44,6 +50,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { isSessionValid } from '../../util/commonFunc'
 import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
 import ProfileList from '../profile/ProfileList.vue'
@@ -91,6 +98,12 @@ export default {
     generateKey() {
       return this.currentId + this.current.sort?.name
     },
+    async contribute() {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+      this.$root.$emit('contribute')
+    },
   },
   watch: {
     async $route(val) {
@@ -124,18 +137,16 @@ export default {
   }
 
   .info {
+    margin: 20px 0;
+    font-family: 'Pretendard';
+    font-style: normal;
     .info-top {
       .info-name {
-        font-family: 'Pretendard';
-        font-style: normal;
         font-weight: 600;
         font-size: 18px;
-
         color: #000000;
       }
       .info-desc {
-        font-family: 'Pretendard';
-        font-style: normal;
         font-weight: 400;
         font-size: 16px;
         color: #4d4d4d;
