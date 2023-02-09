@@ -3,13 +3,14 @@
     <div class="container0-box">
       <div class="container0">
         <div class="container1">
-          <div class="intro-title">Open Art NFT Marketplace</div>
+          <div class="intro-title">
+            {{ $t('main.title.first') }}<br />{{ $t('main.title.second') }}
+          </div>
           <div class="intro-content">
-            Become a contributor to any project you want and navigate freely on
-            web3.0
+            {{ $t('main.intro-content') }}
           </div>
           <button class="start-btn" v-ripple @click="contribute">
-            Start contributing
+            {{ $t('main.start-btn') }}
           </button>
         </div>
         <div class="container1-2">
@@ -446,8 +447,6 @@ export default {
 }
 .intro-title {
   width: 295px;
-  height: 216px;
-
   font-family: 'Mustica Pro';
   font-style: $item-font-style;
   font-weight: 600;
