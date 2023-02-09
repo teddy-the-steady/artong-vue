@@ -8,14 +8,18 @@
       :modalTop="modalTop"
       :modalLeft="modalLeft"
     ></InfoModal>
+    <div>----------</div>
+    <Info></Info>
   </div>
 </template>
 <script>
 import InfoModal from '../modal/InfoModal.vue'
+import Info from '../util/Info.vue'
 export default {
   name: 'Test',
   components: {
     InfoModal,
+    Info,
   },
   data() {
     return {

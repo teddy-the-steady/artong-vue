@@ -51,6 +51,8 @@ export default {
     },
   },
   mounted() {
+    console.log(this.modalTop)
+    console.log(this.modalLeft)
     this.setModalPositionTop(this.modalTop)
     this.setModalPositionLeft(this.modalLeft)
   },
