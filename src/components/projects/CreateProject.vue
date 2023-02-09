@@ -25,6 +25,11 @@
         <div>
           <div class="contribution-policy-title">
             <span class="contribution-policy">Contribution Policy</span>
+            <img
+              class="icon"
+              src="../../assets/icons/info.svg"
+              @click="toggleModal"
+            />
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
@@ -50,6 +55,12 @@
         <input ref="backgroundInput" type="file" @change="onBackgroundChange" />
       </div>
     </div>
+    <InfoModal
+      v-show="modalOpened"
+      :words="words"
+      :modalTop="modalTop"
+      :modalLeft="modalLeft"
+    ></InfoModal>
   </div>
 </template>
 
@@ -68,10 +79,11 @@ import {
   isSessionValid,
   loginAndRedirectBack,
 } from '../../util/commonFunc'
+import InfoModal from '../modal/InfoModal.vue'
 
 export default {
   name: 'CreateProject',
-  components: { ProjectPrototypeCard },
+  components: { ProjectPrototypeCard, InfoModal },
   mixins: [headerActivate],
   computed: {
     ...mapState({
@@ -92,9 +104,26 @@ export default {
       S3_PRIVACY_LEVEL: 'public',
       signer: null,
       creating: false,
+      words: 'hi this is captain speaking',
+      modalOpened: false,
+      modalTop: null,
+      modalLeft: null,
     }
   },
   methods: {
+    toggleModal() {
+      this.modalOpened = !this.modalOpened
+      if (!this.modalOpened) {
+        this.calculateModalPosition()
+      }
+    },
+    calculateModalPosition() {
+      let icon = document.querySelector('.icon')
+      let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
+      let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
+      this.modalTop = iconTop - 60
+      this.modalLeft = iconLeft - 10
+    },
     hasNull() {
       let nullField = []
       if (!this.name) {
