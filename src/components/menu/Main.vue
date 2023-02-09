@@ -332,12 +332,12 @@ export default {
       )
     },
     onContentClick(event, val) {
-      if (val.tokenId) {
+      if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
             project_address: val.project.id,
-            token_id: val.tokenId,
+            token_id: val.token_id || val.tokenId,
             image_width: event.target.imageWidth,
             image_height: event.target.imageHeight,
           },
