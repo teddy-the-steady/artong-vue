@@ -2,19 +2,21 @@
   <div class="info">
     <div class="container0-box">
       <div class="container0">
-        <div class="container1">
+        <div class="intro">
           <div class="intro-title">
             {{ $t('main.title.first') }}<br />{{ $t('main.title.second') }}
           </div>
           <div class="intro-content">
-            {{ $t('main.intro-content') }}
+            {{ $t('main.intro-content.first') }}<br />{{
+              $t('main.intro-content.second')
+            }}<br />{{ $t('main.intro-content.third') }}
           </div>
           <button class="start-btn" v-ripple @click="contribute">
             {{ $t('main.start-btn') }}
           </button>
         </div>
-        <div class="container1-2">
-          <div class="container1-2-top">
+        <div class="main-token">
+          <div class="main-token-top">
             <div class="category">
               {{ mainToken.project ? mainToken.project.symbol : '' }}
             </div>
@@ -23,10 +25,12 @@
           <div class="nft-name-img" @click="onContentClick($event, mainToken)">
             <img :src="contentImagePath(mainToken)" />
           </div>
-          <div class="container1-2-bottom">
-            <div class="container1-2-bottom-left">
-              <div class="container1-2-bottom-title">Project</div>
-              <div class="container1-2-bottom-content">
+          <div class="main-token-bottom">
+            <div class="main-token-bottom-left">
+              <div class="main-token-bottom-title">
+                {{ $t('main.main-token-bottom-title.project') }}
+              </div>
+              <div class="main-token-bottom-content">
                 <router-link
                   :to="{
                     name: 'Project',
@@ -44,9 +48,11 @@
                 </router-link>
               </div>
             </div>
-            <div class="container1-2-bottom-right">
-              <div class="container1-2-bottom-title">Created by</div>
-              <div class="container1-2-bottom-content">
+            <div class="main-token-bottom-right">
+              <div class="main-token-bottom-title">
+                {{ $t('main.main-token-bottom-title.created-by') }}
+              </div>
+              <div class="main-token-bottom-content">
                 <router-link
                   :to="{
                     name: 'UserOrArtist',
@@ -436,49 +442,47 @@ export default {
 
 //@media (max-width:1080px)
 // container0 빈 div
-.container1 {
+.intro {
   display: flex;
   flex-direction: column;
-
   margin-left: 16px;
   margin-right: 16px;
   margin-top: 48px;
   row-gap: 48px;
+
+  .intro-title {
+    width: 295px;
+    font-family: 'Mustica Pro';
+    font-style: $item-font-style;
+    font-weight: 600;
+    font-size: 52px;
+    line-height: 72px;
+    text-transform: capitalize;
+    color: $artong-black;
+    text-align: left;
+  }
+
+  .intro-content {
+    width: 91.1%;
+    font-family: $item-font;
+    font-style: $item-font-style;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 25px;
+    color: #4d4d4d;
+    align-self: stretch;
+    text-align: left;
+  }
+
+  .start-btn {
+    width: 161px;
+  }
 }
-.intro-title {
-  width: 295px;
-  font-family: 'Mustica Pro';
-  font-style: $item-font-style;
-  font-weight: 600;
-  font-size: 52px;
-  line-height: 72px;
-  text-transform: capitalize;
 
-  color: $artong-black;
-
-  text-align: left;
-}
-.intro-content {
-  width: 91.1%;
-
-  font-family: $item-font;
-  font-style: $item-font-style;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 25px;
-
-  color: #4d4d4d; //
-  align-self: stretch;
-
-  text-align: left;
-}
-.start-btn {
-  width: 161px;
-}
-.container1-2 {
+.main-token {
   display: none;
 }
-//show your creativity
+
 .container2 {
   display: flex;
   flex-direction: column;
@@ -769,76 +773,84 @@ export default {
 @media (min-width: 1080px) and(max-width:1920px) {
   .container0-box {
     text-align: center;
-  }
-  .container0 {
-    flex-direction: row;
-    margin-top: 96px;
-    display: inline-flex;
-  }
-  .container1 {
-    width: 420px;
-  }
+    .container0 {
+      flex-direction: row;
+      margin-top: 96px;
+      display: inline-flex;
 
-  .container1-2 {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 420px;
-    gap: 10px;
-    height: 553px;
-  }
-  .category {
-    width: 67px;
-    height: 22px;
-    border: 1px solid #f22e3e;
-    border-radius: 999px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 25px;
-    color: #f22e3e;
-    margin-bottom: 8px;
-  }
-  .nft-name {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 700;
-    font-size: 24px;
-    text-align: left;
+      .intro {
+        width: 420px;
+      }
 
-    color: $artong-black;
+      .main-token {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 420px;
+        gap: 10px;
+        height: 553px;
 
-    margin-bottom: 6px;
-  }
-  .nft-name-img {
-    width: 400px;
-    height: 400px;
-    background-color: $artong-black;
-    border-radius: 14px;
-    margin-bottom: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
+        .category {
+          width: 67px;
+          height: 22px;
+          border: 1px solid #f22e3e;
+          border-radius: 999px;
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 25px;
+          color: #f22e3e;
+          margin-bottom: 8px;
+        }
+
+        .nft-name {
+          font-family: $item-font;
+          font-style: $item-font-style;
+          font-weight: 700;
+          font-size: 24px;
+          text-align: left;
+
+          color: $artong-black;
+
+          margin-bottom: 6px;
+        }
+
+        .nft-name-img {
+          width: 400px;
+          height: 400px;
+          background-color: $artong-black;
+          border-radius: 14px;
+          margin-bottom: 6px;
+          overflow: hidden;
+          cursor: pointer;
+
+          img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .main-token-bottom {
+          display: flex;
+          flex-direction: row;
+
+          .main-token-bottom-left {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 200px;
+          }
+        }
+      }
     }
   }
-  .container1-2-bottom {
-    display: flex;
-    flex-direction: row;
-  }
-  .container1-2-bottom-left {
+
+  .main-token-bottom-right {
     display: flex;
     flex-direction: column;
     flex-basis: 200px;
   }
-  .conatiner1-2-bottom-right {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 200px;
-  }
-  .container1-2-bottom-title {
+  .main-token-bottom-title {
     font-family: $item-font;
     font-style: $item-font-style;
     font-weight: 600;
@@ -849,7 +861,7 @@ export default {
 
     color: $artong-black;
   }
-  .container1-2-bottom-content {
+  .main-token-bottom-content {
     display: flex;
     flex-direction: row;
     gap: 8px;
@@ -939,78 +951,79 @@ export default {
 @media (min-width: 1920px) {
   .container0-box {
     text-align: center;
-  }
-  .container0 {
-    display: inline-flex;
-    flex-direction: row;
+    .container0 {
+      display: inline-flex;
+      flex-direction: row;
+      margin-top: 96px;
 
-    margin-top: 96px;
+      .main-token {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 420px;
+        gap: 10px;
+        height: 553px;
+
+        .category {
+          width: 67px;
+          height: 22px;
+          border: 1px solid #f22e3e;
+          border-radius: 999px;
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 25px;
+          color: #f22e3e;
+          margin-bottom: 8px;
+        }
+
+        .nft-name {
+          font-family: $item-font;
+          font-style: $item-font-style;
+          font-weight: 700;
+          font-size: 24px;
+          text-align: left;
+          color: $artong-black;
+          margin-bottom: 6px;
+        }
+
+        .nft-name-img {
+          width: 400px;
+          height: 400px;
+          background-color: $artong-black;
+          border-radius: 14px;
+          margin-bottom: 6px;
+          overflow: hidden;
+
+          img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
   }
+
   .container1 {
     width: 420px;
   }
-  .container1-2 {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 420px;
-    gap: 10px;
-    height: 553px;
-  }
-  .category {
-    width: 67px;
-    height: 22px;
-    border: 1px solid #f22e3e;
-    border-radius: 999px;
-    font-family: 'Pretendard';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 25px;
-    color: #f22e3e;
-    margin-bottom: 8px;
-  }
-  .nft-name {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 700;
-    font-size: 24px;
-    text-align: left;
 
-    color: $artong-black;
-
-    margin-bottom: 6px;
-  }
-  .nft-name-img {
-    width: 400px;
-    height: 400px;
-
-    background-color: $artong-black;
-
-    border-radius: 14px;
-
-    margin-bottom: 6px;
-    overflow: hidden;
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .container1-2-bottom {
+  .main-token-bottom {
     display: flex;
     flex-direction: row;
   }
-  .container1-2-bottom-left {
+  .main-token-bottom-left {
     display: flex;
     flex-direction: column;
     flex-basis: 200px;
   }
-  .conatiner1-2-bottom-right {
+  .main-token-bottom-right {
     display: flex;
     flex-direction: column;
     flex-basis: 200px;
   }
-  .container1-2-bottom-title {
+  .main-token-bottom-title {
     font-family: $item-font;
     font-style: $item-font-style;
     font-weight: 600;
@@ -1021,7 +1034,7 @@ export default {
 
     color: $artong-black;
   }
-  .container1-2-bottom-content {
+  .main-token-bottom-content {
     display: flex;
     flex-direction: row;
     gap: 8px;
