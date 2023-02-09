@@ -1,60 +1,55 @@
 <template>
-  <div class="words">{{ words }}</div>
+  <div :class="top ? 'words words-top' : 'words words-bottom'" ref="words">
+    {{ infoText }}
+  </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'InfoModal',
-  props: {
-    words: {
-      type: String,
-      default: null,
-    },
-    modalTop: {
-      type: Number,
-      default: null,
-    },
-    modalLeft: {
-      type: Number,
-      default: null,
-    },
+  data() {
+    return {
+      top: true,
+    }
+  },
+  computed: {
+    ...mapState({
+      modalTop: state => state.menu.modalTop,
+      modalLeft: state => state.menu.modalLeft,
+      infoText: state => state.menu.infoText,
+      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+    }),
   },
   methods: {
-    setModalPosition() {
-      let words = document.querySelector('.words')
-      words.style.top = `${this.modalTop}px`
-      words.style.left = `${this.modalLeft}px`
+    setModalTop(top) {
+      //let words = document.querySelector('.words')
+      // words.style.bottom = `${bottom}px`
+      this.$refs.words.style.top = `${top}px`
     },
-    setModalPositionTop(val) {
-      let words = document.querySelector('.words')
-      words.style.top = `${val}px`
+    setModalLeft(left) {
+      // let words = document.querySelector('.words')
+      // words.style.left = `${left}px`
+      this.$refs.words.style.left = `${left}px`
     },
-    setModalPositionLeft(val) {
-      let words = document.querySelector('.words')
-      words.style.left = `${val}px`
-    },
-    printModalPosition() {
-      let words = document.querySelector('.words')
-      let modalTop = window.pageYOffset + words.getBoundingClientRect().top
-      let modalLeft = window.pageXOffset + words.getBoundingClientRect().left
-      console.log('modal top on child ' + modalTop)
-      console.log('modal left on child ' + modalLeft)
+    getModalSize() {
+      let modal = this.$refs.words
+      let width = modal.getBoundingClientRect().width
+      let height = modal.getBoundingClientRect().height
+      console.log('modal width: ' + width)
+      console.log('modal height: ' + height)
     },
   },
   watch: {
     modalTop(val) {
-      this.printModalPosition()
-      this.setModalPositionTop(val)
+      this.setModalTop(val)
     },
     modalLeft(val) {
-      this.setModalPositionLeft(val)
-      this.printModalPosition()
+      this.setModalLeft(val)
     },
-  },
-  mounted() {
-    console.log(this.modalTop)
-    console.log(this.modalLeft)
-    this.setModalPositionTop(this.modalTop)
-    this.setModalPositionLeft(this.modalLeft)
+    isInfoModalOpen() {
+      this.getModalSize()
+    },
   },
 }
 </script>
@@ -64,18 +59,31 @@ export default {
   position: absolute;
   z-index: 100000;
   width: 400px;
-  height: 50px;
-  background: pink;
+  height: auto;
+  background: #eeeeee;
   border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
 }
-.words:after {
-  border-top: 10px solid pink;
+.words-top:after {
+  border-top: 10px solid #eeeeee;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-bottom: 0px solid transparent;
   content: '';
   position: absolute;
-  top: 50px;
+  bottom: -10px;
+  left: 12px;
+}
+.words-bottom:before {
+  border-top: 0px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #eeeeee;
+  content: '';
+  position: absolute;
+  top: -10px;
   left: 12px;
 }
 </style>

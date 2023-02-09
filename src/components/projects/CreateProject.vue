@@ -27,8 +27,9 @@
             <span class="contribution-policy">Contribution Policy</span>
             <img
               class="icon"
+              ref="icon"
               src="../../assets/icons/info.svg"
-              @click="toggleModal"
+              @click="clicked"
             />
           </div>
           <div class="input-group">
@@ -55,12 +56,6 @@
         <input ref="backgroundInput" type="file" @change="onBackgroundChange" />
       </div>
     </div>
-    <InfoModal
-      v-show="modalOpened"
-      :words="words"
-      :modalTop="modalTop"
-      :modalLeft="modalLeft"
-    ></InfoModal>
   </div>
 </template>
 
@@ -79,15 +74,18 @@ import {
   isSessionValid,
   loginAndRedirectBack,
 } from '../../util/commonFunc'
-import InfoModal from '../modal/InfoModal.vue'
 
 export default {
   name: 'CreateProject',
-  components: { ProjectPrototypeCard, InfoModal },
+  components: { ProjectPrototypeCard },
   mixins: [headerActivate],
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
+      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+      modalTop: state => state.menu.modalTop,
+      modalLeft: state => state.menu.modalLeft,
+      infoText: state => state.menu.infoText,
     }),
   },
   directives: {
@@ -104,25 +102,27 @@ export default {
       S3_PRIVACY_LEVEL: 'public',
       signer: null,
       creating: false,
-      words: 'hi this is captain speaking',
-      modalOpened: false,
-      modalTop: null,
-      modalLeft: null,
+      words:
+        't was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
     }
   },
   methods: {
-    toggleModal() {
-      this.modalOpened = !this.modalOpened
-      if (!this.modalOpened) {
-        this.calculateModalPosition()
-      }
+    clicked() {
+      this.setInfoText()
+      this.setInfoModalPosition()
+      this.toggelInfoModal()
     },
-    calculateModalPosition() {
-      let icon = document.querySelector('.icon')
+    toggelInfoModal() {
+      this.$store.commit('TOGGLE_INFO_MODAL')
+    },
+    setInfoModalPosition() {
+      let icon = this.$refs.icon
       let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
       let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
-      this.modalTop = iconTop - 60
-      this.modalLeft = iconLeft - 10
+      this.$store.commit('SET_INFO_MODAL_POSITION', { iconTop, iconLeft })
+    },
+    setInfoText() {
+      this.$store.commit('SET_INFO_TEXT', this.words)
     },
     hasNull() {
       let nullField = []

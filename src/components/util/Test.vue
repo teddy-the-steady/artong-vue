@@ -1,49 +1,52 @@
 <template>
   <div class="container">
     This is a test
-    <img class="icon" @click="toggleModal" src="../../assets/icons/info.svg" />
-    <InfoModal
-      v-show="opened"
-      :words="words"
-      :modalTop="modalTop"
-      :modalLeft="modalLeft"
-    ></InfoModal>
+    <img
+      class="icon"
+      ref="icon"
+      @click="clicked"
+      src="../../assets/icons/info.svg"
+    />
     <div>----------</div>
-    <Info></Info>
   </div>
 </template>
 <script>
-import InfoModal from '../modal/InfoModal.vue'
-import Info from '../util/Info.vue'
+import { mapState } from 'vuex'
+
 export default {
   name: 'Test',
-  components: {
-    InfoModal,
-    Info,
-  },
+  components: {},
   data() {
     return {
-      words: 'hi this is captain speaking',
-      opened: false,
-      modalTop: null,
-      modalLeft: null,
+      words:
+        'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     }
   },
+  computed: {
+    ...mapState({
+      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+      modalTop: state => state.menu.modalTop,
+      modalLeft: state => state.menu.modalLeft,
+      infoText: state => state.menu.infoText,
+    }),
+  },
   methods: {
-    toggleModal() {
-      this.opened = !this.opened
-      if (!this.opened) {
-        this.calculateModalPosition()
-      }
+    clicked() {
+      this.setInfoText()
+      this.setInfoModalPosition()
+      this.toggelInfoModal()
     },
-    calculateModalPosition() {
-      let icon = document.querySelector('.icon')
+    toggelInfoModal() {
+      this.$store.commit('TOGGLE_INFO_MODAL')
+    },
+    setInfoModalPosition() {
+      let icon = this.$refs.icon
       let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
       let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
-      this.modalTop = iconTop - 60
-      this.modalLeft = iconLeft - 10
-      console.log('mdoal top on parent ' + this.modalTop)
-      console.log('modal left on parent ' + this.modalLeft)
+      this.$store.commit('SET_INFO_MODAL_POSITION', { iconTop, iconLeft })
+    },
+    setInfoText() {
+      this.$store.commit('SET_INFO_TEXT', this.words)
     },
   },
 }
@@ -55,7 +58,5 @@ export default {
   //padding-top: 70px;
   margin-left: auto;
   margin-right: auto;
-  .info {
-  }
 }
 </style>
