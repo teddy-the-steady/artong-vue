@@ -1,7 +1,7 @@
 <template>
   <div class="info">
-    <div class="container0-box">
-      <div class="container0">
+    <div class="container0">
+      <div class="container0-box">
         <div class="intro">
           <div class="intro-title">
             {{ $t('main.title.first') }}<br />{{ $t('main.title.second') }}
@@ -20,13 +20,16 @@
             <div class="category">
               {{ mainToken.project ? mainToken.project.symbol : '' }}
             </div>
-            <div class="nft-name">{{ mainToken.name }}</div>
+            <div class="main-token-name">{{ mainToken.name }}</div>
           </div>
-          <div class="nft-name-img" @click="onContentClick($event, mainToken)">
+          <div
+            class="main-token-img"
+            @click="onContentClick($event, mainToken)"
+          >
             <img :src="contentImagePath(mainToken)" />
           </div>
           <div class="main-token-bottom">
-            <div class="main-token-bottom-left">
+            <div class="main-token-bottom-child">
               <div class="main-token-bottom-title">
                 {{ $t('main.main-token-bottom-title.project') }}
               </div>
@@ -48,7 +51,7 @@
                 </router-link>
               </div>
             </div>
-            <div class="main-token-bottom-right">
+            <div class="main-token-bottom-child">
               <div class="main-token-bottom-title">
                 {{ $t('main.main-token-bottom-title.created-by') }}
               </div>
@@ -75,13 +78,10 @@
         </div>
       </div>
     </div>
-    <!-- show your creativity -->
-    <div class="container2">
+    <div class="container1">
       <div class="title">Show your Creativity</div>
-
       <div class="row">
-        <!-- Wallet connection -->
-        <div class="container2-component">
+        <div class="activity">
           <img
             class="intro-img"
             src="../../assets/icons/wallet-passes-app.svg"
@@ -91,22 +91,19 @@
             Connect your wallet and start your journey in ARTONG
           </div>
         </div>
-        <!-- Create your collection -->
-        <div class="container2-component">
+        <div class="activity">
           <img class="intro-img" src="../../assets/icons/100-add-folder.svg" />
           <div class="subtitle">Create your project</div>
           <div class="content">
             Create an open art project and build a vessel for your creativity
           </div>
         </div>
-        <!-- Add you NFTs -->
-        <div class="container2-component">
+        <div class="activity">
           <img class="intro-img" src="../../assets/icons/fine-arts1.svg" />
           <div class="subtitle">Add your NFTs</div>
           <div class="content">Add your creation to any project you want</div>
         </div>
-        <!-- Share the collection -->
-        <div class="container2-component">
+        <div class="activity">
           <img class="intro-img" src="../../assets/icons/102-blockchain.svg" />
           <div class="subtitle">Share the collection</div>
           <div class="content">
@@ -115,8 +112,7 @@
         </div>
       </div>
     </div>
-    <!--this is the end of container2-->
-    <div class="container3">
+    <div class="container2">
       <div class="button-block" @click="createProject">
         <img
           class="button-block-img"
@@ -126,15 +122,13 @@
         <div class="button-block-description">Create Your Own NFT Project</div>
       </div>
     </div>
-    <!--end of container3-->
-    <div class="container4">
-      <div class="container4-box">
+    <div class="container3">
+      <div class="container3-box">
         <div class="top-container">
-          <div class="curated-collection-title">Highlighted Projects</div>
+          <div class="title">Highlighted Projects</div>
         </div>
         <CuratedCollection
           v-if="innerWidth < 1080"
-          class="curated-collection"
           :projects="highlightedProjects"
         ></CuratedCollection>
         <div v-else-if="innerWidth < 1440">
@@ -153,8 +147,8 @@
             :project="project"
           ></CuratedCollectionWide>
         </div>
-        <div class="top-container top-container3">
-          <div class="featured-creator-title">Featured Contributors</div>
+        <div class="top-container margin-top">
+          <div class="title">Featured Contributors</div>
         </div>
         <FeaturedCreator
           :profiles="mainContributors"
@@ -162,27 +156,25 @@
         ></FeaturedCreator>
       </div>
     </div>
-    <!--end of container4-->
-    <div class="container5">
-      <div class="top-container top-container3">
-        <div class="buy-and-sell">Artong's Pick</div>
+    <div class="container4">
+      <div class="top-container margin-top">
+        <div class="title">Artong's Pick</div>
       </div>
       <TokensByCollection
-        class="container5-component-margin"
+        class="margin-bottom"
         :tokens="artongsPickTokens"
         :needContentName="true"
       ></TokensByCollection>
-      <div class="top-container top-container3">
-        <div class="recent-contribution">Recent Contribution</div>
+      <div class="top-container margin-top">
+        <div class="title">Recent Contribution</div>
       </div>
       <TokensByCollection
-        class="container5-component-margin"
+        class="margin-bottom"
         :tokens="recentTokens"
         :needContentName="true"
       ></TokensByCollection>
     </div>
-    <!--end of container5-->
-    <div class="container6">
+    <div class="container5">
       <div class="img">
         <svg
           class="logo"
@@ -221,10 +213,7 @@
         <div class="bottom-table">
           <ul class="column second-column">
             <li>Company</li>
-            <li
-              class="clickable"
-              @click="moveToAnotherSite('https://www.4rtong.com')"
-            >
+            <li class="clickable" @click="redirectTo('https://www.4rtong.com')">
               About
             </li>
             <li class="clickable">Careers</li>
@@ -233,13 +222,13 @@
             <li>Connect</li>
             <li
               class="clickable"
-              @click="moveToAnotherSite('https://twitter.com/4rtong')"
+              @click="redirectTo('https://twitter.com/4rtong')"
             >
               Twitter
             </li>
             <li
               class="clickable"
-              @click="moveToAnotherSite('https://www.instagram.com/artong.io/')"
+              @click="redirectTo('https://www.instagram.com/artong.io/')"
             >
               Instagram
             </li>
@@ -365,7 +354,7 @@ export default {
         })
       }
     },
-    moveToAnotherSite(url) {
+    redirectTo(url) {
       window.open(url)
     },
   },
@@ -440,8 +429,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-//@media (max-width:1080px)
-// container0 빈 div
 .intro {
   display: flex;
   flex-direction: column;
@@ -483,235 +470,197 @@ export default {
   display: none;
 }
 
-.container2 {
+.container1 {
   display: flex;
   flex-direction: column;
   margin-top: 48px;
+
+  .title {
+    width: 308px;
+    height: 44px;
+    font-family: 'Mustica Pro';
+    font-style: $item-font-style;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 44px;
+    margin: auto;
+    margin-bottom: 48px;
+    color: $artong-black;
+  }
+
+  .activity {
+    .intro-img {
+      width: 32px;
+      height: 32px;
+      margin: auto;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      width: 195px;
+      height: 24px;
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 24px;
+      color: $artong-black;
+      margin: auto;
+      margin-bottom: 16px;
+    }
+
+    .content {
+      width: 91.1%;
+      max-width: 432px;
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      text-align: center;
+      color: #4d4d4d;
+      margin: auto;
+      margin-bottom: 40px;
+    }
+  }
 }
 
-.title {
-  width: 308px;
-  height: 44px;
-
-  font-family: 'Mustica Pro';
-  font-style: $item-font-style;
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 44px;
-  margin: auto;
-  margin-bottom: 48px;
-
-  color: $artong-black;
-}
-.intro-img {
-  width: 32px;
-  height: 32px;
-  margin: auto;
-  margin-bottom: 16px;
-}
-.subtitle {
-  width: 185px;
-  height: 24px;
-
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 24px;
-
-  color: $artong-black;
-
-  margin: auto;
-  margin-bottom: 16px;
-}
-.content {
-  width: 91.1%;
-  max-width: 432px;
-  //height: 168px;
-
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-
-  text-align: center;
-
-  color: #4d4d4d;
-
-  margin: auto;
-  margin-bottom: 40px;
-}
-.container3 {
+.container2 {
   display: flex;
   flex-direction: column;
   row-gap: 40px;
   margin-top: 48px;
   margin-bottom: 48px;
   cursor: pointer;
+
+  .button-block {
+    width: 91.1%;
+    height: 160px;
+    background: $artong-white;
+    border: 1px solid $profile-border-gray;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
+    border-radius: 14px;
+    margin: auto;
+    background-image: linear-gradient(
+        90deg,
+        rgba(242, 46, 62, 0.1) 1px,
+        transparent 1px
+      ),
+      linear-gradient(0deg, rgba(242, 46, 62, 0.1) 1px, transparent 1px);
+    background-size: 32px 32px;
+
+    .button-block-img {
+      width: 24px;
+      height: 24px;
+      margin: auto;
+      margin-top: 25px;
+    }
+
+    .button-block-title {
+      width: 181px;
+      height: 22px;
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 22px;
+      color: $artong-black;
+      margin: auto;
+      margin-top: 10.4px;
+      margin-bottom: 8px;
+    }
+
+    .button-block-description {
+      width: 248px;
+      height: 48px;
+      font-family: $item-font;
+      font-style: $item-font-style;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      color: #4d4d4d;
+      margin: auto;
+      margin-bottom: 25px;
+    }
+  }
 }
-.button-block {
-  width: 91.1%;
-  height: 160px;
 
-  background: $artong-white;
-  border: 1px solid $profile-border-gray;
-  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.14);
-  border-radius: 14px;
-
-  margin: auto;
-
-  // 격자
-  background-image: linear-gradient(
-      90deg,
-      rgba(242, 46, 62, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(0deg, rgba(242, 46, 62, 0.1) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-.button-block-img {
-  width: 24px;
-  height: 24px;
-
-  margin: auto;
-  margin-top: 25px;
-}
-.button-block-title {
-  width: 181px;
-  height: 22px;
-
-  font-family: $item-font;
-  font-style: $item-font-style;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 22px;
-
-  color: $artong-black;
-
-  margin: auto;
-  margin-top: 10.4px;
-  margin-bottom: 8px;
-}
-.button-block-description {
-  width: 248px;
-  height: 48px;
-
-  font-family: $item-font;
-  font-style: $item-font-style;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-
-  color: #4d4d4d;
-
-  margin: auto;
-  margin-bottom: 25px;
-}
-// curated collections
-.container4 {
-  //width: 360px;
+.container3 {
   height: auto;
-
   background: $artong-black;
-
   padding-top: 48px;
   padding-bottom: 48px;
+
+  .top-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 24px;
+
+    .title {
+      margin-left: 16px;
+      font-family: 'Mustica Pro';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 22px;
+      color: #b3b3b3;
+      text-align: left;
+    }
+  }
+
+  .curated-collection-wide1 {
+    margin-bottom: 24px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .curated-collection-wide-box {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    transform: translate(12px, 0px);
+
+    .curated-collection-wide2 {
+      margin-right: 24px;
+      margin-bottom: 24px;
+    }
+  }
 }
-.top-container {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 24px;
-}
-.top-container3 {
+
+.margin-top {
   margin-top: 48px;
 }
-.curated-collection-title {
-  font-family: 'Mustica Pro';
-  font-style: $item-font-style;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 30px;
 
-  color: #b3b3b3;
-
-  margin-left: 16px;
-  text-align: left;
-}
-.curated-collection-wide1 {
-  margin-bottom: 24px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.curated-collection-wide-box {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  transform: translate(12px, 0px);
-}
-.curated-collection-wide2 {
-  margin-right: 24px;
-  margin-bottom: 24px;
-}
-.featured-creator-title {
-  margin-left: 16px;
-
-  font-family: 'Mustica Pro';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 22px;
-  color: #b3b3b3;
-  text-align: left;
-}
-.container5-component-margin {
+.margin-bottom {
   margin-bottom: 48px;
 }
-.container5 {
+.container4 {
   margin-top: 48px;
-  .top-container {
-    .buy-and-sell {
-      width: 200px;
-      height: 30px;
 
+  .top-container {
+    .title {
+      height: 30px;
       font-family: 'Mustica Pro';
       font-style: $item-font-style;
       font-weight: 600;
       font-size: 22px;
       line-height: 30px;
-
       color: $artong-black;
-
-      margin-left: 16px;
-      text-align: left;
-    }
-  }
-  .top-container {
-    .recent-contribution {
-      width: 200px;
-      height: 30px;
-
-      font-family: 'Mustica Pro';
-      font-style: $item-font-style;
-      font-weight: 600;
-      font-size: 22px;
-      line-height: 30px;
-
-      color: $artong-black;
-
       margin-left: 16px;
       text-align: left;
     }
   }
 }
-.container6 {
+
+.container5 {
   margin-top: 48px;
   background-color: $artong-black;
   height: 282px;
+
   .img {
-    text-align: left; // artong 로고 왼쪽 정렬을 위해
+    text-align: left;
+
     svg {
       height: 24px;
       width: 133.59px;
@@ -769,11 +718,10 @@ export default {
   margin-bottom: 16px;
 }
 
-// width over 1080px
 @media (min-width: 1080px) and(max-width:1920px) {
-  .container0-box {
+  .container0 {
     text-align: center;
-    .container0 {
+    .container0-box {
       flex-direction: row;
       margin-top: 96px;
       display: inline-flex;
@@ -803,7 +751,7 @@ export default {
           margin-bottom: 8px;
         }
 
-        .nft-name {
+        .main-token-name {
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
@@ -815,7 +763,7 @@ export default {
           margin-bottom: 6px;
         }
 
-        .nft-name-img {
+        .main-token-img {
           width: 400px;
           height: 400px;
           background-color: $artong-black;
@@ -835,71 +783,70 @@ export default {
           display: flex;
           flex-direction: row;
 
-          .main-token-bottom-left {
+          .main-token-bottom-child {
             display: flex;
             flex-direction: column;
             flex-basis: 200px;
+
+            .main-token-bottom-title {
+              font-family: $item-font;
+              font-style: $item-font-style;
+              font-weight: 600;
+              font-size: 18px;
+              margin-bottom: 8px;
+              text-align: left;
+              color: $artong-black;
+            }
+
+            .main-token-bottom-content {
+              display: flex;
+              flex-direction: row;
+              gap: 8px;
+            }
           }
         }
       }
     }
   }
 
-  .main-token-bottom-right {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 200px;
-  }
-  .main-token-bottom-title {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 600;
-    font-size: 18px;
-
-    margin-bottom: 8px;
-    text-align: left;
-
-    color: $artong-black;
-  }
-  .main-token-bottom-content {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-  //show your creativity
-  .container2 {
+  .container1 {
     margin-top: 192px;
-  }
-  .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 80px;
 
-    width: 560px;
+    .title {
+      margin-bottom: 96px;
+    }
 
-    margin-left: auto;
-    margin-right: auto;
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 80px;
+      width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+
+      .activity {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 240px;
+
+        .intro-img {
+          margin-bottom: 0px;
+        }
+
+        .subtitle {
+          margin-bottom: 0px;
+        }
+
+        .content {
+          margin-bottom: 0px;
+        }
+      }
+    }
   }
-  .container2-component {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 240px;
-  }
-  .title {
-    margin-bottom: 96px;
-  }
-  .intro-img {
-    margin-bottom: 0px;
-  }
-  .subtitle {
-    margin-bottom: 0px;
-  }
-  .content {
-    margin-bottom: 0px;
-  }
-  .container3 {
+
+  .container2 {
     display: flex;
     flex-direction: row;
     column-gap: 40px;
@@ -909,20 +856,23 @@ export default {
     margin-left: auto;
     margin-right: auto;
   }
-  .container4 {
+
+  .container3 {
     padding-top: 96px;
     padding-bottom: 96px;
   }
-  .top-container3 {
+
+  .margin-top {
     margin-top: 96px;
   }
-  .container5-component-margin {
+
+  .margin-bottom {
     margin-bottom: 96px;
   }
   .button-block {
     width: 560px;
   }
-  .container6 {
+  .container5 {
     padding-top: 72px;
     padding-bottom: 72px;
     .bottom-link {
@@ -949,9 +899,9 @@ export default {
 }
 
 @media (min-width: 1920px) {
-  .container0-box {
+  .container0 {
     text-align: center;
-    .container0 {
+    .container0-box {
       display: inline-flex;
       flex-direction: row;
       margin-top: 96px;
@@ -977,7 +927,7 @@ export default {
           margin-bottom: 8px;
         }
 
-        .nft-name {
+        .main-token-name {
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
@@ -987,7 +937,7 @@ export default {
           margin-bottom: 6px;
         }
 
-        .nft-name-img {
+        .main-token-img {
           width: 400px;
           height: 400px;
           background-color: $artong-black;
@@ -1001,76 +951,72 @@ export default {
             height: 100%;
           }
         }
+
+        .main-token-bottom {
+          display: flex;
+          flex-direction: row;
+
+          .main-token-bottom-child {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 200px;
+
+            .main-token-bottom-title {
+              font-family: $item-font;
+              font-style: $item-font-style;
+              font-weight: 600;
+              font-size: 18px;
+              margin-bottom: 8px;
+              text-align: left;
+              color: $artong-black;
+            }
+
+            .main-token-bottom-content {
+              display: flex;
+              flex-direction: row;
+              gap: 8px;
+            }
+          }
+        }
       }
     }
   }
 
   .container1 {
-    width: 420px;
-  }
-
-  .main-token-bottom {
-    display: flex;
-    flex-direction: row;
-  }
-  .main-token-bottom-left {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 200px;
-  }
-  .main-token-bottom-right {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 200px;
-  }
-  .main-token-bottom-title {
-    font-family: $item-font;
-    font-style: $item-font-style;
-    font-weight: 600;
-    font-size: 18px;
-
-    margin-bottom: 8px;
-    text-align: left;
-
-    color: $artong-black;
-  }
-  .main-token-bottom-content {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-  //show your creativity
-  .container2 {
     margin-top: 192px;
-  }
-  .row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 80px;
 
-    width: 1200px;
-    height: 304px;
+    .row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 80px;
+      width: 1200px;
+      height: 304px;
+      margin-left: auto;
+      margin-right: auto;
 
-    margin-left: auto;
-    margin-right: auto;
+      .activity {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 240px;
+
+        .intro-img {
+          margin-bottom: 0px;
+        }
+
+        .subtitle {
+          margin-bottom: 0px;
+        }
+
+        .content {
+          margin-bottom: 0px;
+        }
+      }
+    }
   }
-  .container2-component {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 240px;
-  }
-  .intro-img {
-    margin-bottom: 0px;
-  }
-  .subtitle {
-    margin-bottom: 0px;
-  }
-  .content {
-    margin-bottom: 0px;
-  }
-  .container3 {
+
+  .container2 {
     display: flex;
     flex-direction: row;
     column-gap: 40px;
@@ -1079,32 +1025,37 @@ export default {
     width: 696px;
     margin-left: auto;
     margin-right: auto;
+
+    .button-block {
+      width: 328px;
+    }
   }
-  .button-block {
-    width: 328px;
-  }
-  .container4 {
+
+  .container3 {
     padding-top: 96px;
     padding-bottom: 96px;
-    .container4-box {
+
+    .container3-box {
       width: 1440px;
       margin-left: auto;
       margin-right: auto;
     }
   }
-  // top-container3 : 화면 너비 1080 이상일 때 margin-bottom 더 주는 용도
-  .top-container3 {
+
+  .margin-top {
     margin-top: 96px;
   }
-  .container5 {
+
+  .container4 {
     width: 1440px;
     margin-left: auto;
     margin-right: auto;
   }
-  .container5-component-margin {
+
+  .margin-bottom {
     margin-bottom: 192px;
   }
-  .container6 {
+  .container5 {
     padding-top: 72px;
     padding-bottom: 72px;
     .img {
