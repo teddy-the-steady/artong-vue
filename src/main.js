@@ -13,6 +13,7 @@ import Masonry from './plugin/masonry'
 import router from './router'
 import store from './store'
 import axiosInit from './api'
+import i18n from './i18n'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -32,5 +33,6 @@ export default new Vue({
   router,
   store,
   components: { App },
+  i18n,
   template: '<App/>',
 })
