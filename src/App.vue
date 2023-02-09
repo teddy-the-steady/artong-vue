@@ -14,6 +14,7 @@
     >
       <span slot="body">Continue with your wallet</span>
     </ConfirmModal>
+    <InfoModal v-show="isInfoModalOpen"></InfoModal>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import { getCurrentMember } from './api/member'
 import HeaderBar from './components/header/Header.vue'
 import SideBar from './components/sidebar/SideBar.vue'
 import ConfirmModal from './components/modal/ConfirmModal.vue'
+import InfoModal from './components/modal/InfoModal.vue'
 
 export default {
   name: 'App',
@@ -31,6 +33,7 @@ export default {
     HeaderBar,
     SideBar,
     ConfirmModal,
+    InfoModal,
   },
   data() {
     return {}
@@ -44,6 +47,7 @@ export default {
       isConfirmModalOpen: state => state.menu.isConfirmModalOpen,
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
+      isInfoModalOpen: state => state.menu.isInfoModalOpen,
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',

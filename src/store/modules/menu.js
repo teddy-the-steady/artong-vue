@@ -8,6 +8,10 @@ import {
   TOGGLE_PROMPT_MODAL,
   TOGGLE_THEME,
   SET_INNER_WIDTH,
+  SET_INFO_MODAL_POSITION,
+  TOGGLE_INFO_MODAL,
+  SET_INFO_TEXT,
+  SET_INFO_MODAL_SIZE,
 } from '../actions/menu'
 
 const state = {
@@ -19,6 +23,12 @@ const state = {
   isDark: false,
   waitForAnswer: null,
   innerWidth: window.innerWidth,
+  isInfoModalOpen: false,
+  modalTop: null,
+  modalLeft: null,
+  infoText: null,
+  infoModalHeight: null,
+  infoModalWidth: null,
 }
 
 const mutations = {
@@ -48,6 +58,20 @@ const mutations = {
   },
   [SET_INNER_WIDTH]: (state, innerWidth) => {
     state.innerWidth = innerWidth
+  },
+  [SET_INFO_MODAL_POSITION]: (state, { iconTop, iconLeft }) => {
+    state.modalTop = iconTop + 30
+    state.modalLeft = iconLeft
+  },
+  [TOGGLE_INFO_MODAL]: state => {
+    state.isInfoModalOpen = !state.isInfoModalOpen
+  },
+  [SET_INFO_TEXT]: (state, _infoText) => {
+    state.infoText = _infoText
+  },
+  [SET_INFO_MODAL_SIZE]: (state, { width, height }) => {
+    state.infoModalHeight = height
+    state.infoModalWidth = width
   },
 }
 
