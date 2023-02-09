@@ -71,8 +71,11 @@
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="innerWidth < 1440">
-          <div class="symbol">
-            {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+          <div class="symbol-and-slug">
+            <div class="symbol">
+              {{ project.symbol ? project.symbol.toUpperCase() : '' }}
+            </div>
+            <div class="slug">{{ project.slug ? `@${project.slug}` : '' }}</div>
           </div>
           <div class="container1">
             <div class="collection-name">{{ project.name }}</div>
@@ -268,7 +271,6 @@ export default {
           label: 'Tokens',
           api: {},
           sort: {},
-          show: true,
         },
         {
           id: 1,
@@ -276,17 +278,8 @@ export default {
           label: 'Contributors',
           api: {},
           sort: {},
-          show: true,
         },
-        { id: 2, type: 'INFO', label: 'Info', data: {}, show: true },
-        {
-          id: 3,
-          type: 'CONTENTS',
-          label: 'Waiting for Approval',
-          api: {},
-          sort: {},
-          show: false,
-        },
+        { id: 2, type: 'INFO', label: 'Info', data: {} },
       ],
       steps: [
         { id: 0, title: 'stepModal0' },
@@ -497,26 +490,29 @@ export default {
         sns: this.project.sns,
       }
 
-      this.tabs[3].sort =
-        this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-      this.tabs[3].api = {
-        func: getTobeApprovedContents,
-        pathParams: { address: this.project.id },
-        queryParams: {
-          start_num: 0,
-          count_num: 5,
-          orderBy: this.tabs[3].sort.orderBy,
-          orderDirection: this.tabs[3].sort.orderDirection,
-        },
-      }
-
-      if (
-        this.project.policy === 1 &&
-        (this.currentUser.wallet_address ===
-          this.project.owner.wallet_address ||
-          this.project.is_contributor)
-      ) {
-        this.tabs[3].show = true
+      if (this.tabs[3]) {
+        if (
+          this.project.policy === 1 &&
+          (this.currentUser.wallet_address ===
+            this.project.owner.wallet_address ||
+            this.project.is_contributor)
+        ) {
+          this.tabs[3].sort =
+            this.sortOptions[this.$route.query.sort] ||
+            this.sortOptions['newest']
+          this.tabs[3].api = {
+            func: getTobeApprovedContents,
+            pathParams: { address: this.project.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 5,
+              orderBy: this.tabs[3].sort.orderBy,
+              orderDirection: this.tabs[3].sort.orderDirection,
+            },
+          }
+        } else {
+          this.tabs[3].api = null
+        }
       }
     },
     gotoContributorTab() {
@@ -560,10 +556,24 @@ export default {
         this.project.background_s3key = patchResult.background_s3key
       }
     },
+    setWaitingForApprovalTab() {
+      if (this.project.policy === 1) {
+        this.$set(this.tabs, 3, {
+          id: 3,
+          type: 'CONTENTS',
+          label: 'Waiting for Approval',
+          api: {},
+          sort: {},
+        })
+      } else {
+        this.$delete(this.tabs, 3)
+      }
+    },
   },
   async created() {
     this.projectAddressOrSlug = this.$route.params.id
     this.project = await this.getProject()
+    this.setWaitingForApprovalTab()
     this.backgroundColor = this.generateGradientBackground(this.project.id)
     this.isFirstLoading = false
     this.setStatistics()
@@ -577,21 +587,12 @@ export default {
           this.project.background_thumbnail_s3key = null
           this.isFirstLoading = true
           this.project = await this.getProject()
+          this.setWaitingForApprovalTab()
           this.backgroundColor = this.generateGradientBackground(
             this.project.id,
           )
           this.isFirstLoading = false
           this.setStatistics()
-          this.tabs[3].show = false
-
-          if (
-            this.project.policy === 1 &&
-            (this.currentUser.wallet_address ===
-              this.project.owner.wallet_address ||
-              this.project.is_contributor)
-          ) {
-            this.tabs[3].show = true
-          }
         }
       },
     )
@@ -605,16 +606,6 @@ export default {
     $route(to) {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id
-        this.tabs[3].show = false
-      }
-
-      if (
-        this.project.policy === 1 &&
-        (this.currentUser.wallet_address ===
-          this.project.owner.wallet_address ||
-          this.project.is_contributor)
-      ) {
-        this.tabs[3].show = true
       }
 
       const t = to.query.tab || '0'
@@ -652,17 +643,26 @@ export default {
           }
           break
         case '3':
-          this.tabs[t].sort =
-            this.sortOptions[to.query.sort] || this.sortOptions['newest']
-          this.tabs[t].api = {
-            func: getTobeApprovedContents,
-            pathParams: { address: this.project.id },
-            queryParams: {
-              start_num: 0,
-              count_num: 5,
-              orderBy: this.tabs[t].sort.orderBy,
-              orderDirection: this.tabs[t].sort.orderDirection,
-            },
+          if (
+            this.project.policy === 1 &&
+            (this.currentUser.wallet_address ===
+              this.project.owner.wallet_address ||
+              this.project.is_contributor)
+          ) {
+            this.tabs[t].sort =
+              this.sortOptions[to.query.sort] || this.sortOptions['newest']
+            this.tabs[t].api = {
+              func: getTobeApprovedContents,
+              pathParams: { address: to.params.id },
+              queryParams: {
+                start_num: 0,
+                count_num: 5,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }
+          } else {
+            this.tabs[t].api = null
           }
           break
         default:
@@ -768,20 +768,30 @@ export default {
     .tab {
       padding-left: 24px;
       padding-right: 24px;
-      .symbol {
-        width: 52px;
-        height: 25px;
-        border: 1px solid #f22e3e;
-        border-radius: 999px;
-        font-family: 'Pretendard';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 14px;
-        color: #f22e3e;
-        line-height: 25px;
-        overflow: hidden !important;
-        text-overflow: ellipsis;
+      .symbol-and-slug {
+        display: flex;
+        align-items: center;
+        .symbol {
+          width: 52px;
+          height: 25px;
+          border: 1px solid #f22e3e;
+          border-radius: 999px;
+          font-family: 'Pretendard';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          color: #f22e3e;
+          line-height: 25px;
+          overflow: hidden !important;
+          text-overflow: ellipsis;
+        }
+        .slug {
+          margin-left: 5px;
+          color: $darkgray;
+          font-style: italic;
+        }
       }
+
       .container1 {
         display: flex;
         .collection-name {

@@ -1,12 +1,66 @@
 <template>
-  <div>
-    URL slug: <input type="text" v-model="project.slug" /><br />
-    Description: <input type="text" v-model="project.description" /><br />
-    Instragram: <input type="text" v-model="project.sns.instagram" /><br />
-    Twitter: <input type="text" v-model="project.sns.twitter" /><br />
-    Discord: <input type="text" v-model="project.sns.discord" /><br />
-    Website: <input type="text" v-model="project.sns.website" /><br />
-    <div>
+  <div class="settings">
+    <h1>Project Settings</h1>
+    <div class="input-group">
+      <span class="float-label">
+        <input
+          id="slug"
+          type="text"
+          :class="{ filled: project.slug }"
+          v-model="project.slug"
+          maxlength="100"
+        />
+        <label for="slug">URL slug</label>
+      </span>
+      <span class="float-label">
+        <textarea
+          id="description"
+          :class="{ filled: project.description }"
+          v-model="project.description"
+          maxlength="1000"
+        />
+        <label for="description">Description</label>
+      </span>
+      <span class="float-label">
+        <input
+          id="instagram"
+          type="text"
+          :class="{ filled: project.sns.instagram }"
+          v-model="project.sns.instagram"
+          maxlength="500"
+        />
+        <label for="instagram">Instragram</label>
+      </span>
+      <span class="float-label">
+        <input
+          id="twitter"
+          type="text"
+          :class="{ filled: project.sns.twitter }"
+          v-model="project.sns.twitter"
+          maxlength="500"
+        />
+        <label for="twitter">Twitter</label>
+      </span>
+      <span class="float-label">
+        <input
+          id="discord"
+          type="text"
+          :class="{ filled: project.sns.discord }"
+          v-model="project.sns.discord"
+          maxlength="500"
+        />
+        <label for="discord">Discord</label>
+      </span>
+      <span class="float-label">
+        <input
+          id="website"
+          type="text"
+          :class="{ filled: project.sns.website }"
+          v-model="project.sns.website"
+          maxlength="500"
+        />
+        <label for="website">Website</label>
+      </span>
       <button @click="save">SAVE</button>
     </div>
     {{ errorMessage }}
@@ -73,4 +127,42 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.settings {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .input-group {
+    padding: 40px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+    .float-label {
+      margin-bottom: 30px;
+
+      :first-child {
+        width: 100%;
+      }
+
+      textarea {
+        resize: vertical;
+        max-height: 200px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .settings {
+    .input-group {
+      border: none;
+      margin: 0px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+</style>

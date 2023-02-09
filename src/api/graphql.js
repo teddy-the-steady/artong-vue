@@ -18,6 +18,7 @@ const queryProject = function (variables) {
           maxAmount
           policy
           isDisabled
+          royalty
           createdAt
           updatedAt
           _db_project_s3key
@@ -151,6 +152,7 @@ const queryToken = function (variables) {
             id
             name
             symbol
+            royalty
           }
           listings (orderBy: createdAt, orderDirection: desc, first: 1) {
             id

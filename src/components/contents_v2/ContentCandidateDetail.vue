@@ -197,16 +197,28 @@
             </div>
           </div>
           <div class="price-box">
-            <div>
+            <div class="price-box-content">
               <label class="label">Price</label>
               <div>
                 {{ content ? weiToEther(price) : '' }}
                 ETH
               </div>
             </div>
-            <div>
-              <label class="label">Creator Royalty</label>
-              <div>{{ content ? content.royalty / 100 : '' }} %</div>
+            <div class="royalties">
+              <div
+                v-show="content ? content.royalty > 0 : false"
+                class="price-box-content"
+              >
+                <label class="label">Creator Royalty</label>
+                <div>{{ content ? content.royalty / 100 : '' }} %</div>
+              </div>
+              <div
+                v-show="project ? project.royalty > 0 : false"
+                class="price-box-content"
+              >
+                <label class="label">Project Royalty</label>
+                <div>{{ project ? project.royalty / 100 : '' }} %</div>
+              </div>
             </div>
           </div>
           <div class="trade-buttons">
@@ -705,18 +717,20 @@ export default {
       }
       .price-box {
         margin-top: 30px;
-        padding: 24px;
-        height: 50px;
+        padding: 24px 24px 12px;
         background: #f2f2f2;
         border: 1px solid #cccccc;
         border-radius: 24px;
         display: flex;
         :first-child {
-          flex: 0.5;
+          flex: 0.7;
         }
         input {
           border: none;
           background: #f2f2f2;
+        }
+        .price-box-content {
+          margin-bottom: 10px;
         }
       }
       .trade-buttons {
@@ -825,6 +839,15 @@ textarea {
 @media (min-width: 1440px) {
   .round-box {
     width: 708px;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .price-box {
+    flex-direction: column;
+    .royalties {
+      display: flex;
+    }
   }
 }
 </style>

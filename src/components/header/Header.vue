@@ -18,6 +18,18 @@
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1690 300"
             >
+              <defs>
+                <filter id="shadow" color-interpolation-filters="sRGB">
+                  <feDropShadow
+                    dx="1"
+                    dy="1"
+                    stdDeviation="2"
+                    flood-opacity="0.3"
+                    flood-color="white"
+                  />
+                </filter>
+              </defs>
+
               <g :class="{ active: isSideMenuOpen }" :style="randomDelayTime">
                 <path
                   :class="{ active: isSideMenuOpen }"
@@ -282,12 +294,7 @@ export default {
         left: 49px;
         width: 130px;
         overflow: visible;
-
-        path:nth-child(3) {
-          &.active {
-            display: none;
-          }
-        }
+        filter: url(#shadow);
 
         path:nth-child(4) {
           &.active {
@@ -295,8 +302,13 @@ export default {
           }
         }
 
+        path:nth-child(5) {
+          &.active {
+            display: none;
+          }
+        }
+
         path {
-          filter: drop-shadow(1px 1px 50px rgba(255, 255, 255, 0.3));
           &.active {
             animation: bounce 0.2s ease 7.5 alternate;
           }

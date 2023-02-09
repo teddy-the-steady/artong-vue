@@ -50,7 +50,7 @@ export default {
       await this.pushData()
       setTimeout(function () {
         $state.loaded()
-      }, 1000)
+      }, 100)
     },
     async pushData() {
       let profileArrayToPush = []
