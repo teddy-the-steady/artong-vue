@@ -1,5 +1,8 @@
 <template>
   <div class="info">
+    <div class="lang">
+      <LangDropdown class="lang-option" :langOptions="langOptions" />
+    </div>
     <div class="container0">
       <div class="container0-box">
         <div class="intro">
@@ -249,9 +252,6 @@
 <script>
 import { mapState } from 'vuex'
 import { headerActivate } from '../../mixin'
-import CuratedCollection from '../collection_card/CuratedCollection.vue'
-import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
-import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import Ripple from '../../directives/ripple/Ripple'
 import { makeS3Path } from '../../util/commonFunc'
 import {
@@ -262,10 +262,15 @@ import {
   queryTokens,
 } from '../../api/graphql'
 import { getMainContents } from '../../api/contents'
+import { getMainContributors } from '../../api/member'
+import { languages } from '../../locales/languages'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
-import { getMainContributors } from '../../api/member'
+import CuratedCollection from '../collection_card/CuratedCollection.vue'
+import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
+import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
+import LangDropdown from '../dropdown/LangDropdown.vue'
 
 export default {
   name: 'Main',
@@ -277,6 +282,7 @@ export default {
     CuratedCollectionWide,
     ContentsProfile,
     ProjectPageProfile_small,
+    LangDropdown,
   },
   computed: {
     ...mapState({
@@ -293,6 +299,7 @@ export default {
       isFirstLoading: true,
       mainContributors: {},
       recentTokens: {},
+      langOptions: languages,
     }
   },
   directives: {
@@ -431,6 +438,16 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
+
+.lang {
+  position: absolute;
+  top: 90px;
+  right: 10%;
+
+  .lang-option {
+    position: relative;
+  }
+}
 
 .intro {
   display: flex;
