@@ -1,9 +1,9 @@
-.p-ripple {
+.ripple {
     overflow: hidden;
     position: relative;
 }
 
-.p-ink {
+.ink {
     display: block;
     position: absolute;
     background: rgba(255, 255, 255, 0.5);
@@ -14,11 +14,11 @@
     overflow: hidden;
 }
 
-.p-ink-active {
+.ink-active {
     animation: ripple 0.4s linear;
 }
 
-.p-ripple-disabled .p-ink {
+.ripple-disabled .ink {
     display: none !important;
 }
 

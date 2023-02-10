@@ -9,10 +9,10 @@ function unbindEvents(el) {
 }
 
 function create(el) {
-  DomHandler.addClass(el, 'p-ripple')
+  DomHandler.addClass(el, 'ripple')
 
   let ink = document.createElement('span')
-  ink.className = 'p-ink'
+  ink.className = 'ink'
   el.appendChild(ink)
 
   ink.addEventListener('animationend', onAnimationEnd)
@@ -34,7 +34,7 @@ function onMouseDown(event) {
     return
   }
 
-  DomHandler.removeClass(ink, 'p-ink-active')
+  DomHandler.removeClass(ink, 'ink-active')
   if (!DomHandler.getHeight(ink) && !DomHandler.getWidth(ink)) {
     let d = Math.max(
       DomHandler.getOuterWidth(target),
@@ -58,18 +58,18 @@ function onMouseDown(event) {
 
   ink.style.top = y + 'px'
   ink.style.left = x + 'px'
-  DomHandler.addClass(ink, 'p-ink-active')
+  DomHandler.addClass(ink, 'ink-active')
 }
 
 function onAnimationEnd(event) {
-  DomHandler.removeClass(event.currentTarget, 'p-ink-active')
+  DomHandler.removeClass(event.currentTarget, 'ink-active')
 }
 
 function getInk(el) {
   for (let i = 0; i < el.children.length; i++) {
     if (
       typeof el.children[i].className === 'string' &&
-      el.children[i].className.indexOf('p-ink') !== -1
+      el.children[i].className.indexOf('ink') !== -1
     ) {
       return el.children[i]
     }
