@@ -791,11 +791,12 @@ export default {
           margin-bottom: 6px;
           overflow: hidden;
           cursor: pointer;
+          display: grid;
+          align-items: center;
 
           img {
             object-fit: cover;
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
           }
         }
 
@@ -974,11 +975,12 @@ export default {
           border-radius: 14px;
           margin-bottom: 6px;
           overflow: hidden;
+          display: grid;
+          align-items: center;
 
           img {
             object-fit: cover;
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
           }
         }
 
