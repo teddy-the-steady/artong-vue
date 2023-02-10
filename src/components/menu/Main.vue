@@ -442,7 +442,7 @@ export default {
 .lang {
   position: absolute;
   top: 90px;
-  right: 10%;
+  right: 5%;
 
   .lang-option {
     position: relative;
@@ -677,6 +677,26 @@ export default {
   margin-top: 48px;
   background-color: $artong-black;
   height: 282px;
+  .bottom-link {
+    display: flex;
+    flex-direction: row-reverse;
+
+    .bottom-table {
+      margin-top: 57px;
+      .third-column {
+        margin-right: 61px;
+        list-style: none;
+      }
+    }
+    .bottom-left {
+      margin-right: auto;
+      margin-top: auto;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+  }
 
   .img {
     text-align: left;
@@ -713,7 +733,8 @@ export default {
       margin-right: 56px;
       margin-bottom: 10px;
     }
-    .second-column {
+    .second-column,
+    .third-column {
       margin-right: 25px;
       list-style: none;
     }
@@ -906,26 +927,6 @@ export default {
   .container5 {
     padding-top: 72px;
     padding-bottom: 72px;
-    .bottom-link {
-      display: flex;
-      flex-direction: row-reverse;
-
-      .bottom-table {
-        margin-top: 57px;
-        .third-column {
-          margin-right: 61px;
-          list-style: none;
-        }
-      }
-      .bottom-left {
-        margin-right: auto;
-        margin-top: 124px;
-      }
-
-      .clickable {
-        cursor: pointer;
-      }
-    }
   }
 }
 
@@ -1094,26 +1095,7 @@ export default {
       margin-right: 240px;
     }
     .bottom-link {
-      display: flex;
-      flex-direction: row-reverse;
-      margin-left: 240px;
-      margin-right: 240px;
-
-      .bottom-table {
-        margin-top: 57px;
-        .third-column {
-          margin-right: 61px;
-          list-style: none;
-        }
-      }
-      .bottom-left {
-        margin-right: auto;
-        margin-top: 124px;
-      }
-
-      .clickable {
-        cursor: pointer;
-      }
+      margin: 0 240px;
     }
   }
 }
