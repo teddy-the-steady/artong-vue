@@ -5,12 +5,15 @@
   },
   "intro-content": {
     "first": "Artong is an open art NFT marketplace",
-    "second": "We support freely contributable NFT projects and creators💪",
-    "third": "Contribute to any project you want and explore easily in web3.0"
+    "second": "We support contributable NFT projects and creators💪",
+    "third": "Contribute to any project you want and explore freely in web3.0"
   },
   "start-btn": "Click to Start",
   "main-token-bottom-title": {
     "project": "Project",
     "created-by": "Created By"
+  },
+  "container1": {
+    "title": "How fun creating is"
   }
 }

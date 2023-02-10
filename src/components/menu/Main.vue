@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="container1">
-      <div class="title">Show your Creativity</div>
+      <div class="title">{{ $t('main.container1.title') }}</div>
       <div class="row">
         <div class="activity">
           <img
