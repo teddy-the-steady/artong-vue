@@ -157,7 +157,7 @@ export default {
 
 <style lang="scss">
 @import './assets/scss/variables';
-@import './directives/ripple/ripple';
+@import './assets/scss/ripple';
 
 html {
   font-size: 14px;
@@ -220,15 +220,6 @@ html {
       &.ripple {
         background-position: center;
         transition: background 0.8s;
-      }
-      &.ripple:hover {
-        background: $lightergray
-          radial-gradient(circle, transparent 1%, $lightergray 1%) center/15000%;
-      }
-      &.ripple:active {
-        background-color: #ffffff;
-        background-size: 100%;
-        transition: background 0s;
       }
       &.dropdown {
         display: flex;
