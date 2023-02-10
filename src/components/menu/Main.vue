@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="container1">
-      <div class="title">Show your Creativity</div>
+      <div class="title">{{ $t('main.container1.title') }}</div>
       <div class="row">
         <div class="activity">
           <img
@@ -123,7 +123,10 @@
       </div>
     </div>
     <div class="container3">
-      <div class="container3-box">
+      <div
+        class="container3-box"
+        :class="{ 'width-auto': innerWidth > 1080 && innerWidth < 1440 }"
+      >
         <div class="top-container">
           <div class="title">Highlighted Projects</div>
         </div>
@@ -450,7 +453,7 @@ export default {
   }
 
   .intro-content {
-    width: 91.1%;
+    width: 95%;
     font-family: $item-font;
     font-style: $item-font-style;
     font-weight: 400;
@@ -860,6 +863,16 @@ export default {
   .container3 {
     padding-top: 96px;
     padding-bottom: 96px;
+
+    .container3-box {
+      width: 1440px;
+      margin: 0 auto;
+
+      &.width-auto {
+        width: auto;
+        margin: 0 auto;
+      }
+    }
   }
 
   .margin-top {
@@ -1037,8 +1050,7 @@ export default {
 
     .container3-box {
       width: 1440px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto;
     }
   }
 

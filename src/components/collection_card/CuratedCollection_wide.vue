@@ -21,8 +21,15 @@
           :members="project.contributors"
         ></ContentsProfileBundle>
         <div class="nickName">
-          @{{ project.contributors[0].username }} +{{
-            project.contributors.length - 1
+          @{{
+            project.contributors && project.contributors.length > 0
+              ? project.contributors[0].username
+              : 'nickName'
+          }}
+          {{
+            project.contributors && project.contributors.length > 1
+              ? `+${project.contributors.length - 1}`
+              : ''
           }}
         </div>
         <div class="category">{{ project.symbol }}</div>
@@ -85,6 +92,10 @@ export default {
       font-weight: 500;
       font-size: 14px;
       color: $artong-white;
+      display: inline-block;
+      max-width: 80px;
+      white-space: nowrap;
+      margin-left: 5px;
     }
     .category {
       position: absolute;
