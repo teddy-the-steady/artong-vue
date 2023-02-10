@@ -20,7 +20,7 @@
 import { headerActivate } from '../../mixin'
 import { getFeedContents } from '../../api/contents'
 import ContentList from '../contents_v2/ContentList.vue'
-import SortDropdown from '../util/SortDropdown.vue'
+import SortDropdown from '../dropdown/SortDropdown.vue'
 
 export default {
   name: 'Feed',

@@ -32,7 +32,7 @@ import { mapState } from 'vuex'
 import TabItem from './TabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
 import ProjectList from '../projects/ProjectList.vue'
-import SortDropdown from '../util/SortDropdown.vue'
+import SortDropdown from '../dropdown/SortDropdown.vue'
 
 export default {
   name: 'ProfileTab',

@@ -247,6 +247,10 @@ html {
         pointer-events: none;
         opacity: 0.4;
       }
+      &.clean {
+        border: none;
+        box-shadow: none;
+      }
 
       .spinner {
         display: none;
