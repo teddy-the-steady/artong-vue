@@ -144,6 +144,15 @@
         >
           Profile
         </router-link>
+        <router-link
+          slot="body"
+          tag="div"
+          :to="{
+            name: 'Settings',
+          }"
+        >
+          Settings
+        </router-link>
         <div slot="body" @click="signOut">Disconnect</div>
       </UserDialog>
     </nav>
