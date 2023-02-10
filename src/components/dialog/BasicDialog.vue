@@ -19,15 +19,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'BasicDialog',
-  computed: {
-    ...mapState({
-      currentUser: state => state.user.currentUser,
-    }),
-  },
   methods: {
     handleFocusOut() {
       this.$emit('dialog-focus-out')

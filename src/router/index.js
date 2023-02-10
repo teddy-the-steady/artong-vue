@@ -16,6 +16,7 @@ import ContentDetail from '@/components/contents_v2/ContentDetail'
 import ContentCandidateDetail from '@/components/contents_v2/ContentCandidateDetail'
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
+import Settings from '@/components/menu/Settings'
 import VueCarousel from 'vue-carousel'
 // import Test from '../components/util/Test'
 
@@ -110,6 +111,11 @@ const router = new Router({
       path: '/settings/profile',
       name: 'ProfileSettings',
       component: ProfileSettings,
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
     },
     // {
     //   path: '/test',

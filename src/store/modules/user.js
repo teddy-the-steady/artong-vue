@@ -3,12 +3,15 @@ import {
   CURRENT_USER_PROFILE_IMAGE_URL,
   USER_ERROR,
   USER_LOGOUT,
+  MAIN_LANGUAGE,
 } from '../actions/user'
 import { AUTH_LOGOUT } from '../actions/auth'
 import { makeS3Path } from '../../util/commonFunc'
+import Vue from '../../main'
 
 const state = {
   status: '',
+  main_language: 'ko',
   currentUser: JSON.parse(localStorage.getItem('current-user')) || {
     id: '',
     email: '',
@@ -80,6 +83,10 @@ const mutations = {
       },
     }
     localStorage.removeItem('current-user')
+  },
+  [MAIN_LANGUAGE]: (state, languageName) => {
+    state.main_language = languageName
+    Vue.$i18n.locale = languageName
   },
 }
 
