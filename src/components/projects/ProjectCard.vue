@@ -125,7 +125,6 @@ export default {
       font-weight: 800;
       font-size: 14px;
       line-height: 25px;
-      color: $profile-border-red;
 
       overflow: hidden !important;
       text-overflow: ellipsis;
