@@ -60,12 +60,12 @@ import { postProject } from '../../api/projects'
 import { PENDING } from '../../constants'
 import { headerActivate } from '../../mixin'
 import Ripple from '../../directives/ripple/Ripple'
-import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 import {
   checkMobileWalletStatusAndGetSigner,
   isSessionValid,
   loginAndRedirectBack,
 } from '../../util/commonFunc'
+import ProjectPrototypeCard from '../projects/ProjectPrototypeCard.vue'
 
 export default {
   name: 'CreateProject',
@@ -90,6 +90,14 @@ export default {
       S3_PRIVACY_LEVEL: 'public',
       signer: null,
       creating: false,
+      selectedCity: null,
+      cities: [
+        { name: 'New York', code: 'NY' },
+        { name: 'Rome', code: 'RM' },
+        { name: 'London', code: 'LDN' },
+        { name: 'Istanbul', code: 'IST' },
+        { name: 'Paris', code: 'PRS' },
+      ],
     }
   },
   methods: {
