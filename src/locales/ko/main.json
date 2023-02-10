@@ -4,13 +4,16 @@
     "second": "NFT 거래소"
   },
   "intro-content": {
-    "first": "알통은 열린 예술을 추구합니다💪",
-    "second": "자유롭게 기여 가능한 NFT 프로젝트와 창작자들을 지원합니다.",
-    "third": "원하는 프로젝트에 기여하고 web3.0 바다를 마음껏 항해해 보세요."
+    "first": "우리는 열린 예술을 지지합니다💪",
+    "second": "그리고 자유롭게 기여 가능한 NFT 프로젝트와 창작자들을 지원합니다.",
+    "third": "알통에서 원하는 프로젝트에 기여하고 web3.0 바다를 마음껏 항해해 보세요."
   },
   "start-btn": "눌러서 시작하기",
   "main-token-bottom-title": {
     "project": "프로젝트",
     "created-by": "작가"
+  },
+  "container1": {
+    "title": "창작은 재미있어"
   }
 }
