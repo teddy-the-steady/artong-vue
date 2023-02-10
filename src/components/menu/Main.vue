@@ -453,7 +453,7 @@ export default {
   }
 
   .intro-content {
-    width: 91.1%;
+    width: 95%;
     font-family: $item-font;
     font-style: $item-font-style;
     font-weight: 400;
