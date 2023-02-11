@@ -14,6 +14,24 @@
     "created-by": "Created By"
   },
   "container1": {
-    "title": "How fun creating is"
+    "title": "Show your own creativity",
+    "activity": {
+      "first": {
+        "title": "Wallet connection",
+        "content": "Connect your wallet and start your journey in ARTONG"
+      },
+      "second": {
+        "title": "Create your project",
+        "content": "Create an OPEN ART project and build your own space for creativity"
+      },
+      "third": {
+        "title": "Contribute your NFTs",
+        "content": "Contribute your creation to ANY open art projects"
+      },
+      "forth": {
+        "title": "Share your collections",
+        "content": "Share your collections and gather the talented to your community"
+      }
+    }
   }
 }
