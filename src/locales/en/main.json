@@ -14,7 +14,7 @@
     "created-by": "Created By"
   },
   "container1": {
-    "title": "How fun creation is",
+    "title": "Show your own creativity",
     "activity": {
       "first": {
         "title": "Wallet connection",
@@ -22,15 +22,15 @@
       },
       "second": {
         "title": "Create your project",
-        "content": "Create an open art project and build a vessel for your creativity"
+        "content": "Create an OPEN ART project and build your own space for creativity"
       },
       "third": {
-        "title": "Add your NFTs",
-        "content": "Add your creation to any project you want"
+        "title": "Contribute your NFTs",
+        "content": "Contribute your creation to ANY open art projects"
       },
       "forth": {
-        "title": "Share the collection",
-        "content": "Share your collection and invite the talents to your community"
+        "title": "Share your collections",
+        "content": "Share your collections and gather the talented to your community"
       }
     }
   }
