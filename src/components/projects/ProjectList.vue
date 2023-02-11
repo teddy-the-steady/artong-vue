@@ -107,7 +107,7 @@ export default {
 
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 400px));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 400px));
   justify-content: center;
   padding: initial;
 }
