@@ -15,7 +15,6 @@ import store from './store'
 import axiosInit from './api'
 import i18n from './i18n'
 import VueCarousel from 'vue-carousel'
-import VTooltip from 'v-tooltip'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -25,7 +24,6 @@ Vue.use(Amplify)
 Vue.use(Masonry)
 Vue.use(VueMobileDetection)
 Vue.use(VueCarousel)
-Vue.use(VTooltip)
 
 Vue.config.productionTip = false
 
