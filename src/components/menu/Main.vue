@@ -176,7 +176,7 @@
         :needContentName="true"
       ></TokensByCollection>
       <div class="top-container margin-top">
-        <div class="title">Recent Contribution</div>
+        <div class="title">Recent Contributions</div>
       </div>
       <TokensByCollection
         class="margin-bottom"
@@ -483,6 +483,7 @@ export default {
     color: #4d4d4d;
     align-self: stretch;
     text-align: left;
+    word-break: keep-all;
   }
 
   .start-btn {
