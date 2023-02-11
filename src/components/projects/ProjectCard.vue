@@ -138,7 +138,6 @@ export default {
     font-weight: 600;
     font-size: 32px;
     line-height: 44px;
-    width: 300px;
     overflow: hidden !important;
     text-overflow: ellipsis;
   }
