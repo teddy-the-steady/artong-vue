@@ -517,8 +517,7 @@ export default {
     .intro-img {
       width: 32px;
       height: 32px;
-      margin: auto;
-      margin-bottom: 16px;
+      margin: 30px auto;
     }
 
     .title {
@@ -530,8 +529,7 @@ export default {
       font-size: 20px;
       line-height: 24px;
       color: $artong-black;
-      margin: auto;
-      margin-bottom: 16px;
+      margin: 30px auto;
     }
 
     .content {
@@ -878,16 +876,8 @@ export default {
         gap: 16px;
         width: 240px;
 
-        .intro-img {
-          margin-bottom: 0px;
-        }
-
-        .title {
-          margin-bottom: 0px;
-        }
-
         .content {
-          margin-bottom: 0px;
+          flex: auto;
         }
       }
     }
@@ -1039,16 +1029,8 @@ export default {
         gap: 16px;
         width: 240px;
 
-        .intro-img {
-          margin-bottom: 0px;
-        }
-
-        .title {
-          margin-bottom: 0px;
-        }
-
         .content {
-          margin-bottom: 0px;
+          flex: auto;
         }
       }
     }
