@@ -89,26 +89,30 @@
             class="intro-img"
             src="../../assets/icons/wallet-passes-app.svg"
           />
-          <div class="subtitle">Wallet connection</div>
+          <div class="title">
+            {{ $t('main.container1.activity.first.title') }}
+          </div>
           <div class="content">
-            Connect your wallet and start your journey in ARTONG
+            {{ $t('main.container1.activity.first.content') }}
           </div>
         </div>
         <div class="activity">
           <img class="intro-img" src="../../assets/icons/100-add-folder.svg" />
-          <div class="subtitle">Create your project</div>
+          <div class="title">
+            {{ $t('main.container1.activity.second.title') }}
+          </div>
           <div class="content">
-            Create an open art project and build a vessel for your creativity
+            {{ $t('main.container1.activity.second.content') }}
           </div>
         </div>
         <div class="activity">
           <img class="intro-img" src="../../assets/icons/fine-arts1.svg" />
-          <div class="subtitle">Add your NFTs</div>
+          <div class="title">Add your NFTs</div>
           <div class="content">Add your creation to any project you want</div>
         </div>
         <div class="activity">
           <img class="intro-img" src="../../assets/icons/102-blockchain.svg" />
-          <div class="subtitle">Share the collection</div>
+          <div class="title">Share the collection</div>
           <div class="content">
             Share your collection and invite the talents to your community
           </div>
@@ -172,7 +176,7 @@
         :needContentName="true"
       ></TokensByCollection>
       <div class="top-container margin-top">
-        <div class="title">Recent Contribution</div>
+        <div class="title">Recent Contributions</div>
       </div>
       <TokensByCollection
         class="margin-bottom"
@@ -479,6 +483,7 @@ export default {
     color: #4d4d4d;
     align-self: stretch;
     text-align: left;
+    word-break: keep-all;
   }
 
   .start-btn {
@@ -516,7 +521,7 @@ export default {
       margin-bottom: 16px;
     }
 
-    .subtitle {
+    .title {
       width: 195px;
       height: 24px;
       font-family: 'Pretendard';
@@ -877,7 +882,7 @@ export default {
           margin-bottom: 0px;
         }
 
-        .subtitle {
+        .title {
           margin-bottom: 0px;
         }
 
@@ -1038,7 +1043,7 @@ export default {
           margin-bottom: 0px;
         }
 
-        .subtitle {
+        .title {
           margin-bottom: 0px;
         }
 

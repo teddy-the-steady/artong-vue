@@ -14,6 +14,7 @@ import router from './router'
 import store from './store'
 import axiosInit from './api'
 import i18n from './i18n'
+import VueCarousel from 'vue-carousel'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -22,6 +23,7 @@ smoothscroll.polyfill()
 Vue.use(Amplify)
 Vue.use(Masonry)
 Vue.use(VueMobileDetection)
+Vue.use(VueCarousel)
 
 Vue.config.productionTip = false
 
