@@ -221,7 +221,7 @@ export default {
         imageHeight = event.target.naturalHeight
       }
 
-      if (val.token_id) {
+      if (val.token_id || val.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {

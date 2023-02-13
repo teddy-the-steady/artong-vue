@@ -1,4 +1,4 @@
-@import '../../assets/scss/variables';
+@import './variables';
 
 .v-sidebar-menu {
   * {
@@ -151,5 +151,5 @@
   }
 }
 
-@import '../../assets/scss/themes/default-theme';
-@import '../../assets/scss/themes/white-theme';
+@import './themes/default-theme';
+@import './themes/white-theme';

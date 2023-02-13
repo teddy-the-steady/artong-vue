@@ -97,7 +97,7 @@ export default {
       }
     },
     onContentClick(event) {
-      if (this.content.token_id) {
+      if (this.content.token_id || this.content.tokenId) {
         this.$router.push({
           name: 'ContentDetail',
           params: {
@@ -105,7 +105,7 @@ export default {
               this.content.slug ||
               this.content.project_address ||
               this.content.project.id,
-            token_id: this.content.token_id,
+            token_id: this.content.token_id || this.content.tokenId,
             image_width: event.target.naturalWidth,
             image_height: event.target.naturalHeight,
           },
