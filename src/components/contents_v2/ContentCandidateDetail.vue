@@ -370,6 +370,13 @@ export default {
     },
   },
   methods: {
+    async getContent() {
+      const result = await getContent(
+        this.$route.params.project_address,
+        this.$route.params.contents_id,
+      )
+      return result
+    },
     async getData(project_address) {
       const [project, tokensByProject, prevNextProjects] = await Promise.all([
         graphql(
@@ -394,8 +401,8 @@ export default {
         getProjectsPrevNext(project_address, 4),
       ])
 
-      this.project = project.project
-      this.tokens = tokensByProject.tokens
+      this.project = project.data.project
+      this.tokens = tokensByProject.data.tokens
       this.projects = prevNextProjects
     },
     async approve() {
@@ -563,10 +570,7 @@ export default {
     this.skeletonHeight = this.innerWidth * ratio + 'px'
 
     this.isFirstLoading = true
-    this.content = await getContent(
-      this.$route.params.project_address,
-      this.$route.params.contents_id,
-    )
+    this.content = await this.getContent()
     await this.getData(this.$route.params.project_address)
     this.isFirstLoading = false
 
@@ -581,10 +585,7 @@ export default {
           this.skeletonHeight = this.innerWidth * ratio + 'px'
 
           this.isFirstLoading = true
-          this.content = await getContent(
-            this.$route.params.project_address,
-            this.$route.params.contents_id,
-          )
+          this.content = await this.getContent()
           await this.getData(to.params.project_address)
           this.isFirstLoading = false
         }

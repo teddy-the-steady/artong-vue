@@ -180,13 +180,14 @@ export default {
     },
     async getContents() {
       const results = await this.api.func(this.api.body)
+
       if (this.api.result_key == 'offers') {
         this.api.body.variables.skip += this.api.body.variables.first
-        return results.offers
       } else if (this.api.result_key == 'history') {
         this.api.body.pagination.start_num += this.api.body.pagination.count_num
-        return results
       }
+
+      return results
     },
     async infiniteHandler($state) {
       if (this.noMoreDataToLoad || !this.api) {
@@ -199,25 +200,40 @@ export default {
       }, 100)
     },
     async pushData() {
-      const contentArrayToPush = await this.makeContentArray()
-      if (contentArrayToPush.length > 0) {
-        for (let i in contentArrayToPush) {
-          this.contents.push(contentArrayToPush[i])
+      if (this.api) {
+        const results = await this.getContents()
+
+        let contentArrayToPush = []
+        if (this.api.result_key == 'offers') {
+          contentArrayToPush = await this.makeContentArray(
+            results.data.offers,
+            results.meta,
+          )
+        } else if (this.api.result_key == 'history') {
+          contentArrayToPush = await this.makeContentArray(
+            results.data,
+            results.meta,
+          )
+        }
+        if (contentArrayToPush.length > 0) {
+          for (let i in contentArrayToPush) {
+            this.contents.push(contentArrayToPush[i])
+          }
         }
       }
     },
-    async makeContentArray() {
+    async makeContentArray(apiResults, meta) {
       const contentArrayToPush = []
-      if (this.api) {
-        const result = await this.getContents()
-        if (result.length > 0) {
-          for (let i = 0; i < result.length; i++) {
-            contentArrayToPush.push(result[i])
-          }
-        } else {
-          this.noMoreDataToLoad = true
+      if (apiResults.length > 0) {
+        for (let i = 0; i < apiResults.length; i++) {
+          contentArrayToPush.push(apiResults[i])
         }
       }
+
+      if (!meta.hasMoreData) {
+        this.noMoreDataToLoad = true
+      }
+
       return contentArrayToPush
     },
   },

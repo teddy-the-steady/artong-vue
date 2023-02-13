@@ -432,13 +432,13 @@ export default {
             },
           }),
         )
-        if (result.token) {
-          return result.token
+        if (result.data.token) {
+          return result.data.token
         }
         if (this.$router.currentRoute.name !== 'ContentDetail') {
           break
         }
-        if (result.retry) {
+        if (result.data.retry) {
           await this.sleep(3000)
         }
       }
@@ -461,7 +461,7 @@ export default {
       ])
 
       this.projects = prevNextProjects
-      this.tokens = tokensByProject.tokens
+      this.tokens = tokensByProject.data.tokens
     },
     toggleModal() {
       this.$store.commit('TOGGLE_PROMPT_MODAL')

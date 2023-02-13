@@ -1,22 +1,25 @@
 import instance from './index'
 
 const postProject = async function (body) {
-  return await instance.post('/projects', body)
+  const result = await instance.post('/projects', body)
+  return result.data
 }
 
 const patchProject = async function (txHash, body) {
-  return await instance.patch(`/projects/${txHash}`, body)
+  const result = await instance.patch(`/projects/${txHash}`, body)
+  return result.data
 }
 
 const getProjectWhileUpdatingPendingToCreated = async function (txHash) {
-  return await instance.get(`/projects/${txHash}/tx_receipt_updated`)
+  const result = await instance.get(`/projects/${txHash}/tx_receipt_updated`)
+  return result.data
 }
 
 const postProjectSubscriber = async function ({
   isSubscribeRequest,
   targetProjectAddress,
 }) {
-  return await instance.post('/subscribe', {
+  await instance.post('/subscribe', {
     isSubscribeRequest: isSubscribeRequest,
     targetProjectAddress: targetProjectAddress,
   })
@@ -60,18 +63,20 @@ const getMemberContentsFavorites = async function (pathParams, queryParams) {
 }
 
 const searchProjects = async function (searchWord) {
-  return await instance.get('/search/projects', {
+  const result = await instance.get('/search/projects', {
     params: { searchWord: searchWord },
   })
+  return result.data
 }
 
 const getProjectsPrevNext = async function (project_address, prev_next_count) {
-  return await instance.get('/projects', {
+  const result = await instance.get('/projects', {
     params: {
       basis_project_address: project_address,
       prev_next_count: prev_next_count,
     },
   })
+  return result.data
 }
 
 export {

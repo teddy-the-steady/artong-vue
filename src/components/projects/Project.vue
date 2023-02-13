@@ -336,13 +336,13 @@ export default {
             },
           }),
         )
-        if (result.project) {
-          return result.project
+        if (result.data.project) {
+          return result.data.project
         }
         if (this.$router.currentRoute.name !== 'Project') {
           break
         }
-        if (result.retry) {
+        if (result.data.retry) {
           await this.sleep(3000)
         }
       }
