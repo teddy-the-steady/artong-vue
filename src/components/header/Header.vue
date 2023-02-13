@@ -88,11 +88,15 @@
             <img src="../../assets/icons/search.svg" />
           </button>
           <div class="before_login" v-if="!currentUser.id">
-            <router-link to="/login"> CONNECT </router-link>
+            <router-link to="/login">
+              {{ $t('header.navbar-right.connect') }}
+            </router-link>
           </div>
           <div class="after_login" v-else>
             <div v-if="innerWidth >= 1080" class="contribute">
-              <button @click="contribute" v-ripple>Contribute</button>
+              <button @click="contribute" v-ripple>
+                {{ $t('header.navbar-right.contribute') }}
+              </button>
             </div>
             <button
               v-else
@@ -129,7 +133,7 @@
           class="network"
           :style="{ background: 'orange', 'text-align': 'center' }"
         >
-          WRONG NETWORK
+          {{ $t('header.user-dialog.wrong-network') }}
         </div>
         <router-link
           slot="body"
@@ -142,7 +146,7 @@
             },
           }"
         >
-          Profile
+          {{ $t('header.user-dialog.profile') }}
         </router-link>
         <router-link
           slot="body"
@@ -151,9 +155,11 @@
             name: 'Settings',
           }"
         >
-          Settings
+          {{ $t('header.user-dialog.settings') }}
         </router-link>
-        <div slot="body" @click="signOut">Disconnect</div>
+        <div slot="body" @click="signOut">
+          {{ $t('header.user-dialog.disconnect') }}
+        </div>
       </UserDialog>
     </nav>
   </transition>
@@ -486,6 +492,10 @@ export default {
     display: none;
     &.active {
       display: block;
+    }
+
+    .network {
+      word-break: keep-all;
     }
   }
 }

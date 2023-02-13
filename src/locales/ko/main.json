@@ -33,5 +33,39 @@
         "content": "작품을 공유하고 창작 능력자들을 여러분의 커뮤니티로 모으세요."
       }
     }
+  },
+  "container2": {
+    "title": "새 프로젝트 만들기",
+    "content": "나만의 NFT 프로젝트를 만드세요"
+  },
+  "container3": {
+    "title": {
+      "first": "주목할 만한 프로젝트",
+      "second": "지금 핫한 창작자"
+    }
+  },
+  "container4": {
+    "title": {
+      "first": "알통 에디터 추천",
+      "second": "최근 기여된 컨텐츠"
+    }
+  },
+  "bottom": {
+    "left": {
+      "privacy-info": "개인정보처리방침",
+      "terms-of-service": "이용약관"
+    },
+    "right": {
+      "company": {
+        "title": "더 알아보기",
+        "about": "회사소개",
+        "careers": "채용"
+      },
+      "connect": {
+        "title": "SNS",
+        "twitter": "트위터",
+        "instagram": "인스타그램"
+      }
+    }
   }
 }
