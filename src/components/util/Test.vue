@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     This is a test
-    <div class="box">click outside of this box</div>
+    <img
+      class="icon"
+      ref="icon"
+      @click="clicked"
+      src="../../assets/icons/info.svg"
+    />
+    <div>----------</div>
   </div>
 </template>
 <script>
@@ -12,32 +18,35 @@ export default {
   components: {},
   data() {
     return {
-      isSearchModalOpen: false,
+      words:
+        'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
     }
   },
   computed: {
     ...mapState({
-      isModalOpen: state => state.menu.isModalOpen,
+      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+      iconTop: state => state.menu.iconTop,
+      iconLeft: state => state.menu.iconLeft,
+      infoText: state => state.menu.infoText,
     }),
-    isMobiel() {
-      return this.$isMobiel()
-    },
   },
   methods: {
-    toggleSearchModal() {
-      this.isSearchModalOpen = !this.isSearchModalOpen
+    clicked() {
+      this.setInfoText()
+      this.setIconPosition()
+      this.toggelInfoModal()
     },
-    setWidth() {
-      this.$store.commit('SET_INNER_WIDTH', window.innerWidth)
+    toggelInfoModal() {
+      this.$store.commit('TOGGLE_INFO_MODAL')
     },
-    print() {
-      console.log('clicked outside')
+    setIconPosition() {
+      let icon = this.$refs.icon
+      let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
+      let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
+      this.$store.commit('SET_ICON_POSITION', { iconTop, iconLeft })
     },
-  },
-  created() {},
-  watch: {
-    isModalOepn() {
-      document.body.classList.toggle('prevent-scroll')
+    setInfoText() {
+      this.$store.commit('SET_INFO_TEXT', this.words)
     },
   },
 }
@@ -46,11 +55,8 @@ export default {
 @import '../../assets/scss/variables';
 
 .container {
-  padding-top: 70px;
-  .box {
-    width: 100%;
-    height: 30px;
-    background-color: red;
-  }
+  //padding-top: 70px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
