@@ -32,7 +32,7 @@ const requestInterceptor = function (axiosInstance) {
 const responseInterceptor = function (axiosInstance) {
   axiosInstance.interceptors.response.use(
     response => {
-      return response.data.data
+      return response.data
     },
     error => {
       return Promise.reject(error.response.data.message)

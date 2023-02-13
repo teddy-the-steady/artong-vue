@@ -67,27 +67,31 @@ export default {
         this.queryProjects.body.variables.skip +=
           this.queryProjects.body.variables.first
 
-        if (results.length > 0) {
-          for (let i = 0; i < results.length; i++) {
+        if (results.data.projects.length > 0) {
+          for (let i = 0; i < results.data.projects.length; i++) {
             projectArrayToPush.push({
-              address: results[i].id,
-              slug: results[i].slug,
-              creator: results[i].creator,
-              name: results[i].name,
-              symbol: results[i].symbol,
-              // status: results[i].status,
-              policy: results[i].policy,
-              max_amount: results[i].maxAmount,
-              background_s3key: results[i].background_s3key,
-              background_thumbnail_s3key: results[i].background_thumbnail_s3key,
-              project_s3key: results[i].project_s3key,
-              project_thumbnail_s3key: results[i].project_thumbnail_s3key,
-              contributors: results[i].contributors,
-              created_at: results[i].createdAt,
-              updated_at: results[i].updatedAt,
+              address: results.data.projects[i].id,
+              slug: results.data.projects[i].slug,
+              creator: results.data.projects[i].creator,
+              name: results.data.projects[i].name,
+              symbol: results.data.projects[i].symbol,
+              // status: results.data.projects[i].status,
+              policy: results.data.projects[i].policy,
+              max_amount: results.data.projects[i].maxAmount,
+              background_s3key: results.data.projects[i].background_s3key,
+              background_thumbnail_s3key:
+                results.data.projects[i].background_thumbnail_s3key,
+              project_s3key: results.data.projects[i].project_s3key,
+              project_thumbnail_s3key:
+                results.data.projects[i].project_thumbnail_s3key,
+              contributors: results.data.projects[i].contributors,
+              created_at: results.data.projects[i].createdAt,
+              updated_at: results.data.projects[i].updatedAt,
             })
           }
-        } else {
+        }
+
+        if (!results.meta.hasMoreData) {
           this.noMoreDataToLoad = true
         }
       }
@@ -95,8 +99,7 @@ export default {
       return projectArrayToPush
     },
     async getProjects() {
-      const results = await this.queryProjects.func(this.queryProjects.body)
-      return results.projects
+      return await this.queryProjects.func(this.queryProjects.body)
     },
   },
 }

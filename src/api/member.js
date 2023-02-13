@@ -1,28 +1,31 @@
 import instance from './index'
 
 const getMemberByUsername = async function (username) {
-  return await instance.get(`/members/${username}`)
+  const result = await instance.get(`/members/${username}`)
+  return result.data
 }
 
 const getCurrentMember = async function () {
-  return await instance.get('/current_member')
+  const result = await instance.get('/current_member')
+  return result.data
 }
 
 const postMember = async function (walletAddress, principalId) {
-  return await instance.post('/member', {
+  const result = await instance.post('/member', {
     wallet_address: walletAddress,
     principal_id: principalId,
   })
+  return result.data
 }
 
 const patchMemberProfileS3key = async function (s3key) {
-  return await instance.patch('/members/profile_s3key', {
+  await instance.patch('/members/profile_s3key', {
     profile_s3key: s3key,
   })
 }
 
 const patchMember = async function (member_id, { username, introduction }) {
-  return await instance.patch(`/members/${member_id}`, {
+  await instance.patch(`/members/${member_id}`, {
     username: username,
     introduction: introduction,
   })
@@ -32,20 +35,23 @@ const postMemberFollower = async function ({
   isFollowRequest,
   targetMemberId,
 }) {
-  return await instance.post('/follow', {
+  const result = await instance.post('/follow', {
     isFollowRequest: isFollowRequest,
     targetMemberId: targetMemberId,
   })
+  return result.data
 }
 
 const searchMembers = async function (searchWord) {
-  return await instance.get('/search/members', {
+  const result = await instance.get('/search/members', {
     params: { searchWord: searchWord },
   })
+  return result.data
 }
 
 const getMainContributors = async function () {
-  return await instance.get('/main/contributors')
+  const result = await instance.get('/main/contributors')
+  return result.data
 }
 
 export {
