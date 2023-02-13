@@ -83,8 +83,8 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser,
       isInfoModalOpen: state => state.menu.isInfoModalOpen,
-      modalTop: state => state.menu.modalTop,
-      modalLeft: state => state.menu.modalLeft,
+      iconTop: state => state.menu.iconTop,
+      iconLeft: state => state.menu.iconLeft,
       infoText: state => state.menu.infoText,
     }),
   },
@@ -109,17 +109,17 @@ export default {
   methods: {
     clicked() {
       this.setInfoText()
-      this.setInfoModalPosition()
+      this.setIconPosition()
       this.toggelInfoModal()
     },
     toggelInfoModal() {
       this.$store.commit('TOGGLE_INFO_MODAL')
     },
-    setInfoModalPosition() {
+    setIconPosition() {
       let icon = this.$refs.icon
       let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
       let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
-      this.$store.commit('SET_INFO_MODAL_POSITION', { iconTop, iconLeft })
+      this.$store.commit('SET_ICON_POSITION', { iconTop, iconLeft })
     },
     setInfoText() {
       this.$store.commit('SET_INFO_TEXT', this.words)

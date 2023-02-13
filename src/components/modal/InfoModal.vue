@@ -1,6 +1,9 @@
 <template>
-  <div :class="top ? 'words words-top' : 'words words-bottom'" ref="words">
-    {{ infoText }}
+  <div
+    :class="enoughTop ? 'words words-top' : 'words words-bottom'"
+    ref="words"
+  >
+    {{ text }}
   </div>
 </template>
 <script>
@@ -10,45 +13,68 @@ export default {
   name: 'InfoModal',
   data() {
     return {
-      top: true,
+      enoughTop: true,
+      width: 0,
+      height: 0,
+      text: null,
     }
   },
   computed: {
     ...mapState({
-      modalTop: state => state.menu.modalTop,
-      modalLeft: state => state.menu.modalLeft,
+      iconTop: state => state.menu.iconTop,
+      iconLeft: state => state.menu.iconLeft,
       infoText: state => state.menu.infoText,
       isInfoModalOpen: state => state.menu.isInfoModalOpen,
     }),
   },
   methods: {
-    setModalTop(top) {
-      //let words = document.querySelector('.words')
-      // words.style.bottom = `${bottom}px`
+    setModalTop(iconTop) {
+      // this.setModalSize()
+      let top = iconTop - this.height - 2
       this.$refs.words.style.top = `${top}px`
     },
-    setModalLeft(left) {
-      // let words = document.querySelector('.words')
-      // words.style.left = `${left}px`
+    setModalLeft(iconLeft) {
+      // this.setModalSize()
+      let left = iconLeft - this.width / 2 + 12
       this.$refs.words.style.left = `${left}px`
     },
     getModalSize() {
+      console.log('modal width: ' + this.infoModalWidth)
+      console.log('modal height: ' + this.infoModalHeight)
+    },
+    setModalSize() {
       let modal = this.$refs.words
-      let width = modal.getBoundingClientRect().width
-      let height = modal.getBoundingClientRect().height
-      console.log('modal width: ' + width)
-      console.log('modal height: ' + height)
+      this.width = modal.getBoundingClientRect().width
+      this.height = modal.getBoundingClientRect().height
+      console.log('height: ' + this.height)
+    },
+    checkSpaceTop() {
+      this.modalTop
+    },
+    observeSize() {
+      const ro = new ResizeObserver(entries => {
+        entries.forEach(entry => {
+          const { width, height } = entry.contentRect
+          this.width = width
+          this.height = height
+        })
+      })
+      ro.observe(this.$refs.words)
+      console.log(this.width)
+      console.log(this.height)
     },
   },
   watch: {
-    modalTop(val) {
+    iconTop(val) {
       this.setModalTop(val)
     },
-    modalLeft(val) {
+    iconLeft(val) {
       this.setModalLeft(val)
     },
-    isInfoModalOpen() {
-      this.getModalSize()
+    infoText(val) {
+      this.text = val
+      this.observeSize()
+      this.setModalSize()
     },
   },
 }
@@ -58,7 +84,7 @@ export default {
 .words {
   position: absolute;
   z-index: 100000;
-  width: 400px;
+  max-width: 400px;
   height: auto;
   background: #eeeeee;
   border-radius: 10px;
