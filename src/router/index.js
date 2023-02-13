@@ -110,11 +110,16 @@ const router = new Router({
       name: 'ProfileSettings',
       component: ProfileSettings,
     },
-    // {
-    //   path: '/test',
-    //   name: 'Test',
-    //   component: Test,
-    // },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test,
+    },
   ],
 })
 
