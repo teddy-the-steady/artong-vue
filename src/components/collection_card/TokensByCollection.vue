@@ -1,7 +1,7 @@
 <template>
   <carousel
     :perPageCustom="[
-      [360, 1],
+      [250, 1],
       [600, 2],
       [1080, 3],
       [1440, 4],

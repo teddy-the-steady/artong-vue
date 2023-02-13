@@ -20,7 +20,7 @@
 import { headerActivate } from '../../mixin'
 import { graphql, queryProjects } from '../../api/graphql'
 import ProjectList from '../projects/ProjectList.vue'
-import SortDropdown from '../util/SortDropdown.vue'
+import SortDropdown from '../dropdown/SortDropdown.vue'
 
 export default {
   name: 'Projects',
