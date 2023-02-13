@@ -375,7 +375,7 @@ export default {
   async created() {
     this.mainContents = await getMainContents()
     try {
-      this.mainToken = await graphql(
+      const result1 = await graphql(
         queryToken({
           variables: {
             id:
@@ -388,40 +388,40 @@ export default {
           },
         }),
       )
-      this.mainToken = this.mainToken.token
+      this.mainToken = result1.data.token
       this.isFirstLoading = false
     } catch (error) {
       this.isFirstLoading = true
     }
     try {
-      this.highlightedProjects = await graphql(
+      const result2 = await graphql(
         queryHighlightedProjects({
           variables: {
             idArray: this.mainContents.highlightedProjects,
           },
         }),
       )
-      this.highlightedProjects = this.highlightedProjects.projects
+      this.highlightedProjects = result2.data.projects
       this.isFirstLoading = false
     } catch (error) {
       this.isFirstLoading = true
     }
     try {
-      this.artongsPickTokens = await graphql(
+      const result3 = await graphql(
         queryTokensInIdArray({
           variables: {
             idArray: this.mainContents.artongsPick,
           },
         }),
       )
-      this.artongsPickTokens = this.artongsPickTokens.tokens
+      this.artongsPickTokens = result3.data.tokens
       this.isFirstLoading = false
     } catch (error) {
       this.isFirstLoading = true
     }
     try {
       this.mainContributors = await getMainContributors()
-      this.recentTokens = await graphql(
+      const result4 = await graphql(
         queryTokens({
           variables: {
             first: 10,
@@ -431,7 +431,7 @@ export default {
           },
         }),
       )
-      this.recentTokens = this.recentTokens.tokens
+      this.recentTokens = result4.data.tokens
       this.isFirstLoading = false
     } catch (error) {
       this.isFirstLoading = true
