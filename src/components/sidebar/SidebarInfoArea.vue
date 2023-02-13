@@ -2,22 +2,24 @@
   <div class="info-area">
     <div class="info">
       <div>
-        <span class="label">Artong balance</span>
+        <span class="label">{{ $t('sidebar.balance.artong') }}</span>
         <span class="balance">{{ `${artongBalance} ETH` }}</span>
       </div>
       <div>
-        <span class="label">Offer balance</span>
+        <span class="label">{{ $t('sidebar.balance.offer') }}</span>
         <span class="balance">{{ `${offerBalance} ETH` }}</span>
       </div>
       <div>
-        <span class="label">Withdrawable</span>
+        <span class="label">{{ $t('sidebar.balance.withdrawable') }}</span>
         <span class="balance">
           {{ `${withdrawableBalance} ETH` }}
         </span>
       </div>
       <button v-ripple @click="withdraw">
         <span class="spinner" :class="{ active: withdrawing }"></span>
-        <span v-show="!withdrawing">WITHDRAW</span>
+        <span v-show="!withdrawing">
+          {{ $t('sidebar.balance.button-withdraw') }}
+        </span>
       </button>
     </div>
     <button

@@ -33,5 +33,39 @@
         "content": "Share your collections and gather the talented to your community"
       }
     }
+  },
+  "container2": {
+    "title": "Create new project",
+    "content": "Create Your Own NFT Project"
+  },
+  "container3": {
+    "title": {
+      "first": "Highlighted Projects",
+      "second": "Featured Contributors"
+    }
+  },
+  "container4": {
+    "title": {
+      "first": "Artong's Pick",
+      "second": "Recent Contributions"
+    }
+  },
+  "bottom": {
+    "left": {
+      "privacy-info": "Privacy Info",
+      "terms-of-service": "Terms of Service"
+    },
+    "right": {
+      "company": {
+        "title": "Company",
+        "about": "About",
+        "careers": "Careers"
+      },
+      "connect": {
+        "title": "Connect",
+        "twitter": "Twitter",
+        "instagram": "Instagram"
+      }
+    }
   }
 }
