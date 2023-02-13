@@ -107,14 +107,20 @@
         </div>
         <div class="activity">
           <img class="intro-img" src="../../assets/icons/fine-arts1.svg" />
-          <div class="title">Add your NFTs</div>
-          <div class="content">Add your creation to any project you want</div>
+          <div class="title">
+            {{ $t('main.container1.activity.third.title') }}
+          </div>
+          <div class="content">
+            {{ $t('main.container1.activity.third.content') }}
+          </div>
         </div>
         <div class="activity">
           <img class="intro-img" src="../../assets/icons/102-blockchain.svg" />
-          <div class="title">Share the collection</div>
+          <div class="title">
+            {{ $t('main.container1.activity.forth.title') }}
+          </div>
           <div class="content">
-            Share your collection and invite the talents to your community
+            {{ $t('main.container1.activity.forth.content') }}
           </div>
         </div>
       </div>
@@ -125,8 +131,10 @@
           class="button-block-img"
           src="../../assets/icons/plus-circle.svg"
         />
-        <div class="button-block-title">Create new project</div>
-        <div class="button-block-description">Create Your Own NFT Project</div>
+        <div class="button-block-title">{{ $t('main.container2.title') }}</div>
+        <div class="button-block-description">
+          {{ $t('main.container2.content') }}
+        </div>
       </div>
     </div>
     <div class="container3">
@@ -135,7 +143,7 @@
         :class="{ 'width-auto': innerWidth > 1080 && innerWidth < 1440 }"
       >
         <div class="top-container">
-          <div class="title">Highlighted Projects</div>
+          <div class="title">{{ $t('main.container3.title.first') }}</div>
         </div>
         <CuratedCollection
           v-if="innerWidth < 1080"
@@ -158,7 +166,7 @@
           ></CuratedCollectionWide>
         </div>
         <div class="top-container margin-top">
-          <div class="title">Featured Contributors</div>
+          <div class="title">{{ $t('main.container3.title.second') }}</div>
         </div>
         <FeaturedCreator
           :profiles="mainContributors"
@@ -168,7 +176,7 @@
     </div>
     <div class="container4">
       <div class="top-container margin-top">
-        <div class="title">Artong's Pick</div>
+        <div class="title">{{ $t('main.container4.title.first') }}</div>
       </div>
       <TokensByCollection
         class="margin-bottom"
@@ -176,7 +184,7 @@
         :needContentName="true"
       ></TokensByCollection>
       <div class="top-container margin-top">
-        <div class="title">Recent Contributions</div>
+        <div class="title">{{ $t('main.container4.title.second') }}</div>
       </div>
       <TokensByCollection
         class="margin-bottom"
@@ -222,31 +230,37 @@
       <div class="bottom-link">
         <div class="bottom-table">
           <ul class="column second-column">
-            <li>Company</li>
+            <li>{{ $t('main.bottom.right.company.title') }}</li>
             <li class="clickable" @click="redirectTo('https://www.4rtong.com')">
-              About
+              {{ $t('main.bottom.right.company.about') }}
             </li>
-            <li class="clickable">Careers</li>
+            <li class="clickable">
+              {{ $t('main.bottom.right.company.careers') }}
+            </li>
           </ul>
           <ul class="column third-column">
-            <li>Connect</li>
+            <li>{{ $t('main.bottom.right.connect.title') }}</li>
             <li
               class="clickable"
               @click="redirectTo('https://twitter.com/4rtong')"
             >
-              Twitter
+              {{ $t('main.bottom.right.connect.twitter') }}
             </li>
             <li
               class="clickable"
               @click="redirectTo('https://www.instagram.com/artong.io/')"
             >
-              Instagram
+              {{ $t('main.bottom.right.connect.instagram') }}
             </li>
           </ul>
         </div>
         <div class="bottom-left">
-          <div class="bottom-word clickable">Privacy Info</div>
-          <div class="bottom-word clickable">Terms of Service</div>
+          <div class="bottom-word clickable">
+            {{ $t('main.bottom.left.privacy-info') }}
+          </div>
+          <div class="bottom-word clickable">
+            {{ $t('main.bottom.left.terms-of-service') }}
+          </div>
         </div>
       </div>
     </div>
@@ -544,6 +558,7 @@ export default {
       color: #4d4d4d;
       margin: auto;
       margin-bottom: 40px;
+      word-break: keep-all;
     }
   }
 }
@@ -594,7 +609,6 @@ export default {
     }
 
     .button-block-description {
-      width: 248px;
       height: 48px;
       font-family: $item-font;
       font-style: $item-font-style;

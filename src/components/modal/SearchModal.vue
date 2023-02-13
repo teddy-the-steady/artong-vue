@@ -4,7 +4,7 @@
       <img src="../../assets/icons/search-grey.svg" />
       <input
         id="search-input"
-        placeholder="Search"
+        :placeholder="$t('header.search.placeholder')"
         type="text"
         class="search-input"
         :value="searchWord"
@@ -20,7 +20,7 @@
               <slot name="header">
                 <input
                   id="search-input"
-                  placeholder="Search"
+                  :placeholder="$t('header.search.placeholder')"
                   v-if="innerWidth < 1080"
                   :value="searchWord"
                   @input="search"
@@ -31,11 +31,13 @@
 
             <div class="modal-body">
               <slot v-if="this.searchWord.trimStart().length === 0" name="body">
-                <div class="nullSearch">Search Something</div>
+                <div class="nullSearch">
+                  {{ $t('header.search.null-search') }}
+                </div>
               </slot>
               <slot v-else name="body">
                 <div class="contents">
-                  <div class="title">Tokens</div>
+                  <div class="title">{{ $t('header.search.contents') }}</div>
                   <div class="results">
                     <div
                       @click="closeSearchModal"
@@ -52,7 +54,7 @@
                   </div>
                 </div>
                 <div class="projects">
-                  <div class="title">Projects</div>
+                  <div class="title">{{ $t('header.search.projects') }}</div>
                   <div class="results">
                     <div
                       @click="closeSearchModal"
@@ -68,7 +70,7 @@
                   </div>
                 </div>
                 <div class="members">
-                  <div class="title">User</div>
+                  <div class="title">{{ $t('header.search.users') }}</div>
                   <div class="results">
                     <div
                       @click="closeSearchModal"
@@ -394,6 +396,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  word-break: keep-all;
 }
 
 @media (max-width: 500px) {

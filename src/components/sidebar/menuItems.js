@@ -1,8 +1,9 @@
+import i18n from '@/i18n'
 // const separator = {
 //   template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 20px;">',
 // }
 
-export default [
+export const menuItems = () => [
   // {
   //   header: true,
   //   title: 'Alarms',
@@ -28,26 +29,26 @@ export default [
   // },
   {
     header: true,
-    title: 'Menu',
+    title: i18n.t('sidebar.menu.title'),
   },
   {
     href: '/projects',
-    title: 'Projects',
+    title: i18n.t('sidebar.menu.contents.projects'),
     icon: 'fa fa-folder-open',
   },
   {
     href: '/contents',
-    title: 'Contents',
+    title: i18n.t('sidebar.menu.contents.contents'),
     icon: 'fa fa-image',
   },
   {
     href: '/feed',
-    title: 'Feed',
+    title: i18n.t('sidebar.menu.contents.feed'),
     icon: 'fa fa-bolt',
   },
   {
     href: '/create/project',
-    title: 'CreateProject',
+    title: i18n.t('sidebar.menu.contents.create-project'),
     icon: 'fa fa-hammer',
   },
   // {
