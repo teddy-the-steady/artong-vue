@@ -61,14 +61,17 @@ export default {
       const results = await this.getContributors()
       this.apiProfiles.queryParams.start_num +=
         this.apiProfiles.queryParams.count_num
-      profileArrayToPush = await this.makeProfileArray(results)
+      profileArrayToPush = await this.makeProfileArray(
+        results.data,
+        results.meta,
+      )
       if (profileArrayToPush.length > 0) {
         for (let i in profileArrayToPush) {
           this.profileList.push(profileArrayToPush[i])
         }
       }
     },
-    async makeProfileArray(apiResults) {
+    async makeProfileArray(apiResults, meta) {
       const profileArrayToPush = []
 
       if (apiResults.length > 0) {
@@ -84,7 +87,9 @@ export default {
             updated_at: apiResults[i].updated_at,
           })
         }
-      } else {
+      }
+
+      if (!meta.hasMoreData) {
         this.noMoreDataToLoad = true
       }
 

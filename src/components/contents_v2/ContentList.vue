@@ -109,12 +109,18 @@ export default {
           this.queryContents.body.variables.skip +=
             this.queryContents.body.variables.first
         }
-        contentArrayToPush = await this.makeContentArray(results.tokens)
+        contentArrayToPush = await this.makeContentArray(
+          results.data.tokens,
+          results.meta,
+        )
       } else {
         const results = await this.getContents()
         this.queryContents.queryParams.start_num +=
           this.queryContents.queryParams.count_num
-        contentArrayToPush = await this.makeContentArray(results)
+        contentArrayToPush = await this.makeContentArray(
+          results.data,
+          results.meta,
+        )
       }
 
       if (contentArrayToPush.length > 0) {
@@ -123,7 +129,7 @@ export default {
         }
       }
     },
-    async makeContentArray(apiResults) {
+    async makeContentArray(apiResults, meta) {
       const contentArrayToPush = []
 
       if (apiResults.length > 0) {
@@ -148,7 +154,9 @@ export default {
             updatedAt: apiResults[i].updatedAt,
           })
         }
-      } else {
+      }
+
+      if (!meta.hasMoreData) {
         this.noMoreDataToLoad = true
       }
 

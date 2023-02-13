@@ -71,8 +71,7 @@ export default {
     },
     async getProject(_txHash) {
       for (;;) {
-        let answer = await getProjectWhileUpdatingPendingToCreated(_txHash)
-        this.result = answer
+        this.result = await getProjectWhileUpdatingPendingToCreated(_txHash)
         if (this.result && this.result.status === CREATED) {
           break
         }
