@@ -3,6 +3,35 @@
     "first": "오픈아트",
     "second": "NFT 거래소"
   },
-  "intro-content": "원하는 프로젝트에 기여하고 web3.0 바다를 자유롭게 항해 해보세요",
-  "start-btn": "눌러서 시작하기"
+  "intro-content": {
+    "first": "우리는 열린 예술을 지지합니다.",
+    "second": "그리고 자유롭게 기여 가능한 NFT 프로젝트와 창작자들을 지원합니다.",
+    "third": "알통에서 원하는 프로젝트에 기여하고 web3.0 바다를 마음껏 항해해 보세요."
+  },
+  "start-btn": "눌러서 시작하기",
+  "main-token-bottom-title": {
+    "project": "프로젝트",
+    "created-by": "작가"
+  },
+  "container1": {
+    "title": "당신의 창작은?",
+    "activity": {
+      "first": {
+        "title": "지갑 연결하기",
+        "content": "지갑을 연결하고 알통에서의 창작 여정을 준비하세요."
+      },
+      "second": {
+        "title": "프로젝트 만들기",
+        "content": "오픈아트 프로젝트를 만들어 여러분의 걸작을 남길 공간을 만들어보세요."
+      },
+      "third": {
+        "title": "작품 기여하기",
+        "content": "원하는 프로젝트에 작품을 기여해보세요."
+      },
+      "forth": {
+        "title": "창작자들과 공유하기",
+        "content": "작품을 공유하고 창작 능력자들을 여러분의 커뮤니티로 모으세요."
+      }
+    }
+  }
 }

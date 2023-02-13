@@ -16,7 +16,7 @@ import ContentDetail from '@/components/contents_v2/ContentDetail'
 import ContentCandidateDetail from '@/components/contents_v2/ContentCandidateDetail'
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
-import VueCarousel from 'vue-carousel'
+import Settings from '@/components/menu/Settings'
 import Test from '../components/util/Test'
 
 window.popStateDetected = false
@@ -25,7 +25,6 @@ window.addEventListener('popstate', () => {
 })
 
 Vue.use(Router)
-Vue.use(VueCarousel)
 
 const router = new Router({
   mode: 'history',
@@ -111,11 +110,11 @@ const router = new Router({
       name: 'ProfileSettings',
       component: ProfileSettings,
     },
-    {
-      path: '/test',
-      name: 'Test',
-      component: Test,
-    },
+    // {
+    //   path: '/test',
+    //   name: 'Test',
+    //   component: Test,
+    // },
   ],
 })
 

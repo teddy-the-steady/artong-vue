@@ -18,7 +18,7 @@ export default class DomHandler {
 
   static getHeight(el) {
     let height = el.offsetHeight
-    let style = getComputedStyle(el)
+    const style = getComputedStyle(el)
 
     height -=
       parseFloat(style.paddingTop) +
@@ -31,7 +31,7 @@ export default class DomHandler {
 
   static getWidth(el) {
     let width = el.offsetWidth
-    let style = getComputedStyle(el)
+    const style = getComputedStyle(el)
 
     width -=
       parseFloat(style.paddingLeft) +
@@ -47,7 +47,7 @@ export default class DomHandler {
       let width = el.offsetWidth
 
       if (margin) {
-        let style = getComputedStyle(el)
+        const style = getComputedStyle(el)
         width += parseFloat(style.marginLeft) + parseFloat(style.marginRight)
       }
 
@@ -62,7 +62,7 @@ export default class DomHandler {
       let height = el.offsetHeight
 
       if (margin) {
-        let style = getComputedStyle(el)
+        const style = getComputedStyle(el)
         height += parseFloat(style.marginTop) + parseFloat(style.marginBottom)
       }
 
@@ -71,8 +71,9 @@ export default class DomHandler {
       return 0
     }
   }
+
   static getOffset(el) {
-    var rect = el.getBoundingClientRect()
+    const rect = el.getBoundingClientRect()
 
     return {
       top:
