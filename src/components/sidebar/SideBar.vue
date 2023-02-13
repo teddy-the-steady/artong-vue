@@ -22,7 +22,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import menuItems from './menuItems'
+import { menuItems } from './menuItems'
 import SidebarMenu from './SidebarMenu.vue'
 
 export default {
@@ -30,17 +30,15 @@ export default {
   components: {
     SidebarMenu,
   },
-  data() {
-    return {
-      menu: menuItems,
-    }
-  },
   computed: {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
       selectedTheme: state =>
         state.menu.isDark ? 'default-theme' : 'white-theme',
     }),
+    menu() {
+      return menuItems()
+    },
   },
   methods: {
     closeSidebarPanel() {

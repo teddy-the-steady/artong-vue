@@ -1,0 +1,17 @@
+{
+    "balance": {
+        "artong": "Artong Balance",
+        "offer": "Offer Balance",
+        "withdrawable": "Withdrawable",
+        "button-withdraw": "Withdraw"
+    },
+    "menu": {
+        "title": "MENU",
+        "contents": {
+            "projects": "Projects",
+            "contents": "Contents",
+            "feed": "Feed",
+            "create-project": "Create Project"
+        }
+    }
+}
