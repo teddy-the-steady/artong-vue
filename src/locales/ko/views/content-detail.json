@@ -1,0 +1,40 @@
+{
+    "more-modal": "신고하기",
+    "owned-by": "소유자",
+    "created-by": "기여자",
+    "project": "프로젝트",
+    "description": "상세 설명",
+    "price": "가격",
+    "creator-royalty": "창작자 로열티",
+    "project-royalty": "프로젝트 로열티",
+    "table": {
+        "offers": {
+            "title": "제시",
+            "column1": "가격",
+            "column2": "유저",
+            "column3": "시간"
+        },
+        "history": {
+            "title": "히스토리",
+            "column1": "이벤트명",
+            "column2": "가격",
+            "column3": "보낸이",
+            "column4": "받는이",
+            "column5": "시간"
+        }
+    },
+    "buttons": {
+        "sell": "판매하기",
+        "buy": "구매하기",
+        "update-listing": "가격 수정",
+        "cancel-listing": "판매 취소",
+        "make-offer": "제시하기",
+        "approve": "승인하기"
+    },
+    "collection-container1": "이 프로젝트의 토큰들",
+    "collection-container2": "다른 프로젝트",
+    "view-more": "더보기",
+    "alert": {
+        "copy": "링크 복사 완료"
+    }
+}

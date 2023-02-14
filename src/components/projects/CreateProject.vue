@@ -2,29 +2,30 @@
   <div>
     <div class="create-project">
       <div class="info">
-        <h1 class="h1">Create Your Project</h1>
+        <h1 class="h1">{{ $t('views.create-project.title') }}</h1>
         <div>
-          <span>Name</span>
+          <span>{{ $t('views.create-project.name') }}</span>
           <input type="text" v-model="name" maxlength="100" />
         </div>
         <div>
-          <span>Symbol</span>
+          <span>{{ $t('views.create-project.symbol') }}</span>
           <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
-          <span>Max Token amount</span>
+          <span>{{ $t('views.create-project.max-token-amount.title') }}</span>
           <input
             type="number"
             inputmode="decimal"
             min="0"
             v-model="maxAmount"
-            placeholder="positive number"
             @focusout="onMaxAmtFocusout"
           />
         </div>
         <div>
           <div class="contribution-policy-title">
-            <span class="contribution-policy">Contribution Policy</span>
+            <span class="contribution-policy">
+              {{ $t('views.create-project.contribution-policy.title') }}
+            </span>
             <img
               class="icon"
               ref="icon"
@@ -34,14 +35,20 @@
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
-            <label for="r1">Immediate</label>
+            <label for="r1">
+              {{ $t('views.create-project.contribution-policy.immediate') }}
+            </label>
             <input type="radio" id="r2" v-model="policy" value="1" />
-            <label for="r2">Approved</label>
+            <label for="r2">
+              {{ $t('views.create-project.contribution-policy.approved') }}
+            </label>
           </div>
         </div>
         <button @click="createProject">
           <div class="spinner" :class="{ active: creating }"></div>
-          <span v-show="!creating">CREATE PROJECT</span>
+          <span v-show="!creating">
+            {{ $t('views.create-project.button') }}
+          </span>
         </button>
       </div>
       <div class="card">
@@ -82,10 +89,10 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      isInfoModalOpen: state => state.menu.isInfoModalOpen,
-      iconTop: state => state.menu.iconTop,
-      iconLeft: state => state.menu.iconLeft,
-      infoText: state => state.menu.infoText,
+      isInfoModalOpen: state => state.views.isInfoModalOpen,
+      iconTop: state => state.views.iconTop,
+      iconLeft: state => state.views.iconLeft,
+      infoText: state => state.views.infoText,
     }),
   },
   directives: {
@@ -171,6 +178,7 @@ export default {
         this.$router.currentRoute.fullPath,
       )
       if (!this.signer) {
+        this.creating = true
         return
       }
 

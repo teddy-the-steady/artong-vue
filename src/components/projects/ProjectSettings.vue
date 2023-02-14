@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>Project Settings</h1>
+    <h1>{{ $t('views.project-settings.title') }}</h1>
     <div class="input-group">
       <span class="float-label">
         <input
@@ -10,7 +10,9 @@
           v-model="project.slug"
           maxlength="100"
         />
-        <label for="slug">URL slug</label>
+        <label for="slug">
+          {{ $t('views.project-settings.settings.slug') }}
+        </label>
       </span>
       <span class="float-label">
         <textarea
@@ -19,7 +21,9 @@
           v-model="project.description"
           maxlength="1000"
         />
-        <label for="description">Description</label>
+        <label for="description">
+          {{ $t('views.project-settings.settings.description') }}
+        </label>
       </span>
       <span class="float-label">
         <input
@@ -29,7 +33,9 @@
           v-model="project.sns.instagram"
           maxlength="500"
         />
-        <label for="instagram">Instragram</label>
+        <label for="instagram">
+          {{ $t('views.project-settings.settings.instagram') }}
+        </label>
       </span>
       <span class="float-label">
         <input
@@ -39,7 +45,9 @@
           v-model="project.sns.twitter"
           maxlength="500"
         />
-        <label for="twitter">Twitter</label>
+        <label for="twitter">
+          {{ $t('views.project-settings.settings.twitter') }}
+        </label>
       </span>
       <span class="float-label">
         <input
@@ -49,7 +57,9 @@
           v-model="project.sns.discord"
           maxlength="500"
         />
-        <label for="discord">Discord</label>
+        <label for="discord">
+          {{ $t('views.project-settings.settings.discord') }}
+        </label>
       </span>
       <span class="float-label">
         <input
@@ -59,9 +69,11 @@
           v-model="project.sns.website"
           maxlength="500"
         />
-        <label for="website">Website</label>
+        <label for="website">
+          {{ $t('views.project-settings.settings.website') }}
+        </label>
       </span>
-      <button @click="save">SAVE</button>
+      <button @click="save">{{ $t('views.project-settings.button') }}</button>
     </div>
     {{ errorMessage }}
   </div>
@@ -108,7 +120,7 @@ export default {
         },
       }),
     )
-    this.project = result.project
+    this.project = result.data.project
   },
   watch: {
     async $route(val) {
@@ -120,7 +132,7 @@ export default {
             },
           }),
         )
-        this.project = result.project
+        this.project = result.data.project
       }
     },
   },

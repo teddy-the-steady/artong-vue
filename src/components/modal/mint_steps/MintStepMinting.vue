@@ -1,12 +1,17 @@
 <template>
   <div>
-    <div class="text inProgress" v-if="!uploadedToIPFS">Uploading to IPFS</div>
+    <div class="text inProgress" v-if="!uploadedToIPFS">
+      {{ $t('views.project.mint-modal.progress.uploading') }}
+    </div>
     <div class="text inProgress" v-else-if="uploadedToIPFS && !minted">
-      Minting
+      {{ $t('views.project.mint-modal.progress.minting') }}
     </div>
     <div class="text" v-else-if="minted">
-      <div>Complete!</div>
-      <button @click="redirectToMintResult">Click</button> to see result
+      <div>{{ $t('views.project.mint-modal.progress.complete') }}</div>
+      <button @click="redirectToMintResult">
+        {{ $t('views.project.mint-modal.button.click') }}
+      </button>
+      {{ $t('views.project.mint-modal.progress.redirect-msg') }}
     </div>
     <div>
       <div
