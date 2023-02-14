@@ -1,0 +1,8 @@
+{
+    "title": "설정",
+    "settings": {
+        "locale": "국가",
+        "language": "언어"
+    },
+    "button": "저장하기"
+}

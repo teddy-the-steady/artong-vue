@@ -40,29 +40,61 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser,
     }),
+    sortOptions() {
+      return {
+        newest: {
+          name: this.$i18n.t('views.user.sort-options.newest'),
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: this.$i18n.t('views.user.sort-options.oldest'),
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      }
+    },
   },
   data() {
     return {
       username: '',
       tabs: [
-        { id: 0, label: 'Owned', type: 'CONTENTS', api: {}, sort: {} },
-        { id: 1, label: 'Created', type: 'PROJECTS', api: {}, sort: {} },
-        { id: 2, label: 'Contributed', type: 'CONTENTS', api: {}, sort: {} },
-        { id: 3, label: 'Candidates', type: 'CONTENTS', api: {}, sort: {} },
-        { id: 4, label: 'Favorited', type: 'CONTENTS', api: {}, sort: {} },
+        {
+          id: 0,
+          label: this.$i18n.t('views.user.tabs.owned'),
+          type: 'CONTENTS',
+          api: {},
+          sort: {},
+        },
+        {
+          id: 1,
+          label: this.$i18n.t('views.user.tabs.created'),
+          type: 'PROJECTS',
+          api: {},
+          sort: {},
+        },
+        {
+          id: 2,
+          label: this.$i18n.t('views.user.tabs.contributed'),
+          type: 'CONTENTS',
+          api: {},
+          sort: {},
+        },
+        {
+          id: 3,
+          label: this.$i18n.t('views.user.tabs.waiting-for-approval'),
+          type: 'CONTENTS',
+          api: {},
+          sort: {},
+        },
+        {
+          id: 4,
+          label: this.$i18n.t('views.user.tabs.favorited'),
+          type: 'CONTENTS',
+          api: {},
+          sort: {},
+        },
       ],
-      sortOptions: {
-        newest: {
-          name: 'Newest',
-          orderBy: 'createdAt',
-          orderDirection: 'desc',
-        },
-        oldest: {
-          name: 'Oldest',
-          orderBy: 'createdAt',
-          orderDirection: 'asc',
-        },
-      },
     }
   },
   created() {
@@ -139,6 +171,12 @@ export default {
   },
   watch: {
     $route(to) {
+      this.tabs[0].label = this.$i18n.t('views.user.tabs.owned')
+      this.tabs[1].label = this.$i18n.t('views.user.tabs.created')
+      this.tabs[2].label = this.$i18n.t('views.user.tabs.contributed')
+      this.tabs[3].label = this.$i18n.t('views.user.tabs.waiting-for-approval')
+      this.tabs[4].label = this.$i18n.t('views.user.tabs.favorited')
+
       const t = to.query.tab || '0'
       this.tabs[t].sort =
         this.sortOptions[to.query.sort] || this.sortOptions['newest']

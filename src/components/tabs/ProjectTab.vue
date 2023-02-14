@@ -21,8 +21,10 @@
       <section class="item" :key="generateKey()">
         <div v-show="current.type === 'CONTENTS' && !current.api" class="info">
           <div>
-            <button @click="contribute">Contribute</button>
-            to see contents waiting for approval
+            <button @click="contribute">
+              {{ $t('views.project.buttons.contribute') }}
+            </button>
+            {{ $t('views.project.tabs.waiting-for-approval.redirect-msg') }}
           </div>
         </div>
         <div v-show="current.type === 'CONTENTS' && current.api">
@@ -36,7 +38,9 @@
         </div>
         <div v-show="current.type === 'INFO'" class="info">
           <div class="info-top">
-            <div class="info-name">Description</div>
+            <div class="info-name">
+              {{ $t('views.project.tabs.info.content') }}
+            </div>
             <div class="info-desc" v-if="current.data">
               {{ current.data.description }}
             </div>

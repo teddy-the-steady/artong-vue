@@ -25,21 +25,27 @@
           @click="unsubscribe"
           class="white-button"
         >
-          Unsubscribe {{ this.project.subscribers }}
+          {{ $t('views.project.buttons.unsubscribe') }}
+          {{ this.project.subscribers }}
         </button>
         <button v-else @click="subscribe" class="white-button">
-          Subscribe {{ this.project.subscribers }}
+          {{ $t('views.project.buttons.subscribe') }}
+          {{ this.project.subscribers }}
         </button>
-        <button @click="contribute" v-ripple>Contribute</button>
+        <button @click="contribute" v-ripple>
+          {{ $t('views.project.buttons.contribute') }}
+        </button>
       </div>
       <div class="detail">
-        <div class="top">Items</div>
+        <div class="top">{{ $t('views.project.statitics.items') }}</div>
         <div class="bottom">
           {{ project.max_token_id || 0 }}/{{ project.maxAmount }}
         </div>
       </div>
       <div class="info">
-        <div class="info-title">Description</div>
+        <div class="info-title">
+          {{ $t('views.project.statitics.description') }}
+        </div>
         <div class="info-description">
           {{ project.description }}
         </div>
