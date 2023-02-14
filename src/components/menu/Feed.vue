@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Following/Subscribing Contents</h1>
+    <h1>{{ $t('views.feed.title') }}</h1>
     <div class="contents">
       <div class="sort">
         <SortDropdown
@@ -29,6 +29,22 @@ export default {
     ContentList,
     SortDropdown,
   },
+  computed: {
+    sortOptions() {
+      return {
+        newest: {
+          name: this.$i18n.t('views.feed.sort-options.newest'),
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: this.$i18n.t('views.feed.sort-options.oldest'),
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      }
+    },
+  },
   data() {
     return {
       queryContents: {
@@ -36,18 +52,6 @@ export default {
         queryParams: {},
       },
       sort: {},
-      sortOptions: {
-        newest: {
-          name: 'Newest',
-          orderBy: 'createdAt',
-          orderDirection: 'desc',
-        },
-        oldest: {
-          name: 'Oldest',
-          orderBy: 'createdAt',
-          orderDirection: 'asc',
-        },
-      },
     }
   },
   created() {
@@ -64,11 +68,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
-      if (from.name !== to.name) {
-        return
-      }
-
+    $route(to) {
       this.sort = this.sortOptions[to.query.sort] || this.sortOptions['newest']
       this.queryContents = {
         func: getFeedContents,

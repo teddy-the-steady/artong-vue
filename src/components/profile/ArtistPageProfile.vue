@@ -16,16 +16,16 @@
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
-          <div class="title">Follwer</div>
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
           <div class="number">{{ member.follower }}</div>
         </div>
         <div class="follow-static">
-          <div class="title">Following</div>
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
           <div class="number">{{ member.following }}</div>
         </div>
       </div>
       <div class="introduction">
-        <div class="title">Introduction</div>
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
         <div class="text">{{ member ? member.introduction : '' }}</div>
       </div>
     </div>
@@ -38,16 +38,16 @@
         </button>
       </div>
       <div class="introduction">
-        <div class="title">Introduction</div>
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
         <div class="text">{{ member ? member.introduction : '' }}</div>
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
-          <div class="title">Follwer</div>
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
           <div class="number">{{ member.follower }}</div>
         </div>
         <div class="follow-static">
-          <div class="title">Following</div>
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
           <div class="number">{{ member.following }}</div>
         </div>
       </div>
@@ -58,10 +58,10 @@
       @click="unfollow"
       v-ripple
     >
-      Unfollow
+      {{ $t('views.user.button.unfollow') }}
     </button>
     <button v-else class="follow-n-unfollow-btn" @click="follow" v-ripple>
-      Follow
+      {{ $t('views.user.button.follow') }}
     </button>
   </div>
 </template>

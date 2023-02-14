@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Explore Projects</h1>
+    <h1>{{ $t('views.projects.title') }}</h1>
     <div class="projects">
       <div class="sort">
         <SortDropdown
@@ -29,6 +29,22 @@ export default {
     ProjectList,
     SortDropdown,
   },
+  computed: {
+    sortOptions() {
+      return {
+        newest: {
+          name: this.$i18n.t('views.projects.sort-options.newest'),
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: this.$i18n.t('views.projects.sort-options.oldest'),
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      }
+    },
+  },
   data() {
     return {
       queryProjects: {
@@ -36,18 +52,6 @@ export default {
         body: {},
       },
       sort: {},
-      sortOptions: {
-        newest: {
-          name: 'Newest',
-          orderBy: 'createdAt',
-          orderDirection: 'desc',
-        },
-        oldest: {
-          name: 'Oldest',
-          orderBy: 'createdAt',
-          orderDirection: 'asc',
-        },
-      },
     }
   },
   created() {
@@ -66,11 +70,7 @@ export default {
     }
   },
   watch: {
-    $route(to, from) {
-      if (from.name !== to.name) {
-        return
-      }
-
+    $route(to) {
       this.sort = this.sortOptions[to.query.sort] || this.sortOptions['newest']
       this.queryProjects = {
         func: graphql,

@@ -51,19 +51,23 @@
                   : false
               "
             >
-              Edit Project
+              {{ $t('views.project.more-modal.edit-project') }}
             </div>
             <!-- </router-link> -->
-            <div slot="body">Report</div>
+            <div slot="body">{{ $t('views.project.more-modal.report') }}</div>
           </BasicDialog>
           <div v-if="innerWidth >= 1080" class="creators-button">
-            <div class="creator">Created by</div>
+            <div class="creator">
+              {{ $t('views.project.creator.created-by') }}
+            </div>
             <ContentsProfileBundle
               class="profile-bundle"
               :members="project.contributors"
               :isFirstLoading="isFirstLoading"
             />
-            <div class="viewAll" @click="gotoContributorTab">View all</div>
+            <div class="viewAll" @click="gotoContributorTab">
+              {{ $t('views.project.creator.view-all') }}
+            </div>
           </div>
         </div>
       </div>
@@ -95,7 +99,8 @@
             class="subscribe-n-unsubscribe-button"
             v-ripple
           >
-            Unsubscribe {{ this.project.subscribers }}
+            {{ $t('views.project.buttons.unsubscribe') }}
+            {{ this.project.subscribers }}
           </button>
           <button
             v-else
@@ -103,11 +108,14 @@
             class="subscribe-n-unsubscribe-button"
             v-ripple
           >
-            Subscribe {{ this.project.subscribers }}
+            {{ $t('views.project.buttons.subscribe') }}
+            {{ this.project.subscribers }}
           </button>
           <div class="people-container">
             <div class="people-inner-container">
-              <div class="title">Owned by</div>
+              <div class="title">
+                {{ $t('views.project.creator.owned-by') }}
+              </div>
               <router-link
                 :to="{
                   name: 'UserOrArtist',
@@ -128,7 +136,9 @@
               </router-link>
             </div>
             <div class="people-inner-container">
-              <div class="title">Created by</div>
+              <div class="title">
+                {{ $t('views.project.creator.created-by') }}
+              </div>
               <ContentsProfileBundle
                 class="profile-bundle"
                 :members="project.contributors"
@@ -258,6 +268,20 @@ export default {
           this.project.background_thumbnail_s3key,
       )
     },
+    sortOptions() {
+      return {
+        newest: {
+          name: this.$i18n.t('views.project.sort-options.newest'),
+          orderBy: 'createdAt',
+          orderDirection: 'desc',
+        },
+        oldest: {
+          name: this.$i18n.t('views.project.sort-options.oldest'),
+          orderBy: 'createdAt',
+          orderDirection: 'asc',
+        },
+      }
+    },
   },
   data() {
     return {
@@ -268,18 +292,23 @@ export default {
         {
           id: 0,
           type: 'CONTENTS',
-          label: 'Tokens',
+          label: this.$i18n.t('views.project.tabs.tokens'),
           api: {},
           sort: {},
         },
         {
           id: 1,
           type: 'PROFILES',
-          label: 'Contributors',
+          label: this.$i18n.t('views.project.tabs.contributors'),
           api: {},
           sort: {},
         },
-        { id: 2, type: 'INFO', label: 'Info', data: {} },
+        {
+          id: 2,
+          type: 'INFO',
+          label: this.$i18n.t('views.project.tabs.info.title'),
+          data: {},
+        },
       ],
       steps: [
         { id: 0, title: 'stepModal0' },
@@ -301,18 +330,6 @@ export default {
       isFirstLoading: true,
       projectData: [],
       url: '',
-      sortOptions: {
-        newest: {
-          name: 'Newest',
-          orderBy: 'createdAt',
-          orderDirection: 'desc',
-        },
-        oldest: {
-          name: 'Oldest',
-          orderBy: 'createdAt',
-          orderDirection: 'asc',
-        },
-      },
       S3_PRIVACY_LEVEL: 'public',
       loadingData: {
         finishedUploading: false,
@@ -415,7 +432,7 @@ export default {
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        alert('링크 복사 완료')
+        alert(this.$i18n.t('views.project.alert.copy'))
       }
     },
     toEtherscan() {
@@ -561,7 +578,7 @@ export default {
         this.$set(this.tabs, 3, {
           id: 3,
           type: 'CONTENTS',
-          label: 'Waiting for Approval',
+          label: this.$i18n.t('views.project.tabs.waiting-for-approval.title'),
           api: {},
           sort: {},
         })
@@ -607,6 +624,10 @@ export default {
       if (this.projectAddressOrSlug !== to.params.id) {
         this.projectAddressOrSlug = to.params.id
       }
+
+      this.tabs[0].label = this.$i18n.t('views.project.tabs.tokens')
+      this.tabs[1].label = this.$i18n.t('views.project.tabs.contributors')
+      this.tabs[2].label = this.$i18n.t('views.project.tabs.info.title')
 
       const t = to.query.tab || '0'
       switch (t) {

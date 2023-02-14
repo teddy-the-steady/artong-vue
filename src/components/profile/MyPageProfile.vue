@@ -20,16 +20,16 @@
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
-          <div class="title">Follower</div>
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
           <div class="number">{{ currentUser.follower }}</div>
         </div>
         <div class="follow-static">
-          <div class="title">Following</div>
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
           <div class="number">{{ currentUser.following }}</div>
         </div>
       </div>
       <div class="introduction">
-        <div class="title">Introduction</div>
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
         <div class="text">{{ currentUser.profile.introduction }}</div>
       </div>
     </div>
@@ -43,16 +43,16 @@
         </button>
       </div>
       <div class="introduction">
-        <div class="title">Introduction</div>
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
         <div class="text">{{ currentUser.profile.introduction }}</div>
       </div>
       <div class="follow-static-container">
         <div class="follow-static">
-          <div class="title">Follwer</div>
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
           <div class="number">{{ currentUser.follower }}</div>
         </div>
         <div class="follow-static">
-          <div class="title">Following</div>
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
           <div class="number">{{ currentUser.following }}</div>
         </div>
       </div>
