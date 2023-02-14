@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>User Settings</h1>
+    <h1>{{ $t('views.profile-settings.title') }}</h1>
     <div class="input-group">
       <span class="float-label">
         <input
@@ -10,7 +10,9 @@
           v-model="member.username"
           maxlength="100"
         />
-        <label for="username">Username</label>
+        <label for="username">
+          {{ $t('views.profile-settings.settings.username') }}
+        </label>
       </span>
       <span class="float-label">
         <textarea
@@ -19,9 +21,11 @@
           v-model="member.introduction"
           maxlength="400"
         />
-        <label for="intro">Intro</label>
+        <label for="intro">
+          {{ $t('views.profile-settings.settings.intro') }}
+        </label>
       </span>
-      <button @click="save">SAVE</button>
+      <button @click="save">{{ $t('views.profile-settings.button') }}</button>
     </div>
     {{ errorMessage }}
   </div>

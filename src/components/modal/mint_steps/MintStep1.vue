@@ -9,7 +9,7 @@
         maxlength="100"
         @input="onInputName"
       />
-      <label for="name">Name</label>
+      <label for="name">{{ $t('views.project.mint-modal.input.name') }}</label>
     </span>
     <span class="float-label">
       <textarea
@@ -20,7 +20,9 @@
         maxlength="1000"
         @input="onInputDescription"
       />
-      <label for="text">Description</label>
+      <label for="text">
+        {{ $t('views.project.mint-modal.input.description') }}
+      </label>
     </span>
   </div>
 </template>

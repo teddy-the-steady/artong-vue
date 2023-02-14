@@ -1,16 +1,16 @@
 <template>
   <div class="settings">
-    <h1>Settings</h1>
+    <h1>{{ $t('views.settings.title') }}</h1>
     <div class="option-group">
       <div class="option">
-        <label>Locale</label>
+        <label>{{ $t('views.settings.settings.locale') }}</label>
         <LocaleDropdown class="dropdown" :localeOptions="localeOptions" />
       </div>
       <div class="option">
-        <label>Language</label>
+        <label>{{ $t('views.settings.settings.language') }}</label>
         <LangDropdown class="dropdown" :langOptions="langOptions" />
       </div>
-      <button class="save">SAVE</button>
+      <button class="save">{{ $t('views.settings.button') }}</button>
     </div>
   </div>
 </template>

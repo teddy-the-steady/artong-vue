@@ -1,0 +1,9 @@
+{
+    "confirm-modal": {
+        "content": "지갑을 확인하세요.",
+        "button": {
+            "confirm": "계속",
+            "cancel": "취소"
+        }
+    }
+}

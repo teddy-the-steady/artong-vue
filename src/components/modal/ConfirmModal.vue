@@ -14,10 +14,10 @@
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-button" @click="cancel()">
-                {{ cancelButton }}
+                {{ $t('common.confirm-modal.button.cancel') }}
               </button>
               <button class="modal-button" @click="confirm()">
-                {{ okButton }}
+                {{ $t('common.confirm-modal.button.confirm') }}
               </button>
             </slot>
           </div>
@@ -32,8 +32,6 @@ export default {
   name: 'ConfirmModal',
   data() {
     return {
-      okButton: 'Continue',
-      cancelButton: 'Cancel',
       resolvePromise: null,
       rejectPromise: null,
     }
@@ -98,7 +96,6 @@ export default {
 
       .modal-footer {
         .modal-button {
-          padding: 10px;
           margin: 10px;
         }
       }

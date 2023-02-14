@@ -1,0 +1,9 @@
+{
+    "confirm-modal": {
+        "content": "Continue with your wallet",
+        "button": {
+            "confirm": "Confirm",
+            "cancel": "Cancel"
+        }
+    }
+}

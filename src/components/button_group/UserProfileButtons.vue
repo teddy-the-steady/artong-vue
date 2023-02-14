@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-link :to="{ name: 'ProfileSettings' }">
-      <button>EDIT</button>
+      <button>{{ $t('views.user.button.edit') }}</button>
     </router-link>
   </div>
 </template>

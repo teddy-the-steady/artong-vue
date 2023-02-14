@@ -12,7 +12,7 @@
       @close-modal="toggleConfirmModal"
       ref="confirmModal"
     >
-      <span slot="body">Continue with your wallet</span>
+      <span slot="body">{{ $t('common.confirm-modal.content') }}</span>
     </ConfirmModal>
     <InfoModal v-show="isInfoModalOpen"></InfoModal>
   </div>

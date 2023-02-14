@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="when">
-      <span>WHEN?</span>
+      <span>{{ $t('views.project.mint-modal.input.mint') }}</span>
       <input
         class="mint-now-radio"
         type="radio"
@@ -11,7 +11,7 @@
         :disabled="project.policy === 1"
         @change="onLazyMintChange"
       />
-      <label for="r1">Mint Now</label>
+      <label for="r1">{{ $t('views.project.mint-modal.input.now') }}</label>
       <input
         class="lazy-mint-radio"
         type="radio"
@@ -21,16 +21,16 @@
         :disabled="project.policy === 1"
         @change="onLazyMintChange"
       />
-      <label for="r2">Lazy Mint</label>
+      <label for="r2">{{ $t('views.project.mint-modal.input.on-sold') }}</label>
     </div>
 
     <div v-show="lazyMint == 1" class="price-input">
-      <span>Price</span>
+      <span>{{ $t('views.project.mint-modal.input.price.label') }}</span>
       <input
         type="number"
         inputmode="decimal"
         v-model="price"
-        placeholder="Price in ETH"
+        :placeholder="$t('views.project.mint-modal.input.price.placeholder')"
         @input="onInputPrice"
       />
     </div>
@@ -73,7 +73,7 @@ export default {
   .when {
     margin-bottom: 20px;
     .mint-now-radio {
-      margin-left: 69px;
+      margin-left: 100px;
     }
     .lazy-mint-radio {
       margin-left: 30px;

@@ -21,7 +21,7 @@
               @click="previousStep()"
               v-show="currentStep.id > 0 && currentStep.id < 5"
             >
-              Previous
+              {{ $t('views.project.mint-modal.button.previous') }}
             </button>
             <button
               @click="nextStep()"
@@ -31,14 +31,16 @@
                 class="spinner"
                 :class="{ active: slotData.uploadingToS3 }"
               ></div>
-              <span v-show="!slotData.uploadingToS3"> Next </span>
+              <span v-show="!slotData.uploadingToS3">
+                {{ $t('views.project.mint-modal.button.next') }}
+              </span>
             </button>
             <button
               @click="mint()"
               v-show="currentStep.id == steps.length - 2"
               v-ripple
             >
-              Mint
+              {{ $t('views.project.mint-modal.button.mint') }}
             </button>
           </div>
         </div>

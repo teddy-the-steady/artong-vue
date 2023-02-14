@@ -25,22 +25,22 @@
         <div class="left-container">
           <div class="round-box">
             <TableDiv
-              :tableName="'Offers'"
+              :tableName="$t('views.content-detail.table.offers.title')"
               :iconSrc="require('@/assets/icons/100-add-folder.svg')"
               :showHeader="true"
               :fields="[
                 {
-                  name: 'PRICE',
+                  name: $t('views.content-detail.table.offers.column1'),
                   type: 'price',
                   key: 'price',
                 },
                 {
-                  name: 'FROM',
+                  name: $t('views.content-detail.table.offers.column2'),
                   type: 'member',
                   key: 'from',
                 },
                 {
-                  name: 'DATE',
+                  name: $t('views.content-detail.table.offers.column3'),
                   type: 'date',
                   key: 'createdAt',
                 },
@@ -49,32 +49,32 @@
           </div>
           <div class="round-box">
             <TableDiv
-              :tableName="'History'"
+              :tableName="$t('views.content-detail.table.history.title')"
               :iconSrc="require('@/assets/icons/history.svg')"
               :showHeader="true"
               :fields="[
                 {
-                  name: 'EVENT',
+                  name: $t('views.content-detail.table.history.column1'),
                   type: 'event',
                   key: 'history_type',
                 },
                 {
-                  name: 'PRICE',
+                  name: $t('views.content-detail.table.history.column2'),
                   type: 'price',
                   key: 'price',
                 },
                 {
-                  name: 'From',
+                  name: $t('views.content-detail.table.history.column3'),
                   type: 'member',
                   key: 'from_member',
                 },
                 {
-                  name: 'TO',
+                  name: $t('views.content-detail.table.history.column4'),
                   type: 'member',
                   key: 'to_member',
                 },
                 {
-                  name: 'DATE',
+                  name: $t('views.content-detail.table.history.column5'),
                   type: 'date',
                   key: 'block_timestamp',
                 },
@@ -140,7 +140,9 @@
                 @dialog-focus-out="closeDialog"
                 ref="dialog"
               >
-                <div slot="body">Report</div>
+                <div slot="body">
+                  {{ $t('views.content-detail.more-modal') }}
+                </div>
               </BasicDialog>
             </div>
           </div>
@@ -148,7 +150,7 @@
             {{ content ? content.name : '' }}
           </div>
           <div class="owner">
-            <div class="label">Owned by</div>
+            <div class="label">{{ $t('views.content-detail.owned-by') }}</div>
             <router-link
               tag="div"
               class="profile-link"
@@ -166,14 +168,16 @@
           </div>
           <div class="collection">
             <div class="info">
-              <div class="label">Project</div>
+              <div class="label">{{ $t('views.content-detail.project') }}</div>
               <ProjectPageProfile_small
                 :project="project"
                 :isFirstLoading="isFirstLoading"
               ></ProjectPageProfile_small>
             </div>
             <div class="info">
-              <div class="label">Created By</div>
+              <div class="label">
+                {{ $t('views.content-detail.created-by') }}
+              </div>
               <router-link
                 tag="div"
                 class="profile-link"
@@ -191,14 +195,18 @@
             </div>
           </div>
           <div class="description">
-            <div class="label">Description</div>
+            <div class="label">
+              {{ $t('views.content-detail.description') }}
+            </div>
             <div>
               {{ content ? content.description : '' }}
             </div>
           </div>
           <div class="price-box">
             <div class="price-box-content">
-              <label class="label">Price</label>
+              <label class="label">
+                {{ $t('views.content-detail.price') }}
+              </label>
               <div>
                 {{ content ? weiToEther(price) : '' }}
                 ETH
@@ -209,14 +217,18 @@
                 v-show="content ? content.royalty > 0 : false"
                 class="price-box-content"
               >
-                <label class="label">Creator Royalty</label>
+                <label class="label">
+                  {{ $t('views.content-detail.creator-royalty') }}
+                </label>
                 <div>{{ content ? content.royalty / 100 : '' }} %</div>
               </div>
               <div
                 v-show="project ? project.royalty > 0 : false"
                 class="price-box-content"
               >
-                <label class="label">Project Royalty</label>
+                <label class="label">
+                  {{ $t('views.content-detail.project-royalty') }}
+                </label>
                 <div>{{ project ? project.royalty / 100 : '' }} %</div>
               </div>
             </div>
@@ -225,25 +237,31 @@
             <div v-if="checkPolicyAndStatus">
               <button @click="buy()">
                 <span class="spinner" :class="{ active: buying }"></span>
-                <span v-show="!buying">Buy</span>
+                <span v-show="!buying">
+                  {{ $t('views.content-detail.buttons.buy') }}
+                </span>
               </button>
             </div>
             <div v-else-if="isCurrentUserProjectOwner">
-              <button @click="approve()" class="white-button">Approve</button>
+              <button @click="approve()" class="white-button">
+                {{ $t('views.content-detail.buttons.approve') }}
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div class="collection-container">
         <div class="header">
-          <div class="title">More from this project</div>
+          <div class="title">
+            {{ $t('views.content-detail.collection-container1') }}
+          </div>
           <div class="url">
             <router-link
               :to="{
                 name: 'Project',
                 params: { id: content ? content.project_address : null },
               }"
-              >View more</router-link
+              >{{ $t('views.content-detail.view-more') }}</router-link
             >
           </div>
         </div>
@@ -256,7 +274,9 @@
       </div>
       <div class="collection-container">
         <div class="header">
-          <div class="title">Discover projects</div>
+          <div class="title">
+            {{ $t('views.content-detail.collection-container2') }}
+          </div>
         </div>
         <div>
           <CuratedCollection :projects="projects" />

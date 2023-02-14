@@ -9,7 +9,9 @@
         v-model="tokenRoyalty"
         @input="onInputTokenRoyalty"
       />
-      <label for="royalty">Token royalty</label>
+      <label for="royalty">
+        {{ $t('views.project.mint-modal.input.token-royalty') }}
+      </label>
     </span>
     <div class="unit">%</div>
   </div>

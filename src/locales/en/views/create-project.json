@@ -1,0 +1,15 @@
+{
+    "title": "Create Your Project",
+    "name": "Name",
+    "symbol": "Symbol",
+    "max-token-amount": {
+        "title": "Max Token Amount",
+        "placeholder": "Positive number"
+    },
+    "contribution-policy": {
+        "title": "Contribution Policy",
+        "immediate": "Immediate",
+        "approved": "Approved"
+    },
+    "button": "CREATE PROJECT"
+}
