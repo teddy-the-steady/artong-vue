@@ -1,0 +1,40 @@
+{
+    "more-modal": "report",
+    "owned-by": "Owned by",
+    "created-by": "Created by",
+    "project": "Project",
+    "description": "Description",
+    "price": "Price",
+    "creator-royalty": "Creator Royalty",
+    "project-royalty": "Project Royalty",
+    "table": {
+        "offers": {
+            "title": "Offers",
+            "column1": "PRICE",
+            "column2": "FROM",
+            "column3": "TIME"
+        },
+        "history": {
+            "title": "History",
+            "column1": "EVENT",
+            "column2": "PRICE",
+            "column3": "From",
+            "column4": "To",
+            "column5": "TIME"
+        }
+    },
+    "buttons": {
+        "sell": "Sell",
+        "buy": "Buy",
+        "update-listing": "Update Listing",
+        "cancel-listing": "Cancel Listing",
+        "make-offer": "Make Offer",
+        "approve": "Approve"
+    },
+    "collection-container1": "More from this project",
+    "collection-container2": "Discover projects",
+    "view-more": "View more",
+    "alert": {
+        "copy": "Copied!"
+    }
+}

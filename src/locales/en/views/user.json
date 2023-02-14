@@ -1,0 +1,23 @@
+{
+    "profile": {
+        "introduction": "Introduction",
+        "follower": "Follower",
+        "following": "Following"
+    },
+    "button": {
+        "follow": "Follow",
+        "unfollow": "Unfollow",
+        "edit": "EDIT"
+    },
+    "sort-options": {
+        "newest": "Newest",
+        "oldest": "Oldest"
+    },
+    "tabs": {
+        "owned": "Owned",
+        "created": "Created",
+        "contributed": "Contributed",
+        "waiting-for-approval": "Waiting for Approval",
+        "favorited": "Favorited"
+    }
+}

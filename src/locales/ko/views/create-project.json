@@ -1,0 +1,15 @@
+{
+    "title": "프로젝트 생성",
+    "name": "이름",
+    "symbol": "심볼",
+    "max-token-amount": {
+        "title": "최대 토큰 갯수",
+        "placeholder": "양의 정수"
+    },
+    "contribution-policy": {
+        "title": "기여 방식",
+        "immediate": "즉시",
+        "approved": "허용후"
+    },
+    "button": "프로젝트 생성하기"
+}
