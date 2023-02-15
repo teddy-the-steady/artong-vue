@@ -1,5 +1,5 @@
 <template>
-  <div :class="enoughTopSpace ? 'tip tip-top' : 'tip tip-bottom'" ref="tip">
+  <div class="tip" ref="tip">
     {{ toolTip }}
   </div>
 </template>
@@ -10,7 +10,6 @@ export default {
   name: 'ToolTipModal',
   data() {
     return {
-      enoughTopSpace: true,
       width: 0,
       height: 0,
     }
@@ -20,6 +19,7 @@ export default {
       iconTop: state => state.menu.iconTop,
       iconLeft: state => state.menu.iconLeft,
       toolTip: state => state.menu.toolTip,
+      innerWidth: state => state.menu.innerWidth,
     }),
   },
   methods: {
@@ -34,15 +34,22 @@ export default {
     },
     setModalTop() {
       let top = this.iconTop - this.height - 10
-      console.log(top)
       if (top < 150) {
         top = this.iconTop + 40
-        this.enoughTopSpace = false
+        this.positionUpper = false
       }
       this.$refs.tip.style.top = `${top}px`
     },
     setModalLeft() {
-      const left = this.iconLeft - 10
+      let left = 0
+      const ratio = this.iconLeft / this.innerWidth
+      if (ratio >= 0.6) {
+        left = this.iconLeft - this.width + 40
+      } else if (ratio < 0.3) {
+        left = this.iconLeft - 10
+      } else {
+        left = this.iconLeft - this.width / 2 + 10
+      }
       this.$refs.tip.style.left = `${left}px`
     },
   },
@@ -50,7 +57,6 @@ export default {
     toolTip() {
       this.$refs.tip.style.top = 'auto'
       this.$refs.tip.style.left = 'auto'
-      this.enoughTopSpace = true
       this.setModalSize()
     },
   },
@@ -68,25 +74,5 @@ export default {
   padding: 0.75rem 1.25rem;
   box-sizing: border-box;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
-}
-.tip-top:after {
-  border-top: 10px solid #eeeeee;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 0px solid transparent;
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 12px;
-}
-.tip-bottom:before {
-  border-top: 0px solid transparent;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #eeeeee;
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: 12px;
 }
 </style>
