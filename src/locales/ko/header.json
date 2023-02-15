@@ -15,5 +15,8 @@
         "contents": "컨텐츠",
         "projects": "프로젝트",
         "users": "유저"
+    },
+    "alert": {
+        "contribute": "우선, 기여할 프로젝트를 고르세요."
     }
 }

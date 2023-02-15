@@ -106,7 +106,7 @@ export default {
         await patchProject(this.project.txHash, {
           ...this.project,
         })
-        alert('Saved!')
+        alert(this.$i18n.t('common.alert.saved'))
       } catch (error) {
         this.errorMessage = error
       }

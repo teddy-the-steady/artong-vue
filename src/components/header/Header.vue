@@ -268,9 +268,9 @@ export default {
         }
         this.$root.$emit('contribute')
       } else if (this.$router.currentRoute.name === 'Projects') {
-        alert('First, choose a project to contribute!')
+        alert(this.$i18n.t('header.alert.contribute'))
       } else {
-        alert('First, choose a project to contribute!')
+        alert(this.$i18n.t('header.alert.contribute'))
         this.$router.push({ name: 'Projects' })
       }
     },
