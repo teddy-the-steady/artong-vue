@@ -9,8 +9,9 @@ import {
   TOGGLE_THEME,
   SET_INNER_WIDTH,
   SET_ICON_POSITION,
-  TOGGLE_INFO_MODAL,
-  SET_INFO_TEXT,
+  TOGGLE_TOOL_TIP,
+  CLOSE_TOOL_TIP,
+  SET_TOOL_TIP,
 } from '../actions/menu'
 
 const state = {
@@ -22,10 +23,10 @@ const state = {
   isDark: false,
   waitForAnswer: null,
   innerWidth: window.innerWidth,
-  isInfoModalOpen: false,
+  isToolTipOpen: false,
   iconTop: null,
   iconLeft: null,
-  infoText: null,
+  toolTip: null,
 }
 
 const mutations = {
@@ -60,11 +61,14 @@ const mutations = {
     state.iconTop = iconTop
     state.iconLeft = iconLeft
   },
-  [TOGGLE_INFO_MODAL]: state => {
-    state.isInfoModalOpen = !state.isInfoModalOpen
+  [TOGGLE_TOOL_TIP]: state => {
+    state.isToolTipOpen = !state.isToolTipOpen
   },
-  [SET_INFO_TEXT]: (state, _infoText) => {
-    state.infoText = _infoText
+  [CLOSE_TOOL_TIP]: state => {
+    state.isToolTipOpen = false
+  },
+  [SET_TOOL_TIP]: (state, toolTip) => {
+    state.toolTip = toolTip
   },
 }
 
