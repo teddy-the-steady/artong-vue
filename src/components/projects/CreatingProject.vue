@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <div v-if="!result">
-      <div class="creating-noti">{{ $t('menu.creating-project.title') }}</div>
+      <div class="creating-noti">
+        {{ $t('views.creating-project.title') }}
+      </div>
     </div>
     <div v-else class="result-noti-container">
       <div class="result-noti result-noti-top">
-        {{ $t('menu.creating-project.result-noti') }}
+        {{ $t('views.creating-project.result-noti') }}
       </div>
       <router-link
         :to="{
@@ -16,11 +18,11 @@
         }"
       >
         <button class="white-button click">
-          {{ $t('menu.creating-project.button') }}
+          {{ $t('views.creating-project.button') }}
         </button>
       </router-link>
       <span class="result-noti">
-        {{ $t('menu.creating-project.redirect-msg') }}
+        {{ $t('views.creating-project.redirect-msg') }}
       </span>
     </div>
     <div class="waviy">

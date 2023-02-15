@@ -13,5 +13,9 @@
             "feed": "피드",
             "create-project": "프로젝트 생성하기"
         }
+    },
+    "alert": {
+        "withdraw": "인출 완료! 지갑을 확인하세요.",
+        "withdraw-limit": "최소 0.01 ETH 부터 인출 가능합니다."
     }
 }

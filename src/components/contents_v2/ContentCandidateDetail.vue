@@ -551,14 +551,14 @@ export default {
             url: this.url,
           })
         } else {
-          alert('공유하기가 지원되지 않는 환경입니다.')
+          alert(this.$i18n.t('common.alert.error'))
         }
       } else {
         this.setURL()
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        alert('링크 복사 완료')
+        alert(this.$i18n.t('common.alert.copy'))
       }
     },
     async likeToggle() {

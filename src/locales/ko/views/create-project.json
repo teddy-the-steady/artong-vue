@@ -11,5 +11,8 @@
         "immediate": "즉시",
         "approved": "허용후"
     },
-    "button": "프로젝트 생성하기"
+    "button": "프로젝트 생성하기",
+    "alert": {
+        "required": "값이 필요해요."
+    }
 }

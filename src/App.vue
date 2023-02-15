@@ -12,7 +12,7 @@
       @close-modal="toggleConfirmModal"
       ref="confirmModal"
     >
-      <span slot="body">{{ $t('common.confirm-modal.content') }}</span>
+      <span slot="body">{{ $t('common.modal.confirm-msg') }}</span>
     </ConfirmModal>
     <InfoModal v-show="isInfoModalOpen"></InfoModal>
   </div>

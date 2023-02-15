@@ -4,15 +4,17 @@
       <div class="info">
         <h1 class="h1">{{ $t('views.create-project.title') }}</h1>
         <div>
-          <span>{{ $t('views.create-project.name') }}</span>
+          <span class="label">{{ $t('views.create-project.name') }}</span>
           <input type="text" v-model="name" maxlength="100" />
         </div>
         <div>
-          <span>{{ $t('views.create-project.symbol') }}</span>
+          <span class="label">{{ $t('views.create-project.symbol') }}</span>
           <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
-          <span>{{ $t('views.create-project.max-token-amount.title') }}</span>
+          <span class="label">{{
+            $t('views.create-project.max-token-amount.title')
+          }}</span>
           <input
             type="number"
             inputmode="decimal"
@@ -23,15 +25,15 @@
         </div>
         <div>
           <div class="contribution-policy-title">
-            <span class="contribution-policy">
+            <span class="contribution-policy label">
               {{ $t('views.create-project.contribution-policy.title') }}
             </span>
-            <img
+            <!-- <img
               class="icon"
               ref="icon"
               src="../../assets/icons/info.svg"
               @click="clicked"
-            />
+            /> -->
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
@@ -117,48 +119,50 @@ export default {
         { name: 'Istanbul', code: 'IST' },
         { name: 'Paris', code: 'PRS' },
       ],
-      words:
-        't was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
+      // words:
+      //   't was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum',
     }
   },
   methods: {
-    clicked() {
-      this.setInfoText()
-      this.setIconPosition()
-      this.toggelInfoModal()
-    },
-    toggelInfoModal() {
-      this.$store.commit('TOGGLE_INFO_MODAL')
-    },
-    setIconPosition() {
-      let icon = this.$refs.icon
-      let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
-      let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
-      this.$store.commit('SET_ICON_POSITION', { iconTop, iconLeft })
-    },
-    setInfoText() {
-      this.$store.commit('SET_INFO_TEXT', this.words)
-    },
+    // clicked() {
+    //   this.setInfoText()
+    //   this.setIconPosition()
+    //   this.toggelInfoModal()
+    // },
+    // toggelInfoModal() {
+    //   this.$store.commit('TOGGLE_INFO_MODAL')
+    // },
+    // setIconPosition() {
+    //   let icon = this.$refs.icon
+    //   let iconTop = window.pageYOffset + icon.getBoundingClientRect().top
+    //   let iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
+    //   this.$store.commit('SET_ICON_POSITION', { iconTop, iconLeft })
+    // },
+    // setInfoText() {
+    //   this.$store.commit('SET_INFO_TEXT', this.words)
+    // },
     hasNull() {
       let nullField = []
       if (!this.name) {
-        nullField.push('name')
+        nullField.push(this.$i18n.t('views.create-project.name'))
       }
       if (!this.symbol) {
-        nullField.push('symbol')
+        nullField.push(this.$i18n.t('views.create-project.symbol'))
       }
       if (!this.maxAmount) {
-        nullField.push('max token amount')
+        nullField.push(
+          this.$i18n.t('views.create-project.max-token-amount.title'),
+        )
       }
       if (nullField.length !== 0) {
-        let message = 'Enter '
+        let message = ''
         for (let i = 0; i < nullField.length; i++) {
           message += nullField[i]
           if (i !== nullField.length - 1) {
             message += ', '
           }
         }
-        message += '!'
+        message += ' ' + this.$i18n.t('views.create-project.alert.required')
         alert(message)
         return true
       } else {
@@ -189,7 +193,6 @@ export default {
         txHash = await this.signer.sendUncheckedTransaction(tx)
       } catch (error) {
         if (error.code == 'ACTION_REJECTED') {
-          alert('creating project stopped!')
           this.creating = false
           return
         }
@@ -332,6 +335,11 @@ export default {
     justify-content: space-between;
     width: 25%;
     box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+
+    .label {
+      font-weight: 600;
+    }
+
     .h1 {
       margin-bottom: 40px;
       text-align: left;

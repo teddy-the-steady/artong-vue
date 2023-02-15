@@ -13,26 +13,28 @@
                 type="number"
                 inputmode="decimal"
                 v-model="price"
-                placeholder="Price in ETH"
+                :placeholder="$t('common.modal.prompt-placeholder')"
               />
             </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-button" @click="confirm()">
-                <span
-                  class="spinner"
-                  :class="{ active: confirmOnProcess }"
-                ></span>
-                <span v-show="!confirmOnProcess">{{ okButton }}</span>
-              </button>
               <button
                 class="modal-button"
                 :class="{ disabled: cancelDisabled }"
                 @click="cancel()"
               >
-                {{ cancelButton }}
+                {{ $t('common.modal.button.cancel') }}
+              </button>
+              <button class="modal-button" @click="confirm()">
+                <span
+                  class="spinner"
+                  :class="{ active: confirmOnProcess }"
+                ></span>
+                <span v-show="!confirmOnProcess">
+                  {{ $t('common.modal.button.confirm') }}
+                </span>
               </button>
             </slot>
           </div>
