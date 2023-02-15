@@ -3,65 +3,59 @@
     :class="enoughTop ? 'words words-top' : 'words words-bottom'"
     ref="words"
   >
-    {{ text }}
+    {{ tip }}
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 
 export default {
-  name: 'InfoModal',
+  name: 'ToolTipModal',
   data() {
     return {
       enoughTop: true,
       width: 0,
       height: 0,
-      text: null,
+      tip: null,
     }
   },
   computed: {
     ...mapState({
       iconTop: state => state.menu.iconTop,
       iconLeft: state => state.menu.iconLeft,
-      infoText: state => state.menu.infoText,
-      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+      toolTip: state => state.menu.toolTip,
+      isToolTipOpen: state => state.menu.isToolTipOpen,
     }),
   },
   methods: {
     setModalTop(iconTop) {
-      // this.setModalSize()
-      let top = iconTop - this.height - 2
+      console.log(iconTop)
+      console.log(this.height)
+      const top = iconTop - 50
       this.$refs.words.style.top = `${top}px`
     },
     setModalLeft(iconLeft) {
-      // this.setModalSize()
-      let left = iconLeft - this.width / 2 + 12
+      console.log(this.width)
+      const left = iconLeft - 10
       this.$refs.words.style.left = `${left}px`
     },
-    getModalSize() {
-      console.log('modal width: ' + this.infoModalWidth)
-      console.log('modal height: ' + this.infoModalHeight)
-    },
     setModalSize() {
-      let modal = this.$refs.words
+      const modal = this.$refs.words
       this.width = modal.getBoundingClientRect().width
       this.height = modal.getBoundingClientRect().height
-      console.log('height: ' + this.height)
     },
     checkSpaceTop() {
       this.modalTop
     },
     observeSize() {
-      const ro = new ResizeObserver(entries => {
+      const resizeObserver = new ResizeObserver(entries => {
         entries.forEach(entry => {
           const { width, height } = entry.contentRect
           this.width = width
           this.height = height
         })
       })
-      ro.observe(this.$refs.words)
-      console.log(this.width)
-      console.log(this.height)
+      resizeObserver.observe(this.$refs.words)
     },
   },
   watch: {
@@ -71,8 +65,8 @@ export default {
     iconLeft(val) {
       this.setModalLeft(val)
     },
-    infoText(val) {
-      this.text = val
+    toolTip(val) {
+      this.tip = val
       this.observeSize()
       this.setModalSize()
     },
