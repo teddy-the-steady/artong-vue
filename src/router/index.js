@@ -17,7 +17,6 @@ import ContentCandidateDetail from '@/components/contents_v2/ContentCandidateDet
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
 import Settings from '@/components/menu/Settings'
-import Test from '../components/util/Test'
 
 window.popStateDetected = false
 window.addEventListener('popstate', () => {
@@ -115,15 +114,11 @@ const router = new Router({
       name: 'Settings',
       component: Settings,
     },
-    {
-      path: '/test',
-      name: 'Test',
-      component: Test,
-    },
   ],
 })
 
 router.beforeEach(async function (to, from, next) {
+  store.commit('CLOSE_TOOL_TIP')
   const IsBackButtonClicked = window.popStateDetected
   window.popStateDetected = false
   if (!IsBackButtonClicked && from.path !== to.path) {
