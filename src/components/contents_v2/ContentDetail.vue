@@ -518,7 +518,7 @@ export default {
               this.confirmOnProcess = true
               const txHash = await this.sell(contract, newPrice)
               await this.wait(txHash)
-              alert('listed!')
+              alert(this.$i18n.t('views.content-detail.alert.listed'))
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -537,7 +537,7 @@ export default {
             this.buying = true
             const txHash = await this.buy(contract)
             await this.wait(txHash)
-            alert('purchased!')
+            alert(this.$i18n.t('views.content-detail.alert.purchased'))
           } finally {
             this.buying = false
           }
@@ -548,7 +548,7 @@ export default {
             this.canceling = true
             const txHash = await this.cancel(contract)
             await this.wait(txHash)
-            alert('canceled!')
+            alert(this.$i18n.t('views.content-detail.alert.canceled'))
           } finally {
             this.canceling = false
           }
@@ -563,7 +563,7 @@ export default {
               this.confirmOnProcess = true
               const txHash = await this.update(contract, newPrice)
               await this.wait(txHash)
-              alert('updated!')
+              alert(this.$i18n.t('views.content-detail.alert.updated'))
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -583,10 +583,14 @@ export default {
           for (;;) {
             try {
               const offerPrice = await this.$refs.promptModal.waitForAnswer()
+              if (parseInt(offerPrice) < 0.001) {
+                alert(this.$i18n.t('views.content-detail.alert.least-price'))
+                return
+              }
               this.confirmOnProcess = true
               const txHash = await this.offer(contract, offerPrice)
               await this.wait(txHash)
-              alert('offered!')
+              alert(this.$i18n.t('views.content-detail.alert.offered'))
               break
             } catch (error) {
               if (error.message === 'canceled') {
@@ -605,7 +609,7 @@ export default {
             this.accepting = true
             const txHash = await this.accept(contract, acceptParam)
             await this.wait(txHash)
-            alert('accepted!')
+            alert(this.$i18n.t('views.content-detail.alert.accepted'))
           } finally {
             this.accepting = false
           }
@@ -757,14 +761,14 @@ export default {
             url: this.url,
           })
         } else {
-          alert('공유하기가 지원되지 않는 환경입니다.')
+          alert(this.$i18n.t('common.alert.error'))
         }
       } else {
         this.setURL()
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        alert(this.$i18n.t('views.content-detail.alert.copy'))
+        alert(this.$i18n.t('common.alert.copy'))
       }
     },
     toEtherscan() {

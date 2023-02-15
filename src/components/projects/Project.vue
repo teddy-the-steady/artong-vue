@@ -425,14 +425,14 @@ export default {
             url: this.url,
           })
         } else {
-          alert('공유하기가 지원되지 않는 환경입니다.')
+          alert(this.$i18n.t('common.alert.error'))
         }
       } else {
         this.setURL()
         const element = this.$refs.url
         element.select()
         document.execCommand('copy')
-        alert(this.$i18n.t('views.project.alert.copy'))
+        alert(this.$i18n.t('common.alert.copy'))
       }
     },
     toEtherscan() {

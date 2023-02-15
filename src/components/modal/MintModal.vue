@@ -102,23 +102,25 @@ export default {
         case 0:
           if (this.slotData.uploadingToS3) return
           if (!this.slotData.s3Result) {
-            alert('Please add image')
+            alert(this.$i18n.t('views.project.mint-modal.alert.add-image'))
             return
           } else if (!this.slotData.postResult) {
-            alert('Oops, something went wrong! Please try again')
+            alert(this.$i18n.t('common.alert.error'))
             return
           }
           break
         case 1:
           if (!this.slotData.name || !this.slotData.description) {
-            alert('Name and Description required')
+            alert(
+              this.$i18n.t('views.project.mint-modal.alert.name-desc-required'),
+            )
             return
           }
           break
         case 2:
           if (this.slotData.lazyMint == 1) {
             if (!this.slotData.price || this.slotData.price < 0.001) {
-              alert('Least price is 0.001 ETH')
+              alert(this.$i18n.t('views.project.mint-modal.alert.least-price'))
               return
             }
           }
@@ -133,7 +135,11 @@ export default {
             this.slotData.tokenRoyalty < 0 ||
             this.slotData.tokenRoyalty > 10000
           ) {
-            alert('token royalty should be number between 0~100')
+            alert(
+              this.$i18n.t(
+                'views.project.mint-modal.alert.token-royalty-range',
+              ),
+            )
             return
           }
           break
@@ -224,7 +230,7 @@ export default {
           this.$emit('close')
           return
         }
-        alert('Oops, something went wrong! Please try again')
+        alert(this.$i18n.t('common.alert.error'))
       }
     },
     async makeLazyMintingVoucher(

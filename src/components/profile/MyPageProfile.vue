@@ -115,10 +115,10 @@ export default {
       navigator.clipboard
         .writeText(`${this.currentUser.wallet_address}`)
         .then(() => {
-          alert('주소 복사 완료')
+          alert(this.$i18n.t('common.alert.copy'))
         })
         .catch(() => {
-          alert('주소 복사 실패')
+          alert(this.$i18n.t('common.alert.error'))
         })
     },
   },

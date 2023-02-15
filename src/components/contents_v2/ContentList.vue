@@ -204,7 +204,11 @@ export default {
         }
         return null
       } else if (result.price) {
-        return weiToEther(parseInt(result.price).toString())
+        if (result.token_id > 0) {
+          return null
+        } else {
+          return weiToEther(parseInt(result.price).toString())
+        }
       }
     },
   },

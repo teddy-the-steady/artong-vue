@@ -13,9 +13,6 @@
         "unsubscribe": "Unsubscribe",
         "contribute": "Contribute"
     },
-    "alert": {
-        "copy": "Copied!"
-    },
     "statitics": {
         "items": "Items",
         "description": "Description"
@@ -60,6 +57,12 @@
             "previous": "Previous",
             "click": "Click",
             "mint": "Mint"
+        },
+        "alert": {
+            "add-image": "Please add image format of .gif .jpg .jpeg .png",
+            "name-desc-required": "Name and Description required",
+            "least-price": "Least price is 0.001 ETH",
+            "token-royalty-range": "Token royalty should be in range 0 to 100"
         }
     }
 }
