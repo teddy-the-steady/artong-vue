@@ -14,10 +14,7 @@
     >
       <span slot="body">{{ $t('common.modal.confirm-msg') }}</span>
     </ConfirmModal>
-    <ToolTipModal
-      v-show="isToolTipOpen"
-      @focusout="handleFocusOut"
-    ></ToolTipModal>
+    <ToolTipModal v-show="isToolTipOpen"></ToolTipModal>
   </div>
 </template>
 
@@ -287,7 +284,7 @@ html {
     }
 
     #header-bar {
-      z-index: 2020;
+      z-index: 999;
     }
 
     .contents__body {

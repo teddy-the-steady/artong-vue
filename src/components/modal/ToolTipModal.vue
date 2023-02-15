@@ -1,9 +1,6 @@
 <template>
-  <div
-    :class="enoughTop ? 'words words-top' : 'words words-bottom'"
-    ref="words"
-  >
-    {{ tip }}
+  <div :class="enoughTopSpace ? 'tip tip-top' : 'tip tip-bottom'" ref="tip">
+    {{ toolTip }}
   </div>
 </template>
 <script>
@@ -13,10 +10,9 @@ export default {
   name: 'ToolTipModal',
   data() {
     return {
-      enoughTop: true,
+      enoughTopSpace: true,
       width: 0,
       height: 0,
-      tip: null,
     }
   },
   computed: {
@@ -24,50 +20,37 @@ export default {
       iconTop: state => state.menu.iconTop,
       iconLeft: state => state.menu.iconLeft,
       toolTip: state => state.menu.toolTip,
-      isToolTipOpen: state => state.menu.isToolTipOpen,
     }),
   },
   methods: {
-    setModalTop(iconTop) {
-      console.log(iconTop)
-      console.log(this.height)
-      const top = iconTop - 50
-      this.$refs.words.style.top = `${top}px`
-    },
-    setModalLeft(iconLeft) {
-      console.log(this.width)
-      const left = iconLeft - 10
-      this.$refs.words.style.left = `${left}px`
-    },
     setModalSize() {
-      const modal = this.$refs.words
-      this.width = modal.getBoundingClientRect().width
-      this.height = modal.getBoundingClientRect().height
-    },
-    checkSpaceTop() {
-      this.modalTop
-    },
-    observeSize() {
-      const resizeObserver = new ResizeObserver(entries => {
-        entries.forEach(entry => {
-          const { width, height } = entry.contentRect
-          this.width = width
-          this.height = height
-        })
+      this.$nextTick(() => {
+        this.width = this.$refs.tip.clientWidth
+        this.height = this.$refs.tip.clientHeight
+
+        this.setModalTop()
+        this.setModalLeft()
       })
-      resizeObserver.observe(this.$refs.words)
+    },
+    setModalTop() {
+      let top = this.iconTop - this.height - 10
+      console.log(top)
+      if (top < 150) {
+        top = this.iconTop + 40
+        this.enoughTopSpace = false
+      }
+      this.$refs.tip.style.top = `${top}px`
+    },
+    setModalLeft() {
+      const left = this.iconLeft - 10
+      this.$refs.tip.style.left = `${left}px`
     },
   },
   watch: {
-    iconTop(val) {
-      this.setModalTop(val)
-    },
-    iconLeft(val) {
-      this.setModalLeft(val)
-    },
-    toolTip(val) {
-      this.tip = val
-      this.observeSize()
+    toolTip() {
+      this.$refs.tip.style.top = 'auto'
+      this.$refs.tip.style.left = 'auto'
+      this.enoughTopSpace = true
       this.setModalSize()
     },
   },
@@ -75,10 +58,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
-.words {
+.tip {
   position: absolute;
-  z-index: 100000;
-  max-width: 400px;
+  z-index: 998;
+  max-width: 60%;
   height: auto;
   background: #eeeeee;
   border-radius: 10px;
@@ -86,7 +69,7 @@ export default {
   box-sizing: border-box;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
 }
-.words-top:after {
+.tip-top:after {
   border-top: 10px solid #eeeeee;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
@@ -96,7 +79,7 @@ export default {
   bottom: -10px;
   left: 12px;
 }
-.words-bottom:before {
+.tip-bottom:before {
   border-top: 0px solid transparent;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
