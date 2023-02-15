@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1>{{ $t('views.settings.title') }}<TooltipIcon :tip="'fffffffff'" /></h1>
+    <h1>{{ $t('views.settings.title') }}</h1>
     <div class="option-group">
       <div class="option">
         <label>{{ $t('views.settings.settings.locale') }}</label>
@@ -19,11 +19,10 @@
 import { languages } from '../../locales/languages'
 import LocaleDropdown from '../dropdown/LocaleDropdown.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
-import TooltipIcon from '../util/ToolTipIcon.vue'
 
 export default {
   name: 'Settings',
-  components: { LocaleDropdown, LangDropdown, TooltipIcon },
+  components: { LocaleDropdown, LangDropdown },
   data() {
     return {
       localeOptions: {
