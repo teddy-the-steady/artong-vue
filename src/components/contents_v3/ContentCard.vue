@@ -93,7 +93,7 @@ export default {
           this.makeS3Path(content.content_s3key)
         )
       } else {
-        return require('@/assets/images/art11.jpg')
+        // return require('@/assets/images/art11.jpg')
       }
     },
     onContentClick(event) {

@@ -14,7 +14,10 @@
     >
       <span slot="body">{{ $t('common.modal.confirm-msg') }}</span>
     </ConfirmModal>
-    <InfoModal v-show="isInfoModalOpen"></InfoModal>
+    <ToolTipModal
+      v-show="isToolTipOpen"
+      @focusout="handleFocusOut"
+    ></ToolTipModal>
   </div>
 </template>
 
@@ -25,7 +28,7 @@ import { getCurrentMember } from './api/member'
 import HeaderBar from './components/header/Header.vue'
 import SideBar from './components/sidebar/SideBar.vue'
 import ConfirmModal from './components/modal/ConfirmModal.vue'
-import InfoModal from './components/modal/InfoModal.vue'
+import ToolTipModal from './components/modal/ToolTipModal.vue'
 
 export default {
   name: 'App',
@@ -33,7 +36,7 @@ export default {
     HeaderBar,
     SideBar,
     ConfirmModal,
-    InfoModal,
+    ToolTipModal,
   },
   data() {
     return {}
@@ -47,7 +50,7 @@ export default {
       isConfirmModalOpen: state => state.menu.isConfirmModalOpen,
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
-      isInfoModalOpen: state => state.menu.isInfoModalOpen,
+      isToolTipOpen: state => state.menu.isToolTipOpen,
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
