@@ -13,9 +13,6 @@
         "unsubscribe": "구독취소",
         "contribute": "기여하기"
     },
-    "alert": {
-        "copy": "링크 복사 완료"
-    },
     "statitics": {
         "items": "아이템",
         "description": "설명"
@@ -60,6 +57,12 @@
             "previous": "이전",
             "click": "클릭",
             "mint": "민팅"
+        },
+        "alert": {
+            "add-image": ".gif .jpg .jpeg .png 형식의 이미지를 추가해주세요.",
+            "name-desc-required": "이름과 설명은 필수값 입니다.",
+            "least-price": "최소 금액은 0.001 ETH 입니다.",
+            "token-royalty-range": "0 에서 100 사이의 숫자를 입력해주세요."
         }
     }
 }

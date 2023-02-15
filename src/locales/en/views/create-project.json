@@ -11,5 +11,8 @@
         "immediate": "Immediate",
         "approved": "Approved"
     },
-    "button": "CREATE PROJECT"
+    "button": "CREATE PROJECT",
+    "alert": {
+        "required": "required!"
+    }
 }

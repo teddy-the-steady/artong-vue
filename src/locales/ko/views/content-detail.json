@@ -35,6 +35,12 @@
     "collection-container2": "다른 프로젝트",
     "view-more": "더보기",
     "alert": {
-        "copy": "링크 복사 완료"
+        "listed": "판매 등록 완료!",
+        "purchased": "구매 완료!",
+        "canceled": "취소 완료!",
+        "updated": "수정 완료!",
+        "offered": "제시 완료!",
+        "accepted": "수락 완료!",
+        "least-price": "최소 금액은 0.001 ETH 입니다."
     }
 }

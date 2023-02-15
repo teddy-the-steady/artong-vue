@@ -62,7 +62,7 @@ export default {
       let fileType = this.findFileType(this.file)
       let fileTypeValidity = this.checkFileTypeValidity(fileType)
       if (!fileTypeValidity) {
-        alert('only allows .gif .jpg .jpeg .png')
+        alert(this.$i18n.t('views.project.mint-modal.alert.add-image'))
         return
       }
       this.$emit('data-from-step0', 'uploadingToS3', true)
