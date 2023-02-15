@@ -15,5 +15,8 @@
         "contents": "Contents",
         "projects": "Projects",
         "users": "Users"
+    },
+    "alert": {
+        "contribute": "First, choose a project to contribute"
     }
 }

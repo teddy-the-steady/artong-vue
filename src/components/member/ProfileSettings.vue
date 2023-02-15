@@ -58,7 +58,7 @@ export default {
           username: this.member.username,
           introduction: this.member.introduction,
         })
-        alert('Saved!')
+        alert(this.$i18n.t('common.alert.saved'))
       } catch (error) {
         this.errorMessage = error
       }

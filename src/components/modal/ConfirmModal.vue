@@ -14,10 +14,10 @@
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-button" @click="cancel()">
-                {{ $t('common.confirm-modal.button.cancel') }}
+                {{ $t('common.modal.button.cancel') }}
               </button>
               <button class="modal-button" @click="confirm()">
-                {{ $t('common.confirm-modal.button.confirm') }}
+                {{ $t('common.modal.button.confirm') }}
               </button>
             </slot>
           </div>

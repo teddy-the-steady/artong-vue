@@ -116,6 +116,11 @@ export default {
         return
       }
 
+      if (this.withdrawableBalance < 0.01) {
+        alert(this.$i18n.t('sidebar.alert.withdraw-limit'))
+        return
+      }
+
       if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
         return
       }
@@ -138,7 +143,7 @@ export default {
         const tx = await contract.populateTransaction.withdraw()
         const txHash = await this.signer.sendUncheckedTransaction(tx)
         await this.wait(txHash)
-        alert('Withdraw complete! Please go check your wallet')
+        alert(this.$i18n.t('sidebar.alert.withdraw'))
         this.refresh()
       } finally {
         this.withdrawing = false

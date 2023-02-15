@@ -35,6 +35,12 @@
     "collection-container2": "Discover projects",
     "view-more": "View more",
     "alert": {
-        "copy": "Copied!"
+        "listed": "Listed!",
+        "purchased": "Purchased!",
+        "canceled": "Canceled!",
+        "updated": "Updated!",
+        "offered": "Offered!",
+        "accepted": "Accepted!",
+        "least-price": "Least price is 0.001 ETH"
     }
 }

@@ -1,9 +1,15 @@
 {
-    "confirm-modal": {
-        "content": "지갑을 확인하세요.",
+    "modal": {
+        "confirm-msg": "지갑에서 계속하세요.",
+        "prompt-placeholder": "이더(ETH) 단위 가격",
         "button": {
-            "confirm": "계속",
+            "confirm": "확인",
             "cancel": "취소"
         }
+    },
+    "alert": {
+        "error": "문제가 발생했습니다. 새로고침 후 시도해보세요.",
+        "saved": "저장 완료!",
+        "copy": "복사 완료!"
     }
 }
