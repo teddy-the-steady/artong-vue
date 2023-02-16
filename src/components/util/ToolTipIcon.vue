@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import DomHandler from '../../util/DomHandler'
+
 export default {
   name: 'ToolTipIcon',
   props: {
@@ -20,16 +22,15 @@ export default {
     clicked() {
       this.setTip()
       this.setPosition()
-      this.toggelToolTip()
-    },
-    toggelToolTip() {
-      this.$store.commit('TOGGLE_TOOL_TIP')
+      this.$store.commit('OPEN_TOOL_TIP')
     },
     setPosition() {
       const icon = this.$refs.icon
-      const iconTop = window.pageYOffset + icon.getBoundingClientRect().top
-      const iconLeft = window.pageXOffset + icon.getBoundingClientRect().left
-      this.$store.commit('SET_ICON_POSITION', { iconTop, iconLeft })
+      const offset = DomHandler.getOffset(icon)
+      this.$store.commit('SET_ICON_POSITION', {
+        iconTop: offset.top,
+        iconLeft: offset.left,
+      })
     },
     setTip() {
       this.$store.commit('SET_TOOL_TIP', this.tip)
@@ -37,3 +38,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.icon {
+  margin-left: 3px;
+  cursor: pointer;
+}
+</style>

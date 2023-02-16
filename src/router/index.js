@@ -118,7 +118,6 @@ const router = new Router({
 })
 
 router.beforeEach(async function (to, from, next) {
-  store.commit('CLOSE_TOOL_TIP')
   const IsBackButtonClicked = window.popStateDetected
   window.popStateDetected = false
   if (!IsBackButtonClicked && from.path !== to.path) {
