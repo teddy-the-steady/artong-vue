@@ -141,6 +141,10 @@ export default {
     )
 
     window.addEventListener('resize', this.setWidth)
+    this.$store.commit(
+      'SET_LANGUAGE',
+      this.currentUser.language || localStorage.getItem('language') || 'ko',
+    )
   },
   watch: {
     isSideMenuOpen() {

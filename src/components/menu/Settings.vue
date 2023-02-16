@@ -8,35 +8,76 @@
       </div>
       <div class="option">
         <label>{{ $t('views.settings.settings.language') }}</label>
-        <LangDropdown class="dropdown" :langOptions="langOptions" />
+        <LangDropdown
+          class="dropdown"
+          :langOptions="langOptions"
+          :savedLanguage="language ? language : null"
+          @language-selected="languageSelected"
+        />
       </div>
-      <button class="save">{{ $t('views.settings.button') }}</button>
+      <button class="save" @click="save">
+        {{ $t('views.settings.button') }}
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { languages } from '../../locales/languages'
+import { mapState } from 'vuex'
+import { languages, language_id_to_name } from '../../locales/languages'
+import { locales } from '../../locales/locales'
+import { getCurrentMember, patchMember } from '../../api/member'
 import LocaleDropdown from '../dropdown/LocaleDropdown.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
 
 export default {
   name: 'Settings',
   components: { LocaleDropdown, LangDropdown },
+  computed: {
+    ...mapState({
+      displayLanguage: state => state.user.display_language,
+    }),
+  },
   data() {
     return {
-      localeOptions: {
-        ko: {
-          name: 'ko',
-          text: '한국',
-        },
-        en: {
-          name: 'en',
-          text: 'USA',
-        },
-      },
+      localeOptions: locales,
       langOptions: languages,
+      member: {
+        language_id: 1,
+      },
+      language: '',
     }
+  },
+  methods: {
+    async save() {
+      try {
+        await patchMember(this.member.id, {
+          language_code: this.language.name,
+        })
+        alert(this.$i18n.t('common.alert.saved'))
+      } catch (error) {
+        this.errorMessage = error
+      }
+    },
+    languageSelected(lang) {
+      this.language = lang
+    },
+  },
+  async mounted() {
+    this.member = await getCurrentMember()
+    this.language =
+      this.langOptions[language_id_to_name[this.member.language_id]] ||
+      this.langOptions[this.displayLanguage]
+  },
+  watch: {
+    async $route(val) {
+      if (val.name === 'Settings') {
+        this.member = await getCurrentMember()
+        this.language =
+          this.langOptions[language_id_to_name[this.member.language_id]] ||
+          this.langOptions[this.displayLanguage]
+      }
+    },
   },
 }
 </script>

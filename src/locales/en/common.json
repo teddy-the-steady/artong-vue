@@ -1,6 +1,6 @@
 {
     "modal": {
-        "comfirm-msg": "Continue with your wallet",
+        "confirm-msg": "Continue with your wallet",
         "prompt-placeholder": "Price in ETH",
         "button": {
             "confirm": "Confirm",
