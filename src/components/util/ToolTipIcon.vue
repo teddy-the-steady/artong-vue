@@ -22,10 +22,7 @@ export default {
     clicked() {
       this.setTip()
       this.setPosition()
-      this.toggelToolTip()
-    },
-    toggelToolTip() {
-      this.$store.commit('TOGGLE_TOOL_TIP')
+      this.$store.commit('OPEN_TOOL_TIP')
     },
     setPosition() {
       const icon = this.$refs.icon

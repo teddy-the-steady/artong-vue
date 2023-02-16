@@ -4,7 +4,9 @@
       <div class="info">
         <h1 class="h1">
           {{ $t('views.create-project.title') }}
-          <TooltipIcon :tip="lorem1" />
+          <TooltipIcon
+            :tip="'ffeeee sdoifsj sdjfoisjd foijsoidf jsiod fjosid foisjdf'"
+          />
         </h1>
         <div>
           <span class="label">{{ $t('views.create-project.name') }}</span>
@@ -31,7 +33,7 @@
             <span class="contribution-policy label">
               {{ $t('views.create-project.contribution-policy.title') }}
             </span>
-            <TooltipIcon :tip="lorem" />
+            <TooltipIcon :tip="'dfsdf'" />
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
@@ -114,10 +116,6 @@ export default {
         { name: 'Istanbul', code: 'IST' },
         { name: 'Paris', code: 'PRS' },
       ],
-      lorem:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      lorem1:
-        'Rorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     }
   },
   methods: {
