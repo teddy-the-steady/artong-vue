@@ -24,10 +24,9 @@ const patchMemberProfileS3key = async function (s3key) {
   })
 }
 
-const patchMember = async function (member_id, { username, introduction }) {
+const patchMember = async function (member_id, info) {
   await instance.patch(`/members/${member_id}`, {
-    username: username,
-    introduction: introduction,
+    ...info,
   })
 }
 

@@ -110,13 +110,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-img {
-  &.active {
-    transition: 0.1s transform ease;
-    transform: rotate(180deg);
+.dropdown {
+  border: none;
+  box-shadow: none;
+  img {
+    &.active {
+      transition: 0.1s transform ease;
+      transform: rotate(180deg);
+    }
+    width: 9.5px;
   }
-  width: 9.5px;
 }
+
 .dialog {
   display: none;
   &.active {
