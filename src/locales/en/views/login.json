@@ -1,0 +1,7 @@
+{
+    "title": "Connect your wallet",
+    "button": {
+        "metamask": "METAMASK",
+        "connect": "CONNECT"
+    }
+}
