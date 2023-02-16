@@ -6,16 +6,20 @@
       </router-link>
     </div>
     <div class="form__box">
-      <h1>Connect your wallet</h1>
+      <h1>{{ $t('views.login.title') }}</h1>
       <p v-text="warning"></p>
       <div class="form__footer">
         <button v-if="isMobile" @click="signInMobile()">
           <span class="spinner" :class="{ active: isSpinnerActive }"></span>
-          <span v-show="!isSpinnerActive">CONNECT</span>
+          <span v-show="!isSpinnerActive">{{
+            $t('views.login.button.connect')
+          }}</span>
         </button>
         <button v-else @click="signIn()">
           <span class="spinner" :class="{ active: isSpinnerActive }"></span>
-          <span v-show="!isSpinnerActive">METAMASK</span>
+          <span v-show="!isSpinnerActive">{{
+            $t('views.login.button.metamask')
+          }}</span>
         </button>
       </div>
     </div>
@@ -216,6 +220,7 @@ export default {
 
     h1 {
       margin-top: 0;
+      text-align: center;
     }
 
     h3 > span {
