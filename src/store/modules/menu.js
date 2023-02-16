@@ -9,7 +9,7 @@ import {
   TOGGLE_THEME,
   SET_INNER_WIDTH,
   SET_ICON_POSITION,
-  TOGGLE_TOOL_TIP,
+  OPEN_TOOL_TIP,
   CLOSE_TOOL_TIP,
   SET_TOOL_TIP,
 } from '../actions/menu'
@@ -61,8 +61,8 @@ const mutations = {
     state.iconTop = iconTop
     state.iconLeft = iconLeft
   },
-  [TOGGLE_TOOL_TIP]: state => {
-    state.isToolTipOpen = !state.isToolTipOpen
+  [OPEN_TOOL_TIP]: state => {
+    state.isToolTipOpen = true
   },
   [CLOSE_TOOL_TIP]: state => {
     state.isToolTipOpen = false

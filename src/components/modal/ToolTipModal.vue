@@ -1,5 +1,5 @@
 <template>
-  <div class="tip" ref="tip">
+  <div class="tip" ref="tip" @focusout="handleFocusOut" tabindex="0">
     {{ toolTip }}
   </div>
 </template>
@@ -20,6 +20,7 @@ export default {
       iconLeft: state => state.menu.iconLeft,
       toolTip: state => state.menu.toolTip,
       innerWidth: state => state.menu.innerWidth,
+      isToolTipOpen: state => state.menu.isToolTipOpen,
     }),
   },
   methods: {
@@ -52,12 +53,20 @@ export default {
       }
       this.$refs.tip.style.left = `${left}px`
     },
+    handleFocusOut() {
+      this.$store.commit('CLOSE_TOOL_TIP')
+    },
   },
   watch: {
     toolTip() {
       this.$refs.tip.style.top = 'auto'
       this.$refs.tip.style.left = 'auto'
       this.setModalSize()
+    },
+    isToolTipOpen(val) {
+      if (val) {
+        this.$refs.tip.focus({ preventScroll: true })
+      }
     },
   },
 }
@@ -74,5 +83,9 @@ export default {
   padding: 0.75rem 1.25rem;
   box-sizing: border-box;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+
+  &:focus {
+    outline: 0;
+  }
 }
 </style>
