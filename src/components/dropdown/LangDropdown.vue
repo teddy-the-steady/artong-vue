@@ -7,7 +7,7 @@
       @touchstart="langTouchStart"
       @touchend="langTouchEnd"
     >
-      <div>{{ langSelected.text }}</div>
+      <div>{{ languageShown }}</div>
       <img
         :class="{ active: isDialogActive }"
         src="../../assets/icons/arrow_down.svg"
@@ -43,16 +43,24 @@ export default {
       type: Object,
       default: () => {},
     },
+    savedLanguage: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     isMobile() {
       return this.$isMobile()
     },
     ...mapState({
-      mainLanguage: state => state.user.main_language,
+      displayLanguage: state => state.user.display_language,
     }),
-    langSelected() {
-      return this.langOptions[this.mainLanguage]
+    languageShown() {
+      if (this.savedLanguage) {
+        return this.savedLanguage.text
+      } else {
+        return this.langOptions[this.displayLanguage]?.text
+      }
     },
   },
   data() {
@@ -99,10 +107,14 @@ export default {
       }
     },
     langClick(option) {
-      if (this.langSelected.name === option.name) {
+      if (
+        this.langOptions[this.displayLanguage].name === option.name &&
+        this.$router.currentRoute.name !== 'Settings'
+      ) {
         return
       }
-      this.$store.commit('MAIN_LANGUAGE', option.name)
+      this.$store.commit('SET_LANGUAGE', option.name)
+      this.$emit('language-selected', option)
     },
   },
   watch: {
