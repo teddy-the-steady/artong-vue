@@ -23,14 +23,22 @@
             <div class="category">
               {{ mainToken.project ? mainToken.project.symbol : '' }}
             </div>
-            <div class="main-token-name">{{ mainToken.name }}</div>
+            <div class="main-token-name">
+              <span v-if="mainToken.name">{{ mainToken.name }}</span>
+              <SkeletonBox v-else :maxWidth="20" :height="'1.3em'" />
+            </div>
           </div>
           <div
+            v-if="contentImagePath(mainToken)"
             class="main-token-img"
             @click="onContentClick($event, mainToken)"
           >
             <img :src="contentImagePath(mainToken)" />
           </div>
+          <SkeletonBox
+            v-else
+            style="width: 400px; height: 400px; border-radius: 14px"
+          />
           <div class="main-token-bottom">
             <div class="main-token-bottom-child">
               <div class="main-token-bottom-title">
@@ -289,6 +297,7 @@ import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
+import SkeletonBox from '../util/SkeletonBox.vue'
 
 export default {
   name: 'Main',
@@ -301,6 +310,7 @@ export default {
     ContentsProfile,
     ProjectPageProfile_small,
     LangDropdown,
+    SkeletonBox,
   },
   computed: {
     ...mapState({
@@ -810,15 +820,19 @@ export default {
         }
 
         .main-token-name {
+          display: flex;
+          align-items: end;
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
           font-size: 24px;
           text-align: left;
-
           color: $artong-black;
-
           margin-bottom: 6px;
+
+          span {
+            border-radius: 10px;
+          }
         }
 
         .main-token-img {
@@ -969,6 +983,8 @@ export default {
         }
 
         .main-token-name {
+          display: flex;
+          align-items: end;
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
@@ -976,6 +992,10 @@ export default {
           text-align: left;
           color: $artong-black;
           margin-bottom: 6px;
+
+          span {
+            border-radius: 10px;
+          }
         }
 
         .main-token-img {
