@@ -63,6 +63,9 @@
             "name-desc-required": "이름과 설명은 필수값 입니다.",
             "least-price": "최소 금액은 0.001 ETH 입니다.",
             "token-royalty-range": "0 에서 100 사이의 숫자를 입력해주세요."
+        },
+        "tooltip": {
+            "lazy-mint": "판매시 민팅(Lazy Minting): NFT가 판매 후에 민팅 됩니다. 즉, 아티스트는 NFT를 발행하기 위해 선불 가스 비용을 지불할 필요가 없으며 토큰 판매시에 토큰 구매자가 가스비를 지불합니다."
         }
     }
 }

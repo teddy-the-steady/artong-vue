@@ -83,6 +83,8 @@ export default {
   padding: 0.75rem 1.25rem;
   box-sizing: border-box;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
+  white-space: pre-line;
+  text-align: left;
 
   &:focus {
     outline: 0;

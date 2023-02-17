@@ -4,9 +4,6 @@
       <div class="info">
         <h1 class="h1">
           {{ $t('views.create-project.title') }}
-          <TooltipIcon
-            :tip="'ffeeee sdoifsj sdjfoisjd foijsoidf jsiod fjosid foisjdf'"
-          />
         </h1>
         <div>
           <span class="label">{{ $t('views.create-project.name') }}</span>
@@ -33,7 +30,9 @@
             <span class="contribution-policy label">
               {{ $t('views.create-project.contribution-policy.title') }}
             </span>
-            <TooltipIcon :tip="'dfsdf'" />
+            <TooltipIcon
+              :tip="$t('views.create-project.tooltip.contribution-policy')"
+            />
           </div>
           <div class="input-group">
             <input type="radio" id="r1" v-model="policy" value="0" />
