@@ -63,6 +63,9 @@
             "name-desc-required": "Name and Description required",
             "least-price": "Least price is 0.001 ETH",
             "token-royalty-range": "Token royalty should be in range 0 to 100"
+        },
+        "tooltip": {
+            "lazy-mint": "Lazy Minting: NFT gets minted once sold. This means that the artist does not have to pay any upfront gas fees to mint their NFTs, but buyer pays the fees when the token is purchased."
         }
     }
 }
