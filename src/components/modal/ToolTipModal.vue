@@ -76,7 +76,7 @@ export default {
 .tip {
   position: absolute;
   z-index: 998;
-  max-width: 60%;
+  max-width: 50%;
   height: auto;
   background: #eeeeee;
   border-radius: 10px;
