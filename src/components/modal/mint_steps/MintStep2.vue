@@ -81,6 +81,7 @@ export default {
   text-align: left;
   .when {
     display: flex;
+    align-items: center;
     margin-bottom: 20px;
     .mint-now-radio {
       margin-left: auto;
