@@ -288,7 +288,7 @@ html {
     }
 
     #header-bar {
-      z-index: 999;
+      z-index: 998;
     }
 
     .contents__body {

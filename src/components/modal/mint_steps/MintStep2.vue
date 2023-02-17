@@ -21,7 +21,13 @@
         :disabled="project.policy === 1"
         @change="onLazyMintChange"
       />
-      <label for="r2">{{ $t('views.project.mint-modal.input.on-sold') }}</label>
+      <label class="lazy-mint-label" for="r2">
+        {{ $t('views.project.mint-modal.input.on-sold') }}
+        <TooltipIcon
+          class="tooltip-icon"
+          :tip="$t('views.project.mint-modal.tooltip.lazy-mint')"
+        />
+      </label>
     </div>
 
     <div v-show="lazyMint == 1" class="price-input">
@@ -38,8 +44,11 @@
 </template>
 
 <script>
+import TooltipIcon from '../../util/ToolTipIcon.vue'
+
 export default {
   name: 'MintStep3',
+  components: { TooltipIcon },
   props: {
     project: {
       type: Object,
@@ -77,6 +86,13 @@ export default {
     }
     .lazy-mint-radio {
       margin-left: 30px;
+    }
+    .lazy-mint-label {
+      display: inline-flex;
+      align-items: center;
+      .tooltip-icon {
+        width: 20px;
+      }
     }
   }
   .price-input {
