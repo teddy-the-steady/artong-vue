@@ -83,7 +83,7 @@ export default {
   top: 0;
   left: 0;
   cursor: pointer;
-  z-index: 998;
+  z-index: 997;
 }
 
 .sidebar-panel {
