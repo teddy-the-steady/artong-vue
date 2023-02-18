@@ -8,7 +8,7 @@ import { Auth } from '@aws-amplify/auth'
 import { Storage } from '@aws-amplify/storage'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
-import VueMobileDetection from 'vue-mobile-detection'
+import detectMobile from './plugin/VueMobileDetection'
 import Masonry from './plugin/masonry'
 import router from './router'
 import store from './store'
@@ -22,7 +22,7 @@ smoothscroll.polyfill()
 
 Vue.use(Amplify)
 Vue.use(Masonry)
-Vue.use(VueMobileDetection)
+Vue.use(detectMobile)
 Vue.use(VueCarousel)
 
 Vue.config.productionTip = false
