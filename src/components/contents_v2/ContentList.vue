@@ -97,7 +97,8 @@ export default {
         return
       }
 
-      if (this.queryContents.func.name === 'graphql') {
+      // INFO] graphql.length === 1, RESTapi.length === 2
+      if (this.queryContents.func.length === 1) {
         const results = await this.gqlContents()
 
         if (this.queryContents.body.variables.start_num >= 0) {
