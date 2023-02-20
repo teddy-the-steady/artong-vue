@@ -202,34 +202,40 @@
               {{ content ? content.description : '' }}
             </div>
           </div>
-          <div class="price-box">
-            <div class="price-box-content">
-              <label class="label">
-                {{ $t('views.content-detail.price') }}
-              </label>
-              <div>
-                {{ content ? weiToEther(price) : '' }}
-                ETH
-              </div>
+          <div>
+            <div class="fee-info">
+              {{ $t('views.content-detail.fee') }}
+              <TooltipIcon :tip="$t('views.content-detail.tooltip.fee')" />
             </div>
-            <div class="royalties">
-              <div
-                v-show="content ? content.royalty > 0 : false"
-                class="price-box-content"
-              >
+            <div class="price-box">
+              <div class="price-box-content">
                 <label class="label">
-                  {{ $t('views.content-detail.creator-royalty') }}
+                  {{ $t('views.content-detail.price') }}
                 </label>
-                <div>{{ content ? content.royalty / 100 : '' }} %</div>
+                <div>
+                  {{ content ? weiToEther(price) : '' }}
+                  ETH
+                </div>
               </div>
-              <div
-                v-show="project ? project.royalty > 0 : false"
-                class="price-box-content"
-              >
-                <label class="label">
-                  {{ $t('views.content-detail.project-royalty') }}
-                </label>
-                <div>{{ project ? project.royalty / 100 : '' }} %</div>
+              <div class="royalties">
+                <div
+                  v-show="content ? content.royalty > 0 : false"
+                  class="price-box-content"
+                >
+                  <label class="label">
+                    {{ $t('views.content-detail.creator-royalty') }}
+                  </label>
+                  <div>{{ content ? content.royalty / 100 : '' }} %</div>
+                </div>
+                <div
+                  v-show="project ? project.royalty > 0 : false"
+                  class="price-box-content"
+                >
+                  <label class="label">
+                    {{ $t('views.content-detail.project-royalty') }}
+                  </label>
+                  <div>{{ project ? project.royalty / 100 : '' }} %</div>
+                </div>
               </div>
             </div>
           </div>
@@ -315,6 +321,7 @@ import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import SkeletonBox from '../util/SkeletonBox.vue'
+import TooltipIcon from '../util/ToolTipIcon.vue'
 
 export default {
   name: 'CandidateDetail',
@@ -327,6 +334,7 @@ export default {
     BasicDialog,
     CuratedCollection,
     SkeletonBox,
+    TooltipIcon,
   },
   data() {
     return {
@@ -736,8 +744,17 @@ export default {
           overflow: auto;
         }
       }
+      .fee-info {
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .icon {
+          width: 20px;
+        }
+      }
       .price-box {
-        margin-top: 30px;
         padding: 24px 24px 12px;
         background: #f2f2f2;
         border: 1px solid #cccccc;
