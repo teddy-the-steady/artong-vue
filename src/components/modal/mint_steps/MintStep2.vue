@@ -21,13 +21,13 @@
         :disabled="project.policy === 1"
         @change="onLazyMintChange"
       />
-      <label class="lazy-mint-label" for="r2">
+      <label for="r2">
         {{ $t('views.project.mint-modal.input.on-sold') }}
-        <TooltipIcon
-          class="tooltip-icon"
-          :tip="$t('views.project.mint-modal.tooltip.lazy-mint')"
-        />
       </label>
+      <TooltipIcon
+        class="tooltip-icon"
+        :tip="$t('views.project.mint-modal.tooltip.lazy-mint')"
+      />
     </div>
 
     <div v-show="lazyMint == 1" class="price-input">
@@ -80,19 +80,17 @@ export default {
 .container {
   text-align: left;
   .when {
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
     .mint-now-radio {
-      margin-left: 100px;
+      margin-left: auto;
     }
     .lazy-mint-radio {
       margin-left: 30px;
     }
-    .lazy-mint-label {
-      display: inline-flex;
-      align-items: center;
-      .tooltip-icon {
-        width: 20px;
-      }
+    .tooltip-icon {
+      width: 20px;
     }
   }
   .price-input {
