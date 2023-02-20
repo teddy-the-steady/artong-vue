@@ -821,7 +821,7 @@ export default {
 
         .main-token-name {
           display: flex;
-          align-items: end;
+          align-items: flex-end;
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
@@ -984,7 +984,7 @@ export default {
 
         .main-token-name {
           display: flex;
-          align-items: end;
+          align-items: flex-end;
           font-family: $item-font;
           font-style: $item-font-style;
           font-weight: 700;
