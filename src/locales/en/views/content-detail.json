@@ -5,6 +5,7 @@
     "project": "Project",
     "description": "Description",
     "price": "Price",
+    "fee": "Platform fee",
     "creator-royalty": "Creator Royalty",
     "project-royalty": "Project Royalty",
     "table": {
@@ -42,5 +43,8 @@
         "offered": "Offered!",
         "accepted": "Accepted!",
         "least-price": "Least price is 0.001 ETH"
+    },
+    "tooltip": {
+        "fee": "Artong recieves a 1% fee on each secondary sales"
     }
 }
