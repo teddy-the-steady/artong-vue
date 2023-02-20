@@ -255,14 +255,14 @@ export default {
     },
     onProfileChange(e) {
       this.profileImageFile = e.target.files[0]
-      this.$children[0].$refs.projectProfileImage.src = URL.createObjectURL(
+      this.$children[1].$refs.projectProfileImage.src = URL.createObjectURL(
         this.profileImageFile,
       )
       URL.revokeObjectURL(this.profileImageFile)
     },
     onBackgroundChange(e) {
       this.backgroundImageFile = e.target.files[0]
-      this.$children[0].$refs.backgroundImage.src = URL.createObjectURL(
+      this.$children[1].$refs.backgroundImage.src = URL.createObjectURL(
         this.backgroundImageFile,
       )
       URL.revokeObjectURL(this.backgroundImageFile)
@@ -275,8 +275,8 @@ export default {
       this.backgroundImageFile = null
       this.signer = null
       this.creating = false
-      this.$children[0].$refs.projectProfileImage.src = ''
-      this.$children[0].$refs.backgroundImage.src = ''
+      this.$children[1].$refs.projectProfileImage.src = ''
+      this.$children[1].$refs.backgroundImage.src = ''
     },
     onMaxAmtFocusout(event) {
       if (!event.target.value || event.target.valueAsNumber <= 0) {
