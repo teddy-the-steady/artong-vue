@@ -1,0 +1,22 @@
+{
+    "navbar-right": {
+        "connect": "연결하기",
+        "contribute": "기여하기"
+    },
+    "user-dialog": {
+        "wrong-network": "잘못된 네트워크",
+        "profile": "프로필",
+        "settings": "설정",
+        "disconnect": "로그아웃"
+    },
+    "search": {
+        "placeholder": "검색",
+        "null-search": "검색어를 입력하세요.",
+        "contents": "컨텐츠",
+        "projects": "프로젝트",
+        "users": "유저"
+    },
+    "alert": {
+        "contribute": "우선, 기여할 프로젝트를 고르세요."
+    }
+}

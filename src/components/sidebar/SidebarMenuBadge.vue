@@ -15,8 +15,8 @@ export default {
   props: {
     badge: {
       type: Object,
-      default: () => {}
-    }
-  }
+      default: () => {},
+    },
+  },
 }
 </script>

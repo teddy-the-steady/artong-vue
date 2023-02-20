@@ -1,0 +1,12 @@
+{
+    "title": "Project Settings",
+    "settings": {
+        "slug": "URL slug",
+        "description": "Description",
+        "instagram": "Instagram",
+        "twitter": "Twitter",
+        "discord": "Discord",
+        "website": "Website"
+    },
+    "button": "SAVE"
+}
