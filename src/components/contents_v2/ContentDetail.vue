@@ -1016,7 +1016,6 @@ export default {
         }
       }
       .price-box {
-        margin-top: 30px;
         padding: 24px 24px 12px;
         background: #f2f2f2;
         border: 1px solid #cccccc;
