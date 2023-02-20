@@ -5,6 +5,7 @@
     "project": "프로젝트",
     "description": "상세 설명",
     "price": "가격",
+    "fee": "거래 수수료",
     "creator-royalty": "창작자 로열티",
     "project-royalty": "프로젝트 로열티",
     "table": {
@@ -42,5 +43,8 @@
         "offered": "제시 완료!",
         "accepted": "수락 완료!",
         "least-price": "최소 금액은 0.001 ETH 입니다."
+    },
+    "tooltip": {
+        "fee": "알통은 모든 매매거래에 1%의 수수료를 부과합니다."
     }
 }
