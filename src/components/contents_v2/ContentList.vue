@@ -96,7 +96,8 @@ export default {
       if (!this.queryContents.func) {
         return
       }
-
+      console.log(this.queryContents.func)
+      console.log(this.queryContents.func.name)
       if (this.queryContents.func.name === 'graphql') {
         const results = await this.gqlContents()
 
