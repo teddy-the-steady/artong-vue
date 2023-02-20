@@ -1,0 +1,8 @@
+{
+    "title": "User Settings",
+    "settings": {
+        "username": "Username",
+        "intro": "Intro"
+    },
+    "button": "SAVE"
+}
