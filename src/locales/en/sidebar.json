@@ -1,0 +1,21 @@
+{
+    "balance": {
+        "artong": "Artong Balance",
+        "offer": "Offer Balance",
+        "withdrawable": "Withdrawable",
+        "button-withdraw": "Withdraw"
+    },
+    "menu": {
+        "title": "MENU",
+        "contents": {
+            "projects": "Projects",
+            "contents": "Contents",
+            "feed": "Feed",
+            "create-project": "Create Project"
+        }
+    },
+    "alert": {
+        "withdraw": "Withdraw completed! Please check your wallet",
+        "withdraw-limit": "You can withdraw from at least 0.01 ETH"
+    }
+}

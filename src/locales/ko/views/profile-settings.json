@@ -1,0 +1,8 @@
+{
+    "title": "내 정보 수정",
+    "settings": {
+        "username": "닉네임",
+        "intro": "소개"
+    },
+    "button": "저장하기"
+}

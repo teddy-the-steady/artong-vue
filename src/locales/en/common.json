@@ -1,0 +1,15 @@
+{
+    "modal": {
+        "confirm-msg": "Continue with your wallet",
+        "prompt-placeholder": "Price in ETH",
+        "button": {
+            "confirm": "Confirm",
+            "cancel": "Cancel"
+        }
+    },
+    "alert": {
+        "error": "Oops! Something went wrong. Please try again or Refresh(F5) before trying again.",
+        "saved": "Saved!",
+        "copy": "Copied!"
+    }
+}

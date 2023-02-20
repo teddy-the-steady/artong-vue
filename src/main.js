@@ -8,11 +8,13 @@ import { Auth } from '@aws-amplify/auth'
 import { Storage } from '@aws-amplify/storage'
 import awsconfig from './aws-exports'
 import smoothscroll from 'smoothscroll-polyfill'
-import VueMobileDetection from "vue-mobile-detection"
+import detectMobile from './plugin/VueMobileDetection'
 import Masonry from './plugin/masonry'
 import router from './router'
 import store from './store'
 import axiosInit from './api'
+import i18n from './i18n'
+import VueCarousel from 'vue-carousel'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -20,17 +22,19 @@ smoothscroll.polyfill()
 
 Vue.use(Amplify)
 Vue.use(Masonry)
-Vue.use(VueMobileDetection)
+Vue.use(detectMobile)
+Vue.use(VueCarousel)
 
 Vue.config.productionTip = false
 
 axiosInit
 
 /* eslint-disable no-new */
-new Vue({
+export default new Vue({
   el: '#app',
   router,
   store,
   components: { App },
-  template: '<App/>'
+  i18n,
+  template: '<App/>',
 })

@@ -1,0 +1,21 @@
+{
+    "balance": {
+        "artong": "총 잔액",
+        "offer": "제시 잔액",
+        "withdrawable": "인출가능 잔액",
+        "button-withdraw": "인출하기"
+    },
+    "menu": {
+        "title": "메뉴",
+        "contents": {
+            "projects": "프로젝트",
+            "contents": "컨텐츠",
+            "feed": "피드",
+            "create-project": "프로젝트 생성하기"
+        }
+    },
+    "alert": {
+        "withdraw": "인출 완료! 지갑을 확인하세요.",
+        "withdraw-limit": "최소 0.01 ETH 부터 인출 가능합니다."
+    }
+}

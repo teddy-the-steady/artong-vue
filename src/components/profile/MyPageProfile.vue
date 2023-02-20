@@ -1,22 +1,60 @@
 <template>
   <div class="profile">
-    <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;"></skeleton-box>
+    <div class="profile-image-wrapper" @click="$refs.fileInput.click()">
+      <ProfileImageBig
+        :profileImageUrl="profileImageUrl"
+        :userWalletAddress="currentUser.wallet_address"
+        :isFirstLoading="isFirstLoading"
+        class="profile-image"
+      ></ProfileImageBig>
     </div>
-    <div v-else class="image">
-      <img v-if="profilePic" :src="profilePic" @click="$refs.fileInput.click()" @error="isFirstLoading = true"/>
-      <div v-else class="basicProfilePicture" @click="$refs.fileInput.click()"></div>
-      <input ref="fileInput" type="file" @change="onFileChange">
+    <input ref="fileInput" type="file" @change="onFileChange" />
+    <div v-if="innerWidth < 1080" class="top1">
+      <div class="info">
+        <div class="username">@{{ currentUser.username }}</div>
+
+        <button class="address white-button" @click="copy">
+          {{ this.shortAddress }}
+          <img src="../../assets/icons/copy.svg" />
+        </button>
+      </div>
+      <div class="follow-static-container">
+        <div class="follow-static">
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
+          <div class="number">{{ currentUser.follower }}</div>
+        </div>
+        <div class="follow-static">
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
+          <div class="number">{{ currentUser.following }}</div>
+        </div>
+      </div>
+      <div class="introduction">
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
+        <div class="text">{{ currentUser.profile.introduction }}</div>
+      </div>
     </div>
-    <div class="info">
-      <div class="username">
-        {{ $route.params.id }}
+    <div v-else class="top2">
+      <div class="info">
+        <div class="username">@{{ currentUser.username }}</div>
+
+        <button class="address white-button" @click="copy">
+          {{ this.shortAddress }}
+          <img src="../../assets/icons/copy.svg" />
+        </button>
       </div>
-      <div class="display-name">
-        {{ currentUser.profile.display_name }}
+      <div class="introduction">
+        <div class="title">{{ $t('views.user.profile.introduction') }}</div>
+        <div class="text">{{ currentUser.profile.introduction }}</div>
       </div>
-      <div class="intro">
-        {{ currentUser.email }}
+      <div class="follow-static-container">
+        <div class="follow-static">
+          <div class="title">{{ $t('views.user.profile.follower') }}</div>
+          <div class="number">{{ currentUser.follower }}</div>
+        </div>
+        <div class="follow-static">
+          <div class="title">{{ $t('views.user.profile.following') }}</div>
+          <div class="number">{{ currentUser.following }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -25,23 +63,30 @@
 <script>
 import { mapState } from 'vuex'
 import Storage from '@aws-amplify/storage'
-import { makeS3Path } from '../../util/commonFunc'
-import SkeletonBox from '../util/SkeletonBox'
+import { makeS3Path, shortenAddress } from '../../util/commonFunc'
+import { patchMemberProfileS3key } from '../../api/member'
+import ProfileImageBig from './ProfileImageBig.vue'
 
 export default {
   name: 'MyPageProfile',
   components: {
-    SkeletonBox
+    ProfileImageBig,
   },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
-      profilePic: state => state.user.currentUser.profile.profile_pic
-    })
+      profileImageUrl: state =>
+        state.user.currentUser.profile.profile_image_url,
+      innerWidth: state => state.menu.innerWidth,
+    }),
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      S3_PRIVACY_LEVEL: 'public',
+      hasErrorGettingImage: false,
+      address: '',
+      shortAddress: '',
     }
   },
   methods: {
@@ -50,20 +95,37 @@ export default {
       await this.uploadProfileImage(file)
     },
     async uploadProfileImage(file) {
-      // TODO] 전후처리는? 사진 가공 등등
-      // 프론트에서 PUT전에 미리 확인할게 뭐가 있을까? 타입, 용량?
-      const result = await Storage.put(`${this.currentUser.id}/profile/${file.name}`, file, {
-        level: 'public',
-        contentType: file.type
-      })
+      const result = await Storage.put(
+        `profile/${this.currentUser.id}/${file.name}`,
+        file,
+        {
+          level: this.S3_PRIVACY_LEVEL,
+          contentType: file.type,
+        },
+      )
       if (result) {
-        this.$store.commit('CURRENT_USER_PROFILE_PIC', makeS3Path(`public/${result.key}`))
+        await patchMemberProfileS3key(`${this.S3_PRIVACY_LEVEL}/${result.key}`)
+        this.$store.commit(
+          'CURRENT_USER_PROFILE_IMAGE_URL',
+          makeS3Path(`${this.S3_PRIVACY_LEVEL}/${result.key}`),
+        )
       }
-    }
+    },
+    copy() {
+      navigator.clipboard
+        .writeText(`${this.currentUser.wallet_address}`)
+        .then(() => {
+          alert(this.$i18n.t('common.alert.copy'))
+        })
+        .catch(() => {
+          alert(this.$i18n.t('common.alert.error'))
+        })
+    },
   },
-  async mounted() {
+  mounted() {
     this.isFirstLoading = false
-  }
+    this.shortAddress = shortenAddress(this.currentUser.wallet_address)
+  },
 }
 </script>
 
@@ -71,66 +133,163 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
-    display: flex;
-    width: 70%;
-
-    .image {
-        background-color: $artong-white;
-        width: 150px;
-        height: 150px;
-        min-width: 100px;
-        min-height: 100px;
-        margin-right: 30px;
-        border-radius: 50%;
-        box-shadow: 1px 1px 4px 0 rgba(0,0,0,.15);
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-          cursor: pointer;
-        }
-
-        div, span {
-          height: 150px;
-          border-radius: 50%;
-
-          &.basicProfilePicture {
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-          }
-        }
-
-        input {
-          display: none;
-        }
+  text-align: initial;
+  margin-left: 16px; // 840이상부터 24px;
+  .profile-image-wrapper {
+    width: 120px;
+    .profile-image {
+      margin-left: 8px;
     }
+  }
 
+  input {
+    display: none;
+  }
+  .top1 {
     .info {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-      width: 50%;
-      word-break: break-all;
-
       .username {
-        font-size: 1.5em;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        color: $artong-black;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .address {
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        padding-left: 16px;
+        padding-right: 16px;
+        img {
+          width: 20px;
+          height: 20px;
+          transform: translateY(3px);
+        }
       }
     }
+    .follow-static-container {
+      display: flex;
+      margin-top: 16px;
+      .follow-static {
+        margin-right: 24px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-size: 18px;
+        color: $artong-black;
+        .title {
+          font-weight: 600;
+        }
+        .number {
+          margin-top: 8px;
+          font-weight: 400;
+        }
+      }
+    }
+    .introduction {
+      margin-top: 16px;
+      margin-bottom: 16px;
+      .title {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        color: $artong-black;
+      }
+      .text {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        color: #4d4d4d;
+        margin-top: 8px;
+        word-break: break-all;
+      }
+    }
+  }
+  .top2 {
+    display: flex;
+    flex-direction: row;
+    .info {
+      width: 382px;
+      margin-right: 24px;
+      .username {
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: $artong-black;
+      }
+      .address {
+        margin-top: 8px;
+        font-family: 'Pretendard';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        border: 1px solid #f2f2f2;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+        border-radius: 999px;
+        padding-left: 16px;
+        padding-right: 16px;
+        img {
+          width: 20px;
+          height: 20px;
+          transform: translateY(3px);
+        }
+      }
+    }
+    .introduction {
+      font-family: 'Pretendard';
+      font-style: normal;
+      width: 472px;
+      .title {
+        font-weight: 600;
+        font-size: 18px;
+        color: $artong-black;
+      }
+      .text {
+        margin-top: 8px;
+        font-weight: 400;
+        font-size: 16px;
+        color: #4d4d4d;
+        word-break: break-all;
+      }
+    }
+    .follow-static-container {
+      display: flex;
+      margin-right: 24px;
+      margin-left: auto;
+      .follow-static {
+        font-family: 'Pretendard';
+        font-style: normal;
+        color: $artong-black;
+        margin-left: 24px;
+        .title {
+          font-weight: 600;
+          font-size: 18px;
+          margin-bottom: 8px;
+        }
+        .number {
+          font-weight: 400;
+          font-size: 18px;
+        }
+      }
+    }
+  }
 }
-
-@media only screen and (max-width: 599px) {
+@media (min-width: 840px) and(max-width:1079px) {
   .profile {
-    .image {
-      width: 100px;
-      height: 100px;
-      margin-right: 10px;
-      div {
-        height: 100px;
-      }
-      input {
-        display: none;
-      }
+    margin-left: 24px;
+    .profile-image {
+      margin-left: 0px;
     }
   }
 }
