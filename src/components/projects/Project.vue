@@ -443,7 +443,9 @@ export default {
     setStatistics() {
       this.projectData[0] = {
         name: 'Items',
-        info: `${this.project.max_token_id || 0}/${this.project.maxAmount}`,
+        info: `${this.project.max_token_id || 0}/${
+          this.project.maxAmount === '0' ? '∞' : this.project.maxAmount
+        }`,
       }
     },
     async subscribe() {

@@ -16,6 +16,7 @@
         "required": "required!"
     },
     "tooltip": {
-        "contribution-policy": "1. Immediate: You can mint right away or lazy mint without permission from the project owner.\n As soon as you contribute, your content will be made public on the project.\n\n 2. After approval: Contributors can only lazy mint. After contributing, it can be checked in the\n Waiting for Approval tab, and the project owner can press the Approve button to publish the work."
+        "contribution-policy": "1. Immediate: You can mint right away or lazy mint without permission from the project owner.\n As soon as you contribute, your content will be made public on the project.\n\n 2. After approval: Contributors can only lazy mint. After contributing, it can be checked in the\n Waiting for Approval tab, and the project owner can press the Approve button to publish the work.",
+        "max-token-amount": "0 = infinity"
     }
 }
