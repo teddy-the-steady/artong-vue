@@ -279,7 +279,7 @@ export default {
       this.$children[1].$refs.backgroundImage.src = ''
     },
     onMaxAmtFocusout(event) {
-      if (!event.target.value || event.target.valueAsNumber <= 0) {
+      if (!event.target.value || event.target.valueAsNumber < 0) {
         this.maxAmount = null
       } else {
         this.maxAmount = Math.trunc(this.maxAmount)
