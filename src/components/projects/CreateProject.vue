@@ -14,9 +14,12 @@
           <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
-          <span class="label">{{
-            $t('views.create-project.max-token-amount.title')
-          }}</span>
+          <span class="label">
+            {{ $t('views.create-project.max-token-amount.title') }}
+            <TooltipIcon
+              :tip="$t('views.create-project.tooltip.max-token-amount')"
+            />
+          </span>
           <input
             type="number"
             inputmode="decimal"
@@ -126,7 +129,7 @@ export default {
       if (!this.symbol) {
         nullField.push(this.$i18n.t('views.create-project.symbol'))
       }
-      if (!this.maxAmount) {
+      if (this.maxAmount < 0) {
         nullField.push(
           this.$i18n.t('views.create-project.max-token-amount.title'),
         )
@@ -255,16 +258,14 @@ export default {
     },
     onProfileChange(e) {
       this.profileImageFile = e.target.files[0]
-      this.$children[1].$refs.projectProfileImage.src = URL.createObjectURL(
-        this.profileImageFile,
-      )
+      this.$children[this.$children.length - 1].$refs.projectProfileImage.src =
+        URL.createObjectURL(this.profileImageFile)
       URL.revokeObjectURL(this.profileImageFile)
     },
     onBackgroundChange(e) {
       this.backgroundImageFile = e.target.files[0]
-      this.$children[1].$refs.backgroundImage.src = URL.createObjectURL(
-        this.backgroundImageFile,
-      )
+      this.$children[this.$children.length - 1].$refs.backgroundImage.src =
+        URL.createObjectURL(this.backgroundImageFile)
       URL.revokeObjectURL(this.backgroundImageFile)
     },
     setDefault() {
@@ -275,11 +276,12 @@ export default {
       this.backgroundImageFile = null
       this.signer = null
       this.creating = false
-      this.$children[1].$refs.projectProfileImage.src = ''
-      this.$children[1].$refs.backgroundImage.src = ''
+      this.$children[this.$children.length - 1].$refs.projectProfileImage.src =
+        ''
+      this.$children[this.$children.length - 1].$refs.backgroundImage.src = ''
     },
     onMaxAmtFocusout(event) {
-      if (!event.target.value || event.target.valueAsNumber <= 0) {
+      if (!event.target.value || event.target.valueAsNumber < 0) {
         this.maxAmount = null
       } else {
         this.maxAmount = Math.trunc(this.maxAmount)
@@ -314,6 +316,8 @@ export default {
     box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
 
     .label {
+      display: flex;
+      align-items: center;
       font-weight: 600;
     }
 
