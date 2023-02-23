@@ -593,9 +593,9 @@ export default {
           for (;;) {
             try {
               const offerPrice = await this.$refs.promptModal.waitForAnswer()
-              if (parseInt(offerPrice) < 0.001) {
+              if (offerPrice < 0.001) {
                 alert(this.$i18n.t('views.content-detail.alert.least-price'))
-                return
+                continue
               }
               this.confirmOnProcess = true
               const txHash = await this.offer(contract, offerPrice)
