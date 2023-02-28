@@ -39,7 +39,9 @@
       <div class="detail">
         <div class="top">{{ $t('views.project.statitics.items') }}</div>
         <div class="bottom">
-          {{ project.max_token_id || 0 }}/{{ project.maxAmount }}
+          {{ project.max_token_id || 0 }}/{{
+            project.maxAmount === '0' ? '∞' : project.maxAmount
+          }}
         </div>
       </div>
       <div class="info">
