@@ -149,14 +149,15 @@ export default {
         font-weight: 600;
         font-size: 18px;
         color: #000000;
+        margin-bottom: 10px;
       }
       .info-desc {
         font-weight: 400;
         font-size: 16px;
         color: #4d4d4d;
         width: 80%;
-        word-break: break-word;
         margin: auto;
+        white-space: break-spaces;
       }
     }
   }
