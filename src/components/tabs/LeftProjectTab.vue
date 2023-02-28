@@ -211,7 +211,7 @@ export default {
       font-size: 16px;
       color: #4d4d4d;
       line-height: 150%;
-      word-break: break-word;
+      white-space: break-spaces;
     }
   }
 }
