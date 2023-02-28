@@ -26,7 +26,7 @@
         "contributors": "기여자",
         "info": {
             "title": "정보",
-            "content": "상세"
+            "content": "설명"
         },
         "waiting-for-approval": {
             "title": "토큰후보",
