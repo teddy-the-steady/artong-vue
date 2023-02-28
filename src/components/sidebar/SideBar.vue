@@ -93,7 +93,7 @@ export default {
   left: 0;
   top: $head-height;
   height: 100%;
-  z-index: 998;
+  z-index: 997;
   width: 300px;
 }
 </style>
