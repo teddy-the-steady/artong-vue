@@ -8,7 +8,7 @@ import {
 import { AUTH_LOGOUT } from '../actions/auth'
 import { makeS3Path } from '../../util/commonFunc'
 import Vue from '../../main'
-import { language_id_to_name } from '../../locales/languages'
+import { languages } from '../../locales/languages'
 
 const state = {
   status: '',
@@ -35,7 +35,7 @@ const actions = {
         id: member.id,
         email: member.email,
         username: member.username,
-        language: language_id_to_name[member.language_id],
+        language: languages[member.language_code].name,
         wallet_address: member.wallet_address,
         follower: member.follower,
         following: member.following,
@@ -47,8 +47,8 @@ const actions = {
         },
       }
 
-      if (member.language_id) {
-        commit(SET_LANGUAGE, language_id_to_name[member.language_id])
+      if (member.language_code) {
+        commit(SET_LANGUAGE, languages[member.language_code].name)
       }
 
       commit(CURRENT_USER, currentUser)
