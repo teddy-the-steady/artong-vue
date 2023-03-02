@@ -9,6 +9,4 @@ const languages = {
   },
 }
 
-const language_id_to_name = ['', 'ko', 'en']
-
-export { languages, language_id_to_name }
+export { languages }

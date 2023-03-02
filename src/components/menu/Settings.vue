@@ -2,10 +2,10 @@
   <div class="settings">
     <h1>{{ $t('views.settings.title') }}</h1>
     <div class="option-group">
-      <div class="option">
+      <!-- <div class="option">
         <label>{{ $t('views.settings.settings.locale') }}</label>
         <LocaleDropdown class="dropdown" :localeOptions="localeOptions" />
-      </div>
+      </div> -->
       <div class="option">
         <label>{{ $t('views.settings.settings.language') }}</label>
         <LangDropdown
@@ -24,15 +24,18 @@
 
 <script>
 import { mapState } from 'vuex'
-import { languages, language_id_to_name } from '../../locales/languages'
+import { languages } from '../../locales/languages'
 import { locales } from '../../locales/locales'
 import { getCurrentMember, patchMember } from '../../api/member'
-import LocaleDropdown from '../dropdown/LocaleDropdown.vue'
+// import LocaleDropdown from '../dropdown/LocaleDropdown.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
 
 export default {
   name: 'Settings',
-  components: { LocaleDropdown, LangDropdown },
+  components: {
+    // LocaleDropdown,
+    LangDropdown,
+  },
   computed: {
     ...mapState({
       displayLanguage: state => state.user.display_language,
@@ -66,7 +69,7 @@ export default {
   async mounted() {
     this.member = await getCurrentMember()
     this.language =
-      this.langOptions[language_id_to_name[this.member.language_id]] ||
+      this.langOptions[languages[this.member.language_code].name] ||
       this.langOptions[this.displayLanguage]
   },
   watch: {
@@ -74,7 +77,7 @@ export default {
       if (val.name === 'Settings') {
         this.member = await getCurrentMember()
         this.language =
-          this.langOptions[language_id_to_name[this.member.language_id]] ||
+          this.langOptions[languages[this.member.language_code].name] ||
           this.langOptions[this.displayLanguage]
       }
     },
