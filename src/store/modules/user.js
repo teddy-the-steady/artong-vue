@@ -35,7 +35,7 @@ const actions = {
         id: member.id,
         email: member.email,
         username: member.username,
-        language: languages[member.language_code].name,
+        language: languages[member.language_code]?.name,
         wallet_address: member.wallet_address,
         follower: member.follower,
         following: member.following,
@@ -48,7 +48,7 @@ const actions = {
       }
 
       if (member.language_code) {
-        commit(SET_LANGUAGE, languages[member.language_code].name)
+        commit(SET_LANGUAGE, languages[member.language_code]?.name)
       }
 
       commit(CURRENT_USER, currentUser)
