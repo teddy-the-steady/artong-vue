@@ -69,7 +69,7 @@ export default {
   async mounted() {
     this.member = await getCurrentMember()
     this.language =
-      this.langOptions[languages[this.member.language_code].name] ||
+      this.langOptions[languages[this.member.language_code]?.name] ||
       this.langOptions[this.displayLanguage]
   },
   watch: {
@@ -77,7 +77,7 @@ export default {
       if (val.name === 'Settings') {
         this.member = await getCurrentMember()
         this.language =
-          this.langOptions[languages[this.member.language_code].name] ||
+          this.langOptions[languages[this.member.language_code]?.name] ||
           this.langOptions[this.displayLanguage]
       }
     },
