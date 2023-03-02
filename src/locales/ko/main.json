@@ -64,7 +64,8 @@
       "connect": {
         "title": "SNS",
         "twitter": "트위터",
-        "instagram": "인스타그램"
+        "instagram": "인스타그램",
+        "discord": "디스코드"
       }
     }
   }

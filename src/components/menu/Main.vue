@@ -260,6 +260,12 @@
             >
               {{ $t('main.bottom.right.connect.instagram') }}
             </li>
+            <li
+              class="clickable"
+              @click="redirectTo('https://discord.gg/tfdynNVPhx')"
+            >
+              {{ $t('main.bottom.right.connect.discord') }}
+            </li>
           </ul>
         </div>
         <div class="bottom-left">
