@@ -102,6 +102,7 @@ export default {
     overflow: hidden;
     background-color: $artong-white;
     display: grid;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
 
     img {
       width: 100%;
