@@ -94,6 +94,7 @@ export default {
     height: 32px;
     object-fit: cover;
     border-radius: 4px;
+    box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
   }
   .basicProfileImage {
     width: 32px;
