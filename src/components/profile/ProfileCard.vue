@@ -5,7 +5,7 @@
       <div class="profileImg">
         <ProfileImageBig
           :profileImageUrl="processImageUrl(profileImageUrl)"
-          :isFirstLoading="profileImageUrl ? false : true"
+          :userWalletAddress="profile.wallet_address"
         ></ProfileImageBig>
       </div>
     </div>
