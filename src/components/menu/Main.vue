@@ -716,6 +716,7 @@ export default {
 
     .bottom-table {
       margin-top: 57px;
+      white-space: nowrap;
       .third-column {
         margin-right: 61px;
         list-style: none;
@@ -745,7 +746,6 @@ export default {
   .bottom-table {
     display: flex;
     flex-direction: row;
-    margin-left: 24px;
     margin-top: 24px;
     .column {
       display: flex;
