@@ -44,7 +44,8 @@
             "mint": "Mint",
             "now": "Now",
             "on-sold": "On sold",
-            "token-royalty": "Token royalty"
+            "token-royalty": "Token royalty",
+            "token-royalty-caption": "About Token royalty"
         },
         "progress": {
             "uploading": "Uploading to IPFS",
@@ -65,7 +66,8 @@
             "token-royalty-range": "Token royalty should be in range 0 to 100"
         },
         "tooltip": {
-            "lazy-mint": "Lazy Minting: NFT gets minted once sold. This means that the artist does not have to pay any upfront gas fees to mint their NFTs, but buyer pays the fees when the token is purchased."
+            "lazy-mint": "Lazy Minting: NFT gets minted once sold. This means that the artist does not have to pay any upfront gas fees to mint their NFTs, but buyer pays the fees when the token is purchased.",
+            "token-royalty": "Royalty is an incentive given to creators who create NFTs, and is given in exchange for copyright of their creations. Creators receive royalty income (% of transaction amount) for all secondary sales after minting. It will accumulate in the Artong balance of your wallet address"
         }
     }
 }
