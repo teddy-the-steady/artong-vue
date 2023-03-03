@@ -153,11 +153,11 @@ export default {
       this.timeout = setTimeout(() => {
         let processedSearchWord = this.searchWord.trimStart()
         if (processedSearchWord) {
-          if (
-            this.pastProcessedSearchWordLength === processedSearchWord.length
-          ) {
-            return
-          }
+          // if (
+          //   this.pastProcessedSearchWordLength === processedSearchWord.length
+          // ) {
+          //   return
+          // }
           this.makeApiCall(processedSearchWord)
           this.pastProcessedSearchWordLength = processedSearchWord.length
         } else {
