@@ -1,25 +1,35 @@
 <template>
   <div class="container">
-    <span class="float-label">
-      <input
-        id="royalty"
-        type="number"
-        inputmode="decimal"
-        :class="{ filled: tokenRoyalty }"
-        v-model="tokenRoyalty"
-        @input="onInputTokenRoyalty"
-      />
-      <label for="royalty">
-        {{ $t('views.project.mint-modal.input.token-royalty') }}
-      </label>
-    </span>
-    <div class="unit">%</div>
+    <div>
+      <span class="float-label">
+        <input
+          id="royalty"
+          type="number"
+          inputmode="decimal"
+          :class="{ filled: tokenRoyalty }"
+          v-model="tokenRoyalty"
+          @input="onInputTokenRoyalty"
+        />
+        <label for="royalty">
+          {{ $t('views.project.mint-modal.input.token-royalty') }}
+        </label>
+        <div class="unit">%</div>
+      </span>
+      <div class="caption">
+        {{ $t('views.project.mint-modal.input.token-royalty-caption') }}
+        <TooltipIcon
+          :tip="$t('views.project.mint-modal.tooltip.token-royalty')"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import TooltipIcon from '../../util/ToolTipIcon.vue'
 export default {
   name: 'MintStep2',
+  components: { TooltipIcon },
   data() {
     return {
       tokenRoyalty: null,
@@ -41,12 +51,20 @@ export default {
 
 .container {
   text-align: left;
-  height: 100px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  .unit {
-    margin-left: 5px;
+  .float-label {
+    align-items: center;
+    .unit {
+      margin-left: 5px;
+    }
+  }
+  .caption {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
   }
 }
 </style>
