@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build:stage": "vue-cli-service build --mode stage",
-    "build:production": "vue-cli-service build --mode production",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:production": "vue-cli-service build --mode production",
+    "build:stage": "vue-cli-service build --mode stage",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
     "@aws-amplify/auth": "^4.5.8",
@@ -21,13 +22,15 @@
     "isomorphic-fetch": "^2.2.1",
     "smoothscroll-polyfill": "^0.4.4",
     "vue": "^2.6.14",
+    "vue-carousel": "^0.18.0",
+    "vue-i18n": "^8.26.3",
     "vue-infinite-loading": "^2.4.5",
-    "vue-mobile-detection": "^1.0.0",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2",
     "web3": "^1.7.5"
   },
   "devDependencies": {
+    "@intlify/vue-i18n-loader": "^1.1.0",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
@@ -41,6 +44,7 @@
     "prettier": "^2.2.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
+    "vue-cli-plugin-i18n": "~2.3.1",
     "vue-template-compiler": "^2.6.11"
   }
 }

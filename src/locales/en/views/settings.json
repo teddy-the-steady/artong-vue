@@ -1,0 +1,8 @@
+{
+    "title": "Settings",
+    "settings": {
+        "locale": "Locale",
+        "language": "Language"
+    },
+    "button": "SAVE"
+}

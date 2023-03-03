@@ -14,7 +14,7 @@ export default new Vuex.Store({
     user,
     auth,
     menu,
-    wallet
+    wallet,
   },
-  strict: debug
+  strict: debug,
 })

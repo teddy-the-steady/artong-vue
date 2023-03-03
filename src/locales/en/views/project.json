@@ -1,0 +1,71 @@
+{
+    "more-modal": {
+        "edit-project": "Edit project",
+        "report": "Report"
+    },
+    "creator": {
+        "owned-by": "Owned by",
+        "created-by": "Created by",
+        "view-all": "View all"
+    },
+    "buttons": {
+        "subscribe": "Subscribe",
+        "unsubscribe": "Unsubscribe",
+        "contribute": "Contribute"
+    },
+    "statitics": {
+        "items": "Items",
+        "description": "Description"
+    },
+    "sort-options": {
+        "newest": "Newest",
+        "oldest": "Oldest"
+    },
+    "tabs": {
+        "tokens": "Tokens",
+        "contributors": "Contributors",
+        "info": {
+            "title": "Info",
+            "content": "Description"
+        },
+        "waiting-for-approval": {
+            "title": "Waiting for Approval",
+            "redirect-msg": "to see contents waiting for approval"
+        }
+    },
+    "mint-modal": {
+        "input": {
+            "name": "Name",
+            "description": "Description",
+            "price": {
+                "label": "Price",
+                "placeholder": "Price in ETH"
+            },
+            "mint": "Mint",
+            "now": "Now",
+            "on-sold": "On sold",
+            "token-royalty": "Token royalty"
+        },
+        "progress": {
+            "uploading": "Uploading to IPFS",
+            "minting": "Minting",
+            "complete": "Complete!",
+            "redirect-msg": "to see result"
+        },
+        "button": {
+            "next": "Next",
+            "previous": "Previous",
+            "click": "Click",
+            "mint": "Mint"
+        },
+        "alert": {
+            "add-image": "Please add image format of .gif .jpg .jpeg .png",
+            "name-desc-required": "Name and Description required",
+            "least-price": "Least price is 0.001 ETH",
+            "token-royalty-range": "Token royalty should be in range 0 to 100"
+        },
+        "tooltip": {
+            "lazy-mint": "Lazy Minting: NFT gets minted once sold. This means that the artist does not have to pay any upfront gas fees to mint their NFTs, but buyer pays the fees when the token is purchased."
+        }
+    }
+}

@@ -1,0 +1,72 @@
+{
+  "title": {
+    "first": "Open Art",
+    "second": "NFT marketplace"
+  },
+  "intro-content": {
+    "first": "Artong is an open art NFT marketplace.",
+    "second": "We support contributable NFT projects and creators.",
+    "third": "Contribute to any project you want and explore freely in web3.0"
+  },
+  "start-btn": "Click to Start",
+  "main-token-bottom-title": {
+    "project": "Project",
+    "created-by": "Created By"
+  },
+  "container1": {
+    "title": "Show your own creativity",
+    "activity": {
+      "first": {
+        "title": "Wallet connection",
+        "content": "Connect your wallet and start your journey in ARTONG"
+      },
+      "second": {
+        "title": "Create your project",
+        "content": "Create an OPEN ART project and build your own space for creativity"
+      },
+      "third": {
+        "title": "Contribute your NFTs",
+        "content": "Contribute your creation to ANY open art projects"
+      },
+      "forth": {
+        "title": "Share your collections",
+        "content": "Share your collections and gather the talented to your community"
+      }
+    }
+  },
+  "container2": {
+    "title": "Create new project",
+    "content": "Create Your Own NFT Project"
+  },
+  "container3": {
+    "title": {
+      "first": "Highlighted Projects",
+      "second": "Featured Contributors"
+    }
+  },
+  "container4": {
+    "title": {
+      "first": "Artong's Pick",
+      "second": "Recent Contributions"
+    }
+  },
+  "bottom": {
+    "left": {
+      "privacy-info": "Privacy Info",
+      "terms-of-service": "Terms of Service"
+    },
+    "right": {
+      "company": {
+        "title": "Company",
+        "about": "About",
+        "careers": "Careers"
+      },
+      "connect": {
+        "title": "Connect",
+        "twitter": "Twitter",
+        "instagram": "Instagram",
+        "discord": "Discord"
+      }
+    }
+  }
+}
