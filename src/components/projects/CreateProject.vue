@@ -10,7 +10,10 @@
           <input type="text" v-model="name" maxlength="100" />
         </div>
         <div>
-          <span class="label">{{ $t('views.create-project.symbol') }}</span>
+          <span class="label">
+            {{ $t('views.create-project.symbol') }}
+            <TooltipIcon :tip="$t('views.create-project.tooltip.symbol')" />
+          </span>
           <input type="text" class="symbol" v-model="symbol" maxlength="100" />
         </div>
         <div>
@@ -129,7 +132,7 @@ export default {
       if (!this.symbol) {
         nullField.push(this.$i18n.t('views.create-project.symbol'))
       }
-      if (this.maxAmount < 0) {
+      if (!this.maxAmount && typeof this.maxAmount !== 'number') {
         nullField.push(
           this.$i18n.t('views.create-project.max-token-amount.title'),
         )
