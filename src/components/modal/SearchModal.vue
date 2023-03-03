@@ -138,7 +138,7 @@ export default {
       contents: [],
       projects: [],
       members: [],
-      pastProcessedSearchWordLength: 0,
+      //pastProcessedSearchWordLength: 0,
     }
   },
   computed: {
@@ -159,12 +159,12 @@ export default {
           //   return
           // }
           this.makeApiCall(processedSearchWord)
-          this.pastProcessedSearchWordLength = processedSearchWord.length
+          //this.pastProcessedSearchWordLength = processedSearchWord.length
         } else {
           this.contents = []
           this.projects = []
           this.members = []
-          this.pastProcessedSearchWordLength = 0
+          //this.pastProcessedSearchWordLength = 0
         }
       }, time)
     },
