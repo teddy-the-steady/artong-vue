@@ -1,15 +1,19 @@
-$artong-main: #2a2a2e !default;
+$artong-main: #F22D3E !default;
 $artong-white: white !default;
 $artong-black: black !default;
+$artong-dark: #2a2a2a !default;
 $darkgray: #454545 !default;
-$lightgray: lightgray !default;
+$gray: #b3b3b3 !default;
+$lightgray: gainsboro !default;
 $lightergray: #EEEEEE !default;
 $backdrop: rgba(0,0,0,.5) !default;
-$head-height: 50px !default;
+$head-height: 70px !default;
+$profile-border-gray: #E5E5E5 !default;
+$profile-border-red: #F22E3E !default;
 
 // from vsm
-$primary-color: $artong-main !default;
-$base-bg: $artong-main !default;
+$primary-color: $artong-black !default;
+$base-bg: $artong-dark !default;
 
 $item-color: $artong-white !default;
 
@@ -38,3 +42,6 @@ $item-line-height: 30px !default;
 $item-padding: 10px !default;
 $icon-height: 20px !default;
 $icon-width: 30px !default;
+
+$item-font: 'Pretendard' !default;
+$item-font-style: normal !default;

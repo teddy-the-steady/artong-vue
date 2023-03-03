@@ -5,7 +5,13 @@ import {
   SET_SIDE_MENU_FALSE,
   TOGGLE_MODAL,
   TOGGLE_CONFIRM_MODAL,
-  TOGGLE_THEME
+  TOGGLE_PROMPT_MODAL,
+  TOGGLE_THEME,
+  SET_INNER_WIDTH,
+  SET_ICON_POSITION,
+  OPEN_TOOL_TIP,
+  CLOSE_TOOL_TIP,
+  SET_TOOL_TIP,
 } from '../actions/menu'
 
 const state = {
@@ -13,8 +19,14 @@ const state = {
   isHeadNavOpen: true,
   isModalOpen: false,
   isConfirmModalOpen: false,
+  isPromptModalOpen: false,
   isDark: false,
-  waitForAnswer: null
+  waitForAnswer: null,
+  innerWidth: window.innerWidth,
+  isToolTipOpen: false,
+  iconTop: null,
+  iconLeft: null,
+  toolTip: null,
 }
 
 const mutations = {
@@ -38,10 +50,29 @@ const mutations = {
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
-  }
+  },
+  [TOGGLE_PROMPT_MODAL]: state => {
+    state.isPromptModalOpen = !state.isPromptModalOpen
+  },
+  [SET_INNER_WIDTH]: (state, innerWidth) => {
+    state.innerWidth = innerWidth
+  },
+  [SET_ICON_POSITION]: (state, { iconTop, iconLeft }) => {
+    state.iconTop = iconTop
+    state.iconLeft = iconLeft
+  },
+  [OPEN_TOOL_TIP]: state => {
+    state.isToolTipOpen = true
+  },
+  [CLOSE_TOOL_TIP]: state => {
+    state.isToolTipOpen = false
+  },
+  [SET_TOOL_TIP]: (state, toolTip) => {
+    state.toolTip = toolTip
+  },
 }
 
 export default {
   state,
-  mutations
+  mutations,
 }

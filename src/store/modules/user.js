@@ -1,40 +1,54 @@
 import {
   CURRENT_USER,
-  CURRENT_USER_PROFILE_PIC,
+  CURRENT_USER_PROFILE_IMAGE_URL,
   USER_ERROR,
-  USER_LOGOUT
+  USER_LOGOUT,
+  SET_LANGUAGE,
 } from '../actions/user'
 import { AUTH_LOGOUT } from '../actions/auth'
 import { makeS3Path } from '../../util/commonFunc'
+import Vue from '../../main'
+import { languages } from '../../locales/languages'
 
 const state = {
   status: '',
+  display_language: localStorage.getItem('language'),
   currentUser: JSON.parse(localStorage.getItem('current-user')) || {
     id: '',
     email: '',
     username: '',
     language: '',
     wallet_address: '',
+    follower: 0,
+    following: 0,
     profile: {
-      profile_pic: '',
-      introduction: ''
-    }
-  } // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가.. 현재 currentUser.id로 체크중
+      profile_image_url: '',
+      introduction: '',
+    },
+  }, // TODO] 이게 최선인가..? currentUser 빈문자열로 하면 다른데서 참조할때 에러나고 이렇게 주면 currentUser 만으로 empty 체크 불가.. 현재 currentUser.id로 체크중
 }
 
 const actions = {
-  [CURRENT_USER]: async function({ commit, dispatch }, member) {
+  [CURRENT_USER]: async function ({ commit, dispatch }, member) {
     try {
       const currentUser = {
         id: member.id,
         email: member.email,
         username: member.username,
-        language: member.language,
+        language: languages[member.language_code]?.name,
         wallet_address: member.wallet_address,
+        follower: member.follower,
+        following: member.following,
         profile: {
-          profile_pic: makeS3Path(member.profile_pic),
-          introduction: member.introduction
-        }
+          profile_image_url: member.profile_thumbnail_s3key
+            ? makeS3Path(member.profile_thumbnail_s3key)
+            : makeS3Path(member.profile_s3key),
+          introduction: member.introduction,
+        },
+      }
+
+      if (member.language_code) {
+        commit(SET_LANGUAGE, languages[member.language_code]?.name)
       }
 
       commit(CURRENT_USER, currentUser)
@@ -42,7 +56,7 @@ const actions = {
       await dispatch(AUTH_LOGOUT)
       throw error
     }
-  }
+  },
 }
 
 const mutations = {
@@ -51,10 +65,10 @@ const mutations = {
     state.currentUser = currentUser
     localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
-  [CURRENT_USER_PROFILE_PIC]: (state, path) => {
-    state.currentUser.profile.profile_pic = path
+  [CURRENT_USER_PROFILE_IMAGE_URL]: (state, path) => {
+    state.currentUser.profile.profile_image_url = path
     const currentUser = JSON.parse(localStorage.getItem('current-user'))
-    currentUser.profile.profile_pic = path
+    currentUser.profile.profile_image_url = path
     localStorage.setItem('current-user', JSON.stringify(currentUser))
   },
   [USER_ERROR]: state => {
@@ -69,16 +83,21 @@ const mutations = {
       language: '',
       wallet_address: '',
       profile: {
-        profile_pic: '',
-        introduction: ''
-      }
+        profile_image_url: '',
+        introduction: '',
+      },
     }
     localStorage.removeItem('current-user')
-  }
+  },
+  [SET_LANGUAGE]: (state, languageName) => {
+    state.display_language = languageName
+    Vue.$i18n.locale = languageName
+    localStorage.setItem('language', languageName)
+  },
 }
 
 export default {
   state,
   actions,
-  mutations
+  mutations,
 }

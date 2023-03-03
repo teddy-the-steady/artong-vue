@@ -1,0 +1,22 @@
+{
+    "navbar-right": {
+        "connect": "CONNECT",
+        "contribute": "Contribute"
+    },
+    "user-dialog": {
+        "wrong-network": "WRONG NETWORK",
+        "profile": "Profile",
+        "settings": "Settings",
+        "disconnect": "Disconnect"
+    },
+    "search": {
+        "placeholder": "Search",
+        "null-search": "Search by name",
+        "contents": "Contents",
+        "projects": "Projects",
+        "users": "Users"
+    },
+    "alert": {
+        "contribute": "First, choose a project to contribute"
+    }
+}

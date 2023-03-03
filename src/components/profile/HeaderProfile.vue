@@ -1,37 +1,55 @@
 <template>
   <div class="profile">
     <div v-if="isFirstLoading" class="image">
-      <skeleton-box style="width:100%;height:100%;border-radius:50%"></skeleton-box>
+      <SkeletonBox
+        style="width: 100%; height: 100%; border-radius: 50%"
+      ></SkeletonBox>
     </div>
     <div v-else class="image">
-      <img v-if="profilePic" :src="profilePic" @error="isFirstLoading = true"/>
-      <div v-else class="basicProfilePicture"></div>
+      <img
+        v-if="currentUser.profile.profile_image_url"
+        :src="currentUser.profile.profile_image_url"
+        @error="hasErrorGettingImage = true"
+        class="profileImage"
+        :class="{ error: hasErrorGettingImage }"
+      />
+      <div
+        v-else
+        class="basicProfileImage"
+        :style="{ background: backgroundColor }"
+      ></div>
     </div>
   </div>
 </template>
 
 <script>
+import SkeletonBox from '../util/SkeletonBox.vue'
+import { backgroundColor } from '../../mixin'
 import { mapState } from 'vuex'
-import SkeletonBox from '../util/SkeletonBox'
 
 export default {
   name: 'HeaderProfile',
+  mixins: [backgroundColor],
   components: {
-    SkeletonBox
+    SkeletonBox,
   },
   data() {
     return {
-      isFirstLoading: true
+      isFirstLoading: true,
+      hasErrorGettingImage: false,
     }
   },
   computed: {
     ...mapState({
-      profilePic: state => state.user.currentUser.profile.profile_pic
-    })
+      currentUser: state => state.user.currentUser,
+    }),
+    backgroundColor() {
+      return this.generateGradientBackground(this.currentUser.wallet_address)
+    },
   },
   mounted() {
     this.isFirstLoading = false
-  }
+  },
 }
 </script>
 
@@ -39,22 +57,27 @@ export default {
 @import '../../assets/scss/variables';
 
 .profile {
+  display: inline;
+  .image {
     display: inline;
-    .image {
-        display: inline;
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        .basicProfilePicture {
-            height: 100%;
-            border-radius: 50%;
-            background: url('../../assets/images/profile.svg') 50% 50% no-repeat;
-        }
+    .profileImage {
+      &.error {
+        text-indent: -10000px;
+      }
     }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .basicProfileImage {
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
 }
 </style>

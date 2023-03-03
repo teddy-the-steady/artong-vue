@@ -1,48 +1,107 @@
 <template>
-  <div class="projects">
-    <div class="project" v-for="(val, i) in projectList" :key="i">
-      <!-- <router-link :to="{ name: 'Artwork', params: { id: val.id_pk || val.url }}"> -->
-      <project-box :project="val"></project-box>
-      <!-- </router-link> -->
+  <div>
+    <div class="projects">
+      <div v-for="(val, i) in projectList" :key="i">
+        <router-link
+          :to="{
+            name: 'Project',
+            params: { id: val.slug || val.address },
+          }"
+        >
+          <ProjectCard :project="val"></ProjectCard>
+        </router-link>
+      </div>
     </div>
-    <infinite-loading @infinite="infiniteHandler" spinner="spiral"></infinite-loading>
+    <InfiniteLoading
+      @infinite="infiniteHandler"
+      spinner="spiral"
+    ></InfiniteLoading>
   </div>
 </template>
 
 <script>
-import ProjectBox from './ProjectBox'
 import InfiniteLoading from 'vue-infinite-loading'
+import ProjectCard from '../projects/ProjectCard.vue'
 
 export default {
   name: 'ProjectList',
   components: {
-    ProjectBox, InfiniteLoading
+    ProjectCard,
+    InfiniteLoading,
+  },
+  props: {
+    queryProjects: {
+      type: Object,
+      default: null,
+    },
   },
   data() {
     return {
-      projectList: [{id: 0, name: "test"}],
-      lastLoadedId: null,
-      noMoreDataToLoad: false
+      projectList: [],
+      noMoreDataToLoad: false,
     }
   },
   methods: {
-    infiniteHandler($state) {
+    async infiniteHandler($state) {
       if (this.noMoreDataToLoad) {
         $state.complete()
         return
       }
-      this.pushProjects()
-      setTimeout(function() { $state.loaded() }, 500)
+      await this.pushData()
+      setTimeout(function () {
+        $state.loaded()
+      }, 100)
     },
-    pushProjects() {
-      for (let i = 0; i < 8; i++) {
-        this.projectList.push({
-          id: i,
-          name: "test"
-        })
+    async pushData() {
+      const projectArrayToPush = await this.makeProjectArray()
+      if (projectArrayToPush.length > 0) {
+        for (let i in projectArrayToPush) {
+          this.projectList.push(projectArrayToPush[i])
+        }
       }
-    }
-  }
+    },
+    async makeProjectArray() {
+      const projectArrayToPush = []
+      if (this.queryProjects) {
+        const results = await this.getProjects(this.queryProjects)
+        this.queryProjects.body.variables.skip +=
+          this.queryProjects.body.variables.first
+
+        if (results.data.projects.length > 0) {
+          for (let i = 0; i < results.data.projects.length; i++) {
+            projectArrayToPush.push({
+              address: results.data.projects[i].id,
+              slug: results.data.projects[i].slug,
+              creator: results.data.projects[i].creator,
+              name: results.data.projects[i].name,
+              symbol: results.data.projects[i].symbol,
+              // status: results.data.projects[i].status,
+              policy: results.data.projects[i].policy,
+              max_amount: results.data.projects[i].maxAmount,
+              background_s3key: results.data.projects[i].background_s3key,
+              background_thumbnail_s3key:
+                results.data.projects[i].background_thumbnail_s3key,
+              project_s3key: results.data.projects[i].project_s3key,
+              project_thumbnail_s3key:
+                results.data.projects[i].project_thumbnail_s3key,
+              contributors: results.data.projects[i].contributors,
+              created_at: results.data.projects[i].createdAt,
+              updated_at: results.data.projects[i].updatedAt,
+            })
+          }
+        }
+
+        if (!results.meta.hasMoreData) {
+          this.noMoreDataToLoad = true
+        }
+      }
+
+      return projectArrayToPush
+    },
+    async getProjects() {
+      return await this.queryProjects.func(this.queryProjects.body)
+    },
+  },
 }
 </script>
 
@@ -50,58 +109,9 @@ export default {
 @import '../../assets/scss/variables';
 
 .projects {
-  display: flex;
-  flex-flow: row wrap;
-
-  .project {
-    flex: 1;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 400px));
+  justify-content: center;
+  padding: initial;
 }
-
-@mixin max-width($width) {
-  @media screen and (max-width: $width) {
-    @content;
-  }
-}
-
-@media screen {
-  .projects {
-    .project {
-      flex-basis: 20%;
-    }
-  }
-}
-
-@include max-width(1500px) {
-  .projects {
-    .project {
-      flex-basis: 25%;
-    }
-  }
-}
-
-@include max-width(1200px) {
-  .projects {
-    .project {
-      flex-basis: 30%;
-    }
-  }
-}
-
-@include max-width(830px) {
-  .projects {
-    .project {
-      flex-basis: 50%;
-    }
-  }
-}
-
-@include max-width(600px) {
-  .projects {
-    .project {
-      flex-basis: 100%;
-    }
-  }
-}
-
 </style>
