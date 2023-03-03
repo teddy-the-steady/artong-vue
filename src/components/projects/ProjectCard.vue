@@ -21,7 +21,9 @@
         {{ project.symbol ? project.symbol.toUpperCase() : '' }}
       </div>
     </div>
-    <div class="name">{{ project.name }}</div>
+    <div class="name">
+      <div>{{ project.name }}</div>
+    </div>
     <div class="bottom">
       <ContentsProfileBundle
         class="bundle"
@@ -132,7 +134,6 @@ export default {
   }
   .name {
     position: relative;
-    margin-top: 213px;
     font-family: 'Mustica Pro';
     font-style: normal;
     font-weight: 600;
@@ -140,6 +141,14 @@ export default {
     line-height: 44px;
     overflow: hidden !important;
     text-overflow: ellipsis;
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin: 0 10px;
+    div {
+      max-height: 300px;
+    }
   }
   .bottom {
     display: flex;

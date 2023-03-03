@@ -9,7 +9,9 @@
       </div>
       <div class="symbol">{{ symbol.toUpperCase() }}</div>
     </div>
-    <div class="name">{{ name }}</div>
+    <div class="name">
+      <div>{{ name }}</div>
+    </div>
     <div class="bottom">
       <ContentsProfileBundle class="bundle"></ContentsProfileBundle>
       <div class="contributors">@contributor +4</div>
@@ -123,16 +125,22 @@ export default {
   }
   .name {
     position: relative;
-    margin-top: 213px;
-    margin-left: 30px;
     font-family: 'Mustica Pro';
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
     line-height: 44px;
-    width: 300px;
     overflow: hidden !important;
     text-overflow: ellipsis;
+    width: 370px;
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin: 0 10px;
+    div {
+      max-height: 300px;
+    }
   }
   .bottom {
     display: flex;
@@ -150,6 +158,15 @@ export default {
       font-size: 14px;
       line-height: 32px;
       color: $artong-white;
+    }
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .wrapper {
+    .name {
+      width: 100%;
+      margin: 0;
     }
   }
 }
