@@ -825,6 +825,7 @@ export default {
           color: #000000;
           text-align: left;
           margin-top: 8px;
+          flex: 0.9;
         }
         .statistic-container {
           display: flex;
