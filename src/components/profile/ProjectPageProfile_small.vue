@@ -118,6 +118,7 @@ export default {
       font-weight: 500;
       font-size: 14px;
       line-height: 17px;
+      text-align: left;
     }
     .username_box {
       width: 105px;
