@@ -1051,6 +1051,7 @@ export default {
         font-size: 18px;
         font-weight: 600;
         line-height: 22px;
+        margin-bottom: 10px;
       }
       .profile-link {
         cursor: pointer;
