@@ -5,7 +5,7 @@
         <div class="symbol">
           {{ project.symbol ? project.symbol.toUpperCase() : '' }}
         </div>
-        <div class="slug">{{ project.slug ? `@${project.slug}` : '' }}</div>
+        <div class="slug">{{ project.slug ? `/${project.slug}` : '' }}</div>
       </div>
       <div class="collection-name">{{ project.name }}</div>
       <router-link
