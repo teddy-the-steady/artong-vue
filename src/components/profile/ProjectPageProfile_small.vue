@@ -106,7 +106,7 @@ export default {
 
   .info {
     word-break: break-word;
-    margin-left: 8px;
+    margin: auto 0 auto 8px;
     height: 100%;
     max-height: 115px;
     overflow: hidden !important;
