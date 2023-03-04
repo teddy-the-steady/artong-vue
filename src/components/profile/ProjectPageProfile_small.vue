@@ -105,10 +105,12 @@ export default {
   }
 
   .info {
-    word-break: break-all;
+    word-break: break-word;
     margin-left: 8px;
-    height: 17px;
-    margin-top: 7.5px;
+    height: 100%;
+    max-height: 115px;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 
     .username {
       font-family: $item-font;
