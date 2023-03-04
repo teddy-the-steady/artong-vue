@@ -32,6 +32,7 @@
           :class="{ filled: project.sns.instagram }"
           v-model="project.sns.instagram"
           maxlength="500"
+          placeholder="https://"
         />
         <label for="instagram">
           {{ $t('views.project-settings.settings.instagram') }}
@@ -44,6 +45,7 @@
           :class="{ filled: project.sns.twitter }"
           v-model="project.sns.twitter"
           maxlength="500"
+          placeholder="https://"
         />
         <label for="twitter">
           {{ $t('views.project-settings.settings.twitter') }}
@@ -56,6 +58,7 @@
           :class="{ filled: project.sns.discord }"
           v-model="project.sns.discord"
           maxlength="500"
+          placeholder="https://"
         />
         <label for="discord">
           {{ $t('views.project-settings.settings.discord') }}
@@ -68,6 +71,7 @@
           :class="{ filled: project.sns.website }"
           v-model="project.sns.website"
           maxlength="500"
+          placeholder="https://"
         />
         <label for="website">
           {{ $t('views.project-settings.settings.website') }}
