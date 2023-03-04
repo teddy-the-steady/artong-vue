@@ -335,12 +335,21 @@ html {
         transition-duration: 0.2s;
       }
 
+      & input::placeholder {
+        color: transparent;
+      }
+
       & input:focus ~ label,
       & input.filled ~ label,
       & textarea:focus ~ label,
       & textarea.filled ~ label {
         top: -0.75rem;
         font-size: 12px;
+      }
+
+      & input:focus::placeholder,
+      & textarea:focus::placeholder {
+        color: #6c757d;
       }
     }
   }
