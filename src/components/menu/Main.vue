@@ -71,14 +71,14 @@
                   :to="{
                     name: 'UserOrArtist',
                     params: {
-                      id: this.mainToken.owner
-                        ? this.mainToken.owner.username
+                      id: this.mainToken.creator
+                        ? this.mainToken.creator.username
                         : '',
                     },
                   }"
                 >
                   <ContentsProfile
-                    :member="this.mainToken ? this.mainToken.owner : null"
+                    :member="this.mainToken ? this.mainToken.creator : null"
                     :needUserName="true"
                     :isFirstLoading="isFirstLoading"
                   ></ContentsProfile>
@@ -855,6 +855,7 @@ export default {
           img {
             object-fit: cover;
             max-width: 100%;
+            width: 100%;
           }
         }
 
@@ -1017,6 +1018,7 @@ export default {
           img {
             object-fit: cover;
             max-width: 100%;
+            width: 100%;
           }
         }
 
