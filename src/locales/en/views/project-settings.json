@@ -1,12 +1,19 @@
 {
     "title": "Project Settings",
+    "title2": "Project Royalty",
     "settings": {
         "slug": "URL slug",
         "description": "Description",
+        "royalty": "Project Royalty",
+        "balance": "Royalty Balance",
         "instagram": "Instagram",
         "twitter": "Twitter",
         "discord": "Discord",
         "website": "Website"
     },
-    "button": "SAVE"
+    "button": {
+        "save": "SAVE",
+        "apply": "Apply",
+        "withdraw": "Withdraw"
+    }
 }
