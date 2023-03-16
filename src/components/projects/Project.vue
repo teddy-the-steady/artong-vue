@@ -817,6 +817,7 @@ export default {
 
       .container1 {
         display: flex;
+        margin-top: 8px;
         .collection-name {
           font-family: 'Pretendard';
           font-style: normal;
@@ -824,8 +825,6 @@ export default {
           font-size: 24px;
           color: #000000;
           text-align: left;
-          margin-top: 8px;
-          flex: 0.9;
         }
         .statistic-container {
           display: flex;
@@ -891,13 +890,20 @@ textarea {
 }
 
 @media only screen and (max-width: 599px) {
-  .header {
-    .user-info {
+  .tab-n-content {
+    .bottom {
+      .tab {
+        .container1 {
+          justify-content: space-between;
+          .collection-name {
+            flex: 0.9;
+          }
+        }
+      }
+      .contents {
+        padding: 0;
+      }
     }
-  }
-
-  .contents {
-    padding: 0;
   }
 }
 @media only screen and (min-width: 1080px) {
