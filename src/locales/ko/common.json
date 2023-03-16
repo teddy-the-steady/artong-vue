@@ -1,6 +1,6 @@
 {
     "modal": {
-        "confirm-msg": "지갑에서 계속하세요.",
+        "confirm-msg": "지갑에서 계속하세요",
         "prompt-placeholder": "이더(ETH) 단위 가격",
         "button": {
             "confirm": "확인",

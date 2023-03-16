@@ -409,9 +409,6 @@ export default {
       margin: 0px;
       width: 100%;
       box-sizing: border-box;
-      div {
-        padding-bottom: 10px;
-      }
       button {
         width: 100%;
         .spinner {
