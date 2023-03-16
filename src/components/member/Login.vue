@@ -31,6 +31,7 @@ import MetaMaskOnboarding from '@metamask/onboarding'
 import { mapState } from 'vuex'
 import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
+import Provider from '../../util/walletConnectProvider'
 
 export default {
   name: 'Login',
@@ -119,6 +120,7 @@ export default {
 
       try {
         this.isSpinnerActive = true
+        Provider.setWalletConnectSigner()
         const { connector, address } = await this.$store.dispatch(
           'SET_UP_WALLET_CONNECTION',
         )

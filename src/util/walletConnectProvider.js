@@ -40,6 +40,11 @@ class Provider {
     this.mobileSigner = this.mobileProvider.getSigner()
     return this.mobileSigner
   }
+
+  setWalletConnectSigner() {
+    this.mobileProvider = new ethers.providers.Web3Provider(this.provider)
+    this.mobileSigner = this.mobileProvider.getSigner()
+  }
 }
 
 export default new Provider()
