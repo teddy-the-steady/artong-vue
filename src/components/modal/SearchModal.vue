@@ -341,7 +341,7 @@ export default {
   z-index: 100000;
   width: 480px;
   height: 40px;
-  background: $artong-white;
+  // background: $artong-white;
   border: 1px solid #e5e5e5;
   border-radius: 999px;
   line-height: 30px;
