@@ -105,8 +105,8 @@
 
   .art--footer {
     text-align: center;
-    padding: 10px;
     height: 120px;
+    padding-bottom: 20%;
   }
 
   .art--badge {
@@ -149,6 +149,3 @@
     }
   }
 }
-
-@import './themes/default-theme';
-@import './themes/white-theme';

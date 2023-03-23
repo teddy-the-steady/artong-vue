@@ -1,3 +1,7 @@
+.contents__body {
+  background-color: $base-bg;
+}
+
 .v-sidebar-menu {
   background-color: $base-bg;
   .art--link {
@@ -9,7 +13,7 @@
     &_level-1 {
       &.art--link_exact-active,
       &.art--link_active {
-        box-shadow: 3px 0px 0px 0px $primary-color inset;
+        box-shadow: 3px 0px 0px 0px $artong-white inset;
         & .art--icon {
           color: $icon-active-color;
           background-color: $icon-active-bg;
@@ -51,5 +55,53 @@
   .art--badge_default {
     color: $item-color;
     background-color: darken( $base-bg, 5% );
+  }
+
+  .info-area {
+    color: $artong-white;
+
+    .info {
+      button {
+        background: $artong-white;
+        color: $artong-black;
+      }
+    }
+  }
+}
+
+.navbar {
+  background-color: $base-bg;
+
+  .burger-bar {
+    background-color: $artong-white;
+  }
+
+  .logo {
+    fill: $artong-white;
+  }
+
+  .navbar__icons {
+    button {
+      background: $artong-white;
+      color: $artong-black;
+      a {
+        color: $artong-black;
+      }
+    }
+  }
+
+  .search-bar {
+    background: $base-bg;
+
+    .search-input {
+      color: $artong-white;
+      background: transparent;
+    }
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  .navbar.active {
+    background-color: $base-bg;
   }
 }

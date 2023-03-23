@@ -37,9 +37,6 @@ export default {
     .burger-button {
       transform: rotate(-180deg);
 
-      .burger-bar {
-        background-color: $artong-black;
-      }
       .burger-bar__1 {
         transform: translateX(-3px) rotate(90deg) scaleY(1.5);
       }
@@ -72,7 +69,6 @@ export default {
     }
 
     .burger-bar {
-      background-color: $artong-black;
       position: absolute;
       border-radius: 1px;
       top: 50%;
