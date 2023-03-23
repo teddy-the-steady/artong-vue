@@ -9,7 +9,7 @@
     &_level-1 {
       &.art--link_exact-active,
       &.art--link_active {
-        box-shadow: 3px 0px 0px 0px $primary-color inset;
+        box-shadow: 3px 0px 0px 0px $artong-white inset;
         & .art--icon {
           color: $icon-active-color;
           background-color: $icon-active-bg;
@@ -51,5 +51,211 @@
   .art--badge_default {
     color: $item-color;
     background-color: darken( $base-bg, 5% );
+  }
+
+  .info-area {
+    color: $artong-white;
+
+    .info {
+      button {
+        background: $artong-white;
+        color: $artong-black;
+      }
+    }
+  }
+}
+
+.navbar {
+  background-color: $base-bg;
+
+  .burger-bar {
+    background-color: $artong-white;
+  }
+
+  .logo {
+    fill: $artong-white;
+  }
+
+  .navbar__icons {
+    button {
+      background: $artong-white;
+      color: $artong-black;
+      a {
+        color: $artong-black;
+      }
+    }
+  }
+
+  .search-bar {
+    background: $base-bg;
+
+    .search-input {
+      color: $artong-white;
+      background: transparent;
+    }
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  .navbar.active {
+    background-color: $base-bg;
+  }
+}
+
+.contents__body {
+  background-color: $base-bg;
+
+  h1 {
+    color: $artong-white;
+  }
+
+  .contents {
+    a {
+      color: $artong-white;
+    }
+  }
+
+  .container0 {
+    .intro {
+      div {
+        color: $artong-white;
+      }
+  
+      button {
+        background: $artong-white;
+        color: $artong-black;
+      }
+    }
+  
+    .main-token {
+      .main-token-name,
+      .main-token-bottom-title,
+      .main-token-bottom-content,
+      a {
+        color: $artong-white;
+      }
+    }
+  }
+
+  .container1 {
+    .title {
+      color: $artong-white;
+    }
+    .activity {
+      .title,
+      .content {
+        color: $artong-white;
+      }
+      .intro-img {
+        filter: invert(1);
+      }
+    }
+  }
+
+  .container4 {
+    .title {
+      color: $artong-white;
+    }
+  }
+
+  .tab-n-content {
+    .tab {
+      .collection-name,
+      .slug,
+      .info,
+      .title {
+        color: $artong-white;
+      }
+
+      .subscribe-n-unsubscribe-button {
+        background: $artong-white;
+        color: $artong-black;
+      }
+
+      &.active {
+        color: $artong-white;
+      }
+    }
+
+    .profiles {
+      .wrapper {
+        background: $darkgray;
+        .name {
+          color: $artong-white;
+        }
+      }
+    }
+  }
+
+  .input-group,
+  .option-group {
+    background: $lightgray;
+  }
+
+  .content-image {
+    a {
+      background: $darkgray;
+    }
+  }
+
+  .content-info {
+    .name,
+    .owner,
+    .collection,
+    .description,
+    .fee-info,
+    .title,
+    a {
+      color: $artong-white;
+    }
+
+    .trade-buttons {
+      button {
+        background: $artong-white;
+        color: $artong-black;
+      }
+    }
+  }
+
+  .collection-container {
+    .title {
+      color: $artong-white;
+    }
+  }
+
+  .profile {
+    .top2,
+    .top1 {
+      .username,
+      .title,
+      .text,
+      .number {
+        color: $artong-white;
+      }
+    }
+
+    .follow-n-unfollow-btn {
+      background: $artong-white;
+      color: $artong-black;
+    }
+  }
+
+  .edit-button {
+    button {
+      background: $artong-white;
+      color: $artong-black;
+    }
+  }
+
+  .tabs {
+    .tab.active {
+      color: $artong-white;
+    }
+  }
+}
+
+.login__body {
+  h1 {
+    color: $artong-black;
   }
 }

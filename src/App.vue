@@ -1,10 +1,13 @@
 <template>
   <div id="app">
-    <HeaderBar id="header-bar"></HeaderBar>
-    <SideBar id="side-bar"></SideBar>
+    <HeaderBar id="header-bar" :theme="selectedTheme"></HeaderBar>
+    <SideBar id="side-bar" :theme="selectedTheme"></SideBar>
     <div class="contents">
       <keep-alive>
-        <router-view class="contents__body" />
+        <router-view
+          class="contents__body"
+          :class="[selectedTheme ? `${selectedTheme}` : '']"
+        />
       </keep-alive>
     </div>
     <ConfirmModal
@@ -48,6 +51,8 @@ export default {
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
       isToolTipOpen: state => state.menu.isToolTipOpen,
+      selectedTheme: state =>
+        state.menu.isDark ? 'default-theme' : 'white-theme',
     }),
     ...mapGetters({
       getDefaultWalletConnectState: 'getDefaultWalletConnectState',
@@ -166,6 +171,8 @@ export default {
 <style lang="scss">
 @import './assets/scss/variables';
 @import './assets/scss/ripple';
+@import './assets/scss/themes/default-theme';
+@import './assets/scss/themes/white-theme';
 
 html {
   font-size: 14px;
@@ -293,8 +300,7 @@ html {
 
     .contents__body {
       position: relative;
-      background: $artong-white;
-      height: 100%;
+      min-height: 100vh;
       padding-top: $head-height;
     }
 
