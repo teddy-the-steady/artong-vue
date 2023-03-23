@@ -810,7 +810,6 @@ export default {
         }
         .slug {
           margin-left: 5px;
-          color: $darkgray;
           font-style: italic;
         }
       }
@@ -823,7 +822,6 @@ export default {
           font-style: normal;
           font-weight: 700;
           font-size: 24px;
-          color: #000000;
           text-align: left;
         }
         .statistic-container {
@@ -844,7 +842,6 @@ export default {
               font-style: normal;
               font-weight: 400;
               font-size: 15px;
-              color: #4d4d4d;
             }
           }
         }
@@ -863,7 +860,6 @@ export default {
             font-style: normal;
             font-weight: 600;
             font-size: 18px;
-            color: $artong-black;
             text-align: initial;
             margin-bottom: 8px;
           }

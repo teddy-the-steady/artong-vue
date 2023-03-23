@@ -152,7 +152,6 @@ export default {
         font-style: normal;
         font-weight: 700;
         font-size: 32px;
-        color: $artong-black;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -200,14 +199,12 @@ export default {
         font-style: normal;
         font-weight: 600;
         font-size: 18px;
-        color: $artong-black;
       }
       .text {
         font-family: 'Pretendard';
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
-        color: #4d4d4d;
         margin-top: 8px;
         word-break: break-all;
       }
@@ -226,7 +223,6 @@ export default {
         font-size: 32px;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: $artong-black;
       }
       .address {
         margin-top: 8px;
@@ -253,13 +249,11 @@ export default {
       .title {
         font-weight: 600;
         font-size: 18px;
-        color: $artong-black;
       }
       .text {
         margin-top: 8px;
         font-weight: 400;
         font-size: 16px;
-        color: #4d4d4d;
         word-break: break-all;
       }
     }
