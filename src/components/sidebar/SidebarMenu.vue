@@ -1,7 +1,7 @@
 <template>
   <div
     class="v-sidebar-menu"
-    :class="[theme ? `art_${theme}` : '']"
+    :class="[theme ? `${theme}` : '']"
     :style="{ 'max-width': sidebarWidth }"
   >
     <slot name="header" />
@@ -22,7 +22,7 @@
     </div>
     <slot name="footer" />
     <div class="art--footer">
-      <!-- <LightDarkSwitch></LightDarkSwitch> -->
+      <LightDarkSwitch></LightDarkSwitch>
     </div>
   </div>
 </template>
@@ -30,14 +30,14 @@
 <script>
 import SidebarMenuItem from './SidebarMenuItem.vue'
 import SidebarInfoArea from './SidebarInfoArea.vue'
-// import LightDarkSwitch from '../util/LightDarkSwitch.vue'
+import LightDarkSwitch from '../util/LightDarkSwitch.vue'
 
 export default {
   name: 'SidebarMenu',
   components: {
     SidebarMenuItem,
     SidebarInfoArea,
-    // LightDarkSwitch,
+    LightDarkSwitch,
   },
   props: {
     menu: {

@@ -15,14 +15,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   name: 'LightDarkSwitch',
   computed: {
-    ...mapState({
-      isDark: state => state.menu.isDark,
-    }),
+    isDark: {
+      get() {
+        return this.$store.state.menu.isDark
+      },
+      set() {},
+    },
   },
   methods: {
     toggle() {

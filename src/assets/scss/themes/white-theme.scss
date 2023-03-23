@@ -9,7 +9,15 @@ $item-active-color: $item-color;
 $dropdown-color: $item-color;
 $dropdown-bg: #e3e3e3;
 
-.v-sidebar-menu.art_white-theme {
+.contents__body.white-theme {
+  background-color: $artong-white;
+}
+
+.login__body.white-theme {
+  background-color: $artong-black;
+}
+
+.v-sidebar-menu.white-theme {
   background-color: $base-bg;
   .art--link {
     color: $item-color;
@@ -64,5 +72,67 @@ $dropdown-bg: #e3e3e3;
   .art--badge_default {
     color: $item-color;
     background-color: darken( $base-bg, 5% );
+  }
+
+  .info-area {
+    color: $artong-black;
+
+    .info {
+      button {
+        background: $artong-black;
+        color: $artong-white;
+      }
+    }
+  }
+}
+
+.navbar.white-theme {
+  background: $artong-white;
+
+  .burger-bar {
+    background: $artong-black;
+  }
+
+  .logo {
+    fill: $artong-black;
+  }
+
+  .navbar__icons {
+    button {
+      background: $artong-black;
+      color: $artong-white;
+      a {
+        color: $artong-white;
+      }
+    }
+  }
+
+  .search-bar {
+    background: $artong-white;
+
+    .search-input {
+      color: $artong-black;
+      background: transparent;
+    }
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  .navbar.white-theme {
+    background: transparent;
+
+    &.active {
+      background: $artong-white;
+    }
+
+    .navbar__icons {
+      button {
+        background: $artong-white;
+      }
+
+      .before_login {
+        background: $artong-black;
+      }
+    }
   }
 }
