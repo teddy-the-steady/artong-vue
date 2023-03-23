@@ -249,7 +249,7 @@
               </button>
             </div>
             <div v-else-if="isCurrentUserProjectOwner">
-              <button @click="approve()" class="white-button">
+              <button @click="approve()">
                 {{ $t('views.content-detail.buttons.approve') }}
               </button>
             </div>
@@ -779,6 +779,7 @@ export default {
           width: 100%;
           button {
             width: 100%;
+            margin: 0 5px;
 
             & > span:nth-child(2) {
               align-self: center;

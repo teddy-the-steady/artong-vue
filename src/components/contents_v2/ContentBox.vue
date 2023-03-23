@@ -43,6 +43,7 @@ export default {
   max-height: 300px;
   box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
   margin: 0 10px;
+  background: $artong-white;
   &:hover {
     box-shadow: 1px 1px 0.5em $darkgray, -1px -1px 0.5em $darkgray;
   }
