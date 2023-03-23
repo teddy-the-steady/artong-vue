@@ -2,7 +2,7 @@
   <transition name="slide">
     <nav
       class="navbar"
-      :class="{ active: isSideMenuOpen }"
+      :class="[theme ? `${theme}` : '', { active: isSideMenuOpen }]"
       v-if="isHeadNavOpen"
     >
       <div class="navbar__side">
@@ -111,17 +111,17 @@
           >
             <img src="../../assets/icons/search.svg" />
           </button>
-          <div class="before_login" v-if="!currentUser.id">
+          <button class="before_login" v-if="!currentUser.id">
             <router-link to="/login">
               {{ $t('header.navbar-right.connect') }}
             </router-link>
-          </div>
+          </button>
           <div class="after_login" v-else>
-            <div v-if="innerWidth >= 1080" class="contribute">
+            <button v-if="innerWidth >= 1080" class="ripple contribute">
               <button @click="contribute" v-ripple>
                 {{ $t('header.navbar-right.contribute') }}
               </button>
-            </div>
+            </button>
             <button
               v-else
               class="round-button white-button ripple margin"
@@ -205,6 +205,12 @@ export default {
     HeaderProfile,
     UserDialog,
     SearchModal,
+  },
+  props: {
+    theme: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -317,7 +323,6 @@ export default {
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  background-color: $artong-white;
   height: $head-height;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.15);
 
@@ -450,15 +455,14 @@ export default {
       .before_login {
         height: 2rem;
         border-radius: 2rem;
-        width: 90px;
-        background-color: $artong-black;
+        padding: 0;
 
         a {
           font-weight: 800;
           font-size: 1.1rem;
-          color: $artong-white;
           text-decoration: none;
           vertical-align: -webkit-baseline-middle;
+          margin: 0 10px;
         }
       }
 
@@ -477,8 +481,8 @@ export default {
       align-items: center;
 
       .contribute {
+        padding: 0;
         margin-right: 10px;
-        border-radius: 2rem;
         cursor: pointer;
 
         a {
@@ -528,19 +532,6 @@ export default {
   .navbar {
     background-color: transparent;
     box-shadow: none;
-    &.active {
-      background-color: $artong-white;
-    }
-    .navbar__side {
-      .navbar__icons {
-        .before_login {
-          width: 70px;
-          a {
-            font-size: 0.8rem;
-          }
-        }
-      }
-    }
   }
 }
 
@@ -548,9 +539,6 @@ export default {
   .navbar {
     background-color: transparent;
     box-shadow: none;
-    &.active {
-      background-color: $artong-white;
-    }
   }
 }
 @media only screen and (min-width: 1080px) {

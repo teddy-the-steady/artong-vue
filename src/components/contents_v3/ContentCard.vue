@@ -136,6 +136,7 @@ export default {
   margin: 24px 16px;
   height: 453px;
   position: relative;
+  background: $artong-white;
 
   .top {
     display: flex;

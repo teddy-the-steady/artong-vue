@@ -1,5 +1,5 @@
 <template>
-  <div class="info">
+  <div class="main">
     <div class="lang">
       <LangDropdown class="lang-option" :langOptions="langOptions" />
     </div>
@@ -499,7 +499,6 @@ export default {
     font-size: 52px;
     line-height: 72px;
     text-transform: capitalize;
-    color: $artong-black;
     text-align: left;
   }
 
@@ -510,7 +509,6 @@ export default {
     font-weight: 400;
     font-size: 20px;
     line-height: 25px;
-    color: #4d4d4d;
     align-self: stretch;
     text-align: left;
     word-break: keep-all;
@@ -699,7 +697,6 @@ export default {
       font-weight: 600;
       font-size: 22px;
       line-height: 30px;
-      color: $artong-black;
       margin-left: 16px;
       text-align: left;
     }
@@ -833,7 +830,6 @@ export default {
           font-weight: 700;
           font-size: 24px;
           text-align: left;
-          color: $artong-black;
           margin-bottom: 6px;
 
           span {
@@ -875,7 +871,6 @@ export default {
               font-size: 18px;
               margin-bottom: 8px;
               text-align: left;
-              color: $artong-black;
             }
 
             .main-token-bottom-content {
@@ -997,7 +992,6 @@ export default {
           font-weight: 700;
           font-size: 24px;
           text-align: left;
-          color: $artong-black;
           margin-bottom: 6px;
 
           span {
@@ -1038,7 +1032,6 @@ export default {
               font-size: 18px;
               margin-bottom: 8px;
               text-align: left;
-              color: $artong-black;
             }
 
             .main-token-bottom-content {

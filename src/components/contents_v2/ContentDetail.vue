@@ -263,7 +263,7 @@
                 <button @click="makeTransaction('update')">
                   {{ $t('views.content-detail.buttons.update-listing') }}
                 </button>
-                <button @click="makeTransaction('cancel')" class="white-button">
+                <button @click="makeTransaction('cancel')">
                   <span class="spinner" :class="{ active: canceling }"></span>
                   <span v-show="!canceling">
                     {{ $t('views.content-detail.buttons.cancel-listing') }}
@@ -278,7 +278,7 @@
                   {{ $t('views.content-detail.buttons.buy') }}
                 </span>
               </button>
-              <button @click="makeTransaction('offer')" class="white-button">
+              <button @click="makeTransaction('offer')">
                 {{ $t('views.content-detail.buttons.make-offer') }}
               </button>
             </div>
@@ -1040,6 +1040,7 @@ export default {
           width: 100%;
           button {
             width: 100%;
+            margin: 0 5px;
 
             & > span:nth-child(2) {
               align-self: center;

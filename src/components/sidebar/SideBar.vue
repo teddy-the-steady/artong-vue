@@ -11,7 +11,7 @@
       <div class="sidebar-panel" v-show="isSideMenuOpen">
         <SidebarMenu
           :menu="menu"
-          :theme="selectedTheme"
+          :theme="theme"
           :show-one-child="true"
           @item-click="onItemClick"
         />
@@ -30,11 +30,15 @@ export default {
   components: {
     SidebarMenu,
   },
+  props: {
+    theme: {
+      type: String,
+      default: '',
+    },
+  },
   computed: {
     ...mapState({
       isSideMenuOpen: state => state.menu.isSideMenuOpen,
-      selectedTheme: state =>
-        state.menu.isDark ? 'default-theme' : 'white-theme',
     }),
     menu() {
       return menuItems()

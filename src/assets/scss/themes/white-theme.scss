@@ -9,7 +9,7 @@ $item-active-color: $item-color;
 $dropdown-color: $item-color;
 $dropdown-bg: #e3e3e3;
 
-.v-sidebar-menu.art_white-theme {
+.v-sidebar-menu.white-theme {
   background-color: $base-bg;
   .art--link {
     color: $item-color;
@@ -64,5 +64,231 @@ $dropdown-bg: #e3e3e3;
   .art--badge_default {
     color: $item-color;
     background-color: darken( $base-bg, 5% );
+  }
+
+  .info-area {
+    color: $artong-black;
+
+    .info {
+      button {
+        background: $artong-black;
+        color: $artong-white;
+      }
+    }
+  }
+}
+
+.navbar.white-theme {
+  background: $artong-white;
+
+  .burger-bar {
+    background: $artong-black;
+  }
+
+  .logo {
+    fill: $artong-black;
+  }
+
+  .navbar__icons {
+    button {
+      background: $artong-black;
+      color: $artong-white;
+      a {
+        color: $artong-white;
+      }
+    }
+  }
+
+  .search-bar {
+    background: $artong-white;
+
+    .search-input {
+      color: $artong-black;
+      background: transparent;
+    }
+  }
+}
+
+@media only screen and (max-width: 1080px) {
+  .navbar.white-theme {
+    background: transparent;
+
+    &.active {
+      background: $artong-white;
+    }
+
+    .navbar__icons {
+      button {
+        background: $artong-white;
+      }
+
+      .before_login {
+        background: $artong-black;
+      }
+    }
+  }
+}
+
+.contents__body.white-theme {
+  background-color: $artong-white;
+
+  h1 {
+    color: $artong-black;
+  }
+
+  .contents {
+    a {
+      color: $artong-black;
+    }
+  }
+
+  .container0 {
+    .intro {
+      .intro-title {
+        color: $artong-black;
+      }
+      .intro-content {
+        color: $darkgray;
+      }
+      button {
+        background: $artong-black;
+        color: $artong-white;
+      }
+    }
+  
+    .main-token {
+      .main-token-name,
+      .main-token-bottom-title,
+      .main-token-bottom-content,
+      a {
+        color: $artong-black;
+      }
+    }
+  }
+
+  .container1 {
+    .title {
+      color: $artong-black;
+    }
+    .activity {
+      .title,
+      .content {
+        color: $artong-black;
+      }
+      .intro-img {
+        filter: invert(0);
+      }
+    }
+  }
+
+  .container4 {
+    .title {
+      color: $artong-black;
+    }
+  }
+
+  .tab-n-content {
+    .tab {
+      .slug,
+      .info {
+        color: $darkgray;
+      }
+      .collection-name,
+      .title {
+        color: $artong-black;
+      }
+
+      .subscribe-n-unsubscribe-button {
+        background: $artong-black;
+        color: $artong-white;
+      }
+
+      &.active {
+        color: $artong-black;
+      }
+    }
+
+    .profiles {
+      .wrapper {
+        background: $artong-white;
+        .name {
+          color: $artong-black;
+        }
+      }
+    }
+  }
+
+  .input-group,
+  .option-group {
+    background: $artong-white;
+  }
+
+  .content-image {
+    a {
+      background: $lightgray;
+    }
+  }
+
+  .content-info {
+    .name,
+    .owner,
+    .collection,
+    .description,
+    .fee-info,
+    .title,
+    a {
+      color: $artong-black;
+    }
+
+    .trade-buttons {
+      button {
+        background: $artong-black;
+        color: $artong-white;
+      }
+    }
+  }
+
+  .collection-container {
+    .title {
+      color: $artong-black;
+    }
+  }
+
+  .profile {
+    .top2,
+    .top1 {
+      .username,
+      .title,
+      .text,
+      .number {
+        color: $artong-black;
+      }
+    }
+    
+    .follow-n-unfollow-btn {
+      background: $artong-black;
+      color: $artong-white;
+    }
+  }
+
+  .edit-button {
+    button {
+      background: $artong-black;
+      color: $artong-white;
+    }
+  }
+
+  .tabs {
+    .tab.active {
+      color: $artong-black;
+    }
+  }
+}
+
+.login__body.white-theme {
+  background-color: $artong-black;
+
+  h1 {
+    color: $artong-black;
   }
 }

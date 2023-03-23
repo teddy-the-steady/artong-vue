@@ -1,5 +1,5 @@
-<template class="contents__body">
-  <div>
+<template>
+  <div class="login__body">
     <div class="form__logo">
       <router-link to="/">
         <img class="logo" src="../../assets/icons/logo.svg" />
@@ -189,7 +189,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
-.contents__body {
+.login__body {
   height: 100vh;
   background: $artong-black;
 
@@ -258,7 +258,7 @@ export default {
 }
 
 @media only screen and (max-width: 599px) {
-  .contents__body {
+  .login__body {
     padding-top: 0;
 
     .form__box {
