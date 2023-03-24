@@ -20,7 +20,7 @@ const state = {
   isModalOpen: false,
   isConfirmModalOpen: false,
   isPromptModalOpen: false,
-  isDark: false,
+  isDark: JSON.parse(localStorage.getItem('isDark')) | false,
   waitForAnswer: null,
   innerWidth: window.innerWidth,
   isToolTipOpen: false,
@@ -47,6 +47,7 @@ const mutations = {
   },
   [TOGGLE_THEME]: state => {
     state.isDark = !state.isDark
+    localStorage.setItem('isDark', state.isDark)
   },
   [TOGGLE_CONFIRM_MODAL]: state => {
     state.isConfirmModalOpen = !state.isConfirmModalOpen
