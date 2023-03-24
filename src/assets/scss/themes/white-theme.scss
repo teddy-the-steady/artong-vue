@@ -202,9 +202,14 @@ $dropdown-bg: #e3e3e3;
         background: $artong-black;
         color: $artong-white;
       }
+    }
 
-      &.active {
-        color: $artong-black;
+    .info {
+      color: $artong-black;
+
+      button {
+        background: $artong-black;
+        color: $artong-white;
       }
     }
 
@@ -221,6 +226,37 @@ $dropdown-bg: #e3e3e3;
   .input-group,
   .option-group {
     background: $artong-white;
+
+    .option {
+      label {
+        color: $artong-black;
+      }
+    }
+
+    .float-label {
+      label {
+        color: $gray;
+      }
+    }
+
+    .balance-group {
+      color: $artong-black;
+    }
+
+    button {
+      background: $artong-black;
+      color: $artong-white;
+    }
+
+    .refresh {
+      background: $artong-white;
+      color: $artong-black;
+    }
+  }
+
+  .save {
+    background: $artong-black;
+    color: $artong-white;
   }
 
   .content-image {
@@ -281,6 +317,26 @@ $dropdown-bg: #e3e3e3;
   .tabs {
     .tab.active {
       color: $artong-black;
+      border-bottom-color: $artong-black;
+    }
+  }
+
+  .create-project {
+    .info {
+      background-color: $artong-white;
+    }
+
+    .label {
+      color: $artong-black;
+    }
+
+    .input-group {
+      color: $artong-black;
+    }
+
+    button {
+      background: $artong-black;
+      color: $artong-white;
     }
   }
 }
