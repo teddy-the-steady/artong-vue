@@ -246,11 +246,16 @@ $dropdown-bg: #e3e3e3;
     button {
       background: $artong-black;
       color: $artong-white;
-    }
 
-    .refresh {
-      background: $artong-white;
-      color: $artong-black;
+      &.refresh {
+        background: $artong-white;
+        color: $artong-black;
+      }
+
+      &.dropdown {
+        background: $artong-white;
+        color: $artong-black;
+      }
     }
   }
 

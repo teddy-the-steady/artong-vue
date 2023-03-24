@@ -15,10 +15,10 @@
           @language-selected="languageSelected"
         />
       </div>
-      <button class="save" @click="save">
-        {{ $t('views.settings.button') }}
-      </button>
     </div>
+    <button class="save" @click="save">
+      {{ $t('views.settings.button') }}
+    </button>
   </div>
 </template>
 
@@ -114,10 +114,10 @@ export default {
         margin-right: 30px;
       }
     }
+  }
 
-    .save {
-      margin-top: 50px;
-    }
+  .save {
+    margin: 20px 0;
   }
 }
 
