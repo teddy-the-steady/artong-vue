@@ -77,12 +77,6 @@
           {{ $t('views.project-settings.settings.website') }}
         </label>
       </span>
-      <button @click="save">
-        <div class="spinner" :class="{ active: saving }"></div>
-        <span v-show="!saving">
-          {{ $t('views.project-settings.button.save') }}
-        </span>
-      </button>
     </div>
     <h1>{{ $t('views.project-settings.title2') }}</h1>
     <div class="input-group">
@@ -127,6 +121,12 @@
         </button>
       </div>
     </div>
+    <button @click="save" class="save">
+      <div class="spinner" :class="{ active: saving }"></div>
+      <span v-show="!saving">
+        {{ $t('views.project-settings.button.save') }}
+      </span>
+    </button>
     {{ errorMessage }}
   </div>
 </template>
@@ -392,6 +392,12 @@ export default {
         word-break: keep-all;
       }
     }
+  }
+
+  .save {
+    width: 100px;
+    word-break: keep-all;
+    margin: 20px 0;
   }
 }
 
