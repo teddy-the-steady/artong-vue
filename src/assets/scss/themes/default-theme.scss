@@ -171,9 +171,14 @@
         background: $artong-white;
         color: $artong-black;
       }
+    }
 
-      &.active {
-        color: $artong-white;
+    .info {
+      color: $artong-white;
+
+      button {
+        background: $artong-white;
+        color: $artong-black;
       }
     }
 
@@ -189,7 +194,33 @@
 
   .input-group,
   .option-group {
-    background: $lightgray;
+    background: $artong-black;
+
+    .option {
+      label {
+        color: $artong-white;
+      }
+    }
+
+    .float-label {
+      label {
+        color: $lightgray;
+      }
+    }
+
+    .balance-group {
+      color: white;
+    }
+
+    button {
+      background: $artong-white;
+      color: $artong-black;
+    }
+  }
+
+  .save {
+    background: $artong-white;
+    color: $artong-black;
   }
 
   .content-image {
@@ -250,6 +281,26 @@
   .tabs {
     .tab.active {
       color: $artong-white;
+      border-bottom-color: $artong-white;
+    }
+  }
+
+  .create-project {
+    .info {
+      background-color: $artong-black;
+    }
+
+    .label {
+      color: $artong-white;
+    }
+
+    .input-group {
+      color: $artong-white;
+    }
+
+    button {
+      background: $artong-white;
+      color: $artong-black;
     }
   }
 }
