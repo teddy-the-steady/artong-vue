@@ -461,7 +461,6 @@ export default {
           font-weight: 800;
           font-size: 1.1rem;
           text-decoration: none;
-          vertical-align: -webkit-baseline-middle;
           margin: 0 10px;
         }
       }
