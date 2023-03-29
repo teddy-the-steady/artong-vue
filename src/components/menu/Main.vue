@@ -401,11 +401,8 @@ export default {
     redirectTo(url) {
       window.open(url)
     },
-  },
-  async created() {
-    this.mainContents = await getMainContents()
-    try {
-      const result1 = await graphql(
+    async getMainToken() {
+      const result = await graphql(
         queryToken({
           variables: {
             id:
@@ -418,40 +415,31 @@ export default {
           },
         }),
       )
-      this.mainToken = result1.data.token
       this.isFirstLoading = false
-    } catch (error) {
-      this.isFirstLoading = true
-    }
-    try {
-      const result2 = await graphql(
+      return result.data.token
+    },
+    async getHighlightedProjects() {
+      const result = await graphql(
         queryHighlightedProjects({
           variables: {
             idArray: this.mainContents.highlightedProjects,
           },
         }),
       )
-      this.highlightedProjects = result2.data.projects
-      this.isFirstLoading = false
-    } catch (error) {
-      this.isFirstLoading = true
-    }
-    try {
-      const result3 = await graphql(
+      return result.data.projects
+    },
+    async getArtongsPick() {
+      const result = await graphql(
         queryTokensInIdArray({
           variables: {
             idArray: this.mainContents.artongsPick,
           },
         }),
       )
-      this.artongsPickTokens = result3.data.tokens
-      this.isFirstLoading = false
-    } catch (error) {
-      this.isFirstLoading = true
-    }
-    try {
-      this.mainContributors = await getMainContributors()
-      const result4 = await graphql(
+      return result.data.tokens
+    },
+    async getRecentContributions() {
+      const result = await graphql(
         queryTokens({
           variables: {
             first: 10,
@@ -461,11 +449,25 @@ export default {
           },
         }),
       )
-      this.recentTokens = result4.data.tokens
-      this.isFirstLoading = false
-    } catch (error) {
-      this.isFirstLoading = true
-    }
+      return result.data.tokens
+    },
+  },
+  async created() {
+    this.mainContents = await getMainContents()
+
+    const [result1, result2, result3, result4, result5] = await Promise.all([
+      this.getMainToken(),
+      this.getHighlightedProjects(),
+      this.getArtongsPick(),
+      getMainContributors(),
+      this.getRecentContributions(),
+    ])
+
+    this.mainToken = result1
+    this.highlightedProjects = result2
+    this.artongsPickTokens = result3
+    this.mainContributors = result4
+    this.recentTokens = result5
   },
 }
 </script>
