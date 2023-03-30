@@ -130,7 +130,6 @@ export default {
       white-space: nowrap;
       overflow: hidden !important;
       text-overflow: ellipsis;
-      color: $artong-black;
     }
     .username_box {
       margin-top: 7.5px;
