@@ -1,5 +1,6 @@
 {
     "title": "Connect your wallet",
+    "header": "Sign up, Sign in, and securely sign all your activities with blockchain wallet.\n\n 1. PC: Download the Metamask chrome extension\n 2. Mobile: Download the metamask or rainbow wallet app\n\n Tips when creating a wallet!\n Safely store secret text consisting of 12 English words (preferably written on paper)",
     "button": {
         "metamask": "METAMASK",
         "connect": "CONNECT"
