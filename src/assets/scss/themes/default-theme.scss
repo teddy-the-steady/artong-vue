@@ -100,6 +100,14 @@
   .navbar.active {
     background-color: $base-bg;
   }
+
+  .contents__body {
+    .tab-n-content {
+      .info {
+        color: $artong-white;
+      }
+    }
+  }
 }
 
 .contents__body {
@@ -174,8 +182,6 @@
     }
 
     .info {
-      color: $artong-white;
-
       button {
         background: $artong-white;
         color: $artong-black;

@@ -127,6 +127,14 @@ $dropdown-bg: #e3e3e3;
       }
     }
   }
+
+  .contents__body.white-theme {
+    .tab-n-content {
+      .info {
+        color: $artong-black;
+      }
+    }
+  }
 }
 
 .contents__body.white-theme {
@@ -205,8 +213,6 @@ $dropdown-bg: #e3e3e3;
     }
 
     .info {
-      color: $artong-black;
-
       button {
         background: $artong-black;
         color: $artong-white;
