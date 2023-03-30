@@ -6,7 +6,12 @@
       </router-link>
     </div>
     <div class="form__box">
-      <h1>{{ $t('views.login.title') }}</h1>
+      <div class="form__header">
+        <h1>
+          {{ $t('views.login.title') }}
+        </h1>
+        <TooltipIcon :tip="$t('views.login.header')" />
+      </div>
       <p v-text="warning"></p>
       <div class="form__footer">
         <button v-if="isMobile" @click="signInMobile()">
@@ -32,10 +37,12 @@ import { mapState } from 'vuex'
 import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import Provider from '../../util/walletConnectProvider'
+import TooltipIcon from '../util/ToolTipIcon.vue'
 
 export default {
   name: 'Login',
   mixins: [menuDeactivate],
+  components: { TooltipIcon },
   data() {
     return {
       warning: '',
@@ -220,9 +227,13 @@ export default {
     min-width: 320px;
     color: black;
 
-    h1 {
-      margin-top: 0;
-      text-align: center;
+    .form__header {
+      display: flex;
+      justify-content: center;
+
+      h1 {
+        margin: 0;
+      }
     }
 
     h3 > span {
