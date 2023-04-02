@@ -5,8 +5,18 @@
     </div>
     <div v-else @error="isFirstLoading = true" class="image">
       <img
-        v-if="member ? member.profile_thumbnail_s3key : ''"
-        :src="makeS3Path(member.profile_thumbnail_s3key)"
+        v-if="
+          member.profile_thumbnail_s3key
+            ? member.profile_thumbnail_s3key
+            : member.profile_s3key
+        "
+        :src="
+          makeS3Path(
+            member.profile_thumbnail_s3key
+              ? member.profile_thumbnail_s3key
+              : member.profile_s3key,
+          )
+        "
         @error="hasErrorGettingImage = true"
         class="profileImage"
         :class="{ error: hasErrorGettingImage }"
