@@ -140,6 +140,10 @@ $dropdown-bg: #e3e3e3;
 .contents__body.white-theme {
   background-color: $artong-white;
 
+  &.result-noti-body {
+    background-color: $artong-black;
+  }
+
   h1 {
     color: $artong-black;
   }
