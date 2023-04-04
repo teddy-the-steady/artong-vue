@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container result-noti-body">
     <div v-if="!result">
       <div class="creating-noti">
         {{ $t('views.creating-project.title') }}
