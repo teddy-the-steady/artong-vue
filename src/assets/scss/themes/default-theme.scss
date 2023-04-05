@@ -201,7 +201,8 @@
 
   .input-group,
   .option-group {
-    background: $artong-black;
+    background: $base-bg;
+    color: $artong-white;
 
     .option {
       label {
@@ -294,7 +295,7 @@
 
   .create-project {
     .info {
-      background-color: $artong-black;
+      background-color: $base-bg;
     }
 
     .label {
