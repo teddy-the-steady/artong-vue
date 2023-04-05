@@ -59,6 +59,17 @@ export default {
           introduction: this.member.introduction,
         })
         alert(this.$i18n.t('common.alert.saved'))
+        this.$router
+          .push({
+            name: 'UserOrArtist',
+            params: {
+              id: this.currentUser.username,
+              wallet_address: this.currentUser.wallet_address,
+            },
+          })
+          .then(() => {
+            this.$router.go()
+          })
       } catch (error) {
         this.errorMessage = error
       }
