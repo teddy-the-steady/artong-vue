@@ -2,7 +2,11 @@
   <div>
     <div class="sns-btns" v-if="sns">
       <div class="btn-container" v-for="(url, name) in sns" :key="name">
-        <button class="white-button long-btn" @click="openNewTab(url)">
+        <button
+          v-if="url"
+          class="white-button long-btn"
+          @click="openNewTab(url)"
+        >
           {{ name }}
         </button>
       </div>
