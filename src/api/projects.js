@@ -6,6 +6,13 @@ const postProject = async function (body) {
 }
 
 const patchProject = async function (txHash, body) {
+  if (body.sns) {
+    for (let sns in body.sns) {
+      if (body.sns[sns] && body.sns[sns].indexOf('http')) {
+        body.sns[sns] = 'https://' + body.sns[sns]
+      }
+    }
+  }
   const result = await instance.patch(`/projects/${txHash}`, body)
   return result.data
 }
