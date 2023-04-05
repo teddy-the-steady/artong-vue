@@ -330,8 +330,6 @@ export default {
     display: flex;
 
     .logo-box {
-      width: 100%;
-
       .logo {
         position: absolute;
         top: 23px;
