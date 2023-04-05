@@ -173,7 +173,10 @@ export default {
         await patchProject(this.project.txHash, {
           ...this.project,
         })
-        alert(this.$i18n.t('common.alert.saved'))
+        alert(this.$i18n.t('views.project-settings.alert.save'))
+        this.$router.push({ path: `/projects/${this.project.id}` }).then(() => {
+          this.$router.go()
+        })
       } catch (error) {
         this.errorMessage = error
       } finally {
@@ -213,7 +216,7 @@ export default {
       try {
         const txHash = await this._updateCollectionRoyalty(contract)
         await this.wait(txHash)
-        alert('Applied!')
+        alert(this.$i18n.t('views.project-settings.alert.apply'))
       } catch (error) {
         if (error.code == 'ACTION_REJECTED') {
           return
