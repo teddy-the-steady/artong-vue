@@ -167,6 +167,12 @@
   }
 
   .tab-n-content {
+    .left-tab {
+      .info {
+        color: $artong-black;
+      }
+    }
+
     .tab {
       .collection-name,
       .slug,
