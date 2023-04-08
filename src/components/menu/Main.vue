@@ -154,10 +154,10 @@
           <div class="title">{{ $t('main.container3.title.first') }}</div>
         </div>
         <CuratedCollection
-          v-show="innerWidth < 1080"
+          v-if="innerWidth < 1080"
           :projects="highlightedProjects"
         ></CuratedCollection>
-        <div v-show="innerWidth < 1440">
+        <div v-else-if="innerWidth < 1440">
           <CuratedCollectionWide
             v-for="(project, i) in highlightedProjects"
             :key="i"
@@ -165,7 +165,7 @@
             :project="project"
           ></CuratedCollectionWide>
         </div>
-        <div v-show="innerWidth >= 1440" class="curated-collection-wide-box">
+        <div v-else class="curated-collection-wide-box">
           <CuratedCollectionWide
             v-for="(project, i) in highlightedProjects"
             :key="i"
