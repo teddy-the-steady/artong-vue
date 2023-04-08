@@ -153,11 +153,12 @@
         <div class="top-container">
           <div class="title">{{ $t('main.container3.title.first') }}</div>
         </div>
-        <CuratedCollection
-          v-if="innerWidth < 1080"
-          :projects="highlightedProjects"
-        ></CuratedCollection>
-        <div v-else-if="innerWidth < 1440">
+        <div v-show="innerWidth < 1080">
+          <CuratedCollection
+            :projects="highlightedProjects"
+          ></CuratedCollection>
+        </div>
+        <div v-show="innerWidth < 1440 && innerWidth >= 1080">
           <CuratedCollectionWide
             v-for="(project, i) in highlightedProjects"
             :key="i"
@@ -165,7 +166,7 @@
             :project="project"
           ></CuratedCollectionWide>
         </div>
-        <div v-else class="curated-collection-wide-box">
+        <div v-show="innerWidth >= 1440" class="curated-collection-wide-box">
           <CuratedCollectionWide
             v-for="(project, i) in highlightedProjects"
             :key="i"
@@ -452,7 +453,7 @@ export default {
       return result.data.tokens
     },
   },
-  async mounted() {
+  async created() {
     this.mainContents = await getMainContents()
 
     const [result1, result2, result3, result4, result5] = await Promise.all([
