@@ -452,7 +452,7 @@ export default {
       return result.data.tokens
     },
   },
-  async created() {
+  async mounted() {
     this.mainContents = await getMainContents()
 
     const [result1, result2, result3, result4, result5] = await Promise.all([
