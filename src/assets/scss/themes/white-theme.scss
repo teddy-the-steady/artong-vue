@@ -200,6 +200,12 @@ $dropdown-bg: #e3e3e3;
   }
 
   .tab-n-content {
+    .left-tab {
+      .info {
+        color: $artong-black;
+      }
+    }
+
     .tab {
       .slug,
       .info {
