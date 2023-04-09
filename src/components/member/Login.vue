@@ -28,6 +28,25 @@
         </button>
       </div>
     </div>
+    <div class="form__notification">
+      <p class="padding">
+        * 지갑을 연결하면
+        <a class="form__notification_click" href="#" @click="togglePrivacyModal"
+          >개인정보처리방침</a
+        >
+        및
+        <a class="form__notification_click" href="#" @click="toggleTosModal"
+          >이용약관</a
+        >
+        에 동의하는 것으로 판단합니다 *
+      </p>
+    </div>
+    <PrivacyModal
+      class="modal"
+      v-if="isPrivacyModalOpen"
+      @close="togglePrivacyModal"
+    />
+    <TosModal class="modal" v-if="isTosModalOpen" @close="toggleTosModal" />
   </div>
 </template>
 
@@ -38,15 +57,25 @@ import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import Provider from '../../util/walletConnectProvider'
 import TooltipIcon from '../util/ToolTipIcon.vue'
+import PrivacyModal from '../modal/PrivacyModal.vue'
+import TosModal from '../modal/TosModal.vue'
 
 export default {
   name: 'Login',
   mixins: [menuDeactivate],
-  components: { TooltipIcon },
+  components: {
+    TooltipIcon,
+    PrivacyModal,
+    TosModal,
+  },
   data() {
     return {
       warning: '',
       isSpinnerActive: false,
+      // isPrivacyModalOpen: false,
+      // isTosModalOpen: false,
+      showPrivacyModal: false,
+      showTosModal: false,
     }
   },
   computed: {
@@ -55,6 +84,8 @@ export default {
     },
     ...mapState({
       justSignedUp: state => state.auth.justSignedUp,
+      isPrivacyModalOpen: state => state.menu.isPrivacyModalOpen,
+      isTosModalOpen: state => state.menu.isTosModalOpen,
     }),
   },
   beforeRouteEnter(to, from, next) {
@@ -189,6 +220,12 @@ export default {
         this.$router.push({ name: 'Main' })
       }
     },
+    togglePrivacyModal() {
+      this.$store.commit('TOGGLE_PRIVACY_MODAL')
+    },
+    toggleTosModal() {
+      this.$store.commit('TOGGLE_TOS_MODAL')
+    },
   },
 }
 </script>
@@ -196,6 +233,10 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/scss/variables';
 
+.padding {
+  padding-left: 27px;
+  padding-right: 27px;
+}
 .login__body {
   height: 100vh;
   background: $artong-black;
@@ -265,6 +306,21 @@ export default {
         align-self: center;
       }
     }
+  }
+  .form__notification {
+    margin-top: 2vh;
+    text-align: center;
+    font-size: 15px;
+    color: $artong-white;
+
+    .form__notification_click {
+      color: rgb(130, 192, 255);
+      text-decoration: underline;
+    }
+  }
+
+  .modal {
+    transition: opacity 0.2s ease;
   }
 }
 

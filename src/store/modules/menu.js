@@ -6,6 +6,8 @@ import {
   TOGGLE_MODAL,
   TOGGLE_CONFIRM_MODAL,
   TOGGLE_PROMPT_MODAL,
+  TOGGLE_PRIVACY_MODAL,
+  TOGGLE_TOS_MODAL,
   TOGGLE_THEME,
   SET_INNER_WIDTH,
   SET_ICON_POSITION,
@@ -20,6 +22,8 @@ const state = {
   isModalOpen: false,
   isConfirmModalOpen: false,
   isPromptModalOpen: false,
+  isPrivacyModalOpen: false,
+  isTosModalOpen: false,
   isDark: JSON.parse(localStorage.getItem('isDark')) | false,
   waitForAnswer: null,
   innerWidth: window.innerWidth,
@@ -54,6 +58,12 @@ const mutations = {
   },
   [TOGGLE_PROMPT_MODAL]: state => {
     state.isPromptModalOpen = !state.isPromptModalOpen
+  },
+  [TOGGLE_PRIVACY_MODAL]: state => {
+    state.isPrivacyModalOpen = !state.isPrivacyModalOpen
+  },
+  [TOGGLE_TOS_MODAL]: state => {
+    state.isTosModalOpen = !state.isTosModalOpen
   },
   [SET_INNER_WIDTH]: (state, innerWidth) => {
     state.innerWidth = innerWidth
