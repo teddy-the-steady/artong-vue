@@ -153,27 +153,7 @@
         <div class="top-container">
           <div class="title">{{ $t('main.container3.title.first') }}</div>
         </div>
-        <div v-show="innerWidth < 1080">
-          <CuratedCollection
-            :projects="highlightedProjects"
-          ></CuratedCollection>
-        </div>
-        <div v-show="innerWidth < 1440 && innerWidth >= 1080">
-          <CuratedCollectionWide
-            v-for="(project, i) in highlightedProjects"
-            :key="i"
-            class="curated-collection-wide1"
-            :project="project"
-          ></CuratedCollectionWide>
-        </div>
-        <div v-show="innerWidth >= 1440" class="curated-collection-wide-box">
-          <CuratedCollectionWide
-            v-for="(project, i) in highlightedProjects"
-            :key="i"
-            class="curated-collection-wide2"
-            :project="project"
-          ></CuratedCollectionWide>
-        </div>
+        <CuratedCollection :projects="highlightedProjects"></CuratedCollection>
         <div class="top-container margin-top">
           <div class="title">{{ $t('main.container3.title.second') }}</div>
         </div>
@@ -304,7 +284,6 @@ import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
-import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
 import SkeletonBox from '../util/SkeletonBox.vue'
 import PrivacyModal from '../modal/PrivacyModal.vue'
@@ -317,7 +296,6 @@ export default {
     CuratedCollection,
     TokensByCollection,
     FeaturedCreator,
-    CuratedCollectionWide,
     ContentsProfile,
     ProjectPageProfile_small,
     LangDropdown,
