@@ -270,12 +270,14 @@
           </ul>
         </div>
         <div class="bottom-left">
-          <div class="bottom-word clickable">
+          <div class="bottom-word clickable" @click="togglePrivacyModal">
             {{ $t('main.bottom.left.privacy-info') }}
           </div>
-          <div class="bottom-word clickable">
+          <PrivacyModal v-if="isPrivacyModalOpen" @close="togglePrivacyModal" />
+          <div class="bottom-word clickable" @click="toggleTosModal">
             {{ $t('main.bottom.left.terms-of-service') }}
           </div>
+          <TosModal v-if="isTosModalOpen" @close="toggleTosModal" />
         </div>
       </div>
     </div>
@@ -305,6 +307,8 @@ import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import CuratedCollectionWide from '../collection_card/CuratedCollection_wide.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
 import SkeletonBox from '../util/SkeletonBox.vue'
+import PrivacyModal from '../modal/PrivacyModal.vue'
+import TosModal from '../modal/TosModal.vue'
 
 export default {
   name: 'Main',
@@ -318,11 +322,15 @@ export default {
     ProjectPageProfile_small,
     LangDropdown,
     SkeletonBox,
+    PrivacyModal,
+    TosModal,
   },
   computed: {
     ...mapState({
       innerWidth: state => state.menu.innerWidth,
       currentUser: state => state.user.currentUser,
+      isPrivacyModalOpen: state => state.menu.isPrivacyModalOpen,
+      isTosModalOpen: state => state.menu.isTosModalOpen,
     }),
   },
   data() {
@@ -334,6 +342,10 @@ export default {
       isFirstLoading: true,
       mainContributors: {},
       recentTokens: {},
+      showPrivacyModal: false,
+      // isPrivacyModalOpen: false,
+      showTosModal: false,
+      // isTosModalOpen: false,
       langOptions: languages,
     }
   },
@@ -398,6 +410,12 @@ export default {
           },
         })
       }
+    },
+    togglePrivacyModal() {
+      this.$store.commit('TOGGLE_PRIVACY_MODAL')
+    },
+    toggleTosModal() {
+      this.$store.commit('TOGGLE_TOS_MODAL')
     },
     redirectTo(url) {
       window.open(url)
