@@ -4,5 +4,12 @@
     "button": {
         "metamask": "METAMASK",
         "connect": "CONNECT"
+    },
+    "privacy": {
+        "1": "By using Artong, you agree to our ",
+        "2": "Terms of service",
+        "3": "and",
+        "4": "Privacy policy",
+        "5": ""
     }
 }
