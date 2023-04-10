@@ -30,15 +30,18 @@
     </div>
     <div class="form__notification">
       <p class="padding">
-        * 지갑을 연결하면
-        <a class="form__notification_click" href="#" @click="togglePrivacyModal"
-          >개인정보처리방침</a
+        {{ $t('views.login.privacy.1') }}
+        <a class="form__notification_click" href="#" @click="toggleTosModal">{{
+          $t('views.login.privacy.2')
+        }}</a>
+        {{ $t('views.login.privacy.3') }}
+        <a
+          class="form__notification_click"
+          href="#"
+          @click="togglePrivacyModal"
+          >{{ $t('views.login.privacy.4') }}</a
         >
-        및
-        <a class="form__notification_click" href="#" @click="toggleTosModal"
-          >이용약관</a
-        >
-        에 동의하는 것으로 판단합니다 *
+        {{ $t('views.login.privacy.5') }}
       </p>
     </div>
     <PrivacyModal
