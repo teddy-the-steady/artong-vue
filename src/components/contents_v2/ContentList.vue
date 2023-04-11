@@ -26,7 +26,7 @@
       </div>
     </masonry>
     <InfiniteLoading
-      :identifier="$route.params.id"
+      :identifier="$route.path"
       @infinite="infiniteHandler"
       spinner="spiral"
       force-use-infinite-wrapper=".contents"
