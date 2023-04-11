@@ -8,10 +8,10 @@
           :sortSelected="sort"
         ></SortDropdown>
       </div>
-      <ProjectList
+      <ProjectListKeepAlive
         :queryProjects="queryProjects"
         :key="sort.name"
-      ></ProjectList>
+      ></ProjectListKeepAlive>
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@
 <script>
 import { headerActivate } from '../../mixin'
 import { graphql, queryProjects } from '../../api/graphql'
-import ProjectList from '../projects/ProjectList.vue'
+import ProjectListKeepAlive from '../projects/ProjectListKeepAlive.vue'
 import SortDropdown from '../dropdown/SortDropdown.vue'
 
 export default {
   name: 'Projects',
   mixins: [headerActivate],
   components: {
-    ProjectList,
+    ProjectListKeepAlive,
     SortDropdown,
   },
   computed: {
