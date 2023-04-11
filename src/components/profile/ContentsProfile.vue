@@ -5,18 +5,8 @@
     </div>
     <div v-else @error="isFirstLoading = true" class="image">
       <img
-        v-if="
-          member.profile_thumbnail_s3key
-            ? member.profile_thumbnail_s3key
-            : member.profile_s3key
-        "
-        :src="
-          makeS3Path(
-            member.profile_thumbnail_s3key
-              ? member.profile_thumbnail_s3key
-              : member.profile_s3key,
-          )
-        "
+        v-if="profileImage"
+        :src="profileImage"
         @error="hasErrorGettingImage = true"
         class="profileImage"
         :class="{ error: hasErrorGettingImage }"
@@ -77,6 +67,14 @@ export default {
   computed: {
     backgroundColor() {
       return this.generateGradientBackground(this.member?.wallet_address)
+    },
+    profileImage() {
+      if (this.member) {
+        return makeS3Path(
+          this.member.profile_thumbnail_s3key || this.member.profile_s3key,
+        )
+      }
+      return null
     },
   },
   data() {
