@@ -26,10 +26,8 @@
       </div>
     </masonry>
     <InfiniteLoading
-      :identifier="$route.params.id"
       @infinite="infiniteHandler"
       spinner="spiral"
-      force-use-infinite-wrapper=".contents"
     ></InfiniteLoading>
   </div>
 </template>
@@ -41,7 +39,7 @@ import ContentBox from './ContentBox.vue'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 
 export default {
-  name: 'ContentList',
+  name: 'ContentListKeepAlive',
   components: {
     ContentBox,
     ContentsProfile,
@@ -214,12 +212,10 @@ export default {
     },
   },
   watch: {
-    queryContents: {
-      async handler(val) {
-        this.noMoreDataToLoad = false
-        this.contentList = []
-        this.queryContents = val
-      },
+    $route(to, from) {
+      if (from.name === 'Contents' || from.name === 'Feed') {
+        this.noMoreDataToLoad = true
+      }
     },
   },
 }

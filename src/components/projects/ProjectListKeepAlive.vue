@@ -13,7 +13,6 @@
       </div>
     </div>
     <InfiniteLoading
-      :identifier="$route.path"
       @infinite="infiniteHandler"
       spinner="spiral"
     ></InfiniteLoading>
@@ -22,10 +21,10 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import ProjectCard from '../projects/ProjectCard.vue'
+import ProjectCard from './ProjectCard.vue'
 
 export default {
-  name: 'ProjectList',
+  name: 'ProjectListKeepAlive',
   components: {
     ProjectCard,
     InfiniteLoading,
@@ -101,6 +100,13 @@ export default {
     },
     async getProjects() {
       return await this.queryProjects.func(this.queryProjects.body)
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name === 'Projects') {
+        this.noMoreDataToLoad = true
+      }
     },
   },
 }

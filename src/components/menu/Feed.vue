@@ -8,10 +8,10 @@
           :sortSelected="sort"
         ></SortDropdown>
       </div>
-      <ContentList
+      <ContentListKeepAlive
         :queryContents="queryContents"
         :key="sort.name"
-      ></ContentList>
+      ></ContentListKeepAlive>
     </div>
   </div>
 </template>
@@ -19,14 +19,14 @@
 <script>
 import { headerActivate } from '../../mixin'
 import { getFeedContents } from '../../api/contents'
-import ContentList from '../contents_v2/ContentList.vue'
+import ContentListKeepAlive from '../contents_v2/ContentListKeepAlive.vue'
 import SortDropdown from '../dropdown/SortDropdown.vue'
 
 export default {
   name: 'Feed',
   mixins: [headerActivate],
   components: {
-    ContentList,
+    ContentListKeepAlive,
     SortDropdown,
   },
   computed: {
