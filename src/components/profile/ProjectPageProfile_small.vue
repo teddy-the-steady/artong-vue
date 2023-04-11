@@ -56,14 +56,20 @@ export default {
   },
   computed: {
     projectImage() {
-      return makeS3Path(
-        this.project.project_thumbnail_s3key || this.project.project_s3key,
-      )
+      if (this.project) {
+        return makeS3Path(
+          this.project.project_thumbnail_s3key || this.project.project_s3key,
+        )
+      }
+      return null
     },
     backgroundColor() {
-      return this.generateGradientBackground(
-        this.project.id || this.project.address,
-      )
+      if (this.project) {
+        return this.generateGradientBackground(
+          this.project.id || this.project.address,
+        )
+      }
+      return null
     },
   },
   methods: {
