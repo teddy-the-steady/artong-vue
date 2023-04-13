@@ -98,6 +98,10 @@ const getContents = async function (pathParams, queryParams) {
   })
 }
 
+const getContentsPick = async function (body) {
+  return await instance.post('/contents/artongs_pick', body)
+}
+
 export {
   getContent,
   postContent,
@@ -112,4 +116,5 @@ export {
   getMainContents,
   getFeedContents,
   getContents,
+  getContentsPick,
 }
