@@ -13,12 +13,16 @@
       <router-link
         :to="{
           name: 'UserOrArtist',
-          params: { id: content ? content.owner.username : '' },
+          params: {
+            id: content.owner
+              ? content.owner.username
+              : content.creator.username,
+          },
         }"
         class="profile-link"
       >
         <ContentsProfile
-          :member="content ? content.owner : null"
+          :member="content.owner ? content.owner : content.creator"
           class="content-profile"
         ></ContentsProfile>
       </router-link>

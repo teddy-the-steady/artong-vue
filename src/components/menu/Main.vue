@@ -170,7 +170,7 @@
       <TokensByCollection
         class="margin-bottom"
         :tokens="artongsPickTokens"
-        :needContentName="true"
+        :needContentName="false"
       ></TokensByCollection>
       <div class="top-container margin-top">
         <div class="title">{{ $t('main.container4.title.second') }}</div>
@@ -272,11 +272,10 @@ import { makeS3Path } from '../../util/commonFunc'
 import {
   graphql,
   queryToken,
-  queryTokensInIdArray,
   queryHighlightedProjects,
   queryTokens,
 } from '../../api/graphql'
-import { getMainContents } from '../../api/contents'
+import { getMainContents, getContentsPick } from '../../api/contents'
 import { getMainContributors } from '../../api/member'
 import { languages } from '../../locales/languages'
 import ContentsProfile from '../profile/ContentsProfile.vue'
@@ -425,16 +424,6 @@ export default {
       )
       return result.data.projects
     },
-    async getArtongsPick() {
-      const result = await graphql(
-        queryTokensInIdArray({
-          variables: {
-            idArray: this.mainContents.artongsPick,
-          },
-        }),
-      )
-      return result.data.tokens
-    },
     async getRecentContributions() {
       const result = await graphql(
         queryTokens({
@@ -455,14 +444,14 @@ export default {
     const [result1, result2, result3, result4, result5] = await Promise.all([
       this.getMainToken(),
       this.getHighlightedProjects(),
-      this.getArtongsPick(),
+      getContentsPick({ ids: this.mainContents.artongsPick }),
       getMainContributors(),
       this.getRecentContributions(),
     ])
 
     this.mainToken = result1
     this.highlightedProjects = result2
-    this.artongsPickTokens = result3
+    this.artongsPickTokens = result3.data
     this.mainContributors = result4
     this.recentTokens = result5
   },
