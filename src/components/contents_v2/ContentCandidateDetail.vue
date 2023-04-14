@@ -476,6 +476,10 @@ export default {
             token_id: tokenId,
           },
         })
+      } catch (error) {
+        if (error.code === 'INSUFFICIENT_FUNDS') {
+          alert(this.$i18n.t('error.alert.insufficient_funds'))
+        }
       } finally {
         this.buying = false
       }
