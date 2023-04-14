@@ -548,6 +548,10 @@ export default {
             const txHash = await this.buy(contract)
             await this.wait(txHash)
             alert(this.$i18n.t('views.content-detail.alert.purchased'))
+          } catch (error) {
+            if (error.code === 'INSUFFICIENT_FUNDS') {
+              alert(this.$i18n.t('error.alert.insufficient_funds'))
+            }
           } finally {
             this.buying = false
           }
@@ -603,6 +607,9 @@ export default {
               alert(this.$i18n.t('views.content-detail.alert.offered'))
               break
             } catch (error) {
+              if (error.code === 'INSUFFICIENT_FUNDS') {
+                alert(this.$i18n.t('error.alert.insufficient_funds'))
+              }
               if (error.message === 'canceled') {
                 break
               }
