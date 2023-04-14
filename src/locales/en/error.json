@@ -1,0 +1,5 @@
+{
+    "alert": {
+        "insufficient_funds": "Not enough funds in your blockchain wallet"
+    }
+}
