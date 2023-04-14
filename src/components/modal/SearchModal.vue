@@ -83,6 +83,7 @@
                           name: 'UserOrArtist',
                           params: {
                             id: member.username,
+                            wallet_address: member.wallet_address,
                           },
                         }"
                       >
