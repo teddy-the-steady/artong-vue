@@ -26,7 +26,7 @@
       </div>
     </masonry>
     <InfiniteLoading
-      :identifier="$route.params.id || $route.params.wallet_address"
+      :identifier="$route.path"
       @infinite="infiniteHandler"
       spinner="spiral"
       force-use-infinite-wrapper=".contents"
