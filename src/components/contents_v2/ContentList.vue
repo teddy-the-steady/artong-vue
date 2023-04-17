@@ -29,6 +29,7 @@
       :identifier="$route.path"
       @infinite="infiniteHandler"
       spinner="spiral"
+      force-use-infinite-wrapper="true"
     ></InfiniteLoading>
   </div>
 </template>
