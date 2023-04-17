@@ -26,6 +26,14 @@
       </div>
     </masonry>
     <InfiniteLoading
+      v-if="innerWidth < 500"
+      :identifier="$route.path"
+      @infinite="infiniteHandler"
+      spinner="spiral"
+      force-use-infinite-wrapper=".contents"
+    ></InfiniteLoading>
+    <InfiniteLoading
+      v-else
       :identifier="$route.path"
       @infinite="infiniteHandler"
       spinner="spiral"
@@ -35,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import InfiniteLoading from 'vue-infinite-loading'
 import { makeS3Path, weiToEther } from '../../util/commonFunc'
 import ContentBox from './ContentBox.vue'
@@ -56,6 +65,11 @@ export default {
       type: Boolean,
       default: true,
     },
+  },
+  computed: {
+    ...mapState({
+      innerWidth: state => state.menu.innerWidth,
+    }),
   },
   data() {
     return {
