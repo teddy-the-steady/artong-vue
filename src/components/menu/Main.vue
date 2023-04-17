@@ -440,20 +440,19 @@ export default {
   },
   async created() {
     this.mainContents = await getMainContents()
+    this.mainToken = await this.getMainToken()
 
-    const [result1, result2, result3, result4, result5] = await Promise.all([
-      this.getMainToken(),
+    const [result1, result2, result3, result4] = await Promise.all([
       this.getHighlightedProjects(),
       getContentsPick({ ids: this.mainContents.artongsPick }),
       getMainContributors(),
       this.getRecentContributions(),
     ])
 
-    this.mainToken = result1
-    this.highlightedProjects = result2
-    this.artongsPickTokens = result3.data
-    this.mainContributors = result4
-    this.recentTokens = result5
+    this.highlightedProjects = result1
+    this.artongsPickTokens = result2.data
+    this.mainContributors = result3
+    this.recentTokens = result4
   },
 }
 </script>
