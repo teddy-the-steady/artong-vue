@@ -70,7 +70,7 @@ export default {
     ...mapState({
       innerWidth: state => state.menu.innerWidth,
     }),
-  }
+  },
   data() {
     return {
       contentList: [],
