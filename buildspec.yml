@@ -7,7 +7,7 @@ phases:
       - npm i npm@latest -g
   pre_build:
     commands:
-      - npm install
+      - npm ci
   build:
     commands:
       - npm run build:$ENV
