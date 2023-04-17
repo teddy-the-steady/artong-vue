@@ -232,7 +232,6 @@ export default {
   .follow-n-unfollow-btn {
     height: 48px;
     width: 100%;
-    margin-bottom: 46px;
   }
 }
 @media (min-width: 840px) {
