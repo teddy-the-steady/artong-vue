@@ -5,12 +5,23 @@
     :class="{ active: isTabActive }"
   >
     {{ label }}
-
-    <span v-if="id === 0" class="count">
-      {{ project.token_count }}
+    <span
+      v-if="id === 0"
+      class="count"
+      :class="{ nonZero: parseInt(project.token_count) > 0 }"
+    >
+      {{ parseInt(project.token_count) > 0 ? project.token_count : '' }}
     </span>
-    <span v-if="id === 3" class="count">
-      {{ project.tokens_tobe_approved_count }}
+    <span
+      v-if="id === 3"
+      class="count"
+      :class="{ nonZero: parseInt(project.tokens_tobe_approved_count) > 0 }"
+    >
+      {{
+        parseInt(project.token_count) > 0
+          ? project.tokens_tobe_approved_count
+          : ''
+      }}
     </span>
   </div>
 </template>
@@ -59,8 +70,10 @@ export default {
   align-items: center;
 
   .count {
-    margin-left: 10px;
-    font-size: 14px;
+    &.nonZero {
+      margin-left: 10px;
+      font-size: 14px;
+    }
   }
 }
 .active {
