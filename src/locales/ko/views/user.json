@@ -6,7 +6,7 @@
     },
     "button": {
         "follow": "팔로우",
-        "unfollow": "언팔로우",
+        "unfollow": "팔로우중",
         "edit": "수정"
     },
     "sort-options": {

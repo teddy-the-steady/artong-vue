@@ -6,7 +6,7 @@
       :sortSelected="current.sort"
     ></SortDropdown>
     <div class="tabs">
-      <TabItem
+      <ProjectTabItem
         v-for="tab in tabs"
         v-bind="tab"
         :key="tab.id"
@@ -15,6 +15,7 @@
         v-show="
           tab.type !== 'INFO' || (tab.type === 'INFO' && innerWidth < 1440)
         "
+        :project="project"
       />
     </div>
     <div class="items">
@@ -55,7 +56,7 @@
 <script>
 import { mapState } from 'vuex'
 import { isSessionValid } from '../../util/commonFunc'
-import TabItem from './TabItem.vue'
+import ProjectTabItem from './ProjectTabItem.vue'
 import ContentList from '../contents_v2/ContentList.vue'
 import ProfileList from '../profile/ProfileList.vue'
 import SnsLinks from '../projects/SnsLinks.vue'
@@ -64,7 +65,7 @@ import SortDropdown from '../dropdown/SortDropdown.vue'
 export default {
   name: 'ProjectTab',
   components: {
-    TabItem,
+    ProjectTabItem,
     ContentList,
     ProfileList,
     SnsLinks,
@@ -76,6 +77,10 @@ export default {
       default: () => [],
     },
     sortOptions: {
+      type: Object,
+      default: () => {},
+    },
+    project: {
       type: Object,
       default: () => {},
     },
