@@ -18,7 +18,7 @@
       :class="{ nonZero: parseInt(project.tokens_tobe_approved_count) > 0 }"
     >
       {{
-        parseInt(project.token_count) > 0
+        parseInt(project.tokens_tobe_approved_count) > 0
           ? project.tokens_tobe_approved_count
           : ''
       }}
