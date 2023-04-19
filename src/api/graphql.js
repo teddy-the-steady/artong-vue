@@ -32,6 +32,8 @@ const queryProject = function (variables) {
           _db_is_subscriber
           _db_is_contributor
           _db_slug
+          _db_token_count
+          _db_tokens_tobe_approved_count
         }
       }
     `,

@@ -156,6 +156,7 @@
       <ProjectTab
         :tabs="tabs"
         :sortOptions="sortOptions"
+        :project="project"
         class="project-tab-sort"
       />
     </div>
