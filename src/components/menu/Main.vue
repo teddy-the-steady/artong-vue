@@ -250,14 +250,22 @@
           </ul>
         </div>
         <div class="bottom-left">
-          <div class="bottom-word clickable" @click="togglePrivacyModal">
+          <div
+            class="bottom-word clickable"
+            @click="togglePrivacyTosModal(), toggleModalType('privacy')"
+          >
             {{ $t('main.bottom.left.privacy-info') }}
           </div>
-          <PrivacyModal v-if="isPrivacyModalOpen" @close="togglePrivacyModal" />
-          <div class="bottom-word clickable" @click="toggleTosModal">
+          <div
+            class="bottom-word clickable"
+            @click="togglePrivacyTosModal(), toggleModalType('tos')"
+          >
             {{ $t('main.bottom.left.terms-of-service') }}
           </div>
-          <TosModal v-if="isTosModalOpen" @close="toggleTosModal" />
+          <PrivacyTosModal
+            v-if="isPrivacyTosModalOpen"
+            :modalType="modalType"
+          />
         </div>
       </div>
     </div>
@@ -285,8 +293,7 @@ import CuratedCollection from '../collection_card/CuratedCollection.vue'
 import FeaturedCreator from '../collection_card/FeaturedCreator.vue'
 import LangDropdown from '../dropdown/LangDropdown.vue'
 import SkeletonBox from '../util/SkeletonBox.vue'
-import PrivacyModal from '../modal/PrivacyModal.vue'
-import TosModal from '../modal/TosModal.vue'
+import PrivacyTosModal from '../modal/Privacy&TosModal.vue'
 
 export default {
   name: 'Main',
@@ -299,15 +306,13 @@ export default {
     ProjectPageProfile_small,
     LangDropdown,
     SkeletonBox,
-    PrivacyModal,
-    TosModal,
+    PrivacyTosModal,
   },
   computed: {
     ...mapState({
       innerWidth: state => state.menu.innerWidth,
       currentUser: state => state.user.currentUser,
-      isPrivacyModalOpen: state => state.menu.isPrivacyModalOpen,
-      isTosModalOpen: state => state.menu.isTosModalOpen,
+      isPrivacyTosModalOpen: state => state.menu.isPrivacyTosModalOpen,
     }),
   },
   data() {
@@ -319,11 +324,8 @@ export default {
       isFirstLoading: true,
       mainContributors: {},
       recentTokens: {},
-      showPrivacyModal: false,
-      // isPrivacyModalOpen: false,
-      showTosModal: false,
-      // isTosModalOpen: false,
       langOptions: languages,
+      modalType: null,
     }
   },
   directives: {
@@ -388,11 +390,11 @@ export default {
         })
       }
     },
-    togglePrivacyModal() {
-      this.$store.commit('TOGGLE_PRIVACY_MODAL')
+    togglePrivacyTosModal() {
+      this.$store.commit('TOGGLE_PRIVACY_TOS_MODAL')
     },
-    toggleTosModal() {
-      this.$store.commit('TOGGLE_TOS_MODAL')
+    toggleModalType(type) {
+      this.modalType = type
     },
     redirectTo(url) {
       window.open(url)
