@@ -8,15 +8,19 @@
               <slot name="header"></slot>
             </div>
 
-            <div>
-              <div>
-                <Tos class="text-left" />
-                <div>
-                  <button color="primary" text @click="toggleTosModal">
-                    닫기
-                  </button>
-                </div>
-              </div>
+            <div class="modal-body">
+              <slot name="body">
+                <Privacy class="text-left" v-if="modalType === 'privacy'" />
+                <Tos class="text-left" v-if="modalType === 'tos'" />
+              </slot>
+            </div>
+
+            <div class="modal-footer">
+              <slot name="footer">
+                <button class="modal-button" @click="togglePrivacyTosModal">
+                  닫기
+                </button>
+              </slot>
             </div>
           </div>
         </div>
@@ -26,27 +30,36 @@
 </template>
 
 <script>
+import Privacy from '../../locales/ko/views/privacy.vue'
 import Tos from '../../locales/ko/views/tos.vue'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'TosModal',
+  name: 'PrivacyTosModal',
   components: {
+    Privacy,
     Tos,
+  },
+  props: {
+    modalType: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
+      privacy: {},
       tos: {},
     }
   },
   computed: {
     ...mapState({
-      isTosModalOpen: state => state.menu.isTosModalOpen,
+      isPrivacyTosModalOpen: state => state.menu.isPrivacyTosModalOpen,
     }),
   },
   methods: {
-    toggleTosModal() {
-      this.$store.commit('TOGGLE_TOS_MODAL')
+    togglePrivacyTosModal() {
+      this.$store.commit('TOGGLE_PRIVACY_TOS_MODAL')
     },
   },
 }
@@ -64,7 +77,7 @@ export default {
   height: 100vh;
   background-color: $backdrop;
   display: table;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
 
   .modal-wrapper {
     display: table-cell;
@@ -79,16 +92,37 @@ export default {
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
       transition: all 0.3s ease;
       border-radius: 20px;
-    }
-    .modal-header {
-      float: right;
-      color: $lightgray;
-    }
 
-    .modal-body {
-      margin: 20px 0;
+      .scrollable-container {
+        overflow-y: auto;
+        max-height: 80vh;
+        max-width: 80vw;
+      }
+
+      .modal-header {
+        float: right;
+        color: $lightgray;
+      }
+
+      .modal-body {
+        margin: 20px 5px;
+      }
+
+      .modal-footer {
+        .modal-button {
+          margin: 10px;
+        }
+      }
     }
   }
+}
+
+.modal-enter {
+  opacity: 100;
+}
+
+.modal-leave-active {
+  opacity: 0;
 }
 
 .text-left {
@@ -109,11 +143,5 @@ export default {
       }
     }
   }
-}
-
-.scrollable-container {
-  overflow-y: auto;
-  max-height: 80vh;
-  max-width: 80vw;
 }
 </style>

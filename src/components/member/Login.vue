@@ -31,25 +31,23 @@
     <div class="form__notification">
       <p class="padding">
         {{ $t('views.login.privacy.1') }}
-        <a class="form__notification_click" href="#" @click="toggleTosModal">{{
-          $t('views.login.privacy.2')
-        }}</a>
+        <a
+          class="form__notification_click"
+          href="#"
+          @click="togglePrivacyTosModal(), toggleModalType('tos')"
+          >{{ $t('views.login.privacy.2') }}</a
+        >
         {{ $t('views.login.privacy.3') }}
         <a
           class="form__notification_click"
           href="#"
-          @click="togglePrivacyModal"
+          @click="togglePrivacyTosModal(), toggleModalType('privacy')"
           >{{ $t('views.login.privacy.4') }}</a
         >
         {{ $t('views.login.privacy.5') }}
       </p>
     </div>
-    <PrivacyModal
-      class="modal"
-      v-if="isPrivacyModalOpen"
-      @close="togglePrivacyModal"
-    />
-    <TosModal class="modal" v-if="isTosModalOpen" @close="toggleTosModal" />
+    <PrivacyTosModal v-if="isPrivacyTosModalOpen" :modalType="modalType" />
   </div>
 </template>
 
@@ -60,25 +58,20 @@ import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
 import Provider from '../../util/walletConnectProvider'
 import TooltipIcon from '../util/ToolTipIcon.vue'
-import PrivacyModal from '../modal/PrivacyModal.vue'
-import TosModal from '../modal/TosModal.vue'
+import PrivacyTosModal from '../modal/Privacy&TosModal.vue'
 
 export default {
   name: 'Login',
   mixins: [menuDeactivate],
   components: {
     TooltipIcon,
-    PrivacyModal,
-    TosModal,
+    PrivacyTosModal,
   },
   data() {
     return {
       warning: '',
       isSpinnerActive: false,
-      // isPrivacyModalOpen: false,
-      // isTosModalOpen: false,
-      showPrivacyModal: false,
-      showTosModal: false,
+      modalType: null,
     }
   },
   computed: {
@@ -87,8 +80,7 @@ export default {
     },
     ...mapState({
       justSignedUp: state => state.auth.justSignedUp,
-      isPrivacyModalOpen: state => state.menu.isPrivacyModalOpen,
-      isTosModalOpen: state => state.menu.isTosModalOpen,
+      isPrivacyTosModalOpen: state => state.menu.isPrivacyTosModalOpen,
     }),
   },
   beforeRouteEnter(to, from, next) {
@@ -223,11 +215,11 @@ export default {
         this.$router.push({ name: 'Main' })
       }
     },
-    togglePrivacyModal() {
-      this.$store.commit('TOGGLE_PRIVACY_MODAL')
+    togglePrivacyTosModal() {
+      this.$store.commit('TOGGLE_PRIVACY_TOS_MODAL')
     },
-    toggleTosModal() {
-      this.$store.commit('TOGGLE_TOS_MODAL')
+    toggleModalType(type) {
+      this.modalType = type
     },
   },
 }
