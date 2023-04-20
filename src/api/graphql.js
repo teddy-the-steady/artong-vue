@@ -34,6 +34,7 @@ const queryProject = function (variables) {
           _db_slug
           _db_token_count
           _db_tokens_tobe_approved_count
+          _db_name
         }
       }
     `,
@@ -66,6 +67,7 @@ const queryProjects = function (variables) {
           _db_status
           _db_member_id
           _db_slug
+          _db_name
         }
       }
     `,
@@ -129,6 +131,7 @@ const queryProjectsByCreator = function (variables) {
           _db_status
           _db_member_id
           _db_slug
+          _db_name
         }
       }
     `,
