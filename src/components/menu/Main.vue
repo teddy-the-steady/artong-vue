@@ -220,10 +220,16 @@
         <div class="bottom-table">
           <ul class="column second-column">
             <li>{{ $t('main.bottom.right.company.title') }}</li>
-            <li class="clickable" @click="redirectTo('https://www.4rtong.com')">
+            <li
+              class="clickable"
+              @click="redirectTo('https://artong.notion.site/')"
+            >
               {{ $t('main.bottom.right.company.about') }}
             </li>
-            <li class="clickable">
+            <li
+              class="clickable"
+              @click="redirectTo('https://artong.notion.site/')"
+            >
               {{ $t('main.bottom.right.company.careers') }}
             </li>
           </ul>
