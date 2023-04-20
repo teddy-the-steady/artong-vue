@@ -421,6 +421,8 @@ export default {
         queryHighlightedProjects({
           variables: {
             idArray: this.mainContents.highlightedProjects,
+            orderBy: 'createdAt',
+            orderDirection: 'desc',
           },
         }),
       )
