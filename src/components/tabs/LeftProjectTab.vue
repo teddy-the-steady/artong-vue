@@ -134,7 +134,12 @@ export default {
     display: flex;
     align-items: center;
     .symbol {
-      width: 52px;
+      max-width: 100px;
+      min-width: 50px;
+      width: fit-content;
+      overflow: hidden !important;
+      text-overflow: ellipsis;
+      padding: 0 5px;
       height: 25px;
       border: 1px solid #f22e3e;
       border-radius: 999px;
@@ -144,8 +149,6 @@ export default {
       font-size: 14px;
       color: #f22e3e;
       line-height: 25px;
-      overflow: hidden !important;
-      text-overflow: ellipsis;
     }
     .slug {
       margin-left: 5px;
