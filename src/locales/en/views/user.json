@@ -17,7 +17,7 @@
         "owned": "Owned",
         "created": "Created",
         "contributed": "Contributed",
-        "waiting-for-approval": "Waiting for Approval",
+        "candidates": "Candidates",
         "favorited": "Favorited"
     }
 }

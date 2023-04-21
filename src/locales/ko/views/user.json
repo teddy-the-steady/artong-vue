@@ -17,7 +17,7 @@
         "owned": "소유한",
         "created": "프로젝트",
         "contributed": "기여한",
-        "waiting-for-approval": "토큰후보",
+        "candidates": "토큰후보",
         "favorited": "좋아요한"
     }
 }
