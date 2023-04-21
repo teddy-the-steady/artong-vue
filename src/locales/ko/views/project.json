@@ -29,8 +29,8 @@
             "content": "설명"
         },
         "waiting-for-approval": {
-            "title": "토큰후보",
-            "redirect-msg": "로 토큰후보를 확인하세요."
+            "title": "승인대기",
+            "redirect-msg": "로 승인대기중인 토큰를 확인하세요."
         }
     },
     "mint-modal": {

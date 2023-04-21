@@ -82,7 +82,7 @@ export default {
         },
         {
           id: 3,
-          label: this.$i18n.t('views.user.tabs.waiting-for-approval'),
+          label: this.$i18n.t('views.user.tabs.candidates'),
           type: 'CONTENTS',
           api: {},
           sort: {},
@@ -174,7 +174,7 @@ export default {
       this.tabs[0].label = this.$i18n.t('views.user.tabs.owned')
       this.tabs[1].label = this.$i18n.t('views.user.tabs.created')
       this.tabs[2].label = this.$i18n.t('views.user.tabs.contributed')
-      this.tabs[3].label = this.$i18n.t('views.user.tabs.waiting-for-approval')
+      this.tabs[3].label = this.$i18n.t('views.user.tabs.candidates')
       this.tabs[4].label = this.$i18n.t('views.user.tabs.favorited')
 
       const t = to.query.tab || '0'
