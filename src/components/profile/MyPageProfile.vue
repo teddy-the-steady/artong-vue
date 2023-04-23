@@ -279,7 +279,7 @@ export default {
     }
   }
 }
-@media (min-width: 840px) and(max-width:1079px) {
+@media (min-width: 840px) and (max-width: 1079px) {
   .profile {
     margin-left: 24px;
     .profile-image {
