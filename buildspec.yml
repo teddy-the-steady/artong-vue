@@ -7,7 +7,7 @@ phases:
       - npm i yarn -g
   pre_build:
     commands:
-      - yarn add
+      - yarn
   build:
     commands:
       - yarn build:$ENV
