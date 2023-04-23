@@ -786,7 +786,7 @@ export default {
   margin-bottom: 16px;
 }
 
-@media (min-width: 1080px) and(max-width:1920px) {
+@media (min-width: 1080px) and (max-width: 1920px) {
   .container0 {
     text-align: center;
     .container0-box {
