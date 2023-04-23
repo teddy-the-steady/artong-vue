@@ -978,6 +978,8 @@ export default {
           width: fit-content;
           overflow: hidden !important;
           text-overflow: ellipsis;
+          padding: 0 5px;
+          height: 22px;
           border: 1px solid #f22e3e;
           border-radius: 999px;
           font-family: 'Pretendard';
