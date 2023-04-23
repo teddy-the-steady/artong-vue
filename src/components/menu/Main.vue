@@ -973,8 +973,11 @@ export default {
         height: 553px;
 
         .category {
-          width: 67px;
-          height: 22px;
+          max-width: 100px;
+          min-width: 50px;
+          width: fit-content;
+          overflow: hidden !important;
+          text-overflow: ellipsis;
           border: 1px solid #f22e3e;
           border-radius: 999px;
           font-family: 'Pretendard';
