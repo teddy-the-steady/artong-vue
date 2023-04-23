@@ -18,6 +18,7 @@
       <span slot="body">{{ $t('common.modal.confirm-msg') }}</span>
     </ConfirmModal>
     <ToolTipModal v-show="isToolTipOpen"></ToolTipModal>
+    <img src="../src/assets/images/og-fixed.jpg" alt="" style="display: none" />
   </div>
 </template>
 
