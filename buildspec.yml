@@ -4,13 +4,13 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
-      - npm i npm@latest -g
+      - npm i yarn -g
   pre_build:
     commands:
-      - npm ci
+      - yarn
   build:
     commands:
-      - npm run build:$ENV
+      - yarn build:$ENV
   post_build:
     commands:
       - aws s3 cp --recursive --acl public-read ./dist s3://$S3_BUCKET_NAME/ 
