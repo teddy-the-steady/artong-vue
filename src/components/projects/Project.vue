@@ -457,6 +457,8 @@ export default {
         await postProjectSubscriber({
           isSubscribeRequest: true,
           targetProjectAddress: this.project.id,
+          targetProjectName: this.project.name,
+          targetProjectOwner: this.project.owner.wallet_address,
         })
         this.project.subscribers = String(
           parseInt(this.project.subscribers) + 1,
@@ -471,6 +473,8 @@ export default {
         await postProjectSubscriber({
           isSubscribeRequest: false,
           targetProjectAddress: this.project.id,
+          targetProjectName: this.project.name,
+          targetProjectOwner: this.project.owner.wallet_address,
         })
         this.project.subscribers = String(
           parseInt(this.project.subscribers) - 1,
