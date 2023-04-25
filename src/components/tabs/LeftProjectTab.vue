@@ -91,7 +91,7 @@ export default {
           isSubscribeRequest: true,
           targetProjectAddress: this.project.id,
           targetProjectName: this.project.name,
-          targetProjectOwner: this.project.owner.wallet_address,
+          targetProjectOwnerId: this.project.owner.member_id,
         })
         this.project.subscribers = String(
           parseInt(this.project.subscribers) + 1,
@@ -108,7 +108,7 @@ export default {
           isSubscribeRequest: false,
           targetProjectAddress: this.project.id,
           targetProjectName: this.project.name,
-          targetProjectOwner: this.project.owner.wallet_address,
+          targetProjectOwnerId: this.project.owner.member_id,
         })
         this.project.subscribers = String(
           parseInt(this.project.subscribers) - 1,

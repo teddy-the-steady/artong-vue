@@ -26,13 +26,13 @@ const postProjectSubscriber = async function ({
   isSubscribeRequest,
   targetProjectAddress,
   targetProjectName,
-  targetProjectOwner,
+  targetProjectOwnerId,
 }) {
   await instance.post('/subscribe', {
     isSubscribeRequest: isSubscribeRequest,
     targetProjectAddress: targetProjectAddress,
     targetProjectName: targetProjectName,
-    targetProjectOwner: targetProjectOwner,
+    targetProjectOwnerId: targetProjectOwnerId,
   })
 }
 
