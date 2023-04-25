@@ -25,10 +25,14 @@ const getProjectWhileUpdatingPendingToCreated = async function (txHash) {
 const postProjectSubscriber = async function ({
   isSubscribeRequest,
   targetProjectAddress,
+  targetProjectName,
+  targetProjectOwner,
 }) {
   await instance.post('/subscribe', {
     isSubscribeRequest: isSubscribeRequest,
     targetProjectAddress: targetProjectAddress,
+    targetProjectName: targetProjectName,
+    targetProjectOwner: targetProjectOwner,
   })
 }
 
