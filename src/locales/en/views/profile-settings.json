@@ -11,5 +11,8 @@
         "send": "Send code",
         "verify": "Verify",
         "verified": "Verified"
+    },
+    "alert": {
+        "email_empty": "Please enter your Email address"
     }
 }
