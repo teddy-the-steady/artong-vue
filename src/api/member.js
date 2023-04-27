@@ -53,6 +53,20 @@ const getMainContributors = async function () {
   return result.data
 }
 
+const sendEmailVerification = async function (email) {
+  const result = await instance.post('/send/email_verification', {
+    email: email,
+  })
+  return result.data
+}
+
+const verifyEmail = async function (email) {
+  const result = await instance.post('/verify/email', {
+    email: email,
+  })
+  return result.data
+}
+
 export {
   getMemberByUsername,
   getCurrentMember,
@@ -62,4 +76,6 @@ export {
   postMemberFollower,
   searchMembers,
   getMainContributors,
+  sendEmailVerification,
+  verifyEmail,
 }
