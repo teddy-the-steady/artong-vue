@@ -2,7 +2,14 @@
     "title": "내 정보 수정",
     "settings": {
         "username": "닉네임",
-        "intro": "소개"
+        "intro": "소개",
+        "email": "이메일",
+        "code": "6자리 코드"
     },
-    "button": "저장하기"
+    "button": {
+        "save": "저장하기",
+        "send": "코드전송",
+        "verify": "인증",
+        "verified": "인증됨"
+    }
 }

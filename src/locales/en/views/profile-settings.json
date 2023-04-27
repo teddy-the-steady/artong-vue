@@ -2,7 +2,14 @@
     "title": "User Settings",
     "settings": {
         "username": "Username",
-        "intro": "Intro"
+        "intro": "Intro",
+        "email": "Email",
+        "code": "6-digit code"
     },
-    "button": "SAVE"
+    "button": {
+        "save": "SAVE",
+        "send": "Send code",
+        "verify": "Verify",
+        "verified": "Verified"
+    }
 }
