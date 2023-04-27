@@ -15,6 +15,45 @@
         </label>
       </span>
       <span class="float-label">
+        <input
+          id="email"
+          type="text"
+          :class="{ filled: member.email }"
+          v-model="member.email"
+          maxlength="100"
+        />
+        <label for="email">
+          {{ $t('views.profile-settings.settings.email') }}
+        </label>
+        <button class="email" @click="sendEmailVerification" v-if="!verified">
+          <div class="spinner" :class="{ active: sending }"></div>
+          <span v-show="!sending">
+            {{ $t('views.profile-settings.button.send') }}
+          </span>
+        </button>
+        <button class="disabled email" @click="verify" v-else>
+          {{ $t('views.profile-settings.button.verified') }}
+        </button>
+      </span>
+      <span class="code" v-if="verificationCodeAnswer">
+        <input
+          type="text"
+          maxlength="6"
+          v-model="verificationCodeEntered"
+          :placeholder="$t('views.profile-settings.settings.code')"
+        />
+        <button
+          class="verify"
+          :class="{ shake: shakeAnimation }"
+          @click="verify"
+        >
+          <div class="spinner" :class="{ active: verifying }"></div>
+          <span v-show="!verifying">
+            {{ $t('views.profile-settings.button.verify') }}
+          </span>
+        </button>
+      </span>
+      <span class="float-label">
         <textarea
           id="intro"
           :class="{ filled: member.introduction }"
@@ -25,7 +64,9 @@
           {{ $t('views.profile-settings.settings.intro') }}
         </label>
       </span>
-      <button @click="save">{{ $t('views.profile-settings.button') }}</button>
+      <button @click="save" class="save">
+        {{ $t('views.profile-settings.button.save') }}
+      </button>
     </div>
     {{ errorMessage }}
   </div>
@@ -33,7 +74,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import { getCurrentMember, patchMember } from '../../api/member'
+import {
+  getCurrentMember,
+  patchMember,
+  sendEmailVerification,
+  verifyEmail,
+} from '../../api/member'
 
 export default {
   name: 'ProfileSettings',
@@ -47,8 +93,15 @@ export default {
       member: {
         username: '',
         introduction: '',
+        email: '',
       },
       errorMessage: '',
+      verificationCodeAnswer: '',
+      verificationCodeEntered: '',
+      verified: false,
+      verifying: false,
+      sending: false,
+      shakeAnimation: false,
     }
   },
   methods: {
@@ -74,6 +127,38 @@ export default {
         this.errorMessage = error
       }
     },
+    async sendEmailVerification() {
+      try {
+        this.sending = true
+        const result = await sendEmailVerification(this.member.email)
+        this.verificationCodeAnswer = result
+      } catch (error) {
+        this.errorMessage = error
+      } finally {
+        this.sending = false
+      }
+    },
+    async verify() {
+      if (
+        this.verificationCodeAnswer === parseInt(this.verificationCodeEntered)
+      ) {
+        this.verifying = true
+        try {
+          await verifyEmail(this.member.email)
+        } catch (error) {
+          this.errorMessage = error
+        } finally {
+          this.verifying = false
+          this.verificationCodeAnswer = ''
+          this.verified = true
+        }
+      } else {
+        this.shakeAnimation = true
+        setTimeout(() => {
+          this.shakeAnimation = false
+        }, 1000)
+      }
+    },
   },
   async mounted() {
     this.member = await getCurrentMember()
@@ -94,7 +179,7 @@ export default {
   align-items: center;
   flex-direction: column;
   .input-group {
-    padding: 40px;
+    padding: 20px 40px 40px 40px;
     margin: 20px;
     display: flex;
     flex-direction: column;
@@ -102,9 +187,10 @@ export default {
     width: 25%;
     box-shadow: 2px 2px 12px rgb(0 0 0 / 14%);
     .float-label {
-      margin-bottom: 30px;
+      margin-top: 30px;
 
-      :first-child {
+      input,
+      textarea {
         width: 100%;
       }
 
@@ -112,7 +198,52 @@ export default {
         resize: vertical;
         max-height: 200px;
       }
+
+      .email {
+        width: 44%;
+        margin-left: 10px;
+      }
     }
+
+    .code {
+      display: flex;
+      margin-top: 10px;
+
+      input {
+        width: 100%;
+      }
+
+      .verify {
+        width: 44%;
+        margin-left: 10px;
+
+        &.shake {
+          animation: horizontal-shaking 0.15s;
+        }
+      }
+
+      @keyframes horizontal-shaking {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(5px);
+        }
+        50% {
+          transform: translateX(-5px);
+        }
+        75% {
+          transform: translateX(5px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+    }
+  }
+
+  .save {
+    margin-top: 30px;
   }
 }
 
