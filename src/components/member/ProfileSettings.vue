@@ -128,8 +128,14 @@ export default {
       }
     },
     async sendEmailVerification() {
+      // TODO] 이메일 포맷 확인
+      if (!this.member.email) {
+        alert(this.$i18n.t('views.profile-settings.alert.email_empty'))
+        return
+      }
+
+      this.sending = true
       try {
-        this.sending = true
         const result = await sendEmailVerification(this.member.email)
         this.verificationCodeAnswer = result
       } catch (error) {
