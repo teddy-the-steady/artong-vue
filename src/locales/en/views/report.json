@@ -1,0 +1,18 @@
+{
+    "report-title": "Report",
+
+    "report-options": {
+        "first": "Inappropriate Content",
+        "second": "An infringement of rights",
+        "last": {
+            "etc": "etc.",
+            "description": "Please provide a reason for your report."
+        }
+    },
+
+    "cancel": "cancel",
+    "report" : "report",
+    "report-ask": "Do you want to report it?",
+    "report-select": "Please select a report type.",
+    "report-done": "The report is complete."
+}

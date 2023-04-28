@@ -153,7 +153,7 @@
                 @dialog-focus-out="closeDialog"
                 ref="dialog"
               >
-                <div slot="body">
+                <div slot="body" @click="toggleReportModal()">
                   {{ $t('views.content-detail.more-modal') }}
                 </div>
               </BasicDialog>
@@ -318,6 +318,7 @@
         </div>
       </div>
     </div>
+    <ReportModal v-if="isReportModalOpen" @submit="report" />
     <PromptModal
       v-if="isPromptModalOpen"
       @close-modal="toggleModal"
@@ -340,7 +341,7 @@ import {
   queryTokenHistory,
   queryTokensByProject,
 } from '../../api/graphql'
-import { postContentReactions } from '../../api/contents'
+import { postContentReactions, postReport } from '../../api/contents'
 import { getProjectsPrevNext } from '../../api/projects'
 import {
   makeS3Path,
@@ -354,6 +355,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import PromptModal from '../modal/PromptModal.vue'
+import ReportModal from '../modal/ReportModal.vue'
 import TableDiv from '../table/TableDiv.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
@@ -368,6 +370,7 @@ export default {
     ContentsProfile,
     TokensByCollection,
     PromptModal,
+    ReportModal,
     TableDiv,
     ProjectPageProfile_small,
     BasicDialog,
@@ -409,6 +412,7 @@ export default {
       currentUser: state => state.user.currentUser,
       isPromptModalOpen: state => state.menu.isPromptModalOpen,
       innerWidth: state => state.menu.innerWidth,
+      isReportModalOpen: state => state.menu.isReportModalOpen,
     }),
     isListed() {
       const eventType = this.content?.listings[0]?.eventType
@@ -448,6 +452,9 @@ export default {
   methods: {
     sleep(timeToDelay) {
       return new Promise(resolve => setTimeout(resolve, timeToDelay))
+    },
+    toggleReportModal() {
+      this.$store.commit('TOGGLE_REPORT_MODAL')
     },
     async queryToken(project_address, token_id) {
       for (;;) {
@@ -492,6 +499,20 @@ export default {
 
       this.projects = prevNextProjects
       this.tokens = tokensByProject.data.tokens
+    },
+    async report(reportData) {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+      try {
+        await postReport({
+          description: reportData.description,
+          category: reportData.reportType,
+          contents_id: this.content.id,
+        })
+      } catch (error) {
+        console.log('error 발생')
+      }
     },
     toggleModal() {
       this.$store.commit('TOGGLE_PROMPT_MODAL')

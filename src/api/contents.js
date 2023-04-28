@@ -102,6 +102,22 @@ const getContentsPick = async function (body) {
   return await instance.post('/contents/artongs_pick', body)
 }
 
+const postReport = async function ({
+  description,
+  category,
+  project_address,
+  contents_id,
+  member_id_reported,
+}) {
+  await instance.post('/report', {
+    description: description,
+    category: category,
+    project_address: project_address,
+    contents_id: contents_id,
+    member_id_reported: member_id_reported,
+  })
+}
+
 export {
   getContent,
   postContent,
@@ -117,4 +133,5 @@ export {
   getFeedContents,
   getContents,
   getContentsPick,
+  postReport,
 }
