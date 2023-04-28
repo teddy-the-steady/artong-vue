@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ReportModal v-if="isReportModalOpen" @submit="report" />
     <div class="content-image">
       <a
         :href="content ? makeS3Path(content.content_s3key) : ''"
@@ -140,7 +141,7 @@
                 @dialog-focus-out="closeDialog"
                 ref="dialog"
               >
-                <div slot="body">
+                <div slot="body" @click="toggleReportModal()">
                   {{ $t('views.content-detail.more-modal') }}
                 </div>
               </BasicDialog>
@@ -304,7 +305,7 @@ import {
   patchContentStatus,
   getContentVoucher,
 } from '../../api/contents'
-import { postContentReactions } from '../../api/contents'
+import { postContentReactions, postReport } from '../../api/contents'
 import { getProjectsPrevNext } from '../../api/projects'
 import {
   makeS3Path,
@@ -317,6 +318,7 @@ import Provider from '../../util/walletConnectProvider'
 import ContentsProfile from '../profile/ContentsProfile.vue'
 import TokensByCollection from '../collection_card/TokensByCollection.vue'
 import TableDiv from '../table/TableDiv.vue'
+import ReportModal from '../modal/ReportModal.vue'
 import ProjectPageProfile_small from '../profile/ProjectPageProfile_small.vue'
 import BasicDialog from '../dialog/BasicDialog.vue'
 import CuratedCollection from '../collection_card/CuratedCollection.vue'
@@ -335,6 +337,7 @@ export default {
     CuratedCollection,
     SkeletonBox,
     TooltipIcon,
+    ReportModal,
   },
   data() {
     return {
@@ -358,6 +361,7 @@ export default {
     ...mapState({
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
+      isReportModalOpen: state => state.menu.isReportModalOpen,
     }),
     isMobile() {
       return this.$isMobile()
@@ -398,6 +402,9 @@ export default {
     },
   },
   methods: {
+    toggleReportModal() {
+      this.$store.commit('TOGGLE_REPORT_MODAL')
+    },
     async getContent() {
       const result = await getContent(
         this.$route.params.project_address,
@@ -503,6 +510,20 @@ export default {
       })
 
       return tokenId
+    },
+    async report(reportData) {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+      try {
+        await postReport({
+          description: reportData.description,
+          category: reportData.reportType,
+          contents_id: this.content.id,
+        })
+      } catch (error) {
+        console.log('error 발생')
+      }
     },
     makeS3Path(path) {
       return makeS3Path(path)

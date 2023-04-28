@@ -54,7 +54,9 @@
               {{ $t('views.project.more-modal.edit-project') }}
             </div>
             <!-- </router-link> -->
-            <div slot="body">{{ $t('views.project.more-modal.report') }}</div>
+            <div slot="body" @click="toggleReportModal()">
+              {{ $t('views.project.more-modal.report') }}
+            </div>
           </BasicDialog>
           <div v-if="innerWidth >= 1080" class="creators-button">
             <div class="creator">
@@ -72,6 +74,7 @@
         </div>
       </div>
     </div>
+    <ReportModal v-if="isReportModalOpen" @submit="report" />
     <div class="tab-n-content">
       <div class="bottom">
         <div class="tab" v-if="innerWidth < 1440">
@@ -212,7 +215,7 @@ import {
   patchProject,
 } from '../../api/projects'
 import { isSessionValid, makeS3Path } from '../../util/commonFunc'
-import { getTobeApprovedContents } from '../../api/contents'
+import { getTobeApprovedContents, postReport } from '../../api/contents'
 import Ripple from '../../directives/ripple/Ripple'
 import ProjectPageProfile from '../profile/ProjectPageProfile.vue'
 import MintModal from '../modal/MintModal.vue'
@@ -222,6 +225,7 @@ import MintStep2 from '../modal/mint_steps/MintStep2.vue'
 import MintStep3 from '../modal/mint_steps/MintStep3.vue'
 import MintStepFinal from '../modal/mint_steps/MintStepFinal.vue'
 import MintStepMinting from '../modal/mint_steps/MintStepMinting.vue'
+import ReportModal from '../modal/ReportModal.vue'
 import ProjectTab from '../tabs/ProjectTab.vue'
 import ContentsProfileBundle from '../profile/ContentsProfileBundle.vue'
 import LeftProjectTab from '../tabs/LeftProjectTab.vue'
@@ -247,6 +251,7 @@ export default {
     ContentsProfile,
     BasicDialog,
     SkeletonBox,
+    ReportModal,
   },
   props: {},
   computed: {
@@ -254,6 +259,7 @@ export default {
       isModalOpen: state => state.menu.isModalOpen,
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
+      isReportModalOpen: state => state.menu.isReportModalOpen,
     }),
     isProjectOwner() {
       return (
@@ -377,6 +383,9 @@ export default {
     toggleModal() {
       this.$store.commit('TOGGLE_MODAL')
     },
+    toggleReportModal() {
+      this.$store.commit('TOGGLE_REPORT_MODAL')
+    },
     setSlotData(key, val) {
       this.slotData[key] = val
     },
@@ -464,6 +473,20 @@ export default {
           parseInt(this.project.subscribers) + 1,
         )
         this.project.is_subscriber = true
+      } catch (error) {
+        console.log('error 발생')
+      }
+    },
+    async report(reportData) {
+      if (!(await isSessionValid(this.$router.currentRoute.fullPath))) {
+        return
+      }
+      try {
+        await postReport({
+          description: reportData.description,
+          category: reportData.reportType,
+          project_address: this.project.id,
+        })
       } catch (error) {
         console.log('error 발생')
       }
