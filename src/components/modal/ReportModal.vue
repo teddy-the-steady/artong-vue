@@ -60,7 +60,7 @@
                 <button
                   class="modal-button"
                   type="cancel"
-                  @click="toggleReportModal"
+                  @click="onCancelClick"
                 >
                   {{ $t('views.report.cancel') }}
                 </button>
@@ -96,6 +96,11 @@ export default {
     }),
   },
   methods: {
+    onCancelClick() {
+      if (this.reportType !== null) {
+        this.toggleReportModal()
+      }
+    },
     onButtonClick() {
       if (this.reportType === null) {
         alert(this.$t('views.report.report-select'))
@@ -119,7 +124,7 @@ export default {
           }
         }
       } else {
-        return
+        this.toggleReportModal()
       }
     },
     toggleReportModal() {
