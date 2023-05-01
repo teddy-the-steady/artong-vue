@@ -88,6 +88,8 @@ export default {
     return {
       reportType: null,
       description: null,
+      isCancelButtonClicked: false,
+      isSubmitButtonClicked: false,
     }
   },
   computed: {
@@ -97,14 +99,10 @@ export default {
   },
   methods: {
     onCancelClick() {
-      if (this.reportType !== null) {
-        this.$store.commit('TOGGLE_REPORT_MODAL')
-      }
+      this.isCancelButtonClicked = true
     },
     onButtonClick() {
-      if (this.reportType === null) {
-        alert(this.$t('views.report.report-select'))
-      }
+      this.isSubmitButtonClicked = true
     },
     submitReport() {
       const reportData = {
@@ -112,7 +110,9 @@ export default {
         description: this.description,
       }
       if (reportData.reportType !== null) {
-        if (
+        if (this.isCancelButtonClicked) {
+          this.$store.commit('TOGGLE_REPORT_MODAL')
+        } else if (
           this.isReportModalOpen &&
           confirm(this.$t('views.report.report-ask'))
         ) {
@@ -123,6 +123,8 @@ export default {
             this.$emit('submit', reportData)
           }
         }
+      } else if (reportData.reportType === null && this.isSubmitButtonClicked) {
+        alert(this.$t('views.report.report-select'))
       } else {
         this.$store.commit('TOGGLE_REPORT_MODAL')
       }
