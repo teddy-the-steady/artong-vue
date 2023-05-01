@@ -57,11 +57,7 @@
 
             <div class="modal-footer">
               <slot name="footer">
-                <button
-                  class="modal-button"
-                  type="cancel"
-                  @click="toggleReportModal"
-                >
+                <button class="modal-button" type="cancel">
                   {{ $t('views.report.cancel') }}
                 </button>
                 <button
@@ -114,6 +110,8 @@ export default {
           this.$store.commit('TOGGLE_REPORT_MODAL')
           this.$emit('submit', reportData)
         }
+      } else {
+        this.toggleReportModal()
       }
     },
     toggleReportModal() {
