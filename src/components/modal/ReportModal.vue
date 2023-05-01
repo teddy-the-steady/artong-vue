@@ -98,7 +98,7 @@ export default {
   methods: {
     onCancelClick() {
       if (this.reportType !== null) {
-        this.toggleReportModal()
+        this.$store.commit('TOGGLE_REPORT_MODAL')
       }
     },
     onButtonClick() {
@@ -124,11 +124,8 @@ export default {
           }
         }
       } else {
-        this.toggleReportModal()
+        this.$store.commit('TOGGLE_REPORT_MODAL')
       }
-    },
-    toggleReportModal() {
-      this.$store.commit('TOGGLE_REPORT_MODAL')
     },
   },
 }
