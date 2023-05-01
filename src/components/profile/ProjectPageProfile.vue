@@ -99,8 +99,9 @@ export default {
       await this.uploadProjectImage(file)
     },
     async uploadProjectImage(file) {
+      const fileName = `${Date.now()}-${file.name}`
       const result = await Storage.put(
-        `project/${this.project.txHash}/profile/${file.name}`,
+        `project/${this.project.txHash}/profile/${fileName}`,
         file,
         {
           level: this.S3_PRIVACY_LEVEL,
