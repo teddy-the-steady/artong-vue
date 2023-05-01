@@ -69,14 +69,15 @@ export default {
       this.image = URL.createObjectURL(this.file)
       URL.revokeObjectURL(this.file)
 
+      const fileName = `${Date.now()}-${this.file.name}`
       const postResult = await postContent({
         project_address: this.project.id,
-        content_s3key: `${this.S3_PRIVACY_LEVEL}/nft/${this.project.id}/${this.currentUser.id}/${this.file.name}`,
+        content_s3key: `${this.S3_PRIVACY_LEVEL}/nft/${this.project.id}/${this.currentUser.id}/${fileName}`,
       })
       const s3Result = await this.uploadToS3(
         this.project.id,
         this.currentUser.id,
-        this.file.name,
+        fileName,
       )
       this.$emit('data-from-step0', 'uploadingToS3', false)
       this.$emit('data-from-step0', 'postResult', postResult)

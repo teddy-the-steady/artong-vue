@@ -95,8 +95,9 @@ export default {
       await this.uploadProfileImage(file)
     },
     async uploadProfileImage(file) {
+      const fileName = `${Date.now()}-${file.name}`
       const result = await Storage.put(
-        `profile/${this.currentUser.id}/${file.name}`,
+        `profile/${this.currentUser.id}/${fileName}`,
         file,
         {
           level: this.S3_PRIVACY_LEVEL,

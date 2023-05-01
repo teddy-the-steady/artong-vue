@@ -230,8 +230,9 @@ export default {
       return tx
     },
     async uploadProjectProfileImage(txHash) {
+      const profileName = `${Date.now()}-${this.profileImageFile.name}`
       const result = await Storage.put(
-        `project/${txHash}/profile/${this.profileImageFile.name}`,
+        `project/${txHash}/profile/${profileName}`,
         this.profileImageFile,
         {
           level: this.S3_PRIVACY_LEVEL,
@@ -241,8 +242,9 @@ export default {
       return result
     },
     async uploadProjectBackgroundImage(txHash) {
+      const backgroundName = `${Date.now()}-${this.backgroundImageFile.name}`
       const result = await Storage.put(
-        `project/${txHash}/background/${this.backgroundImageFile.name}`,
+        `project/${txHash}/background/${backgroundName}`,
         this.backgroundImageFile,
         {
           level: this.S3_PRIVACY_LEVEL,
