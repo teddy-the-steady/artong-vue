@@ -125,6 +125,7 @@ export default {
         }
       } else if (reportData.reportType === null && this.isSubmitButtonClicked) {
         alert(this.$t('views.report.report-select'))
+        this.isSubmitButtonClicked = false
       } else {
         this.$store.commit('TOGGLE_REPORT_MODAL')
       }
