@@ -57,7 +57,11 @@
 
             <div class="modal-footer">
               <slot name="footer">
-                <button class="modal-button" type="cancel">
+                <button
+                  class="modal-button"
+                  type="cancel"
+                  @click="onCancelClick"
+                >
                   {{ $t('views.report.cancel') }}
                 </button>
                 <button
@@ -84,6 +88,8 @@ export default {
     return {
       reportType: null,
       description: null,
+      isCancelButtonClicked: false,
+      isSubmitButtonClicked: false,
     }
   },
   computed: {
@@ -92,10 +98,11 @@ export default {
     }),
   },
   methods: {
+    onCancelClick() {
+      this.isCancelButtonClicked = true
+    },
     onButtonClick() {
-      if (this.reportType === null) {
-        alert(this.$t('views.report.report-select'))
-      }
+      this.isSubmitButtonClicked = true
     },
     submitReport() {
       const reportData = {
@@ -103,19 +110,25 @@ export default {
         description: this.description,
       }
       if (reportData.reportType !== null) {
-        if (
+        if (this.isCancelButtonClicked) {
+          this.$store.commit('TOGGLE_REPORT_MODAL')
+        } else if (
           this.isReportModalOpen &&
           confirm(this.$t('views.report.report-ask'))
         ) {
-          this.$store.commit('TOGGLE_REPORT_MODAL')
-          this.$emit('submit', reportData)
+          if (this.reportType === 'etc' && this.description === null) {
+            alert(this.$t('views.report.report-options.last.description'))
+          } else {
+            this.$store.commit('TOGGLE_REPORT_MODAL')
+            this.$emit('submit', reportData)
+          }
         }
+      } else if (reportData.reportType === null && this.isSubmitButtonClicked) {
+        alert(this.$t('views.report.report-select'))
+        this.isSubmitButtonClicked = false
       } else {
-        this.toggleReportModal()
+        this.$store.commit('TOGGLE_REPORT_MODAL')
       }
-    },
-    toggleReportModal() {
-      this.$store.commit('TOGGLE_REPORT_MODAL')
     },
   },
 }
