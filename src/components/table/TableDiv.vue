@@ -32,7 +32,7 @@
                 class="field"
                 v-else-if="field.type == 'price'"
                 @click="
-                  tableName == 'Offers'
+                  tableName == $t('views.content-detail.table.offers.title')
                     ? toEtherscan(content.txHash)
                     : toEtherscan(content.tx_hash)
                 "
@@ -79,7 +79,7 @@
             </div>
             <div
               v-if="
-                tableName === 'Offers' &&
+                tableName === $t('views.content-detail.table.offers.title') &&
                 new Date(content.deadline * 1000) > new Date() &&
                 isCurrentUserTokenOwner &&
                 !content.isAccepted
@@ -88,7 +88,9 @@
             >
               <button @click="accept(content.from.wallet_address)">
                 <span class="spinner" :class="{ active: accepting }"></span>
-                <span v-show="!accepting">Accept</span>
+                <span v-show="!accepting">{{
+                  $t('views.content-detail.buttons.accept')
+                }}</span>
               </button>
             </div>
           </div>
