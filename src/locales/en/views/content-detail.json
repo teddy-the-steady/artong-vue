@@ -30,7 +30,8 @@
         "update-listing": "Update Listing",
         "cancel-listing": "Cancel Listing",
         "make-offer": "Make Offer",
-        "approve": "Approve"
+        "approve": "Approve",
+        "accept": "Accept"
     },
     "collection-container1": "More from this project",
     "collection-container2": "Discover projects",
