@@ -901,11 +901,6 @@ textarea {
     }
   }
 }
-@media (min-width: 1440px) {
-  .round-box {
-    width: 708px;
-  }
-}
 
 @media only screen and (max-width: 599px) {
   .price-box {
