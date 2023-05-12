@@ -1144,6 +1144,9 @@ textarea {
       }
       .left-container {
         margin: 0;
+        .round-box {
+          width: 100%;
+        }
       }
     }
   }
@@ -1163,6 +1166,12 @@ textarea {
         margin: 0;
       }
     }
+  }
+}
+
+@media (min-width: 1440px) {
+  .round-box {
+    width: 708px;
   }
 }
 
