@@ -30,7 +30,8 @@
         "update-listing": "가격 수정",
         "cancel-listing": "판매 취소",
         "make-offer": "제시하기",
-        "approve": "승인하기"
+        "approve": "승인하기",
+        "accept": "수락하기"
     },
     "collection-container1": "이 프로젝트의 토큰들",
     "collection-container2": "다른 프로젝트",
