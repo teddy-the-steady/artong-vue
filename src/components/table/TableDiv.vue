@@ -332,10 +332,6 @@ export default {
           display: flex;
           justify-content: flex-end;
 
-          button {
-            width: 50%;
-          }
-
           & > span:nth-child(2) {
             align-self: center;
           }
