@@ -130,6 +130,16 @@
               <img src="../../assets/icons/add.svg" />
             </button>
             <div
+              v-if="innerWidth >= 1080"
+              class="round-button white-button ripple margin clickable"
+              @click="toggleNotificationModal"
+            >
+              <img v-if="!isDark" src="../../assets/icons/notification.svg" />
+              <img v-else src="../../assets/icons/notification_d.svg" />
+            </div>
+            <div v-if="innerWidth >= 1080" class="numbox">N</div>
+            <div v-else class="numbox3">N</div>
+            <div
               class="header-profile"
               @mousedown="profileMouseDown"
               @mouseup="profileMouseUp"
@@ -173,6 +183,28 @@
           {{ $t('header.user-dialog.profile') }}
         </router-link>
         <router-link
+          v-if="innerWidth < 1080"
+          slot="body"
+          tag="div"
+          :to="{
+            name: 'Notification',
+          }"
+        >
+          {{ $t('header.user-dialog.notification') }}
+          <div
+            style="
+              float: right;
+              margin-top: 8px;
+              background-color: red;
+              border-radius: 50%;
+              width: 9px;
+              height: 9px;
+              display: inline-block;
+            "
+            class="reddot"
+          ></div>
+        </router-link>
+        <router-link
           slot="body"
           tag="div"
           :to="{
@@ -185,6 +217,7 @@
           {{ $t('header.user-dialog.disconnect') }}
         </div>
       </UserDialog>
+      <NotificationModal v-if="isNotificationModalOpen && innerWidth >= 1080" />
     </nav>
   </transition>
 </template>
@@ -197,6 +230,7 @@ import UserDialog from '../dialog/UserDialog.vue'
 import Ripple from '../../directives/ripple/Ripple'
 import { isSessionValid } from '../../util/commonFunc'
 import SearchModal from '../modal/SearchModal.vue'
+import NotificationModal from '../modal/NotificationModal.vue'
 
 export default {
   name: 'Header',
@@ -205,6 +239,7 @@ export default {
     HeaderProfile,
     UserDialog,
     SearchModal,
+    NotificationModal,
   },
   props: {
     theme: {
@@ -228,6 +263,8 @@ export default {
       currentUser: state => state.user.currentUser,
       innerWidth: state => state.menu.innerWidth,
       isModalOpen: state => state.menu.isModalOpen,
+      isDark: state => state.menu.isDark,
+      isNotificationModalOpen: state => state.menu.isNotificationModalOpen,
       walletConnectState: state => state.wallet,
     }),
     randomDelayTime() {
@@ -258,6 +295,9 @@ export default {
       if (this.isMouseDownOnProfile) {
         this.isDialogActive = true
       }
+    },
+    toggleNotificationModal() {
+      this.$store.commit('TOGGLE_NOTIFICATION_MODAL')
     },
     async signOut() {
       try {
@@ -490,6 +530,49 @@ export default {
           vertical-align: -webkit-baseline-middle;
         }
       }
+      .background {
+        background-color: #ffffff;
+      }
+      .bell {
+        margin-top: 5px;
+      }
+      .clickable {
+        cursor: pointer;
+      }
+      .numbox,
+      .numbox2,
+      .numbox3 {
+        position: fixed;
+        z-index: 9998;
+        width: auto;
+        height: 18px;
+        padding: 0px 5px;
+        background: red;
+        border-radius: 43%;
+        text-align: center;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 19px;
+      }
+      .numbox {
+        top: 12px;
+        right: 70px;
+      }
+      .numbox2 {
+        z-index: 9999;
+        top: 0px;
+        right: 0px;
+      }
+      .numbox2-1 {
+        z-index: 9999;
+        top: 174px;
+        right: 20px;
+      }
+      .numbox3 {
+        top: 12px;
+        right: 8px;
+      }
+
       .contribute-round {
         width: 30px;
         height: 30px;

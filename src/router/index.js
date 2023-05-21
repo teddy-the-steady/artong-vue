@@ -17,6 +17,7 @@ import ContentCandidateDetail from '@/components/contents_v2/ContentCandidateDet
 import ProfileSettings from '@/components/member/ProfileSettings'
 import ProjectSettings from '@/components/projects/ProjectSettings'
 import Settings from '@/components/menu/Settings'
+import Notification from '@/components/menu/Notification'
 
 window.popStateDetected = false
 window.addEventListener('popstate', () => {
@@ -113,6 +114,11 @@ const router = new Router({
       path: '/settings',
       name: 'Settings',
       component: Settings,
+    },
+    {
+      path: '/notification',
+      name: 'Notification',
+      component: Notification,
     },
   ],
 })
