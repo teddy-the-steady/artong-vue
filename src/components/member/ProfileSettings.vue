@@ -17,7 +17,7 @@
       <span class="float-label">
         <input
           id="email"
-          type="text"
+          type="email"
           :class="{ filled: member.email }"
           v-model="member.email"
           maxlength="100"
@@ -25,7 +25,12 @@
         <label for="email">
           {{ $t('views.profile-settings.settings.email') }}
         </label>
-        <button class="email" @click="sendEmailVerification" v-if="!verified">
+        <button
+          class="email"
+          :class="{ shake: shakeAnimation1 }"
+          @click="sendEmailVerification"
+          v-if="!verified"
+        >
           <div class="spinner" :class="{ active: sending }"></div>
           <span v-show="!sending">
             {{ $t('views.profile-settings.button.send') }}
@@ -44,7 +49,7 @@
         />
         <button
           class="verify"
-          :class="{ shake: shakeAnimation }"
+          :class="{ shake: shakeAnimation2 }"
           @click="verify"
         >
           <div class="spinner" :class="{ active: verifying }"></div>
@@ -80,6 +85,7 @@ import {
   sendEmailVerification,
   verifyEmail,
 } from '../../api/member'
+import { validateEmail } from '../../util/commonFunc'
 
 export default {
   name: 'ProfileSettings',
@@ -101,7 +107,8 @@ export default {
       verified: false,
       verifying: false,
       sending: false,
-      shakeAnimation: false,
+      shakeAnimation1: false,
+      shakeAnimation2: false,
     }
   },
   methods: {
@@ -128,7 +135,14 @@ export default {
       }
     },
     async sendEmailVerification() {
-      // TODO] 이메일 포맷 확인
+      if (!validateEmail(this.member.email)) {
+        this.shakeAnimation1 = true
+        setTimeout(() => {
+          this.shakeAnimation1 = false
+        }, 1000)
+        return
+      }
+
       if (!this.member.email) {
         alert(this.$i18n.t('views.profile-settings.alert.email_empty'))
         return
@@ -159,9 +173,9 @@ export default {
           this.verified = true
         }
       } else {
-        this.shakeAnimation = true
+        this.shakeAnimation2 = true
         setTimeout(() => {
-          this.shakeAnimation = false
+          this.shakeAnimation2 = false
         }, 1000)
       }
     },
@@ -208,6 +222,10 @@ export default {
       .email {
         width: 44%;
         margin-left: 10px;
+
+        &.shake {
+          animation: horizontal-shaking 0.15s;
+        }
       }
     }
 
