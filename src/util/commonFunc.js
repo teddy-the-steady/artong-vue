@@ -89,6 +89,14 @@ const shortenPrice = function (price) {
   }
 }
 
+const validateEmail = function (email) {
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export {
   makeS3Path,
   isSessionValid,
@@ -100,4 +108,5 @@ export {
   checkMobileWalletStatusAndGetSigner,
   shortenAddress,
   shortenPrice,
+  validateEmail,
 }
