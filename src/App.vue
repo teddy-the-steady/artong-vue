@@ -305,6 +305,7 @@ html {
     }
 
     input[type='text'],
+    input[type='email'],
     input[type='number'],
     textarea {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
