@@ -61,22 +61,22 @@ export default {
       tabs: [
         {
           id: 0,
-          label: this.$i18n.t('views.user.tabs.owned'),
+          label: this.$i18n.t('views.user.tabs.contributed'),
           type: 'CONTENTS',
           api: {},
           sort: {},
         },
         {
           id: 1,
-          label: this.$i18n.t('views.user.tabs.created'),
-          type: 'PROJECTS',
+          label: this.$i18n.t('views.user.tabs.owned'),
+          type: 'CONTENTS',
           api: {},
           sort: {},
         },
         {
           id: 2,
-          label: this.$i18n.t('views.user.tabs.contributed'),
-          type: 'CONTENTS',
+          label: this.$i18n.t('views.user.tabs.created'),
+          type: 'PROJECTS',
           api: {},
           sort: {},
         },
@@ -102,6 +102,21 @@ export default {
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
       func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.currentUser.wallet_address,
+          orderBy: this.tabs[2].sort.orderBy,
+          orderDirection: this.tabs[2].sort.orderDirection,
+        },
+      }),
+    }
+
+    this.tabs[1].sort =
+      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
+    this.tabs[1].api = {
+      func: graphql,
       body: queryTokensByOwner({
         variables: {
           first: 10,
@@ -113,9 +128,9 @@ export default {
       }),
     }
 
-    this.tabs[1].sort =
+    this.tabs[2].sort =
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-    this.tabs[1].api = {
+    this.tabs[2].api = {
       func: graphql,
       body: queryProjectsByCreator({
         variables: {
@@ -124,21 +139,6 @@ export default {
           creator: this.currentUser.wallet_address,
           orderBy: this.tabs[1].sort.orderBy,
           orderDirection: this.tabs[1].sort.orderDirection,
-        },
-      }),
-    }
-
-    this.tabs[2].sort =
-      this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
-    this.tabs[2].api = {
-      func: graphql,
-      body: queryTokensByCreator({
-        variables: {
-          first: 10,
-          skip: 0,
-          creator: this.currentUser.wallet_address,
-          orderBy: this.tabs[2].sort.orderBy,
-          orderDirection: this.tabs[2].sort.orderDirection,
         },
       }),
     }
@@ -171,9 +171,9 @@ export default {
   },
   watch: {
     $route(to) {
-      this.tabs[0].label = this.$i18n.t('views.user.tabs.owned')
-      this.tabs[1].label = this.$i18n.t('views.user.tabs.created')
-      this.tabs[2].label = this.$i18n.t('views.user.tabs.contributed')
+      this.tabs[0].label = this.$i18n.t('views.user.tabs.contributed')
+      this.tabs[1].label = this.$i18n.t('views.user.tabs.owned')
+      this.tabs[2].label = this.$i18n.t('views.user.tabs.created')
       this.tabs[3].label = this.$i18n.t('views.user.tabs.candidates')
       this.tabs[4].label = this.$i18n.t('views.user.tabs.favorited')
 
@@ -182,6 +182,20 @@ export default {
         this.sortOptions[to.query.sort] || this.sortOptions['newest']
       switch (t) {
         case '0':
+          this.tabs[t].api = {
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: this.currentUser.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
+          }
+          break
+        case '1':
           this.tabs[t].api = {
             func: graphql,
             body: queryTokensByOwner({
@@ -195,24 +209,10 @@ export default {
             }),
           }
           break
-        case '1':
-          this.tabs[t].api = {
-            func: graphql,
-            body: queryProjectsByCreator({
-              variables: {
-                first: 10,
-                skip: 0,
-                creator: this.currentUser.wallet_address,
-                orderBy: this.tabs[t].sort.orderBy,
-                orderDirection: this.tabs[t].sort.orderDirection,
-              },
-            }),
-          }
-          break
         case '2':
           this.tabs[t].api = {
             func: graphql,
-            body: queryTokensByCreator({
+            body: queryProjectsByCreator({
               variables: {
                 first: 10,
                 skip: 0,
