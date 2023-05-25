@@ -289,6 +289,7 @@ export default {
               orderBy: this.tabs[t].sort.orderBy,
               orderDirection: this.tabs[t].sort.orderDirection,
             },
+            key: this.tabKey,
           }
           break
         case '4':
@@ -301,6 +302,7 @@ export default {
               orderBy: this.tabs[t].sort.orderBy,
               orderDirection: this.tabs[t].sort.orderDirection,
             },
+            key: this.tabKey,
           }
           break
         default:
