@@ -107,8 +107,8 @@ export default {
           first: 10,
           skip: 0,
           creator: this.currentUser.wallet_address,
-          orderBy: this.tabs[2].sort.orderBy,
-          orderDirection: this.tabs[2].sort.orderDirection,
+          orderBy: this.tabs[0].sort.orderBy,
+          orderDirection: this.tabs[0].sort.orderDirection,
         },
       }),
     }
@@ -122,8 +122,8 @@ export default {
           first: 10,
           skip: 0,
           owner: this.currentUser.wallet_address,
-          orderBy: this.tabs[0].sort.orderBy,
-          orderDirection: this.tabs[0].sort.orderDirection,
+          orderBy: this.tabs[1].sort.orderBy,
+          orderDirection: this.tabs[1].sort.orderDirection,
         },
       }),
     }
@@ -137,8 +137,8 @@ export default {
           first: 10,
           skip: 0,
           creator: this.currentUser.wallet_address,
-          orderBy: this.tabs[1].sort.orderBy,
-          orderDirection: this.tabs[1].sort.orderDirection,
+          orderBy: this.tabs[2].sort.orderBy,
+          orderDirection: this.tabs[2].sort.orderDirection,
         },
       }),
     }
