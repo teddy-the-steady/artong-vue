@@ -61,7 +61,7 @@ export default {
       tabs: [
         {
           id: 0,
-          label: this.$i18n.t('views.user.tabs.contributed'),
+          label: this.$i18n.t('views.user.tabs.candidates'),
           type: 'CONTENTS',
           api: {},
           sort: {},
@@ -82,7 +82,7 @@ export default {
         },
         {
           id: 3,
-          label: this.$i18n.t('views.user.tabs.candidates'),
+          label: this.$i18n.t('views.user.tabs.contributed'),
           type: 'CONTENTS',
           api: {},
           sort: {},
@@ -101,16 +101,14 @@ export default {
     this.tabs[0].sort =
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[0].api = {
-      func: graphql,
-      body: queryTokensByCreator({
-        variables: {
-          first: 10,
-          skip: 0,
-          creator: this.currentUser.wallet_address,
-          orderBy: this.tabs[0].sort.orderBy,
-          orderDirection: this.tabs[0].sort.orderDirection,
-        },
-      }),
+      func: getMemberContentsCandidates,
+      pathParams: { member_id: this.currentUser.id },
+      queryParams: {
+        start_num: 0,
+        count_num: 10,
+        orderBy: this.tabs[0].sort.orderBy,
+        orderDirection: this.tabs[0].sort.orderDirection,
+      },
     }
 
     this.tabs[1].sort =
@@ -146,14 +144,16 @@ export default {
     this.tabs[3].sort =
       this.sortOptions[this.$route.query.sort] || this.sortOptions['newest']
     this.tabs[3].api = {
-      func: getMemberContentsCandidates,
-      pathParams: { member_id: this.currentUser.id },
-      queryParams: {
-        start_num: 0,
-        count_num: 10,
-        orderBy: this.tabs[3].sort.orderBy,
-        orderDirection: this.tabs[3].sort.orderDirection,
-      },
+      func: graphql,
+      body: queryTokensByCreator({
+        variables: {
+          first: 10,
+          skip: 0,
+          creator: this.currentUser.wallet_address,
+          orderBy: this.tabs[3].sort.orderBy,
+          orderDirection: this.tabs[3].sort.orderDirection,
+        },
+      }),
     }
 
     this.tabs[4].sort =
@@ -171,10 +171,10 @@ export default {
   },
   watch: {
     $route(to) {
-      this.tabs[0].label = this.$i18n.t('views.user.tabs.contributed')
+      this.tabs[0].label = this.$i18n.t('views.user.tabs.candidates')
       this.tabs[1].label = this.$i18n.t('views.user.tabs.owned')
       this.tabs[2].label = this.$i18n.t('views.user.tabs.created')
-      this.tabs[3].label = this.$i18n.t('views.user.tabs.candidates')
+      this.tabs[3].label = this.$i18n.t('views.user.tabs.contributed')
       this.tabs[4].label = this.$i18n.t('views.user.tabs.favorited')
 
       const t = to.query.tab || '0'
@@ -183,16 +183,14 @@ export default {
       switch (t) {
         case '0':
           this.tabs[t].api = {
-            func: graphql,
-            body: queryTokensByCreator({
-              variables: {
-                first: 10,
-                skip: 0,
-                creator: this.currentUser.wallet_address,
-                orderBy: this.tabs[t].sort.orderBy,
-                orderDirection: this.tabs[t].sort.orderDirection,
-              },
-            }),
+            func: getMemberContentsCandidates,
+            pathParams: { member_id: this.currentUser.id },
+            queryParams: {
+              start_num: 0,
+              count_num: 10,
+              orderBy: this.tabs[t].sort.orderBy,
+              orderDirection: this.tabs[t].sort.orderDirection,
+            },
           }
           break
         case '1':
@@ -225,14 +223,16 @@ export default {
           break
         case '3':
           this.tabs[t].api = {
-            func: getMemberContentsCandidates,
-            pathParams: { member_id: this.currentUser.id },
-            queryParams: {
-              start_num: 0,
-              count_num: 10,
-              orderBy: this.tabs[t].sort.orderBy,
-              orderDirection: this.tabs[t].sort.orderDirection,
-            },
+            func: graphql,
+            body: queryTokensByCreator({
+              variables: {
+                first: 10,
+                skip: 0,
+                creator: this.currentUser.wallet_address,
+                orderBy: this.tabs[t].sort.orderBy,
+                orderDirection: this.tabs[t].sort.orderDirection,
+              },
+            }),
           }
           break
         case '4':
