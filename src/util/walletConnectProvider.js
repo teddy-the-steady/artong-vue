@@ -1,22 +1,33 @@
-import WalletConnectProvider from '@walletconnect/web3-provider'
+// import WalletConnectProvider from '@walletconnect/web3-provider'
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import { ethers } from 'ethers'
 
 class Provider {
   constructor() {
-    this.provider = new WalletConnectProvider({
-      infuraId: process.env.VUE_APP_INFURA_ID,
-      qrcodeModalOptions: {
-        mobileLinks: ['metamask', 'rainbow'],
-      },
+    // this.provider = new WalletConnectProvider({
+    //   infuraId: process.env.VUE_APP_INFURA_ID,
+    //   qrcodeModalOptions: {
+    //     mobileLinks: ['metamask', 'rainbow'],
+    //   },
+    // })
+    this.provider = EthereumProvider.init({
+      projectId: process.env.VUE_APP_WALLETCONNECT_PROJECT_ID,
+      chains: [1],
     })
+      .then(result => console.log(result))
+      .catch(error => console.log(error))
   }
 
-  resetProvider() {
-    this.provider = new WalletConnectProvider({
-      infuraId: process.env.VUE_APP_INFURA_ID,
-      qrcodeModalOptions: {
-        mobileLinks: ['metamask', 'rainbow'],
-      },
+  async resetProvider() {
+    // this.provider = new WalletConnectProvider({
+    //   infuraId: process.env.VUE_APP_INFURA_ID,
+    //   qrcodeModalOptions: {
+    //     mobileLinks: ['metamask', 'rainbow'],
+    //   },
+    // })
+    this.provider = await EthereumProvider.init({
+      projectId: process.env.VUE_APP_WALLETCONNECT_PROJECT_ID,
+      chains: [1],
     })
   }
 
