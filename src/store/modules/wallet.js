@@ -97,7 +97,7 @@ const actions = {
         address,
       }
     } catch (error) {
-      if (error.message === 'User closed modal') {
+      if (error.message === 'Connection request reset. Please try again.') {
         await Provider.resetProvider()
         return false
       }
