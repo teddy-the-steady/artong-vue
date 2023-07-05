@@ -10,4 +10,11 @@ module.exports = {
       enableBridge: false,
     },
   },
+  chainWebpack: config => {
+    config.module
+      .rule('m?js')
+      .test(/\.m?js$/)
+      .use('babel-loader')
+      .loader('babel-loader')
+  },
 }
