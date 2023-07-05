@@ -1,4 +1,3 @@
-// import WalletConnectProvider from '@walletconnect/web3-provider'
 import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import { ethers } from 'ethers'
 
@@ -39,7 +38,7 @@ class Provider {
         explorerExcludedWalletIds: 'ALL',
         explorerRecommendedWalletIds: [
           this.METAMASK_ID,
-          this.RAINBOW_WALLET_IDF,
+          this.RAINBOW_WALLET_ID,
         ],
       },
     })
