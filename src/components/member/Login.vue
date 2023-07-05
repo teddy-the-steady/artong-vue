@@ -56,7 +56,7 @@ import MetaMaskOnboarding from '@metamask/onboarding'
 import { mapState } from 'vuex'
 import { getCurrentMember } from '../../api/member'
 import { menuDeactivate } from '../../mixin'
-// import Provider from '../../util/walletConnectProvider'
+import Provider from '../../util/walletConnectProvider'
 import TooltipIcon from '../util/ToolTipIcon.vue'
 import PrivacyTosModal from '../modal/Privacy&TosModal.vue'
 
@@ -147,68 +147,65 @@ export default {
       }
     },
     async signInMobile() {
-      alert(this.$i18n.t('views.login.maintenance'))
-      return
+      if (this.isSpinnerActive) {
+        return
+      }
 
-      // if (this.isSpinnerActive) {
-      //   return
-      // }
+      try {
+        this.isSpinnerActive = true
+        Provider.setWalletConnectSigner()
+        const { connector, address } = await this.$store.dispatch(
+          'SET_UP_WALLET_CONNECTION',
+        )
+        if (connector) {
+          let signature = null
+          const cognitoUser = await this.$store.dispatch(
+            'AUTH_SIGN_IN_AND_UP',
+            {
+              address: address,
+            },
+          )
+          if (cognitoUser) {
+            this.$store.commit('TOGGLE_CONFIRM_MODAL')
+            const ok =
+              await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
+            if (ok) {
+              try {
+                signature = await connector.signPersonalMessage([
+                  cognitoUser.challengeParam.message,
+                  address,
+                ])
+              } catch (error) {
+                this.isSpinnerActive = false
+                connector.killSession()
+                await this.$store.dispatch('AUTH_LOGOUT')
+                throw error
+              }
+            }
+          }
 
-      // try {
-      //   this.isSpinnerActive = true
-      //   Provider.setWalletConnectSigner()
-      //   const { connector, address } = await this.$store.dispatch(
-      //     'SET_UP_WALLET_CONNECTION',
-      //   )
-      //   if (connector) {
-      //     let signature = null
-      //     const cognitoUser = await this.$store.dispatch(
-      //       'AUTH_SIGN_IN_AND_UP',
-      //       {
-      //         address: address,
-      //       },
-      //     )
-      //     if (cognitoUser) {
-      //       this.$store.commit('TOGGLE_CONFIRM_MODAL')
-      //       const ok =
-      //         await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
-      //       if (ok) {
-      //         try {
-      //           signature = await connector.signPersonalMessage([
-      //             cognitoUser.challengeParam.message,
-      //             address,
-      //           ])
-      //         } catch (error) {
-      //           this.isSpinnerActive = false
-      //           connector.killSession()
-      //           await this.$store.dispatch('AUTH_LOGOUT')
-      //           throw error
-      //         }
-      //       }
-      //     }
+          if (signature) {
+            await this.$store.dispatch('AUTH_VERIFY_USER', {
+              cognitoUser,
+              signature,
+            })
+            await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
+            const member = await getCurrentMember()
+            await this.$store.dispatch('CURRENT_USER', member)
 
-      //     if (signature) {
-      //       await this.$store.dispatch('AUTH_VERIFY_USER', {
-      //         cognitoUser,
-      //         signature,
-      //       })
-      //       await this.$store.dispatch('AUTH_CHECK_CURRENT_USER')
-      //       const member = await getCurrentMember()
-      //       await this.$store.dispatch('CURRENT_USER', member)
-
-      //       this.redirectAfterLogin()
-      //     }
-      //   }
-      // } catch (error) {
-      //   this.warning = 'Oops, something went wrong! Please try again'
-      //   if (error.message === 'Cancelled signing message') {
-      //     this.warning = error.message
-      //   }
-      //   await this.$store.dispatch('AUTH_LOGOUT')
-      //   throw error
-      // } finally {
-      //   this.isSpinnerActive = false
-      // }
+            this.redirectAfterLogin()
+          }
+        }
+      } catch (error) {
+        this.warning = 'Oops, something went wrong! Please try again'
+        if (error.message === 'Cancelled signing message') {
+          this.warning = error.message
+        }
+        await this.$store.dispatch('AUTH_LOGOUT')
+        throw error
+      } finally {
+        this.isSpinnerActive = false
+      }
     },
     redirectAfterLogin() {
       const urlToRedirect = this.$router.history.current.query['redirect']

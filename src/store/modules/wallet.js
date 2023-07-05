@@ -98,7 +98,7 @@ const actions = {
       }
     } catch (error) {
       if (error.message === 'User closed modal') {
-        Provider.resetProvider()
+        await Provider.resetProvider()
         return false
       }
       await dispatch('AUTH_LOGOUT')
