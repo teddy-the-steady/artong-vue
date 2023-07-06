@@ -31,17 +31,8 @@ const actions = {
   },
   [SET_UP_WALLET_CONNECTION]: async function ({ state, commit, dispatch }) {
     try {
-      console.log('@@@@@@ before provider.enable()@@@@@@')
       await Provider.provider.enable()
-      console.log('@@@@@@ provider.enabled @@@@@@')
-      console.log('Provider.provider:', Provider.provider)
-      console.log('Provider.provider.wc:', Provider.provider.wc)
-      console.log(
-        'Provider.provider.wc.accounts[0]:',
-        Provider.provider.wc.accounts[0],
-      )
       const address = Provider.provider.wc.accounts[0]
-      console.log('Provider.provider.wc.accounts[0]:', address)
       commit(WALLET_STATUS, true)
       commit(WALLET_ACCOUNT, address)
       commit(
