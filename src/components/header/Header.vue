@@ -129,7 +129,7 @@
             >
               <img src="../../assets/icons/add.svg" />
             </button>
-            <div
+            <!-- <div
               v-if="innerWidth >= 1080"
               class="round-button white-button ripple margin clickable"
               @click="toggleNotificationModal"
@@ -138,7 +138,7 @@
               <img v-else src="../../assets/icons/notification_d.svg" />
             </div>
             <div v-if="innerWidth >= 1080" class="numbox">N</div>
-            <div v-else class="numbox3">N</div>
+            <div v-else class="numbox3">N</div> -->
             <div
               class="header-profile"
               @mousedown="profileMouseDown"
@@ -182,7 +182,7 @@
         >
           {{ $t('header.user-dialog.profile') }}
         </router-link>
-        <router-link
+        <!-- <router-link
           v-if="innerWidth < 1080"
           slot="body"
           tag="div"
@@ -203,7 +203,7 @@
             "
             class="reddot"
           ></div>
-        </router-link>
+        </router-link> -->
         <router-link
           slot="body"
           tag="div"
@@ -217,7 +217,7 @@
           {{ $t('header.user-dialog.disconnect') }}
         </div>
       </UserDialog>
-      <NotificationModal v-if="isNotificationModalOpen && innerWidth >= 1080" />
+      <!-- <NotificationModal v-if="isNotificationModalOpen && innerWidth >= 1080" /> -->
     </nav>
   </transition>
 </template>
@@ -230,7 +230,7 @@ import UserDialog from '../dialog/UserDialog.vue'
 import Ripple from '../../directives/ripple/Ripple'
 import { isSessionValid } from '../../util/commonFunc'
 import SearchModal from '../modal/SearchModal.vue'
-import NotificationModal from '../modal/NotificationModal.vue'
+// import NotificationModal from '../modal/NotificationModal.vue'
 
 export default {
   name: 'Header',
@@ -239,7 +239,7 @@ export default {
     HeaderProfile,
     UserDialog,
     SearchModal,
-    NotificationModal,
+    // NotificationModal,
   },
   props: {
     theme: {
