@@ -52,12 +52,12 @@ const checkMobileWalletStatusAndGetSigner = async function (pathToRedirect) {
   if (Vue.$isMobile()) {
     if (!store.state.wallet.walletStatus) {
       if (await store.dispatch('SET_UP_WALLET_CONNECTION')) {
-        return Provider.getWalletConnectSigner()
+        return await Provider.getWalletConnectSigner()
       } else {
         return null
       }
     } else {
-      return Provider.getWalletConnectSigner()
+      return await Provider.getWalletConnectSigner()
     }
   } else {
     if (
