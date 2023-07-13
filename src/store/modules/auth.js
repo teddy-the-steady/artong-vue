@@ -65,9 +65,7 @@ const actions = {
   [AUTH_LOGOUT]: async function ({ commit, dispatch }) {
     try {
       await Auth.signOut()
-      if (localStorage.getItem('walletconnect')) {
-        await dispatch('DISCONNECT_WALLET')
-      }
+      await dispatch('DISCONNECT_WALLET')
       commit(AUTH_LOGOUT)
       commit(USER_LOGOUT)
       localStorage.removeItem('userWalletConnectState')
