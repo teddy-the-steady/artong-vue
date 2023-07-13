@@ -156,11 +156,9 @@ export default {
 
       // try {
       //   this.isSpinnerActive = true
-      //   Provider.setWalletConnectSigner()
-      //   const { connector, address } = await this.$store.dispatch(
-      //     'SET_UP_WALLET_CONNECTION',
-      //   )
-      //   if (connector) {
+      //   await Provider.setWalletConnectSigner()
+      //   const address = await this.$store.dispatch('SET_UP_WALLET_CONNECTION')
+      //   if (address) {
       //     let signature = null
       //     const cognitoUser = await this.$store.dispatch(
       //       'AUTH_SIGN_IN_AND_UP',
@@ -174,13 +172,13 @@ export default {
       //         await this.$root.$children[0].$refs.confirmModal.waitForAnswer()
       //       if (ok) {
       //         try {
-      //           signature = await connector.signPersonalMessage([
-      //             cognitoUser.challengeParam.message,
-      //             address,
-      //           ])
+      //           const provider = await Provider.providerPromise
+      //           signature = await provider.request({
+      //             method: 'personal_sign',
+      //             params: [cognitoUser.challengeParam.message, address],
+      //           })
       //         } catch (error) {
       //           this.isSpinnerActive = false
-      //           connector.killSession()
       //           await this.$store.dispatch('AUTH_LOGOUT')
       //           throw error
       //         }

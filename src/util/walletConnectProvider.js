@@ -11,28 +11,11 @@ class Provider {
   GOERLI = 5
 
   constructor() {
-    EthereumProvider.init({
+    this.providerPromise = EthereumProvider.init({
       projectId: process.env.VUE_APP_WALLETCONNECT_PROJECT_ID,
-      chains: [this.MAINNET],
-      optionalChains: [this.GOERLI],
-      showQrModal: true,
-      qrModalOptions: {
-        explorerExcludedWalletIds: 'ALL',
-        explorerRecommendedWalletIds: [
-          this.METAMASK_ID,
-          this.RAINBOW_WALLET_ID,
-        ],
-      },
-    })
-      .then(result => console.log((this.provider = result)))
-      .catch(error => console.log(error))
-  }
-
-  async resetProvider() {
-    this.provider = await EthereumProvider.init({
-      projectId: process.env.VUE_APP_WALLETCONNECT_PROJECT_ID,
-      chains: [this.MAINNET],
-      optionalChains: [this.GOERLI],
+      chains: [
+        process.env.NODE_ENV === 'production' ? this.MAINNET : this.GOERLI,
+      ],
       showQrModal: true,
       qrModalOptions: {
         explorerExcludedWalletIds: 'ALL',
@@ -55,18 +38,22 @@ class Provider {
     return this.pcSigner
   }
 
-  getWalletConnectSigner() {
+  async getWalletConnectSigner() {
     if (this.mobileSigner) {
       return this.mobileSigner
     }
 
-    this.mobileProvider = new ethers.providers.Web3Provider(this.provider)
+    this.mobileProvider = new ethers.providers.Web3Provider(
+      await this.providerPromise,
+    )
     this.mobileSigner = this.mobileProvider.getSigner()
     return this.mobileSigner
   }
 
-  setWalletConnectSigner() {
-    this.mobileProvider = new ethers.providers.Web3Provider(this.provider)
+  async setWalletConnectSigner() {
+    this.mobileProvider = new ethers.providers.Web3Provider(
+      await this.providerPromise,
+    )
     this.mobileSigner = this.mobileProvider.getSigner()
   }
 }
