@@ -132,10 +132,10 @@ export default {
   },
   async mounted() {
     if (this.isMobile) {
-      await this.$store.dispatch(
-        'AUTO_CONNECT_WALLET',
-        this.getDefaultWalletConnectState,
-      )
+      await this.$store.dispatch('REFRESH_WALLET_CONNECT_STATUS', {
+        state: this.getDefaultWalletConnectState,
+        waitForAnswer: this.$refs.confirmModal.waitForAnswer,
+      })
     } else {
       this.addPcWalletEventHandler()
       await this.getPcWalletOnFirstLoad()
@@ -147,6 +147,8 @@ export default {
     )
 
     window.addEventListener('resize', this.setWidth)
+
+    await this.$nextTick()
     this.$store.commit(
       'SET_LANGUAGE',
       this.currentUser.language || localStorage.getItem('language') || 'ko',
