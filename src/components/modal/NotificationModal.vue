@@ -14,7 +14,7 @@
 
             <div class="modal-body">
               <slot name="body">
-                <Notification />
+                <Notification style="color: black" />
               </slot>
             </div>
 
@@ -61,12 +61,8 @@ export default {
 
 .modal-mask {
   position: fixed;
-  // z-index: 9998;
   top: 75px;
   right: 0;
-  // width: 100vw;
-  // height: 100vh;
-  // background-color: $backdrop;
   display: table;
   transition: opacity 0.2s ease;
 
@@ -76,7 +72,7 @@ export default {
 
     .modal-container {
       display: grid;
-      width: 420px;
+      width: 480px;
       margin-right: 5px;
       padding: 5px 5px;
       background-color: $artong-white;
@@ -106,16 +102,11 @@ export default {
           color: $lightgray;
         }
 
-        .modal-body {
-          margin: 0px 5px;
-          // display: contents;
-        }
-
         .modal-footer {
           .modal-button {
             position: fixed;
             z-index: 9998;
-            top: 85px;
+            top: 92px;
             right: 25px;
             width: 10px;
             background-color: #ffffff;
