@@ -1,5 +1,8 @@
 {
-    "follow": " started following you.",
+    "follow-project": " started following your project.",
+    "follow-member": " started following you.",
     "like": " liked your post.",
+    "contribute": " contributed your project.",
+    "contribute-approve": " has been approved",
     "comments": " commented on your post."
 }
