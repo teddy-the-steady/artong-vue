@@ -15,6 +15,7 @@ import store from './store'
 import axiosInit from './api'
 import i18n from './i18n'
 import VueCarousel from 'vue-carousel'
+import InfiniteLoading from 'vue-infinite-loading'
 Amplify.configure(awsconfig)
 Auth.configure(awsconfig)
 Storage.configure(awsconfig)
@@ -24,6 +25,7 @@ Vue.use(Amplify)
 Vue.use(Masonry)
 Vue.use(detectMobile)
 Vue.use(VueCarousel)
+Vue.use(InfiniteLoading)
 
 Vue.config.productionTip = false
 
