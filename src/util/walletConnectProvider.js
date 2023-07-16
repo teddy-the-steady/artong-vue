@@ -24,15 +24,15 @@ class Provider {
           this.RAINBOW_WALLET_ID,
         ],
       },
+      optionalMethods: ['eth_signTypedData_v4'],
     })
   }
 
-  async getPcSigner() {
+  getPcSigner() {
     if (this.pcSigner) {
       return this.pcSigner
     }
 
-    await window.ethereum.request({ method: 'eth_requestAccounts' })
     this.pcProvider = new ethers.providers.Web3Provider(window.ethereum)
     this.pcSigner = this.pcProvider.getSigner()
     return this.pcSigner
@@ -43,9 +43,9 @@ class Provider {
       return this.mobileSigner
     }
 
-    this.mobileProvider = new ethers.providers.Web3Provider(
-      await this.providerPromise,
-    )
+    const provider = await this.providerPromise
+
+    this.mobileProvider = new ethers.providers.Web3Provider(provider)
     this.mobileSigner = this.mobileProvider.getSigner()
     return this.mobileSigner
   }

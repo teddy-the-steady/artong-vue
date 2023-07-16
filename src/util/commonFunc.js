@@ -67,7 +67,7 @@ const checkMobileWalletStatusAndGetSigner = async function (pathToRedirect) {
       loginAndRedirectBack(pathToRedirect)
       return
     }
-    return await Provider.getPcSigner()
+    return Provider.getPcSigner()
   }
 }
 
