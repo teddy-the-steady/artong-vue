@@ -200,7 +200,6 @@ export default {
       padding-left: 15px;
     }
     .post_img {
-      // background-color: rgb(244, 201, 255);
       display: flex;
       width: 48px;
       height: 62px;
