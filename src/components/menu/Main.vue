@@ -447,22 +447,36 @@ export default {
       )
       return result.data.tokens
     },
+    async getContentsPick() {
+      const result = await getContentsPick({
+        ids: this.mainContents.artongsPick,
+      })
+      return result.data
+    },
   },
   async created() {
     this.mainContents = await getMainContents()
-    this.mainToken = await this.getMainToken()
 
-    const [result1, result2, result3, result4] = await Promise.all([
+    const promises = [
+      this.getMainToken(),
       this.getHighlightedProjects(),
-      getContentsPick({ ids: this.mainContents.artongsPick }),
+      this.getContentsPick(),
       getMainContributors(),
       this.getRecentContributions(),
-    ])
+    ]
 
-    this.highlightedProjects = result1
-    this.artongsPickTokens = result2.data
-    this.mainContributors = result3
-    this.recentTokens = result4
+    const results = []
+
+    for (const promise of promises) {
+      const result = await promise
+      results.push(result)
+    }
+
+    this.mainToken = results[0]
+    this.highlightedProjects = results[1]
+    this.artongsPickTokens = results[2]
+    this.mainContributors = results[3]
+    this.recentTokens = results[4]
   },
 }
 </script>
