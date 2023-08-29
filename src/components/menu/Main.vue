@@ -465,18 +465,14 @@ export default {
       this.getRecentContributions(),
     ]
 
-    const results = []
-
-    for (const promise of promises) {
-      const result = await promise
-      results.push(result)
+    for (let i = 0; i < promises.length; i++) {
+      const result = await promises[i]
+      if (i === 0) this.mainToken = result
+      else if (i === 1) this.highlightedProjects = result
+      else if (i === 2) this.artongsPickTokens = result
+      else if (i === 3) this.mainContributors = result
+      else if (i === 4) this.recentTokens = result
     }
-
-    this.mainToken = results[0]
-    this.highlightedProjects = results[1]
-    this.artongsPickTokens = results[2]
-    this.mainContributors = results[3]
-    this.recentTokens = results[4]
   },
 }
 </script>
