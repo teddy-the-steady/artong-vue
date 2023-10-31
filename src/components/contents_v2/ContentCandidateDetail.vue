@@ -672,6 +672,7 @@ export default {
     img {
       object-fit: contain;
       max-width: 100%;
+      min-width: 300px;
     }
   }
 }
